@@ -1,0 +1,1 @@
+pyinstaller --onefile --windowed Rotating_Coil_v3.py

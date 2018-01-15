@@ -1,0 +1,8 @@
+#ifndef PUC_DIGITAL_H
+#define PUC_DIGITAL_H
+
+#define DIGITAL_BOARD_TYPE  BOARD_DIGITAL
+#define DIGITAL_VAR_TYPES   VAR_DIGITAL_INPUT, VAR_DIGITAL_OUTPUT
+#define DIGITAL_INIT        digital_init
+
+#endif

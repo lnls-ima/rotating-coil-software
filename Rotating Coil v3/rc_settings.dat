@@ -1,0 +1,38 @@
+# Rotating Coil Main Parameters
+# Insert the variable name and value separated by tab.
+# Commented lines are ignored.
+
+display_type	0.0
+disp_port	7.0
+driver_port	1.0
+integrator_port	4.0
+ps_type	1.0
+PUC_type	0.0
+PUC_port	9.0
+PUC_address	8.0
+ps_port	5.0
+ps_address	3.0
+enable_Agilent33220A	0.0
+agilent33220A_address	19.0
+enable_Agilent34401A	0.0
+agilent34401A_address	8.0
+enable_Agilent34970A	0.0
+agilent34970A_address	6.0
+total_number_of_turns	3.0
+remove_initial_turns	0.0
+remove_final_turns	0.0
+ref_encoder_A	-31.2
+ref_encoder_B	-27.53
+rotation_motor_address	1.0
+rotation_motor_resolution	50000.0
+rotation_motor_speed	1.0
+rotation_motor_acceleration	4.0
+rotation_motor_ratio	10.0
+poscoil_assembly	339082.0
+n_encoder_pulses	360000.0
+integrator_gain	6.0
+n_integration_points	3.0
+poscoil_vertical_ref	339082.0
+save_turn_angles	0.0
+disable_aligment_interlock	0.0
+disable_ps_interlock	0.0

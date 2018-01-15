@@ -1,0 +1,10 @@
+Para gerar o instalador basta apenas mexer no que está entre áspas nas 3 primeiras linhas do arquivo instalador.
+Na primeira linha é só colocar o nome do arquivo executável gerado, na segunda linha o nome é opcional, mas sugiro colocar setup_... para padronizar e na terceira linha o diretório que está localizado o executável.
+Feito isso, salve o arquivo e abra o programa NSIS. Selecione a primeira opção disponível (Compiler -> Compile NSI scripts). Na janela que irá abrir clique em load script e selecione o script do instalador.
+Instale o programa utilizando o instalador criado, veja se uma pasta no menu iniciar foi criada e verifique se o desinstalador funciona corretamente.
+
+
+!define APPNAME "Talyvel5"					; nome do aplicativo (nome do executável)
+!define SETUPNAME "setup_T5.exe"				; nome do instalador
+!define FILEPATH "C:\Users\labimas\Desktop\Talyvel5"		; diretório do executável
+

@@ -1,0 +1,29 @@
+1
+Nome da Fonte:	Fonte_300A_PUC_V1.2
+Corrente Linear:	0.0
+Amplitude Linear:	1.0
+Tempo Linear:	0.15
+Amplitude Senoidal:	0.0
+Offset Senoidal:	0.0
+Defasagem Senoidal:	0.0
+Posicao Final Senoidal:	0.0
+Frequencia Senoidal:	0.0
+N Ciclos Senoidal:	0
+Amplitude Senoidal Amortecida:	0.0
+Offset Senoidal Amortecida:	0.0
+Defasagem Senoidal Amortecida:	0.0
+Posicao Final Senoidal Amortecida:	0.0
+Frequencia Senoidal Amortecida:	0.0
+N Ciclos Senoidal Amortecida:	0
+Amortecimento:	0.0
+Fator Entrada:	60.0
+Fator Saida:	60.0
+Corrente Máxima da Fonte:	300.0
+Corrente Mínima da Fonte:	0.0
+Corrente Maxima DCCT:	120.0
+Corrente Inicial Calibracao:	2.0
+Corrente Maxima Calibracao:	110.0
+Pontos Calibracao:	100.0
+Reta correcao escrita:	[0.00043277279364245524, 0.01666615926341085, 6.438667435618047e-07, -2.0791289552950394e-08, 2.8218964731125803e-10, -1.7800947715366564e-12, 4.293885500633753e-15]
+Reta correcao leitura:	[0.04664835929216338, 59.98286758499886, 0.40856826683401387, -0.9171097319123024, 0.9129101594550653, -0.4167384012196177, 0.0713164106515421]
+Corrente Arbitraria Auto:	[4.23, 17.86, 31.49, 45.12, 58.75, 72.38, 86.01, 99.64, 113.27, 126.92, 0.0]

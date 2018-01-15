@@ -1,0 +1,29 @@
+1
+Nome da Fonte:	Fonte_130A_Bipolar_PUC_V1.4
+Corrente Linear:	0.0
+Amplitude Linear:	0.5
+Tempo Linear:	0.25
+Amplitude Senoidal:	110.0
+Offset Senoidal:	60.0
+Defasagem Senoidal:	0.0
+Posicao Final Senoidal:	270.0
+Frequencia Senoidal:	2.0
+N Ciclos Senoidal:	100
+Amplitude Senoidal Amortecida:	240.0
+Offset Senoidal Amortecida:	0.0
+Defasagem Senoidal Amortecida:	0.0
+Posicao Final Senoidal Amortecida:	0.0
+Frequencia Senoidal Amortecida:	0.5
+N Ciclos Senoidal Amortecida:	100
+Amortecimento:	30.0
+Fator Entrada:	15.0
+Fator Saida:	15.0
+Corrente Máxima da Fonte:	130.0
+Corrente Mínima da Fonte:	-130.0
+Corrente Maxima DCCT:	120.0
+Corrente Inicial Calibracao:	-120.0
+Corrente Maxima Calibracao:	120.0
+Pontos Calibracao:	160.0
+Reta correcao escrita:	[0.01701844416880194, 0.06668970842146912, 8.854352658739231e-08, -3.443469248798567e-10, -2.6019423140782548e-11, 6.526981849519489e-15, 1.273964581918409e-15]
+Reta correcao leitura:	[0.0033032695011831433, 15.010164563002766, 0.00021967375476758676, -1.90892893932276e-05, -8.117090891406543e-06, 2.9369914432745125e-07, 1.0136250796593557e-07]
+Corrente Arbitraria Auto:	[0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 30.0, 50.0, 70.0, 90.0, 110.0, 90.0, 70.0, 50.0, 30.0, 10.0, 8.0, 6.0, 4.0, 2.0, 0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 30.0, 50.0, 70.0, 90.0, 110.0, 90.0, 70.0, 50.0, 30.0, 10.0, 8.0, 6.0, 4.0, 2.0, 0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 30.0, 50.0, 70.0, 90.0, 110.0, 90.0, 70.0, 50.0, 30.0, 10.0, 8.0, 6.0, 4.0, 2.0, 0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 30.0, 50.0, 70.0, 90.0, 110.0, 90.0, 70.0, 50.0, 30.0, 10.0, 8.0, 6.0, 4.0, 2.0, 0.0]

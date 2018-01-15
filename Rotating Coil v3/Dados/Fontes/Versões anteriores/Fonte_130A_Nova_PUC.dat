@@ -1,0 +1,29 @@
+1
+Nome da Fonte:	Fonte_130A_Nova_PUC
+Corrente Linear:	0.0
+Amplitude Linear:	0.5
+Tempo Linear:	0.25
+Amplitude Senoidal:	122.5
+Offset Senoidal:	64.0
+Defasagem Senoidal:	0.0
+Posicao Final Senoidal:	270.0
+Frequencia Senoidal:	2.0
+N Ciclos Senoidal:	100
+Amplitude Senoidal Amortecida:	0.0
+Offset Senoidal Amortecida:	0.0
+Defasagem Senoidal Amortecida:	0.0
+Posicao Final Senoidal Amortecida:	0.0
+Frequencia Senoidal Amortecida:	0.0
+N Ciclos Senoidal Amortecida:	0
+Amortecimento:	0.0
+Fator Entrada:	20.0
+Fator Saida:	20.0
+Corrente Máxima da Fonte:	130.0
+Corrente Mínima da Fonte:	0.0
+Corrente Maxima DCCT:	120.0
+Corrente Inicial Calibracao:	1.0
+Corrente Maxima Calibracao:	70.0
+Pontos Calibracao:	50.0
+Reta correcao escrita:	[0.008195254955271455, 0.04968067621940268, 2.029622967197241e-05, -8.750800337616129e-07, 1.928675927254833e-08, -2.0803982684007003e-10, 8.766881603466584e-13]
+Reta correcao leitura:	[-1.2344123309613009, 20.43250927895342, 0.1547382921927706, -0.16619052452553046, 0.08677720059754183, -0.021794469746711544, 0.0020934206916665386]
+Corrente Arbitraria Auto:	[4.0, 11.33, 18.67, 26.0, 33.33, 40.67, 48.0, 55.33, 62.67, 70.0, 0.0]

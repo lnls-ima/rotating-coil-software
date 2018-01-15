@@ -1,0 +1,99 @@
+<RCC>
+  <qresource prefix="Images">
+    <file>imagens/1351619277_plus_64.png</file>
+    <file>imagens/1351619288_DeleteRed.png</file>
+    <file>imagens/1351621493_Burn Disk.png</file>
+    <file>imagens/1351621501_Check.png</file>
+    <file>imagens/1351621507_Delete.png</file>
+    <file>imagens/1351621511_Flash Disk.png</file>
+    <file>imagens/1351621516_Burn Disk.png</file>
+    <file>imagens/1351621518_Positive.png</file>
+    <file>imagens/1351621520_Negative.png</file>
+    <file>imagens/1351621523_Download.png</file>
+    <file>imagens/1351621525_Key.png</file>
+    <file>imagens/1351621530_Hard Disk.png</file>
+    <file>imagens/1351621533_Upload.png</file>
+    <file>imagens/1351621535_Refresh.png</file>
+    <file>imagens/1351621543_Previous.png</file>
+    <file>imagens/1351621545_Next.png</file>
+    <file>imagens/1351621610_Burn Disk.png</file>
+    <file>imagens/Atualizar.jpg</file>
+    <file>imagens/Atualizar.png</file>
+    <file>imagens/binary_2.png</file>
+    <file>imagens/Bobina_2.png</file>
+    <file>imagens/Bobina_3.PNG</file>
+    <file>imagens/botao_limpar.png</file>
+    <file>imagens/cable.png</file>
+    <file>imagens/Capturar_2.png</file>
+    <file>imagens/chart_xy_graph_statistics-512.png</file>
+    <file>imagens/configure.png</file>
+    <file>imagens/connect.png</file>
+    <file>imagens/connection.png</file>
+    <file>imagens/Display.PNG</file>
+    <file>imagens/Display_2.PNG</file>
+    <file>imagens/Eixos.PNG</file>
+    <file>imagens/Eixos_2.PNG</file>
+    <file>imagens/Emergency Alert Delete.jpg</file>
+    <file>imagens/emergency_icon_01.png</file>
+    <file>imagens/emergency_icon_02.png</file>
+    <file>imagens/Emergency_Stop_Icon_by_mrd2345.png</file>
+    <file>imagens/emergency-button.jpg</file>
+    <file>imagens/engine.png</file>
+    <file>imagens/Eq_seno.jpg</file>
+    <file>imagens/Eq_seno_amortecido.jpg</file>
+    <file>imagens/Equação corrente.png</file>
+    <file>imagens/face-smile.png</file>
+    <file>imagens/FDI2056_front.jpg</file>
+    <file>imagens/FDI2056_front_2.png</file>
+    <file>imagens/FerramentaAjuste.jpg</file>
+    <file>imagens/file_add.png</file>
+    <file>imagens/find.png</file>
+    <file>imagens/grafAmortecido.jpg</file>
+    <file>imagens/Helmholtz.jpg</file>
+    <file>imagens/Helmholtz_vs2.jpg</file>
+    <file>imagens/Helmholtz2.jpg</file>
+    <file>imagens/HelmholtzConfig.png</file>
+    <file>imagens/ima.ico</file>
+    <file>imagens/Índice.jpg</file>
+    <file>imagens/integral.PNG</file>
+    <file>imagens/lnls sirius logo.jpg</file>
+    <file>imagens/lnls sirius logo.png</file>
+    <file>imagens/LNLS_sal.jpg</file>
+    <file>imagens/LNLS_sbx.jpg</file>
+    <file>imagens/lupa.jpg</file>
+    <file>imagens/magnetic.PNG</file>
+    <file>imagens/MotorPasso4.png</file>
+    <file>imagens/move.png</file>
+    <file>imagens/off.png</file>
+    <file>imagens/on.png</file>
+    <file>imagens/onda.jpg</file>
+    <file>imagens/panic-button.png</file>
+    <file>imagens/play1.png</file>
+    <file>imagens/Plot.png</file>
+    <file>imagens/plug.PNG</file>
+    <file>imagens/Power_Off.png</file>
+    <file>imagens/Power_On.png</file>
+    <file>imagens/quad.jpg</file>
+    <file>imagens/Quadrada.gif</file>
+    <file>imagens/quadrupolo.ico</file>
+    <file>imagens/quadrupolo.png</file>
+    <file>imagens/Referenciar.jpg</file>
+    <file>imagens/Referenciar.png</file>
+    <file>imagens/regua.png</file>
+    <file>imagens/reload.jpg</file>
+    <file>imagens/resource.qrc</file>
+    <file>imagens/save.png</file>
+    <file>imagens/Send.png</file>
+    <file>imagens/Senoide.jpg</file>
+    <file>imagens/senoide_2.jpg</file>
+    <file>imagens/Senoide_Amortecida_2.jpg</file>
+    <file>imagens/senoide_tempo.JPG</file>
+    <file>imagens/settings.png</file>
+    <file>imagens/slide_20.jpg</file>
+    <file>imagens/stepper motor.jpg</file>
+    <file>imagens/Stepper_motor_4.png</file>
+    <file>imagens/stop.png</file>
+    <file>imagens/Tau.jpg</file>
+    <file>imagens/triângulo suavizado.jpg</file>
+  </qresource>
+</RCC>

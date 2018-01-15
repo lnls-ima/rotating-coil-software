@@ -1,0 +1,1 @@
+c:\Python32\Lib\site-packages\PyQt4\pyuic4.bat -o Interface_Agilent_34401A.py Interface_Agilent_34401A.ui
