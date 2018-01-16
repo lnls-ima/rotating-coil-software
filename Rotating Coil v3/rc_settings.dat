@@ -2,15 +2,12 @@
 # Insert the variable name and value separated by tab.
 # Commented lines are ignored.
 
-display_type	0.0
-disp_port	7.0
-driver_port	1.0
-integrator_port	4.0
+display_type	1.0
+disp_port	COM6
+driver_port	COM10
+integrator_port	COM1
 ps_type	1.0
-PUC_type	0.0
-PUC_port	9.0
-PUC_address	8.0
-ps_port	5.0
+ps_port	COM7
 ps_address	3.0
 enable_Agilent33220A	0.0
 agilent33220A_address	19.0

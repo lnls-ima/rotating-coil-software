@@ -19,6 +19,7 @@ class RotatingCoil_Library(object):
     def __init__(self):
 #         self.dir_path = 'F:\\Arq-James\\5 - Projetos\\1 - Desenvolvimento de Software\\Rotating Coil v3\\'
         self.dir_path = os.path.dirname(os.path.abspath(__file__)) + '\\'
+        self.settings_file = 'rc_settings.dat'
         self.load_settings()
         
         self.App = None
@@ -28,7 +29,6 @@ class RotatingCoil_Library(object):
        
     def load_settings(self):
         try:
-            self.settings_file = 'rc_settings.dat'
             self.data_settings = None
             _file = self.dir_path + self.settings_file
             self.data_settings = pd.read_csv(_file, comment = '#', delimiter = '\t',names=['datavars','datavalues'], dtype={'datavars':str}, index_col='datavars')
@@ -75,11 +75,18 @@ class RotatingCoil_Library(object):
         except:
             return False
         
-    def get_value(self,dataframe,index):
+    def get_value(self,dataframe,index,type=None):
         """
         get value from dataframe
         """
-        return dataframe.loc[index].get_values()[0]
+        if type == int:
+            return int(dataframe.loc[index].astype(float).get_values()[0])
+        if type == float:
+            return dataframe.loc[index].astype(float).get_values()[0]
+        if type == str:
+            return dataframe.loc[index].astype(str).get_values()[0]
+        else:
+            return dataframe.loc[index].get_values()[0]
 
     def write_value(self,dataframe,index,value):
         """

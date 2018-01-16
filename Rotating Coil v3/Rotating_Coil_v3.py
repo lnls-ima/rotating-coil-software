@@ -9,10 +9,11 @@ import time
 import threading
 import numpy as np
 import pandas as pd
+import serial.tools.list_ports
 # import ctypes
 # import matplotlib.pyplot as plt
 
-# import traceback
+#import traceback
 import sys
 from PyQt5 import QtWidgets#,QtCore, QtGui
 
@@ -195,6 +196,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             
             QtWidgets.QMessageBox.warning(self,'Information','Devices connected.',QtWidgets.QMessageBox.Ok)            
         except:
+            #traceback.print_exc(file=sys.stdout)
             QtWidgets.QMessageBox.warning(self,'Information','Fail to connect devices',QtWidgets.QMessageBox.Ok) 
             
     def save_config(self): # Ok
@@ -573,58 +575,79 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         """
         Refresh inteface with defaults settings
         """
+        #list ports and fill comboboxes
+        l = serial.tools.list_ports.comports()
+        self.ports = []
+        for i in l:
+            self.ports.append(i.device)    
+        self.ports.sort()
+        
+        for i in range(self.ui.cb_disp_port.count()):
+            self.ui.cb_disp_port.removeItem(0)
+        self.ui.cb_disp_port.addItems(self.ports)
+        
+        for i in range(self.ui.cb_driver_port.count()):
+            self.ui.cb_driver_port.removeItem(0)
+        self.ui.cb_driver_port.addItems(self.ports)
+        
+        for i in range(self.ui.cb_integrator_port.count()):
+            self.ui.cb_integrator_port.removeItem(0)
+        self.ui.cb_integrator_port.addItems(self.ports)
+        
+        for i in range(self.ui.cb_ps_port.count()):
+            self.ui.cb_ps_port.removeItem(0)
+        self.ui.cb_ps_port.addItems(self.ports)
+        
         # Connection Tab 
-        self.ui.cb_display_type.setCurrentIndex(int(Lib.get_value(Lib.data_settings,'display_type')))
+        #self.ui.cb_display_type.setCurrentIndex(int(Lib.get_value(Lib.data_settings,'display_type')))
+        self.ui.cb_display_type.setCurrentIndex(Lib.get_value(Lib.data_settings,'display_type',int))
 
-        self.ui.cb_disp_port.setCurrentIndex(int(Lib.get_value(Lib.data_settings,'disp_port')))
-        self.ui.cb_driver_port.setCurrentIndex(int(Lib.get_value(Lib.data_settings,'driver_port')))
-        self.ui.cb_integrator_port.setCurrentIndex(int(Lib.get_value(Lib.data_settings,'integrator_port')))
-        self.ui.cb_ps_type.setCurrentIndex(int(Lib.get_value(Lib.data_settings,'ps_type')))
-        self.ui.cb_PUC_type.setCurrentIndex(int(Lib.get_value(Lib.data_settings,'PUC_type')))
-        self.ui.cb_PUC_port.setCurrentIndex(int(Lib.get_value(Lib.data_settings,'PUC_port')))
-        self.ui.sb_PUC_address.setValue(int(Lib.get_value(Lib.data_settings,'PUC_address')))
-        self.ui.cb_ps_port.setCurrentIndex(int(Lib.get_value(Lib.data_settings,'ps_port')))
-        self.ui.sb_ps_address.setValue(int(Lib.get_value(Lib.data_settings,'ps_address')))
+        self.ui.cb_disp_port.setCurrentText(Lib.get_value(Lib.data_settings,'disp_port',str))
+        self.ui.cb_driver_port.setCurrentText(Lib.get_value(Lib.data_settings,'driver_port',str))
+        self.ui.cb_integrator_port.setCurrentText(Lib.get_value(Lib.data_settings,'integrator_port',str))
+        self.ui.cb_ps_type.setCurrentIndex(Lib.get_value(Lib.data_settings,'ps_type',int))
+        self.ui.cb_ps_port.setCurrentText(Lib.get_value(Lib.data_settings,'ps_port',str))
+        #self.ui.sb_ps_address.setValue(int(Lib.get_value(Lib.data_settings,'ps_address')))
          
-        self.ui.chb_enable_Agilent33220A.setChecked(int(Lib.get_value(Lib.data_settings,'enable_Agilent33220A')))
-        self.ui.sb_agilent33220A_address.setValue(int(Lib.get_value(Lib.data_settings,'agilent33220A_address')))
+        self.ui.chb_enable_Agilent33220A.setChecked(Lib.get_value(Lib.data_settings,'enable_Agilent33220A',int))
+        self.ui.sb_agilent33220A_address.setValue(Lib.get_value(Lib.data_settings,'agilent33220A_address',int))
          
-        self.ui.chb_enable_Agilent34401A.setChecked(int(Lib.get_value(Lib.data_settings,'enable_Agilent34401A')))
-        self.ui.sb_agilent34401A_address.setValue(int(Lib.get_value(Lib.data_settings,'agilent34401A_address')))
+        self.ui.chb_enable_Agilent34401A.setChecked(Lib.get_value(Lib.data_settings,'enable_Agilent34401A',int))
+        self.ui.sb_agilent34401A_address.setValue(Lib.get_value(Lib.data_settings,'agilent34401A_address',int))
  
-        self.ui.chb_enable_Agilent34970A.setChecked(int(Lib.get_value(Lib.data_settings,'enable_Agilent34970A')))
-        self.ui.sb_agilent34970A_address.setValue(int(Lib.get_value(Lib.data_settings,'agilent34970A_address')))
+        self.ui.chb_enable_Agilent34970A.setChecked(Lib.get_value(Lib.data_settings,'enable_Agilent34970A',int))
+        self.ui.sb_agilent34970A_address.setValue(Lib.get_value(Lib.data_settings,'agilent34970A_address',int))
                
         # Settings Tab
-        self.ui.le_total_number_of_turns.setText(str(int(Lib.get_value(Lib.data_settings,'total_number_of_turns'))))
-        self.ui.le_remove_initial_turns.setText(str(int(Lib.get_value(Lib.data_settings,'remove_initial_turns'))))
-        self.ui.le_remove_final_turns.setText(str(int(Lib.get_value(Lib.data_settings,'remove_final_turns'))))
+        self.ui.le_total_number_of_turns.setText(Lib.get_value(Lib.data_settings,'total_number_of_turns',str))
+        self.ui.le_remove_initial_turns.setText(Lib.get_value(Lib.data_settings,'remove_initial_turns',str))
+        self.ui.le_remove_final_turns.setText(Lib.get_value(Lib.data_settings,'remove_final_turns',str))
         
-        self.ui.le_ref_encoder_A.setText(str(float(Lib.get_value(Lib.data_settings,'ref_encoder_A'))))
-        self.ui.le_ref_encoder_B.setText(str(float(Lib.get_value(Lib.data_settings,'ref_encoder_B'))))
+        self.ui.le_ref_encoder_A.setText(Lib.get_value(Lib.data_settings,'ref_encoder_A',str))
+        self.ui.le_ref_encoder_B.setText(Lib.get_value(Lib.data_settings,'ref_encoder_B',str))
         
-        self.ui.le_rotation_motor_address.setText(str(int(Lib.get_value(Lib.data_settings,'rotation_motor_address'))))
-        self.ui.le_rotation_motor_resolution.setText(str(int(Lib.get_value(Lib.data_settings,'rotation_motor_resolution'))))        
-        self.ui.le_rotation_motor_speed.setText(str(int(Lib.get_value(Lib.data_settings,'rotation_motor_speed'))))
-        self.ui.le_rotation_motor_acceleration.setText(str(int(Lib.get_value(Lib.data_settings,'rotation_motor_acceleration'))))
-        self.ui.le_rotation_motor_ratio.setText(str(int(Lib.get_value(Lib.data_settings,'rotation_motor_ratio'))))
+        self.ui.le_rotation_motor_address.setText(Lib.get_value(Lib.data_settings,'rotation_motor_address',str))
+        self.ui.le_rotation_motor_resolution.setText(Lib.get_value(Lib.data_settings,'rotation_motor_resolution',str))        
+        self.ui.le_rotation_motor_speed.setText(Lib.get_value(Lib.data_settings,'rotation_motor_speed',str))
+        self.ui.le_rotation_motor_acceleration.setText(Lib.get_value(Lib.data_settings,'rotation_motor_acceleration',str))
+        self.ui.le_rotation_motor_ratio.setText(Lib.get_value(Lib.data_settings,'rotation_motor_ratio',str))
 
-        self.ui.le_poscoil_assembly.setText(str(int(Lib.get_value(Lib.data_settings,'poscoil_assembly'))))
-        self.ui.le_n_encoder_pulses.setText(str(int(Lib.get_value(Lib.data_settings,'n_encoder_pulses'))))        
+        self.ui.le_poscoil_assembly.setText(Lib.get_value(Lib.data_settings,'poscoil_assembly',str))
+        self.ui.le_n_encoder_pulses.setText(Lib.get_value(Lib.data_settings,'n_encoder_pulses',str))        
         
-        self.ui.cb_integrator_gain.setCurrentIndex(int(Lib.get_value(Lib.data_settings,'integrator_gain')))
-        self.ui.cb_n_integration_points.setCurrentIndex(int(Lib.get_value(Lib.data_settings,'n_integration_points')))
+        self.ui.cb_integrator_gain.setCurrentIndex(Lib.get_value(Lib.data_settings,'integrator_gain',int))
+        self.ui.cb_n_integration_points.setCurrentIndex(Lib.get_value(Lib.data_settings,'n_integration_points',int))
         
-        self.ui.chb_save_turn_angles.setChecked(int(Lib.get_value(Lib.data_settings,'save_turn_angles')))
-        self.ui.chb_disable_aligment_interlock.setChecked(int(Lib.get_value(Lib.data_settings,'disable_aligment_interlock')))
-        self.ui.chb_disable_ps_interlock.setChecked(int(Lib.get_value(Lib.data_settings,'disable_ps_interlock')))
+        self.ui.chb_save_turn_angles.setChecked(Lib.get_value(Lib.data_settings,'save_turn_angles',int))
+        self.ui.chb_disable_aligment_interlock.setChecked(Lib.get_value(Lib.data_settings,'disable_aligment_interlock',int))
+        self.ui.chb_disable_ps_interlock.setChecked(Lib.get_value(Lib.data_settings,'disable_ps_interlock',int))
 
         # Motor Tab
-        self.ui.le_motor_vel.setText(str(int(Lib.get_value(Lib.data_settings,'rotation_motor_speed'))))
-        self.ui.le_motor_ace.setText(str(int(Lib.get_value(Lib.data_settings,'rotation_motor_acceleration'))))
+        self.ui.le_motor_vel.setText(Lib.get_value(Lib.data_settings,'rotation_motor_speed',str))
+        self.ui.le_motor_ace.setText(Lib.get_value(Lib.data_settings,'rotation_motor_acceleration',str))
         self.ui.le_motor_turns.setText(str(1))        
 
-        self.ui.le_encoder_setpoint.setText(str(int(Lib.get_value(Lib.data_settings,'poscoil_assembly'))))
+        self.ui.le_encoder_setpoint.setText(Lib.get_value(Lib.data_settings,'poscoil_assembly',str))
         
     def config_variables(self): # Ok
         """
@@ -636,9 +659,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         Lib.write_value(Lib.data_settings,'driver_port',self.ui.cb_driver_port.currentIndex())
         Lib.write_value(Lib.data_settings,'integrator_port',self.ui.cb_integrator_port.currentIndex())
         Lib.write_value(Lib.data_settings,'ps_type',self.ui.cb_ps_type.currentIndex())
-        Lib.write_value(Lib.data_settings,'PUC_type',self.ui.cb_PUC_type.currentIndex())
-        Lib.write_value(Lib.data_settings,'PUC_port',self.ui.cb_PUC_port.currentIndex())
-        Lib.write_value(Lib.data_settings,'PUC_address',self.ui.sb_PUC_address.value())
         Lib.write_value(Lib.data_settings,'ps_port',self.ui.cb_ps_port.currentIndex())
         Lib.write_value(Lib.data_settings,'ps_address',self.ui.sb_ps_address.value())
 
@@ -767,8 +787,8 @@ class main(threading.Thread): # Ok
         self.myapp.show()
         sys.exit(self.app.exec_())
 
-#if __name__ == '__main__':
-if __name__ == 'builtins':
+if __name__ == '__main__':
+#if __name__ == 'builtins':
     print(__name__ + ' ok' )
     Lib = Library.RotatingCoil_Library()
     Lib.App = main()
