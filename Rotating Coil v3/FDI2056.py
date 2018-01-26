@@ -11,9 +11,8 @@ import time
 # ******************************************
 
 class SerialCom(object):
-    def __init__(self,port):
-        self.port = 'COM' + str(port)        
-        self.ser = serial.Serial(self.port)
+    def __init__(self,port):  
+        self.ser = serial.Serial(port)
         self.commands()
         self.delay = 0.2
         

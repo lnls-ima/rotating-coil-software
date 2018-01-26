@@ -50,9 +50,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 #         self.ui.cb_driver_port
 #         self.ui.cb_integrator_port
 #         self.ui.cb_ps_type
-#         self.ui.cb_PUC_type
-#         self.ui.cb_PUC_port
-#         self.ui.sb_PUC_address
 #         self.ui.cb_ps_port
 #         self.ui.sb_ps_address
 #         
@@ -164,35 +161,35 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         """
         try:
             # connect display
-            Lib.comm.display = Display_Heidenhain.SerialCom(int(Lib.get_value(Lib.data_settings,'disp_port')),'ND-780')
+            Lib.comm.display = Display_Heidenhain.SerialCom(Lib.get_value(Lib.data_settings,'disp_port',str),'ND-780')
             Lib.comm.display.connect()
     
             # connect driver 
-            Lib.comm.parker = Parker_Drivers.SerialCom(int(Lib.get_value(Lib.data_settings,'driver_port')))
+            Lib.comm.parker = Parker_Drivers.SerialCom(Lib.get_value(Lib.data_settings,'driver_port',str))
             Lib.comm.parker.connect()
     
             # connect integrator
-            Lib.comm.fdi = FDI2056.SerialCom(int(Lib.get_value(Lib.data_settings,'integrator_port')))
+            Lib.comm.fdi = FDI2056.SerialCom(Lib.get_value(Lib.data_settings,'integrator_port',str))
             Lib.comm.fdi.connect()
             
             # connect agilent 33220a - function generator
             if self.ui.chb_enable_Agilent33220A.checkState() != 0:        
                 Lib.comm.agilent33220a = Agilent_33220A.GPIB()
-                Lib.comm.agilent33220a.connect(int(Lib.get_value(Lib.data_settings,'enable_Agilent33220A')))        
+                Lib.comm.agilent33220a.connect(Lib.get_value(Lib.data_settings,'enable_Agilent33220A',int))        
     
             # connect agilent 34401a - voltmeter
             if self.ui.chb_enable_Agilent34401A.checkState() != 0:        
                 Lib.comm.agilent34401a = Agilent_34401A.GPIB()
-                Lib.comm.agilent34401a.connect(int(Lib.get_value(Lib.data_settings,'enable_Agilent34401A')))        
+                Lib.comm.agilent34401a.connect(Lib.get_value(Lib.data_settings,'enable_Agilent34401A',int))        
     
             # connect agilent 34970a - multichannel
             if self.ui.chb_enable_Agilent34970A.checkState() != 0:        
                 Lib.comm.agilent34970a = Agilent_34970A.GPIB()
-                Lib.comm.agilent34970a.connect(int(Lib.get_value(Lib.data_settings,'enable_Agilent34970A')))
+                Lib.comm.agilent34970a.connect(Lib.get_value(Lib.data_settings,'enable_Agilent34970A',int))
                 
             # connect digital power supply
             Lib.comm.drs = SerialDRS.SerialDRS_FBP()
-            Lib.comm.drs.Connect(int(Lib.get_value(Lib.data_settings,'ps_port')))
+            Lib.comm.drs.Connect(Lib.get_value(Lib.data_settings,'ps_port',str))
             
             QtWidgets.QMessageBox.warning(self,'Information','Devices connected.',QtWidgets.QMessageBox.Ok)            
         except:
@@ -233,16 +230,16 @@ class ApplicationWindow(QtWidgets.QMainWindow):
     def move_motor_manual(self): # Ok
         """
         """
-        address = int(Lib.get_value(Lib.data_settings,'rotation_motor_address'))
-        _ratio = float(Lib.get_value(Lib.data_settings,'rotation_motor_ratio'))
+        address = Lib.get_value(Lib.data_settings,'rotation_motor_address',int)
+        _ratio = Lib.get_value(Lib.data_settings,'rotation_motor_ratio',float)
 
-        resolution = int(Lib.get_value(Lib.data_settings,'rotation_motor_resolution'))        
+        resolution = Lib.get_value(Lib.data_settings,'rotation_motor_resolution',int)        
         vel = float(self.ui.le_motor_vel.text()) * _ratio
         acce = float(self.ui.le_motor_ace.text()) * _ratio
         nturns = float(self.ui.le_motor_turns.text()) * _ratio
         
         direction = self.ui.cb_driver_direction.currentIndex()
-        steps = abs(int(nturns * float(Lib.get_value(Lib.data_settings,'rotation_motor_resolution'))))
+        steps = abs(int(nturns * Lib.get_value(Lib.data_settings,'rotation_motor_resolution',float)))
         
         # mode
         if self.ui.cb_driver_mode.currentIndex() == 0:
@@ -258,7 +255,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         """
         """
         Lib.flags.stop_all = True        
-        address = int(Lib.get_value(Lib.data_settings,'rotation_motor_address'))
+        address = Lib.get_value(Lib.data_settings,'rotation_motor_address',int)
         Lib.comm.parker.stopmotor(address)
         
     def encoder_reading(self): # Ok
@@ -282,15 +279,15 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         """
         Lib.flags.stop_all = False
         
-        address = int(Lib.get_value(Lib.data_settings,'rotation_motor_address'))
-        _ratio = float(Lib.get_value(Lib.data_settings,'rotation_motor_ratio'))
+        address = Lib.get_value(Lib.data_settings,'rotation_motor_address',int)
+        _ratio = Lib.get_value(Lib.data_settings,'rotation_motor_ratio',float)
         
-        resolution = int(Lib.get_value(Lib.data_settings,'rotation_motor_resolution'))
+        resolution = Lib.get_value(Lib.data_settings,'rotation_motor_resolution',int)
         vel = float(self.ui.le_motor_vel.text()) * _ratio
         acce = float(self.ui.le_motor_ace.text()) * _ratio
         
         _pulses = self.pulses_to_go()
-        steps =  abs(int( _pulses * int(Lib.get_value(Lib.data_settings,'rotation_motor_resolution')) / int(Lib.get_value(Lib.data_settings,'n_encoder_pulses')) * _ratio))
+        steps =  abs(int( _pulses * Lib.get_value(Lib.data_settings,'rotation_motor_resolution',int) / Lib.get_value(Lib.data_settings,'n_encoder_pulses',int) * _ratio))
 
         if _pulses >= 0:
             direction = 0
@@ -337,17 +334,17 @@ class ApplicationWindow(QtWidgets.QMainWindow):
    
     def move_motor_measurement(self, turns): # Ok
         """ """
-        address = int(Lib.get_value(Lib.data_settings,'rotation_motor_address'))
-        _ratio = float(Lib.get_value(Lib.data_settings,'rotation_motor_ratio'))
+        address = Lib.get_value(Lib.data_settings,'rotation_motor_address',int)
+        _ratio = Lib.get_value(Lib.data_settings,'rotation_motor_ratio',float)
         
-        resolution = int(Lib.get_value(Lib.data_settings,'rotation_motor_resolution'))
-        vel = float(Lib.get_value(Lib.data_settings,'rotation_motor_speed')) * _ratio
-        acce = float(Lib.get_value(Lib.data_settings,'rotation_motor_acceleration')) * _ratio
+        resolution = Lib.get_value(Lib.data_settings,'rotation_motor_resolution',int)
+        vel = Lib.get_value(Lib.data_settings,'rotation_motor_speed',float) * _ratio
+        acce = Lib.get_value(Lib.data_settings,'rotation_motor_acceleration',float) * _ratio
 #         nturns = float(self.ui.le_motor_turns.text()) * _ratio
         nturns = turns * _ratio        
         
         direction = self.ui.cb_coil_rotation_direction.currentIndex()
-        steps = abs(int(nturns * float(Lib.get_value(Lib.data_settings,'rotation_motor_resolution'))))
+        steps = abs(int(nturns * Lib.get_value(Lib.data_settings,'rotation_motor_resolution',float)))
         
         _mode = 0
     
@@ -363,7 +360,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         _res = QtWidgets.QMessageBox.warning(self,'Search Index','Continue to search for coil index?',QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
         if _res == QtWidgets.QMessageBox.Yes:
             # configure integrator encoder
-            _n_encoder_pulses = int(float(Lib.get_value(Lib.data_settings,'n_encoder_pulses'))/4)
+            _n_encoder_pulses = int(Lib.get_value(Lib.data_settings,'n_encoder_pulses',float)/4)
             Lib.comm.fdi.config_encoder(_n_encoder_pulses)
            
             # Send command to find integrator reference]
@@ -452,63 +449,158 @@ class ApplicationWindow(QtWidgets.QMainWindow):
     def multipoles_normalization(self): # Ok
         """
         """
+        _magnet_model = self.ui.cb_magnet_model.currentIndex()
+        
         r_ref = float(self.ui.le_norm_radius.text())/1000 # convert meters
         n_ref = self.ui.cb_magnet_model.currentIndex()
         i_ref = self.df_norm_multipoles.index.values
         
-        self.df_norm_multipoles_norm = self.df_norm_multipoles / self.df_norm_multipoles.iloc[n_ref-1,:]
-        self.df_skew_multipoles_norm = self.df_skew_multipoles / self.df_norm_multipoles.iloc[n_ref-1,:]        
-        
-        for i in range(len(self.df_norm_multipoles_norm.columns)):
-            self.df_norm_multipoles_norm.iloc[:,i] = self.df_norm_multipoles_norm.iloc[:,i] * (r_ref**(i_ref-n_ref))
-            self.df_skew_multipoles_norm.iloc[:,i] = self.df_skew_multipoles_norm.iloc[:,i] * (r_ref**(i_ref-n_ref))            
-                 
+        if _magnet_model == 4: #Skew magnet normalization
+            self.df_norm_multipoles_norm = self.df_norm_multipoles / self.df_skew_multipoles.iloc[n_ref-1,:]
+            self.df_skew_multipoles_norm = self.df_skew_multipoles / self.df_skew_multipoles.iloc[n_ref-1,:]        
+             
+            for i in range(len(self.df_norm_multipoles_norm.columns)):
+                self.df_norm_multipoles_norm.iloc[:,i] = self.df_norm_multipoles_norm.iloc[:,i] * (r_ref**(i_ref-n_ref))
+                self.df_skew_multipoles_norm.iloc[:,i] = self.df_skew_multipoles_norm.iloc[:,i] * (r_ref**(i_ref-n_ref))            
+             
+            self.averageN_norm = self.df_norm_multipoles_norm.mean(axis=1)
+            self.stdN_norm = 1/(self.averageS.values[n_ref-1]) * np.sqrt(self.stdN**2 + (self.stdS**2)*(self.averageN**2)/(self.averageS.values[n_ref-1]**2)) * (r_ref**(i_ref-n_ref))
+            self.averageS_norm = self.df_skew_multipoles_norm.mean(axis=1)
+            self.stdS_norm = 1/(self.averageS.values[n_ref-1]) * np.sqrt(self.stdS**2 + (self.stdN**2)*(self.averageS**2)/(self.averageS.values[n_ref-1]**2)) * (r_ref**(i_ref-n_ref))
+            
+        else: #Normal magnet normalization
+            self.df_norm_multipoles_norm = self.df_norm_multipoles / self.df_norm_multipoles.iloc[n_ref-1,:]
+            self.df_skew_multipoles_norm = self.df_skew_multipoles / self.df_norm_multipoles.iloc[n_ref-1,:]        
+            
+            for i in range(len(self.df_norm_multipoles_norm.columns)):
+                self.df_norm_multipoles_norm.iloc[:,i] = self.df_norm_multipoles_norm.iloc[:,i] * (r_ref**(i_ref-n_ref))
+                self.df_skew_multipoles_norm.iloc[:,i] = self.df_skew_multipoles_norm.iloc[:,i] * (r_ref**(i_ref-n_ref))            
+            
+            self.averageN_norm = self.df_norm_multipoles_norm.mean(axis=1)
+            self.stdN_norm = 1/(self.averageN.values[n_ref-1]) * np.sqrt(self.stdN**2 + (self.stdS**2)*(self.averageN**2)/(self.averageN.values[n_ref-1]**2)) * (r_ref**(i_ref-n_ref))
+            self.averageS_norm = self.df_skew_multipoles_norm.mean(axis=1)
+            self.stdS_norm = 1/(self.averageN.values[n_ref-1]) * np.sqrt(self.stdS**2 + (self.stdN**2)*(self.averageS**2)/(self.averageN.values[n_ref-1]**2)) * (r_ref**(i_ref-n_ref))
+
     def multipoles_calculation(self): # Ok
         """
         """
         _nmax = 15
-        _n_of_turns = int(Lib.get_value(Lib.data_settings,'total_number_of_turns'))
+        _n_of_turns = Lib.get_value(Lib.data_settings,'total_number_of_turns',int)
         _n_integration_points = int(self.ui.cb_n_integration_points.currentText())
                 
-        _n_coil_turns = int(Lib.get_value(Lib.coil_settings,'n_turns_normal'))
-        _radius1 = float(Lib.get_value(Lib.coil_settings,'radius1_normal'))
-        _radius2 = float(Lib.get_value(Lib.coil_settings,'radius2_normal'))
+        _coil_type = Lib.get_value(Lib.coil_settings,'coil_type', str)
+        if _coil_type == 'Radial':
+            _coil_type = 0
+        else:
+            _coil_type = 1
+        _n_coil_turns = Lib.get_value(Lib.coil_settings,'n_turns_normal',int)
+        _radius1 = Lib.get_value(Lib.coil_settings,'radius1_normal',float)
+        _radius2 = Lib.get_value(Lib.coil_settings,'radius2_normal',float)
+        _magnet_model = self.ui.cb_magnet_model.currentIndex()
 
         self.df_norm_multipoles = pd.DataFrame(index=range(1,_nmax+1), columns=range(_n_of_turns))
         self.df_skew_multipoles = pd.DataFrame(index=range(1,_nmax+1), columns=range(_n_of_turns))        
         
         dtheta = 2*np.pi/_n_integration_points
-        for i in range(_n_of_turns):
-            for n in range(1,_nmax+1):
-                anl = self.df_fft[i].imag[n]
-                bnl = -self.df_fft[i].real[n]
+
+        #Radial coil calculation:
+        if _coil_type == 0:
+            for i in range(_n_of_turns):
+                for n in range(1,_nmax+1):
+                    anl = self.df_fft[i].imag[n]
+                    bnl = -self.df_fft[i].real[n]
+                    
+                    an = (anl*np.sin(dtheta*n) + bnl*(np.cos(dtheta*n)-1)) / (2*(_n_coil_turns*(_radius1**n - _radius2**n)/n)*(np.cos(dtheta*n)-1)) 
+                    bn = (bnl*np.sin(dtheta*n) - anl*(np.cos(dtheta*n)-1)) / (2*(_n_coil_turns*(_radius1**n - _radius2**n)/n)*(np.cos(dtheta*n)-1))        
                 
-                an = (anl*np.sin(dtheta*n) + bnl*(np.cos(dtheta*n)-1)) / (2*(_n_coil_turns*(_radius1**n - _radius2**n)/n)*(np.cos(dtheta*n)-1)) 
-                bn = (bnl*np.sin(dtheta*n) - anl*(np.cos(dtheta*n)-1)) / (2*(_n_coil_turns*(_radius1**n - _radius2**n)/n)*(np.cos(dtheta*n)-1))        
+                    self.df_norm_multipoles.iloc[n-1,i] = an 
+                    self.df_skew_multipoles.iloc[n-1,i] = bn 
+        
+        #Tangential coil calculation:
+        if _coil_type == 1:
+            _radiusDelta = _radius1*np.pi/180
+            for i in range(_n_of_turns):
+                for n in range(1,_nmax+1):
+                    anl = self.df_fft[i].imag[n]
+                    bnl = -self.df_fft[i].real[n]
+                    
+                    an = n * (_radius2**(-n)) * ((-anl)*(np.cos(n*dtheta)-1) - bnl*np.sin(n*dtheta)) / (4*_n_coil_turns*(np.cos(n*dtheta)-1)*np.sin(_radiusDelta*n/2))
+                    bn = n * (_radius2**(-n)) * ((-bnl)*(np.cos(n*dtheta)-1) + anl*np.sin(n*dtheta)) / (4*_n_coil_turns*(np.cos(n*dtheta)-1)*np.sin(_radiusDelta*n/2))  
+                
+                    self.df_norm_multipoles.iloc[n-1,i] = an 
+                    self.df_skew_multipoles.iloc[n-1,i] = bn 
+                    
+                    #Older version comparison:
+                    #raioDelta = _radiusDelta = _radius1*np.pi/180
+                    #r2 = _radius2
+                    #An = lib.F[i][n].real = -bnl
+                    #Bn = -lib.F[i][n].imag = -anl
+                    #Sn = bn = n*Jn = n * (_radius2**(-n)) * ((-bnl)*(np.cos(n*dtheta)-1) + anl*np.sin(n*dtheta)) / (4*_n_coil_turns*(np.cos(n*dtheta)-1)*np.sin(_radiusDelta*n/2))
+                    #Nn = an = n*Kn = n * (_radius2**(-n)) * ((-anl)*(np.cos(n*dtheta)-1) - bnl*np.sin(n*dtheta)) / (4*_n_coil_turns*(np.cos(n*dtheta)-1)*np.sin(_radiusDelta*n/2))
             
-                self.df_norm_multipoles.iloc[n-1,i] = an
-                self.df_skew_multipoles.iloc[n-1,i] = bn
-                        
+        self.averageN = self.df_norm_multipoles.mean(axis=1)
+        self.stdN = self.df_norm_multipoles.std(axis=1)
+        self.averageS = self.df_skew_multipoles.mean(axis=1)
+        self.stdS = self.df_skew_multipoles.std(axis=1)
+        self.averageMod = np.sqrt(self.averageN**2 + self.averageS**2)
+        self.stdMod = np.sqrt(self.averageN**2*self.stdN**2 + self.averageS**2*self.stdS**2) / (self.averageMod) #error propagation
+        if _magnet_model == 4: #Angle calculation for skew magnet
+            self.averageAngle = (1/self.averageN.index) * np.arctan(self.averageS/self.averageN)
+            self.stdAngle = (1/self.averageN.index) * 1/(self.averageN + self.averageS**2) * np.sqrt(self.stdS**2 + self.stdN**2*self.averageS**2/self.averageN**2) #error propagation
+        else: #Angle calculation for normal magnet
+            self.averageAngle = (1/self.averageN.index) * np.arctan(self.averageN/self.averageS)
+            self.stdAngle = (1/self.averageN.index) * 1/(self.averageS + self.averageN**2) * np.sqrt(self.stdN**2 + self.stdS**2*self.averageN**2/self.averageS**2) #error propagation
+
     def fft_calculation(self): # Ok
         """
         """
-        _n_of_turns = int(Lib.get_value(Lib.data_settings,'total_number_of_turns'))
+        _n_of_turns = Lib.get_value(Lib.data_settings,'total_number_of_turns',int)
         self.df_fft = pd.DataFrame()
-        
+
         for i in range(_n_of_turns):
             _tmp = self.df_rawcurves[i].tolist()
             _tmpfft = -np.fft.fft(_tmp) / (len(_tmp)/2)
             self.df_fft[i] = _tmpfft
+            
+    def displacement_calculation(self):
+        _main_harmonic = int(self.ui.cb_magnet_model.currentIndex())
+
+        if _main_harmonic > 1:
+            if _main_harmonic == 4: #Skew quadrupole
+                #Prepares skew magnet center calculation
+                _main_harmonic = 2 #Quadrupole main harmonic is 2
+                _main_multipole = self.averageS[_main_harmonic-1]
+                _prev_multipole = self.averageS[_main_harmonic-2]
+                _prev_perp_multipole = self.averageN[_main_harmonic-2]
+                _dy_sign = 1
+            else:
+                #Prepares normal magnet center calculation
+                _main_multipole = self.averageN[_main_harmonic-1]
+                _prev_multipole = self.averageN[_main_harmonic-2]
+                _prev_perp_multipole = self.averageS[_main_harmonic-2]
+                _dy_sign = -1
+
+            _dx = (1/(_main_harmonic-1))*(_prev_multipole/_main_multipole)
+            _dy = (_dy_sign)*(1/(_main_harmonic-1))*(_prev_perp_multipole/_main_multipole)
+            _dx_um = _dx*1e06
+            _dy_um = _dy*1e06
+
+            self.ui.le_magnetic_center_x.setText(str(_dx_um))
+            self.ui.le_magnetic_center_y.setText(str(_dy_um))
+
+        else:
+            self.ui.le_magnetic_center_x.setText("")
+            self.ui.le_magnetic_center_y.setText("")
 
     def configure_integrator(self): # Ok
         """
         """
-        _n_of_turns = int(Lib.get_value(Lib.data_settings,'total_number_of_turns'))
-        
-        _n_encoder_pulses = int(float(Lib.get_value(Lib.data_settings,'n_encoder_pulses'))/4)
+        _n_of_turns = Lib.get_value(Lib.data_settings,'total_number_of_turns',int)
+
+        _n_encoder_pulses = int(Lib.get_value(Lib.data_settings,'n_encoder_pulses',float)/4)
         _gain = self.ui.cb_integrator_gain.currentText()
         _direction = self.ui.cb_coil_rotation_direction.currentIndex()
-        _trigger_ref = int(Lib.get_value(Lib.coil_settings,'trigger_ref'))
+        _trigger_ref = Lib.get_value(Lib.coil_settings,'trigger_ref',int)
         _n_integration_points = int(self.ui.cb_n_integration_points.currentText())
         _total_n_of_points = _n_integration_points * _n_of_turns
         
@@ -520,7 +612,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         # start measurement
         Lib.comm.fdi.start_measurement()
         
-        _n_of_turns = int(Lib.get_value(Lib.data_settings,'total_number_of_turns'))
+        _n_of_turns = Lib.get_value(Lib.data_settings,'total_number_of_turns',int)
         _n_integration_points = int(self.ui.cb_n_integration_points.currentText())
         _total_n_of_points = _n_integration_points * _n_of_turns
 
@@ -576,9 +668,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         Refresh inteface with defaults settings
         """
         #list ports and fill comboboxes
-        l = serial.tools.list_ports.comports()
+        _l = serial.tools.list_ports.comports()
         self.ports = []
-        for i in l:
+        for i in _l:
             self.ports.append(i.device)    
         self.ports.sort()
         
@@ -697,21 +789,21 @@ class ApplicationWindow(QtWidgets.QMainWindow):
   
     def refresh_coiltab(self): # Ok     
         # Coil Tab
-        self.ui.le_coil_name.setText(str((Lib.get_value(Lib.coil_settings,'coil_name'))))
-        self.ui.le_n_turns_normal.setText(str((Lib.get_value(Lib.coil_settings,'n_turns_normal'))))
-        self.ui.le_radius1_normal.setText(str((Lib.get_value(Lib.coil_settings,'radius1_normal'))))
-        self.ui.le_radius2_normal.setText(str((Lib.get_value(Lib.coil_settings,'radius2_normal'))))
-        self.ui.le_n_turns_bucked.setText(str((Lib.get_value(Lib.coil_settings,'n_turns_bucked'))))
-        self.ui.le_radius1_bucked.setText(str((Lib.get_value(Lib.coil_settings,'radius1_bucked'))))
-        self.ui.le_radius2_bucked.setText(str((Lib.get_value(Lib.coil_settings,'radius2_bucked'))))
-        self.ui.le_trigger_ref.setText(str(int(Lib.get_value(Lib.coil_settings,'trigger_ref'))))
+        self.ui.le_coil_name.setText(Lib.get_value(Lib.coil_settings,'coil_name',str))
+        self.ui.le_n_turns_normal.setText(Lib.get_value(Lib.coil_settings,'n_turns_normal',str))
+        self.ui.le_radius1_normal.setText(Lib.get_value(Lib.coil_settings,'radius1_normal',str))
+        self.ui.le_radius2_normal.setText(Lib.get_value(Lib.coil_settings,'radius2_normal',str))
+        self.ui.le_n_turns_bucked.setText(Lib.get_value(Lib.coil_settings,'n_turns_bucked',str))
+        self.ui.le_radius1_bucked.setText(Lib.get_value(Lib.coil_settings,'radius1_bucked',str))
+        self.ui.le_radius2_bucked.setText(Lib.get_value(Lib.coil_settings,'radius2_bucked',str))
+        self.ui.le_trigger_ref.setText(str(Lib.get_value(Lib.coil_settings,'trigger_ref',int)))
         
         if Lib.get_value(Lib.coil_settings,'coil_type') == 'Radial':
             self.ui.cb_coil_type.setCurrentIndex(0)
         else:
             self.ui.cb_coil_type.setCurrentIndex(1)            
 
-        self.ui.te_comments.setPlainText(str((Lib.get_value(Lib.coil_settings,'comments'))))
+        self.ui.te_comments.setPlainText(Lib.get_value(Lib.coil_settings,'comments',str))
         
     def config_coil(self): # Ok
         """
@@ -743,31 +835,22 @@ class ApplicationWindow(QtWidgets.QMainWindow):
     def fill_multipole_table(self): # Ok
         """
         """
-        n_rows = self.ui.tw_multipoles_table.rowCount()
         
-        _averageN = self.df_norm_multipoles.mean(axis=1)
-        _stdN = self.df_norm_multipoles.std(axis=1)
-        _averageS = self.df_skew_multipoles.mean(axis=1)
-        _stdS = self.df_skew_multipoles.std(axis=1)  
-        _averageMod = np.sqrt(_averageN**2 + _averageS**2)
-        _stdMod = np.sqrt(_stdS**2 + _stdS**2)
-        _averageAngle = (1/_averageN.index) * np.arctan(_averageN/_averageS)
-        _stdAngle =  (1/_averageN.index) * np.arctan(_stdN/_stdS)
-
-        _averageN_norm = self.df_norm_multipoles_norm.mean(axis=1)
-        _averageS_norm = self.df_skew_multipoles_norm.mean(axis=1)
+        n_rows = self.ui.tw_multipoles_table.rowCount()
 
         for i in range(n_rows):
-            self.set_table_item(self.ui.tw_multipoles_table,i, 0, _averageN.values[i])
-            self.set_table_item(self.ui.tw_multipoles_table,i, 1, _stdN.values[i])            
-            self.set_table_item(self.ui.tw_multipoles_table,i, 2, _averageS.values[i])
-            self.set_table_item(self.ui.tw_multipoles_table,i, 3, _stdS.values[i])
-            self.set_table_item(self.ui.tw_multipoles_table,i, 4, _averageMod.values[i])
-            self.set_table_item(self.ui.tw_multipoles_table,i, 5, _stdMod.values[i])
-            self.set_table_item(self.ui.tw_multipoles_table,i, 6, _averageAngle.values[i])
-            self.set_table_item(self.ui.tw_multipoles_table,i, 7, _stdAngle.values[i])            
-            self.set_table_item(self.ui.tw_multipoles_table,i, 8, _averageN_norm.values[i])
-            self.set_table_item(self.ui.tw_multipoles_table,i, 9, _averageS_norm.values[i])            
+            self.set_table_item(self.ui.tw_multipoles_table,i, 0, self.averageN.values[i])
+            self.set_table_item(self.ui.tw_multipoles_table,i, 1, self.stdN.values[i])            
+            self.set_table_item(self.ui.tw_multipoles_table,i, 2, self.averageS.values[i])
+            self.set_table_item(self.ui.tw_multipoles_table,i, 3, self.stdS.values[i])
+            self.set_table_item(self.ui.tw_multipoles_table,i, 4, self.averageMod.values[i])
+            self.set_table_item(self.ui.tw_multipoles_table,i, 5, self.stdMod.values[i])
+            self.set_table_item(self.ui.tw_multipoles_table,i, 6, self.averageAngle.values[i])
+            self.set_table_item(self.ui.tw_multipoles_table,i, 7, self.stdAngle.values[i])            
+            self.set_table_item(self.ui.tw_multipoles_table,i, 8, self.averageN_norm.values[i])
+#             self.set_table_item(self.ui.tw_multipoles_table,i, 9, self.stdN_norm.values[i])
+            self.set_table_item(self.ui.tw_multipoles_table,i, 9, self.averageS_norm.values[i])    
+#             self.set_table_item(self.ui.tw_multipoles_table,i, 11, self.stdS_norm.values[i])            
 
     def set_table_item(self,table,row,col,val): # Ok
         """
