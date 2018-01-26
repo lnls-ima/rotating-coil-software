@@ -1,0 +1,1 @@
+pyuic5 -o Pop_up.py Pop_up.ui

@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Pop_Up</class>
+ <widget class="QWidget" name="Pop_Up">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>441</width>
+    <height>407</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>-10</y>
+     <width>201</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Measurement features</string>
+   </property>
+  </widget>
+  <widget class="Line" name="line">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>20</y>
+     <width>421</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QDialogButtonBox" name="bB_ok_cancel">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>380</y>
+     <width>156</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="standardButtons">
+    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="le_magnet_name">
+   <property name="geometry">
+    <rect>
+     <x>167</x>
+     <y>60</y>
+     <width>161</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_134">
+   <property name="geometry">
+    <rect>
+     <x>107</x>
+     <y>50</y>
+     <width>51</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Name:</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_166">
+   <property name="geometry">
+    <rect>
+     <x>67</x>
+     <y>80</y>
+     <width>91</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Temperature (°C):</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="le_temperature">
+   <property name="geometry">
+    <rect>
+     <x>167</x>
+     <y>90</y>
+     <width>161</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_23">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>250</y>
+     <width>400</width>
+     <height>120</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Details</string>
+   </property>
+   <widget class="QTextEdit" name="le_meas_details">
+    <property name="geometry">
+     <rect>
+      <x>15</x>
+      <y>20</y>
+      <width>370</width>
+      <height>90</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QLabel" name="label_167">
+   <property name="geometry">
+    <rect>
+     <x>107</x>
+     <y>110</y>
+     <width>51</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Operator:</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="cb_operator">
+   <property name="geometry">
+    <rect>
+     <x>167</x>
+     <y>120</y>
+     <width>161</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>James Citadini</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Lucas Balthazar</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Luana Vilela</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Lidia Toledo</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Reinaldo Basilio</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Vitor Soares</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="label_49">
+   <property name="geometry">
+    <rect>
+     <x>77</x>
+     <y>150</y>
+     <width>81</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Magnet Model:</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="cb_magnet_model">
+   <property name="geometry">
+    <rect>
+     <x>167</x>
+     <y>150</y>
+     <width>161</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>No Model</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Dipole</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Quadrupole</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Sextupole</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Skew Quadrupole</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QDateTimeEdit" name="dateTime">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>190</y>
+     <width>161</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="calendarPopup">
+    <bool>true</bool>
+   </property>
+   <property name="timeSpec">
+    <enum>Qt::LocalTime</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_50">
+   <property name="geometry">
+    <rect>
+     <x>67</x>
+     <y>184</y>
+     <width>91</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Date and Time:</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

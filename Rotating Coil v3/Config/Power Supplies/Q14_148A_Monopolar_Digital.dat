@@ -1,0 +1,33 @@
+# Power Supply Parameters
+# Insert the variable name and value separated by tab.
+# Commented lines are ignored.
+
+Power Supply Name	Q14_148A_Monopolar_Digital
+Power Supply Type	225
+Current Setpoint	0.0
+Amplitude Step	5.0
+Delay/Step	0.1
+Sinusoidal Amplitude (App)	10.0
+Sinusoidal Offset	0.0
+Sinusoidal Frequency	1.0
+Sinusoidal N Cicles	16
+Sinusoidal Initial Phase	0.0
+Sinusoidal Final Phase	0.0
+Cushioned Sinusoidal Amplitude	148.0
+Cushioned Sinusoidal Offset	0.0
+Cushioned Sinusoidal Frequency	2.0
+Cushioned Sinusoidal N Cicles	100
+Cushioned Sinusoidal Phase Shift	0.0
+Cushioned Sinusoidal Final Phase	0.0
+Cushioned Sinusoidal Damping	2.0
+Triangular Softened Amplitude	0.0
+Triangular Softened Offset	0.0
+Triangular Softened Frequency	0.0
+Triangular Softened N Cicles	0.0
+Triangular Softened Phase Shift	0.0
+Triangular Softened Phase	0.0
+Maximum Current	166.0
+Minimum Current	-166.0
+Automatic Setpoints	0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 30.0, 50.0, 70.0, 90.0, 110.0, 130.0, 150.0, 165.0, 150.0, 130.0, 110.0, 90.0, 70.0, 50.0, 30.0, 10.0, 8.0, 6.0, 4.0, 2.0, 0.0
+Kp	0.063
+Ki	0.3966
