@@ -12,9 +12,8 @@ import serial
 
 class SerialCom(object):
     def __init__(self,port,model='ND-760'):
-        self.port = 'COM' + str(port)
         self.model = model
-        self.ser = serial.Serial(self.port)
+        self.ser = serial.Serial(port)
         self.commands()
 
     def commands(self):
