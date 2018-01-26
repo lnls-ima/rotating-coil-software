@@ -477,7 +477,6 @@ class RotatingCoil_Library(object):
         except:
             return False
         
-<<<<<<< HEAD
         
     def load_PS(self,filename):
         try:
@@ -502,8 +501,6 @@ class RotatingCoil_Library(object):
         except:
             return False
         
-=======
->>>>>>> origin/master
     def get_value(self,dataframe,index,value_type=None):
         """
         get value from dataframe, value_types: int,float,str,None(returns same type as in df)
@@ -522,7 +519,6 @@ class RotatingCoil_Library(object):
         write values in dataframe
         """
         dataframe.loc[index].values[0] = value
-        
 
 class flags(object):
     def __init__(self):

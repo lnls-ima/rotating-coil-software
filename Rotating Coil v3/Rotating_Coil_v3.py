@@ -9,15 +9,12 @@ import time
 import threading
 import numpy as np
 import pandas as pd
-<<<<<<< HEAD
 import traceback
-=======
->>>>>>> origin/master
 import serial.tools.list_ports
 # import ctypes
 # import matplotlib.pyplot as plt
 
-#import traceback
+# import traceback
 import sys
 from PyQt5 import QtWidgets,QtCore #QtWidgets
 
@@ -196,12 +193,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 self.ui.label_55.setEnabled(True)
                 self.ui.sb_agilent33220A_address.setEnabled(True)        
                 Lib.comm.agilent33220a = Agilent_33220A.GPIB()
-<<<<<<< HEAD
                 Lib.comm.agilent33220a.connect(Lib.get_value(Lib.data_settings,'enable_Agilent33220A',int))
                 self.ui.lb_status_33220A.setText('Connected')        
-=======
-                Lib.comm.agilent33220a.connect(Lib.get_value(Lib.data_settings,'enable_Agilent33220A',int))        
->>>>>>> origin/master
     
             # connect agilent 34401a - voltmeter
             if self.ui.chb_enable_Agilent34401A.checkState() != 0:
@@ -209,10 +202,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 self.ui.sb_agilent34401A_address.setEnabled(True)        
                 Lib.comm.agilent34401a = Agilent_34401A.GPIB()
                 Lib.comm.agilent34401a.connect(Lib.get_value(Lib.data_settings,'enable_Agilent34401A',int))        
-<<<<<<< HEAD
                 self.ui.lb_status_34401A.setText('Connected')        
-=======
->>>>>>> origin/master
     
             # connect agilent 34970a - multichannel
             if self.ui.chb_enable_Agilent34970A.checkState() != 0:
@@ -220,12 +210,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 self.ui.sb_agilent34970A_address.setEnabled(True)                        
                 Lib.comm.agilent34970a = Agilent_34970A.GPIB()
                 Lib.comm.agilent34970a.connect(Lib.get_value(Lib.data_settings,'enable_Agilent34970A',int))
-<<<<<<< HEAD
                 self.ui.lb_status_34970A.setText('Connected')
                  
-=======
-                
->>>>>>> origin/master
             # connect digital power supply
             Lib.comm.drs = SerialDRS.SerialDRS_FBP()
             Lib.comm.drs.Connect(Lib.get_value(Lib.data_settings,'ps_port',str))
@@ -235,14 +221,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             for i in range(1,7):
                 self.ui.tabWidget.setTabEnabled(i,True)            # Unlock main Tabs
         except:
-<<<<<<< HEAD
             QtWidgets.QMessageBox.warning(self,'Attention','Fail to connect devices',QtWidgets.QMessageBox.Ok)
                         
-=======
-            #traceback.print_exc(file=sys.stdout)
-            QtWidgets.QMessageBox.warning(self,'Information','Fail to connect devices',QtWidgets.QMessageBox.Ok) 
-            
->>>>>>> origin/master
     def save_config(self): # Ok
         """
         save settings in external file
@@ -1142,7 +1122,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.stdN_norm = 1/(self.averageN.values[n_ref-1]) * np.sqrt(self.stdN**2 + (self.stdS**2)*(self.averageN**2)/(self.averageN.values[n_ref-1]**2)) * (r_ref**(i_ref-n_ref))
             self.averageS_norm = self.df_skew_multipoles_norm.mean(axis=1)
             self.stdS_norm = 1/(self.averageN.values[n_ref-1]) * np.sqrt(self.stdS**2 + (self.stdN**2)*(self.averageS**2)/(self.averageN.values[n_ref-1]**2)) * (r_ref**(i_ref-n_ref))
-<<<<<<< HEAD
      
     def pop_up_meas(self):
         self.dialog = QtWidgets.QDialog()
@@ -1162,9 +1141,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         pass
     
                 
-=======
-
->>>>>>> origin/master
     def multipoles_calculation(self): # Ok
         """
         """
@@ -1196,7 +1172,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                     
                     an = (anl*np.sin(dtheta*n) + bnl*(np.cos(dtheta*n)-1)) / (2*(_n_coil_turns*(_radius1**n - _radius2**n)/n)*(np.cos(dtheta*n)-1)) 
                     bn = (bnl*np.sin(dtheta*n) - anl*(np.cos(dtheta*n)-1)) / (2*(_n_coil_turns*(_radius1**n - _radius2**n)/n)*(np.cos(dtheta*n)-1))        
-<<<<<<< HEAD
                 
                     self.df_norm_multipoles.iloc[n-1,i] = an 
                     self.df_skew_multipoles.iloc[n-1,i] = bn 
@@ -1214,25 +1189,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 
                     self.df_norm_multipoles.iloc[n-1,i] = an 
                     self.df_skew_multipoles.iloc[n-1,i] = bn 
-=======
-                
-                    self.df_norm_multipoles.iloc[n-1,i] = an 
-                    self.df_skew_multipoles.iloc[n-1,i] = bn 
-        
-        #Tangential coil calculation:
-        if _coil_type == 1:
-            _radiusDelta = _radius1*np.pi/180
-            for i in range(_n_of_turns):
-                for n in range(1,_nmax+1):
-                    anl = self.df_fft[i].imag[n]
-                    bnl = -self.df_fft[i].real[n]
-                    
-                    an = n * (_radius2**(-n)) * ((-anl)*(np.cos(n*dtheta)-1) - bnl*np.sin(n*dtheta)) / (4*_n_coil_turns*(np.cos(n*dtheta)-1)*np.sin(_radiusDelta*n/2))
-                    bn = n * (_radius2**(-n)) * ((-bnl)*(np.cos(n*dtheta)-1) + anl*np.sin(n*dtheta)) / (4*_n_coil_turns*(np.cos(n*dtheta)-1)*np.sin(_radiusDelta*n/2))  
-                
-                    self.df_norm_multipoles.iloc[n-1,i] = an 
-                    self.df_skew_multipoles.iloc[n-1,i] = bn 
->>>>>>> origin/master
                     
                     #Older version comparison:
                     #raioDelta = _radiusDelta = _radius1*np.pi/180
