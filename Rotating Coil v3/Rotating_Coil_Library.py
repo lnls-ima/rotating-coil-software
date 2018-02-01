@@ -8,7 +8,8 @@ import os
 import time
 import sqlite3
 import pandas as pd
-from io import StringIO
+import traceback, sys
+# from io import StringIO
 
 
 # Biblioteca de variaveis globais utilizadas
@@ -23,17 +24,17 @@ class RotatingCoil_Library(object):
         self.flags = flags()
         self.vars = interface_vars()
         self.comm = communication()
-        
-        self.con = sqlite3.connect(self.dir_path + 'measurements_data.db')
-        self.cur = self.con.cursor()
+
         self.db_create_table()
         
     def db_create_table(self):
         """
         Creates measurements table if it doesn't exists in db file
         """
-        self.cur.execute("""SELECT name FROM sqlite_master WHERE type='table' AND name='measurements';""")
-        if not len(self.cur.fetchall()):
+        _con = sqlite3.connect(self.dir_path + 'measurements_data.db')
+        _cur = _con.cursor()
+        _cur.execute("""SELECT name FROM sqlite_master WHERE type='table' AND name='measurements';""")
+        if not len(_cur.fetchall()):
             _create_table = """CREATE TABLE "measurements" ( `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\
              `name` TEXT NOT NULL,\
              `filename` TEXT NOT NULL,\
@@ -41,6 +42,7 @@ class RotatingCoil_Library(object):
              `hour` TEXT NOT NULL,\
              `operator` TEXT NOT NULL,\
              `software_version` TEXT NOT NULL,\
+             `bench` INTEGER NOT NULL,\
              `temperature` REAL NOT NULL,\
              `rotation_motor_speed` REAL NOT NULL,\
              `rotation_motor_acceleration` REAL NOT NULL,\
@@ -50,7 +52,7 @@ class RotatingCoil_Library(object):
              `n_integration_points` INTEGER NOT NULL,\
              `n_turns` INTEGER NOT NULL,\
              `n_collections` INTEGER NOT NULL,\
-             `analisys_interval` INTEGER NOT NULL,\
+             `analisys_interval` TEXT NOT NULL,\
              `main_current` REAL NOT NULL,\
              `main_coil_current_avg` REAL NOT NULL,\
              `main_coil_current_std` REAL NOT NULL,\
@@ -66,9 +68,8 @@ class RotatingCoil_Library(object):
              `main_coil_volt_std` REAL NOT NULL,\
              `magnet_resistance_avg` REAL NOT NULL,\
              `magnet_resistance_std` REAL NOT NULL,\
-             `bench` INTEGER NOT NULL,\
              `accelerator_type` TEXT NOT NULL,\
-             `magnet_model` TEXT NOT NULL,\
+             `magnet_model` INTEGER NOT NULL,\
              `coil_name` TEXT NOT NULL,\
              `coil_type` TEXT NOT NULL,\
              `measurement_type` TEXT NOT NULL,\
@@ -85,56 +86,60 @@ class RotatingCoil_Library(object):
              `magnetic_center_y` REAL NOT NULL,\
              `read_data` TEXT NOT NULL,\
              `raw_curve` TEXT NOT NULL )"""
-            self.cur.execute(_create_table)
+            _cur.execute(_create_table)
+        _con.close()
     
     def db_save_measurement(self):
         """
-        Saves measurement log into database
+        Saves measurement log into database; All values are in SI units
         """
-        _name = str(self.App.myapp.ui.le_magnet_name.text())
-        _name = _name.upper()
+        
         #pass _arquivo as parameter
 #         _arquivo = QtWidgets.QFileDialog.getSaveFileName(self.App.myapp, 'Save File - Coleta Manual', _nome,'Data files')
         
+        _con = sqlite3.connect(self.dir_path + 'measurements_data.db')
+        _cur = _con.cursor()
+        
         _date_name = time.strftime("%y%m%d", time.localtime())
         _hour_name = time.strftime("%H%M%S", time.localtime())
-        
-        _magnet_type = self.App.myapp.ui.cb_magnet_model.currentIndex()
-        if _magnet_type == 0:
+           
+        _magnet_model = self.get_value(self.measurement_settings, 'magnet_model', int) #self.App.myapp.ui.cb_magnet_model.currentIndex()
+        if _magnet_model == 0:
             _magnet_type = 'X'
-        elif _magnet_type == 1:
+        elif _magnet_model == 1:
             _magnet_type = 'D'
-        elif _magnet_type == 2:
+        elif _magnet_model == 2:
             _magnet_type = 'Q'
-        elif _magnet_type == 3:
+        elif _magnet_model == 3:
             _magnet_type = 'S'
-        elif _magnet_type == 4:
+        elif _magnet_model == 4:
             _magnet_type = 'K'
-            
-            
-#         _accelerator_type = self.App.myapp.ui.cb_accelerator_type.currentIndex()
-#         
-#         if _accelerator_type == 0: #Booster
-#             _accelerator_type = 'BOB'
-#         elif _accelerator_type == 1: #Storage Ring
-#             _accelerator_type = 'BOA'
-        
-#         _name = self.App.myapp.ui.le_magnet_name.text().upper()
-#         _filename = _name + '_' + _magnet_type + '_' + _accelerator_type + '_' + str(Corrente_Principal).zfill(5) + 'A_' + _date_name + '_' + _hour_name + '.dat'
+              
+        _accelerator_type = self.get_value(self.measurement_settings, 'accelerator_type', str) #self.App.myapp.ui.cb_accelerator_type.currentIndex()
+        if _accelerator_type == 'Booster': #Booster
+            _accelerator_name = 'BOB'
+        elif _accelerator_type == 'Storage Ring': #Storage Ring
+            _accelerator_name = 'BOA'
+          
+        _main_current = 0 #check later
+          
+        _name = self.get_value(self.measurement_settings, 'name', str)
+        _filename = _name + '_' + _magnet_type + '_' + _accelerator_name + '_' + str(_main_current).zfill(5) + 'A_' + _date_name + '_' + _hour_name + '.dat'
         _date = time.strftime("%d/%m/%Y", time.localtime())
         _hour = time.strftime("%H:%M:%S", time.localtime())
-#         _operator = self.App.myapp.ui.cb_operator.text()
-        _software_version = 'v3'
-#         _temperature = float(self.App.myapp.ui.le_temperature.text()) #Automatic Reading?
-#         _rotation_motor_speed = self.get_value(self.data_settings, 'rotation_motor_speed', float)
-#         _rotation_motor_acceleration = self.get_value(self.data_settings, 'rotation_motor_acceleration', float)
-#         _driver_direction = self.App.myapp.ui.cb_driver_direction.text()
-#         _integrator_gain = self.get_value(self.data_settings, 'integrator_gain', int)    
-#         _trigger_ref = self.get_value(self.coil_settings, 'trigger_ref', int)
-#         _n_integration_points = self.get_value(self.data_settings, 'n_integration_points', int)
-#         _n_turns = self.get_value(self.data_settings, 'total_number_of_turns', int) #check if n_turns really is the total number of turns
-#         _n_collections = int(self.App.myapp.ui.le_n_series.text())
-#         _analisys_interval = self.App.myapp.ui.le_remove_initial_turns.text() + '-' + str(_n_turns - int(self.App.myapp.ui.le_remove_final_turns.text())) #check!!
+        _operator = self.get_value(self.measurement_settings, 'operator', str) 
+        _software_version = self.get_value(self.measurement_settings, 'software_version', str) #'v3'
+        _bench = self.get_value(self.data_settings, 'bench', int)
+        _temperature = self.get_value(self.measurement_settings, 'temperature', float) #automatic reading?
+        _rotation_motor_speed = self.get_value(self.data_settings, 'rotation_motor_speed', float)
+        _rotation_motor_acceleration = self.get_value(self.data_settings, 'rotation_motor_acceleration', float)
+        _driver_direction = self.get_value(self.measurement_settings, 'driver_direction', str)
+        _integrator_gain = self.get_value(self.data_settings, 'integrator_gain', int) #WHY IS IT THE INDEX, NOT THE GAIN VALUE?
+        _trigger_ref = self.get_value(self.coil_settings, 'trigger_ref', int)
+        _n_integration_points = self.get_value(self.data_settings, 'n_integration_points', int)
+        _n_turns = self.get_value(self.data_settings, 'total_number_of_turns', int)
+        _n_collections = self.get_value(self.measurement_settings, 'n_collections', int) 
+        _analisys_interval = self.get_value(self.measurement_settings, 'analisys_interval', str)
 # #         `main_current[A]` ??????????
 # #         `main_coil_current_avg[A]` ?????????
 # #         `main_coil_current_std[A]` ?????????
@@ -150,57 +155,75 @@ class RotatingCoil_Library(object):
 # #         `main_coil_volt_std[V]` REAL,\ ???????
 # #         `magnet_resistance_avg[ohm]` REAL,\ ???????
 # #         `magnet_resistance_std[ohm]` REAL,\ ???????
-#         _bench = self.App.myapp.ui.cb_bench.currentIndex()
-#         _accelerator_type = self.App.myapp.ui.cb_accelerator_type.text()
-#         _magnet_model = self.App.myapp.ui.cb_magnet_model.currentIndex()
-#         _coil_name = self.get_value(self.coil_settings, 'coil_name', str)
-#         _coil_type = self.get_value(self.coil_settings, 'coil_type', str)
-        _measurement_type = 'N_Bucked' #Not necessary to implement bucked mode for now
-#         _n_turns_normal = self.get_value(self.coil_settings, 'n_turns_normal', int)
-#         _radius1_normal = self.get_value(self.coil_settings, 'radius1_normal', float)
-#         _radius2_normal = self.get_value(self.coil_settings, 'radius2_normal', float)
-#         _n_turns_bucked = self.get_value(self.coil_settings, 'n_turns_bucked', int)
-#         _radius1_bucked = self.get_value(self.coil_settings, 'radius1_bucked', float)
-#         _radius2_bucked = self.get_value(self.coil_settings, 'radius2_bucked', float)
-#         _coil_comments = self.get_value(self.coil_settings, 'comments', str)
-#         _comments = self.App.myapp.ui.le_meas_details.text()
-#         _norm_radius = float(self.App.myapp.ui.le_norm_radius.text())
-#         _magnetic_center_x = self.App.myapp.ui.le_magnetic_center_x.text()
-#         _magnetic_center_y = self.App.myapp.ui.le_magnetic_center_y.text()
-#         _read_data = self.get_read_data()
-#         _raw_curve = self.get_raw_curve()
-#         
-#         _db_values = (None, _name, _filename, _date, _hour, _operator, _software_version, _temperature, _rotation_motor_speed,\
-#                       _rotation_motor_acceleration, _driver_direction, _integrator_gain, _trigger_ref,\
-#                       _n_integration_points, _n_turns, _n_collections, _analisys_interval,\
+##         _accelerator_type = self.get_value(self.measurement_settings, 'accelerator_type', int) #self.App.myapp.ui.cb_accelerator_type.text()
+##         _magnet_model = self.get_value(self.measurement_settings, 'magnet_model', int) #self.App.myapp.ui.cb_magnet_model.currentIndex()
+        _coil_name = self.get_value(self.coil_settings, 'coil_name', str)
+        _coil_type = self.get_value(self.coil_settings, 'coil_type', str)
+        _measurement_type = self.get_value(self.measurement_settings, 'measurement_type', str) #'N_Bucked' #Not necessary to implement bucked mode for now
+        _n_turns_normal = self.get_value(self.coil_settings, 'n_turns_normal', int)
+        _radius1_normal = self.get_value(self.coil_settings, 'radius1_normal', float)
+        _radius2_normal = self.get_value(self.coil_settings, 'radius2_normal', float)
+        _n_turns_bucked = self.get_value(self.coil_settings, 'n_turns_bucked', int)
+        _radius1_bucked = self.get_value(self.coil_settings, 'radius1_bucked', float)
+        _radius2_bucked = self.get_value(self.coil_settings, 'radius2_bucked', float)
+        _coil_comments = self.get_value(self.coil_settings, 'comments', str)
+        _comments = self.get_value(self.measurement_settings, 'comments', str) #self.App.myapp.ui.le_meas_details.text()
+        _norm_radius = self.get_value(self.measurement_settings, 'norm_radius', float) #float(self.App.myapp.ui.le_norm_radius.text())
+        _magnetic_center_x = self.get_value(self.measurement_settings, 'magnetic_center_x', float) #self.App.myapp.ui.le_magnetic_center_x.text()
+        _magnetic_center_y = self.get_value(self.measurement_settings, 'magnetic_center_y', float) #self.App.myapp.ui.le_magnetic_center_y.text()
+        _read_data = self.get_read_data()
+        _raw_curve = self.get_raw_curve()
+           
+        _db_values = (None, _name, _filename, _date, _hour,\
+                      _operator, _software_version, _bench,\
+                      _temperature, _rotation_motor_speed,\
+                      _rotation_motor_acceleration, _driver_direction,\
+                      _integrator_gain, _trigger_ref,\
+                      _n_integration_points, _n_turns,\
+                      _n_collections, _analisys_interval,\
 # #                       _main_current, _main_coil_currente_avg, main_coil_current_std,\
+                      0, 0 , 0,\
 # #                       _ch_coil_current_avg, _ch_coil_current_std,\
+                      0, 0,\
 # #                       _cv_coil_current_avg, _cv_coil_current_std,\
+                      0, 0,\
 # #                       _qs_coil_current_avg, _qs_coil_current_std,\
+                      0, 0,\
 # #                       _trim_coil_current_avg, _trim_coil_current_std,\
+                      0, 0,\
 # #                       _main_coil_volt_avg, _main_coil_volt_std,\
+                      0, 0,\
 # #                       _magnet_resistance_avg, _magnet_resistance_std,\
-#                       _bench, _accelerator_type, _magnet_model, _coil_name, _coil_type, _measurement_type,\
-#                       _n_turns_normal, _radius1_normal,\
-#                       _radius2_normal, _n_turns_bucked, _radius1_bucked, _radius2_bucked,\
-#                       _coil_comments, _comments, _norm_radius, _magnetic_center_x, _magnetic_center_y, _read_data, _raw_curve
-#                     )
+                      0, 0,\
+                      _accelerator_type, _magnet_model,\
+                      _coil_name, _coil_type, _measurement_type,\
+                      _n_turns_normal, _radius1_normal, _radius2_normal,\
+                      _n_turns_bucked, _radius1_bucked, _radius2_bucked,\
+                      _coil_comments, _comments, _norm_radius,\
+                      _magnetic_center_x, _magnetic_center_y,\
+                      _read_data, _raw_curve
+                    )
                     
-        _db_test_values = (None,0,0,_date,_hour,0,_software_version,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
-
-        self.cur.execute("INSERT INTO measurements VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", _db_test_values)
-        self.con.commit()
+#         _db_test_values = (None,0,0,_date,_hour,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+        try:
+            _cur.execute("INSERT INTO measurements VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", _db_values)
+        except:
+            traceback.print_exc(file=sys.stdout)
+        _con.commit()
+        _con.close()
         
     def db_load_measurement(self, idn=None):
         """
         Load measurement from database, returns selected measurements
         """
+        _con = sqlite3.connect(self.dir_path + 'measurements_data.db')
+        _cur = _con.cursor()
         #loads last measurement:
-        if idn == None:
-            self.cur.execute('SELECT * FROM measurements WHERE id = (SELECT MAX(id) FROM measurements)')
+        if idn == None or idn == False:
+            _cur.execute('SELECT * FROM measurements WHERE id = (SELECT MAX(id) FROM measurements)')
         #loads measurement from id:
         else:
-            self.cur.execute('SELECT * FROM measurements WHERE id = ?', (idn,))
+            _cur.execute('SELECT * FROM measurements WHERE id = ?', (idn,))
         #loads measurement from name:
 #         _name = ''
 #         Lib.cur.execute('SELECT * FROM measurements WHERE name=?)', (_name,))
@@ -225,7 +248,9 @@ class RotatingCoil_Library(object):
         #loads measurement from software_version:
 #         _software_version = ''
 #         Lib.cur.execute('SELECT * FROM measurements WHERE software_version=?', (_bench,))
-        return self.cur.fetchall()
+        _db_entry = _cur.fetchall()
+        _con.close()
+        return _db_entry
     
     def get_read_data(self):
         """
@@ -233,9 +258,9 @@ class RotatingCoil_Library(object):
         Retrieves read data from current measurement and returns as string (old log file format)
         """
         _n_rows = self.App.myapp.ui.tw_multipoles_table.rowCount()
-        _magnet_type = self.App.myapp.ui.cb_magnet_model.currentIndex()
-        _norm_radius = self.App.myapp.ui.le_norm_radius.text()
-        _str = "n\tavg_L.Nn(T/m^n-2)\tstd_L.Nn(T/m^n-2)\tavg_L.Sn(T/m^n-2)\tstd_L.Sn(T/m^n-2)\tavg_L.Bn(T/m^n-2)\tstd_L.Bn(T/m^n-2)\tavg_angle(rad)  \tstd_angle(rad)  \tavg_Nn/NnMagnet@"+ _norm_radius +"mm\tstd_Nn/NnMagnet@"+ _norm_radius+"mm\tavg_Sn/NnMagnet@" + _norm_radius + "mm\tstd_Sn/NnMagnet@r_ref\n"
+        _magnet_type = self.get_value(self.measurement_settings, 'magnet_model', int)
+        _norm_radius = self.get_value(self.measurement_settings, 'norm_radius', float)*1000 #convert to mm
+        _str = "n\tavg_L.Nn(T/m^n-2)\tstd_L.Nn(T/m^n-2)\tavg_L.Sn(T/m^n-2)\tstd_L.Sn(T/m^n-2)\tavg_L.Bn(T/m^n-2)\tstd_L.Bn(T/m^n-2)\tavg_angle(rad)  \tstd_angle(rad)  \tavg_Nn/NnMagnet@"+ str(_norm_radius) +"mm\tstd_Nn/NnMagnet@"+ str(_norm_radius) + "mm\tavg_Sn/NnMagnet@" + str(_norm_radius) + "mm\tstd_Sn/NnMagnet@" + str(_norm_radius) + "mm\n"
 
         for i in range(_n_rows):
             _str = _str + str('{0:<4d}'.format(i)) + '\t'
@@ -263,13 +288,16 @@ class RotatingCoil_Library(object):
         TEST!!!
         Load read data from database entry idn and returns as string (reads from last entry if idn = None)
         """
-        if idn == None:
-            self.cur.execute('SELECT read_data FROM measurements WHERE id = (SELECT MAX(id) FROM measurements)')
+        _con = sqlite3.connect(self.dir_path + 'measurements_data.db')
+        _cur = _con.cursor()
+        if idn == None or idn == False:
+            _cur.execute('SELECT read_data FROM measurements WHERE id = (SELECT MAX(id) FROM measurements)')
         else:
-            self.cur.execute('SELECT read_data FROM measurements WHERE id = ?', (idn,))
-        _read_data = self.cur.fetchall()[0][0]
+            _cur.execute('SELECT read_data FROM measurements WHERE id = ?', (idn,))
+        _read_data = _cur.fetchall()[0][0]
 #         _read_data = StringIO(_read_data)
 #         return pd.read_csv(_read_data, sep='\t')
+        _con.close()
         return _read_data
         
     def get_raw_curve(self):
@@ -278,7 +306,7 @@ class RotatingCoil_Library(object):
         Retrieves raw curve from current measurement and returns as string (old log file format)
         """
         _n_of_turns = self.get_value(self.data_settings,'total_number_of_turns',int)
-        _n_integration_points = int(self.App.myapp.ui.cb_n_integration_points.currentText())
+        _n_integration_points = self.get_value(self.data_settings, 'n_integration_points', int)
         _str = ''
         for i in range(_n_of_turns):
             _str = _str + '{:#^18}'.format(' Turn_' + str(i+1) + '')
@@ -290,13 +318,16 @@ class RotatingCoil_Library(object):
         TEST!!!
         Load raw curve from database entry and returns as string (reads from last entry if idn = None)
         """
-        if idn == None:
-            self.cur.execute('SELECT raw_curve FROM measurements WHERE id = (SELECT MAX(id) FROM measurements)')
+        _con = sqlite3.connect(self.dir_path + 'measurements_data.db')
+        _cur = _con.cursor()
+        if idn == None or idn == False:
+            _cur.execute('SELECT raw_curve FROM measurements WHERE id = (SELECT MAX(id) FROM measurements)')
         else:
-            self.cur.execute('SELECT raw_curve FROM measurements WHERE id = ?', (idn,))
-        _raw_curve = self.cur.fetchall()[0][0]
+            _cur.execute('SELECT raw_curve FROM measurements WHERE id = ?', (idn,))
+        _raw_curve = _cur.fetchall()[0][0]
 #         _raw_curve = StringIO(_raw_curve)
 #         return pd.read_csv(_raw_curve,  comment = '#', delimiter = '\t')
+        _con.close()
         return _raw_curve
     
     def save_log_file(self, idn=None):
@@ -304,7 +335,6 @@ class RotatingCoil_Library(object):
         TEST!!!
         Saves log file from database entry idn (last entry if idn = None), similar to old log file format
         """
-        
         _measurement_entry = self.db_load_measurement(idn)[0] #loads last measurement
         #Configuration Data
         _id = _measurement_entry[0]
@@ -314,35 +344,35 @@ class RotatingCoil_Library(object):
         _hour = _measurement_entry[4]
         _operator = _measurement_entry[5]
         _software_version = _measurement_entry[6]
-        _bench = _measurement_entry[32]
-        _temperature = _measurement_entry[7]
-        _integrator_gain = _measurement_entry[11]
-        _n_integration_points = _measurement_entry[13]
-        _rotation_motor_speed = _measurement_entry[8]
-        _rotation_motor_acceleration = _measurement_entry[9]
-        _n_collections = _measurement_entry[15]
-        _n_turns = _measurement_entry[14]
-        _analisys_interval = _measurement_entry[16]
-        _driver_direction = _measurement_entry[10]
-        _main_coil_current_avg = _measurement_entry[18]
-        _main_coil_current_std = _measurement_entry[19]
-        _ch_coil_current_avg = _measurement_entry[20]
-        _ch_coil_current_std = _measurement_entry[21]
-        _cv_coil_current_avg = _measurement_entry[22]
-        _cv_coil_current_std = _measurement_entry[23]
-        _qs_coil_current_avg = _measurement_entry[24]
-        _qs_coil_current_std = _measurement_entry[25]
-        _trim_coil_current_avg = _measurement_entry[26]
-        _trim_coil_current_std = _measurement_entry[27]
-        _main_coil_volt_avg = _measurement_entry[28]
-        _main_coil_volt_std = _measurement_entry[29]
-        _magnet_resistance_avg = _measurement_entry[30]
-        _magnet_resistance_std = _measurement_entry[31]         
+        _bench = _measurement_entry[7]
+        _temperature = _measurement_entry[8]
+        _integrator_gain = _measurement_entry[12]
+        _n_integration_points = _measurement_entry[14]
+        _rotation_motor_speed = _measurement_entry[9]
+        _rotation_motor_acceleration = _measurement_entry[10]
+        _n_collections = _measurement_entry[16]
+        _n_turns = _measurement_entry[15]
+        _analisys_interval = _measurement_entry[17]
+        _driver_direction = _measurement_entry[11]
+        _main_coil_current_avg = _measurement_entry[19]
+        _main_coil_current_std = _measurement_entry[20]
+        _ch_coil_current_avg = _measurement_entry[21]
+        _ch_coil_current_std = _measurement_entry[22]
+        _cv_coil_current_avg = _measurement_entry[23]
+        _cv_coil_current_std = _measurement_entry[24]
+        _qs_coil_current_avg = _measurement_entry[25]
+        _qs_coil_current_std = _measurement_entry[26]
+        _trim_coil_current_avg = _measurement_entry[27]
+        _trim_coil_current_std = _measurement_entry[28]
+        _main_coil_volt_avg = _measurement_entry[29]
+        _main_coil_volt_std = _measurement_entry[30]
+        _magnet_resistance_avg = _measurement_entry[31]
+        _magnet_resistance_std = _measurement_entry[32]         
         #Rotating Coil Data
         _coil_name = _measurement_entry[35]
         _coil_type = _measurement_entry[36]
         _measurement_type = _measurement_entry[37]
-        _trigger_ref = _measurement_entry[12]
+        _trigger_ref = _measurement_entry[13]
         _n_turns_normal = _measurement_entry[38]
         _radius1_normal = _measurement_entry[39]
         _radius2_normal = _measurement_entry[40]
@@ -357,78 +387,81 @@ class RotatingCoil_Library(object):
         _magnetic_center_y = _measurement_entry[48]         
         #Raw data
         _raw_curve = _measurement_entry[50]
-        
-        with open(_filename, 'w') as f:
-            f.write('########## EXCITATION CURVE - ROTATING COIL ##########')
-            f.write('\n\n')
-            f.write('### Configuration Data ###')
-            f.write('\n')
-            f.write('id                             \t' + str(_id) + '\n')
-            f.write('file                           \t' + str(_filename) + '\n')
-            f.write('date                           \t' + str(_date) + '\n')
-            f.write('hour                           \t' + str(_hour) + '\n')
-            f.write('operator                       \t' + str(_operator) + '\n')
-            f.write('software_version               \t' + str(_software_version) + '\n')
-            f.write('bench                          \t' + str(_bench) + '\n')
-            f.write('temperature(ºC)                \t' + str(_temperature) + '\n')
-            f.write('integrator_gain                \t' + str(_integrator_gain) + '\n')
-            f.write('n_integration_points           \t' + str(_n_integration_points) + '\n')
-            f.write('velocity(rps)                  \t' + str(_rotation_motor_speed) + '\n')
-            f.write('acceleration(rps^2)            \t' + str(_rotation_motor_acceleration) + '\n')
-            f.write('n_collections                  \t' + str(_n_collections) + '\n')
-            f.write('n_turns                        \t' + str(_n_turns) + '\n') 
-            f.write('analysis_interval              \t' + str(_analisys_interval) + '\n')
-            f.write('rotation                       \t' + str(_driver_direction) + '\n')
-            f.write('main_coil_current_avg(A)       \t' + str('{0:+0.6e}'.format(_main_coil_current_avg)) + '\n')
-            f.write('main_coil_current_std(A)       \t' + str('{0:+0.6e}'.format(_main_coil_current_std)) + '\n')
-            f.write('main_coil_volt_avg(V)          \t' + str('{0:+0.6e}'.format(_main_coil_volt_avg)) + '\n')
-            f.write('main_coil_volt_std(V)          \t' + str('{0:+0.6e}'.format(_main_coil_volt_std)) + '\n')
-            f.write('magnet_resistance_avg(ohm)     \t' + str('{0:+0.6e}'.format(_magnet_resistance_avg)) + '\n')
-            f.write('magnet_resistance_std(ohm)     \t' + str('{0:+0.6e}'.format(_magnet_resistance_std)) + '\n')
-            f.write('ch_coil_current_avg(A)       \t' + str('{0:+0.6e}'.format(_ch_coil_current_avg)) + '\n')
-            f.write('ch_coil_current_std(A)       \t' + str('{0:+0.6e}'.format(_ch_coil_current_std)) + '\n')
-            f.write('cv_coil_current_avg(A)       \t' + str('{0:+0.6e}'.format(_cv_coil_current_avg)) + '\n')
-            f.write('cv_coil_current_std(A)       \t' + str('{0:+0.6e}'.format(_cv_coil_current_std)) + '\n')
-            f.write('qs_coil_current_avg(A)       \t' + str('{0:+0.6e}'.format(_qs_coil_current_avg)) + '\n')
-            f.write('qs_coil_current_std(A)       \t' + str('{0:+0.6e}'.format(_qs_coil_current_std)) + '\n')                                              
-            f.write('trim_coil_current_avg(A)   \t' + str('{0:+0.6e}'.format(_trim_coil_current_avg)) + '\n')
-            f.write('trim_coil_current_std(A)   \t' + str('{0:+0.6e}'.format(_trim_coil_current_std)) + '\n')
-            f.write('\n')
-            f.write('### Rotating Coil Data ###')
-            f.write('\n')
-            f.write('rotating_coil_name             \t' + str(_coil_name) + '\n')
-            f.write('rotating_coil_type             \t' + str(_coil_type) + '\n')
-            f.write('measurement_type               \t' + str(_measurement_type) + '\n') ## bucked ou n_bucked
-            f.write('pulse_start_collect            \t' + str(_trigger_ref) + '\n')
-            f.write('n_turns_main_coil              \t' + str(_n_turns_normal) + '\n')
-            f.write('main_coil_internal_radius(m)   \t' + str(_radius1_normal) + '\n')
-            f.write('main_coil_external_radius(m)   \t' + str(_radius2_normal) + '\n')
-            f.write('n_turns_bucked_coil            \t' + str(_n_turns_bucked) + '\n')
-            f.write('bucked_coil_internal_radius(m) \t' + str(_radius1_bucked) + '\n')
-            f.write('bucked_coil_external_radius(m) \t' + str(_radius2_bucked) + '\n')
-            f.write('\n')
-            f.write('### Comments ###')
-            f.write('\n')
-            f.write('comments                       \t' + str(_comments) + '\n')
-            f.write('\n\n\n') 
-            f.write('##### Reading Data #####')
-            f.write('\n\n')
-            f.write(_read_data)
-            f.write('\n')
-            f.write('magnetic_center_x(um) \t' + str(_magnetic_center_x) + '\n')
-            f.write('magnetic_center_y(um) \t' + str(_magnetic_center_y) + '\n')
-            f.write('\n\n')
-            f.write('##### Raw Data Stored(V.s) [1e-12] #####')
-            f.write('\n\n')
-            f.write(_raw_curve)
-            
-            #SAVE TURN ANGLES!!!
-#                         if self.ui.Salvar_Angulo_Volta.isChecked():
-#                 f.write('\n\n\n')   ### Angulo por Volta.
-#                 f.write('.........Turn Angle:.........\n\n')
-#                 for i in range(0,len(lib.pontos),1):
-#                     f.write(str(lib.AngulosVoltas[TipoIma][i]) + '\n') 
-        
+        try:
+            with open((self.dir_path+_filename), 'w') as f:
+                f.write('########## EXCITATION CURVE - ROTATING COIL ##########')
+                f.write('\n\n')
+                f.write('### Configuration Data ###')
+                f.write('\n')
+                f.write('id                             \t' + str(_id) + '\n')
+                f.write('file                           \t' + str(_filename) + '\n')
+                f.write('date                           \t' + str(_date) + '\n')
+                f.write('hour                           \t' + str(_hour) + '\n')
+                f.write('operator                       \t' + str(_operator) + '\n')
+                f.write('software_version               \t' + str(_software_version) + '\n')
+                f.write('bench                          \t' + str(_bench) + '\n')
+                f.write('temperature(C)                 \t' + str(_temperature) + '\n')
+                f.write('integrator_gain                \t' + str(_integrator_gain) + '\n')
+                f.write('n_integration_points           \t' + str(_n_integration_points) + '\n')
+                f.write('velocity(rps)                  \t' + str(_rotation_motor_speed) + '\n')
+                f.write('acceleration(rps^2)            \t' + str(_rotation_motor_acceleration) + '\n')
+                f.write('n_collections                  \t' + str(_n_collections) + '\n')
+                f.write('n_turns                        \t' + str(_n_turns) + '\n') 
+                f.write('analysis_interval              \t' + str(_analisys_interval) + '\n')
+                f.write('rotation                       \t' + str(_driver_direction) + '\n')
+                f.write('main_coil_current_avg(A)       \t' + str('{0:+0.6e}'.format(_main_coil_current_avg)) + '\n')
+                f.write('main_coil_current_std(A)       \t' + str('{0:+0.6e}'.format(_main_coil_current_std)) + '\n')
+                f.write('main_coil_volt_avg(V)          \t' + str('{0:+0.6e}'.format(_main_coil_volt_avg)) + '\n')
+                f.write('main_coil_volt_std(V)          \t' + str('{0:+0.6e}'.format(_main_coil_volt_std)) + '\n')
+                f.write('magnet_resistance_avg(ohm)     \t' + str('{0:+0.6e}'.format(_magnet_resistance_avg)) + '\n')
+                f.write('magnet_resistance_std(ohm)     \t' + str('{0:+0.6e}'.format(_magnet_resistance_std)) + '\n')
+                f.write('ch_coil_current_avg(A)       \t' + str('{0:+0.6e}'.format(_ch_coil_current_avg)) + '\n')
+                f.write('ch_coil_current_std(A)       \t' + str('{0:+0.6e}'.format(_ch_coil_current_std)) + '\n')
+                f.write('cv_coil_current_avg(A)       \t' + str('{0:+0.6e}'.format(_cv_coil_current_avg)) + '\n')
+                f.write('cv_coil_current_std(A)       \t' + str('{0:+0.6e}'.format(_cv_coil_current_std)) + '\n')
+                f.write('qs_coil_current_avg(A)       \t' + str('{0:+0.6e}'.format(_qs_coil_current_avg)) + '\n')
+                f.write('qs_coil_current_std(A)       \t' + str('{0:+0.6e}'.format(_qs_coil_current_std)) + '\n')                                              
+                f.write('trim_coil_current_avg(A)   \t' + str('{0:+0.6e}'.format(_trim_coil_current_avg)) + '\n')
+                f.write('trim_coil_current_std(A)   \t' + str('{0:+0.6e}'.format(_trim_coil_current_std)) + '\n')
+                f.write('\n')
+                f.write('### Rotating Coil Data ###')
+                f.write('\n')
+                f.write('rotating_coil_name             \t' + str(_coil_name) + '\n')
+                f.write('rotating_coil_type             \t' + str(_coil_type) + '\n')
+                f.write('measurement_type               \t' + str(_measurement_type) + '\n') ## bucked ou n_bucked
+                f.write('pulse_start_collect            \t' + str(_trigger_ref) + '\n')
+                f.write('n_turns_main_coil              \t' + str(_n_turns_normal) + '\n')
+                f.write('main_coil_internal_radius(m)   \t' + str(_radius1_normal) + '\n')
+                f.write('main_coil_external_radius(m)   \t' + str(_radius2_normal) + '\n')
+                f.write('n_turns_bucked_coil            \t' + str(_n_turns_bucked) + '\n')
+                f.write('bucked_coil_internal_radius(m) \t' + str(_radius1_bucked) + '\n')
+                f.write('bucked_coil_external_radius(m) \t' + str(_radius2_bucked) + '\n')
+                f.write('\n')
+                f.write('### Comments ###')
+                f.write('\n')
+                f.write('comments                       \t' + str(_comments) + '\n')
+                f.write('\n\n\n') 
+                f.write('##### Reading Data #####')
+                f.write('\n\n')
+                f.write(_read_data)
+                f.write('\n')
+                f.write('magnetic_center_x(um) \t' + str(_magnetic_center_x) + '\n')
+                f.write('magnetic_center_y(um) \t' + str(_magnetic_center_y) + '\n')
+                f.write('\n\n')
+                f.write('##### Raw Data Stored(V.s) [1e-12] #####')
+                f.write('\n\n')
+                f.write(_raw_curve)
+                
+                #SAVE TURN ANGLES!!!
+    #                         if self.ui.Salvar_Angulo_Volta.isChecked():
+    #                 f.write('\n\n\n')   ### Angulo por Volta.
+    #                 f.write('.........Turn Angle:.........\n\n')
+    #                 for i in range(0,len(lib.pontos),1):
+    #                     f.write(str(lib.AngulosVoltas[TipoIma][i]) + '\n') 
+            return True
+        except:
+            return False
+
     def load_settings(self):
         try:
             self.data_settings = None
@@ -477,7 +510,6 @@ class RotatingCoil_Library(object):
         except:
             return False
         
-        
     def load_PS(self,filename):
         try:
             self.PS_settings = None
@@ -486,7 +518,6 @@ class RotatingCoil_Library(object):
         except:
             return False        
             
-        
     def save_PS(self,filename):
         try:
             fname = open(filename, 'w')
@@ -501,6 +532,49 @@ class RotatingCoil_Library(object):
         except:
             return False
         
+    def measurement_df(self):
+        _n_turns = self.get_value(self.data_settings, 'total_number_of_turns', int) #check if n_turns really is the total number of turns
+        try:
+            _le_n_series = int(self.App.myapp.ui.le_n_series.text())
+        except ValueError:
+            _le_n_series = 1
+            
+        try:
+            _analisys_interval = self.App.myapp.ui.le_remove_initial_turns.text() + '-' + str(_n_turns - int(self.App.myapp.ui.le_remove_final_turns.text()))
+        except ValueError:
+            _analisys_interval = '0'
+        _datavars = ['name',
+                     'operator',
+                     'software_version',
+                     'temperature',
+                     'driver_direction',
+                     'n_collections',
+                     'analisys_interval',
+                     'accelerator_type',
+                     'magnet_model',
+                     'measurement_type',
+                     'comments',
+                     'norm_radius',
+                     'magnetic_center_x',
+                     'magnetic_center_y']
+        _datavalues = [self.App.myapp.dialog.ui.le_magnet_name.text().upper(),
+                       self.App.myapp.dialog.ui.cb_operator.currentText(),
+                       'v3',
+                       float(self.App.myapp.dialog.ui.le_temperature.text()),
+                       self.App.myapp.ui.cb_driver_direction.currentText(),
+                       _le_n_series,
+                       _analisys_interval,
+                       self.App.myapp.ui.cb_accelerator_type.currentText(),
+                       self.App.myapp.dialog.ui.cb_magnet_model.currentIndex(),
+                       'N_bucked',
+                       self.App.myapp.dialog.ui.te_meas_details.toPlainText(),
+                       float(self.App.myapp.ui.le_norm_radius.text())/1000, #convert from mm to meter
+                       0.,
+                       0.]
+        _df = pd.DataFrame({'datavars': _datavars,
+                            'datavalues': _datavalues}) 
+        self.measurement_settings = _df.set_index('datavars')
+
     def get_value(self,dataframe,index,value_type=None):
         """
         get value from dataframe, value_types: int,float,str,None(returns same type as in df)
@@ -619,6 +693,7 @@ class interface_vars(object):
         self.Status_PS = 0      #0 = OFF ; 1 = ON
         self.PS_cicle = 0
         self.Actual_current = 0
+        self.PS_ready = 0
         
         #General 
         self.stop_all = 0

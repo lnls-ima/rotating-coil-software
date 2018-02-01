@@ -2,20 +2,20 @@
 # Insert the variable name and value separated by tab.
 # Commented lines are ignored.
 
-display_type	1.0
-disp_port	COM6
-driver_port	COM10
-integrator_port	COM1
+display_type	1
+disp_port	COM7
+driver_port	COM1
+integrator_port	COM4
 ps_type	1.0
-ps_port	COM7
-ps_address	3.0
-enable_Agilent33220A	0.0
-agilent33220A_address	19.0
-enable_Agilent34401A	0.0
-agilent34401A_address	8.0
-enable_Agilent34970A	0.0
-agilent34970A_address	6.0
-total_number_of_turns	3.0
+ps_port	COM5
+ps_address	0
+enable_Agilent33220A	0
+agilent33220A_address	19
+enable_Agilent34401A	0
+agilent34401A_address	18
+enable_Agilent34970A	0
+agilent34970A_address	6
+total_number_of_turns	10.0
 remove_initial_turns	0.0
 remove_final_turns	0.0
 ref_encoder_A	-31.2
@@ -24,12 +24,13 @@ rotation_motor_address	1.0
 rotation_motor_resolution	50000.0
 rotation_motor_speed	1.0
 rotation_motor_acceleration	4.0
-rotation_motor_ratio	10.0
+rotation_motor_ratio	1.0
 poscoil_assembly	339082.0
 n_encoder_pulses	360000.0
-integrator_gain	6.0
-n_integration_points	3.0
+integrator_gain	100
+n_integration_points	144
 poscoil_vertical_ref	339082.0
-save_turn_angles	0.0
-disable_aligment_interlock	0.0
-disable_ps_interlock	0.0
+save_turn_angles	0
+disable_aligment_interlock	0
+disable_ps_interlock	0
+bench	0

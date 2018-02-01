@@ -154,22 +154,21 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui.pb_cicle.clicked.connect(self.cycling_PS)
 
         # Measurements Tab
-        
-        self.ui.chb_seriesofmeas
-        self.ui.le_n_series
-        self.ui.chb_automatic_ps
-        
-        self.ui.le_norm_radius
-        self.ui.cb_coil_rotation_direction
-        self.ui.lb_status_ps
-        self.ui.lb_status_coil
-        self.ui.lb_status_integrator
-        self.ui.lb_meas_counter
-        self.ui.pb_start_meas.clicked.connect(self.start_meas)
+#         self.ui.chb_seriesofmeas
+#         self.ui.le_n_series
+#         self.ui.chb_automatic_ps
+#         
+#         self.ui.le_norm_radius
+#         self.ui.cb_coil_rotation_direction
+#         self.ui.lb_status_ps
+#         self.ui.lb_status_coil
+#         self.ui.lb_status_integrator
+#         self.ui.lb_meas_counter
+        self.ui.pb_start_meas.clicked.connect(self.popup_meas)
         self.ui.pb_stop_meas.clicked.connect(self.stop_meas)
         
-        #Popup Tab
-        self.dialog.ui.bB_ok_cancel.clicked.connect(self.ok_cancel_popup)
+        # Results Tab
+        self.ui.pb_save_data_results.clicked.connect(self.save_data_results)
         
     def connect_devices(self):
         """
@@ -190,7 +189,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             
             # connect agilent 33220a - function generator
             if self.ui.chb_enable_Agilent33220A.checkState() != 0:
-                self.ui.label_55.setEnabled(True)
                 self.ui.sb_agilent33220A_address.setEnabled(True)        
                 Lib.comm.agilent33220a = Agilent_33220A.GPIB()
                 Lib.comm.agilent33220a.connect(Lib.get_value(Lib.data_settings,'enable_Agilent33220A',int))
@@ -198,7 +196,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
     
             # connect agilent 34401a - voltmeter
             if self.ui.chb_enable_Agilent34401A.checkState() != 0:
-                self.ui.label_56.setEnabled(True)
                 self.ui.sb_agilent34401A_address.setEnabled(True)        
                 Lib.comm.agilent34401a = Agilent_34401A.GPIB()
                 Lib.comm.agilent34401a.connect(Lib.get_value(Lib.data_settings,'enable_Agilent34401A',int))        
@@ -206,7 +203,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
     
             # connect agilent 34970a - multichannel
             if self.ui.chb_enable_Agilent34970A.checkState() != 0:
-                self.ui.label_57.setEnabled(True)
                 self.ui.sb_agilent34970A_address.setEnabled(True)                        
                 Lib.comm.agilent34970a = Agilent_34970A.GPIB()
                 Lib.comm.agilent34970a.connect(Lib.get_value(Lib.data_settings,'enable_Agilent34970A',int))
@@ -268,8 +264,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             Lib.comm.drs.SetSlaveAdd(Addr_PS)
                         
             if self.ui.pb_PS_button.isChecked():
-                self.ui.pb_PS_button.setText('Power ON') 
-                
+                self.ui.pb_PS_button.setText('Power ON')    
+            else:
+                #self.ui.pb_PS_button.setChecked(False)
+                self.ui.pb_PS_button.setText('Power OFF')
+            
             Safety_enabled = 1
             if (self.ui.chb_disable_ps_interlock.isChecked()) and (Lib.vars.Status_PS == 0):
                 ret = QtWidgets.QMessageBox.question(self,'Attention','Do you want to turn on the Power Supply with Safety Control DISABLED?',QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,QtWidgets.QMessageBox.No)
@@ -415,16 +414,16 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             traceback.print_exc(file=sys.stdout)
             return
             
-    def DCCT_convert(self):
+    def dcct_convert(self):
         reading_34401 = Lib.comm.agilent34401a.collect()
         if reading_34401 =='':
             self.read_curr = 0
         else:
-            if self.ui.DCCT_select.currentIndex() == 0:   #For 40 A DCCT head
+            if self.ui.dcct_select.currentIndex() == 0:   #For 40 A dcct head
                 self.read_curr = (float(reading_34401))*4
-            if self.ui.DCCT_select.currentIndex() == 1:   #For 160 A DCCT head
+            if self.ui.dcct_select.currentIndex() == 1:   #For 160 A dcct head
                 self.read_curr = (float(reading_34401))*16
-            if self.ui.DCCT_select.currentIndex() == 2:   #For 320 A DCCT head
+            if self.ui.dcct_select.currentIndex() == 2:   #For 320 A dcct head
                 self.read_curr = (float(reading_34401))*32
         return self.read_curr
         
@@ -433,32 +432,40 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             time.sleep(0.3)
             refresh_current = round(float(Lib.comm.drs.Read_iLoad1()),3)
             self.ui.lcd_PS_reading.display(refresh_current)
-            if (self.ui.chb_DCCT.isChecked() == True and self.ui.chb_enable_Agilent34401A.checkState() != 0):
+            if ((self.ui.chb_dcct.isChecked() == True) and (self.ui.chb_enable_Agilent34401A.checkState() != 0)):
                 #time.sleep(.1)
-                self.ui.lcd_current_DCCT.setEnabled(True)
+                self.ui.lcd_current_dcct.setEnabled(True)
                 self.ui.label_161.setEnabled(True)
                 self.ui.label_164.setEnabled(True)
-                corrente4 = round(self.DCCT_convert(), 3)
-                self.ui.lcd_current_DCCT.display(corrente4)
+                corrente4 = round(self.dcct_convert(), 3)
+                self.ui.lcd_current_dcct.display(corrente4)
                 QtWidgets.QApplication.processEvents()
     
         except:
             QtWidgets.QMessageBox.warning(self,'Fail','Impossible display Current.',QtWidgets.QMessageBox.Ok)
             return
     
-    def linear_ramp(self,final,actual,step,time,mode=0):
-        #mode = 0                    # OpMode ISlowRef
+    def linear_ramp(self,final,actual,step,timer):
+        mode = 0                    # OpMode ISlowRef
         Lib.comm.drs.OpMode(mode)
+        #faixa = np.array([])
         try:
-            if final > actual:
-                faixa = np.arange(actual+step,final,step)
-            else:
-                faixa = np.arange(final,actual,step)
-                faixa = faixa[::-1]
-            faixa[-1] = final
+            delta = abs(final - actual)
+            faixa = np.linspace(actual, final, round(delta/step)+1)
+                                
+            #===================================================================
+            # if final > actual:
+            #     faixa = np.arange(actual+step,final,step)
+            # else:
+            #     faixa = np.arange(final,actual,step)
+            #     faixa = faixa[::-1]
+            # faixa[-1] = final
+            #===================================================================
+            
             for i in faixa:
                 if (Lib.vars.stop_all == 0):
-                    time.sleep(time)
+                    #time = 0.1
+                    time.sleep(timer)
                     Lib.comm.drs.SetISlowRef(i)
                 else:
                     Lib.comm.drs.SetISlowRef(0)
@@ -467,6 +474,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.display_current()
             return True
         except:
+            traceback.print_exc(file=sys.stdout)
             try:
                 if ((final>actual) and ((final-actual)<step)) or ((final<actual) and ((actual-final)<step)):
                     Lib.comm.drs.SetISlowRef(final)
@@ -518,16 +526,17 @@ class ApplicationWindow(QtWidgets.QMainWindow):
     def linear_manual_ramp(self):
         actual = round(float(Lib.comm.drs.Read_iLoad1()),3)
         try:
-            final_value = self.verify_current_limits(0, float(self.ui.le_current_setpoint.text()))
+            final_value = self.verify_current_limits(0, self.ui.dsb_current_setpoint.value())
             if final_value == 'False':
                 return
-            self.ui.le_current_setpoint.setText(str(final_value))
-            Lib.vars.Actual_current = float(self.ui.le_current_setpoint.text())
-            step = float(self.ui.le_current_setpoint.text())
-            time = float(self.ui.le_Time_Linear.text())
+            self.ui.dsb_current_setpoint.setValue(float(final_value))
+            Lib.vars.Actual_current = self.ui.dsb_current_setpoint.value()
+            step = self.ui.dsb_current_setpoint.value()
+            time = self.ui.dsb_Time_Linear.value()
         except:
             QtWidgets.QMessageBox.warning(self,'Attention','Invalid values or not numeric.',QtWidgets.QMessageBox.Ok)
-            return
+            self.ui.dsb_current_setpoint.setValue(float(0))
+            #return
         self.ui.tabWidget_2.setEnabled(False)           #Disabled tabWidget until complete load current
         QtWidgets.QApplication.processEvents()
         
@@ -542,8 +551,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         
     def linear_automatic_ramp(self, data_current, data_seletion_currents):
         try:
-            step = self.ui.le_Amplitude_Linear.text()
-            time = self.ui.le_Time_Linear.text()
+            step = self.ui.dsb_Amplitude_Linear.value()
+            time = self.ui.dsb_Time_Linear.value()
         except:
             QtWidgets.QMessageBox.critical(self,'Attention','Invalid step or time values.',QtWidgets.QMessageBox.Ok)
             return
@@ -994,10 +1003,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             filename = QtWidgets.QFileDialog.getOpenFileName(self,'Load Coil File' , Lib.dir_path, 'Data files (*.dat);;Text files (*.txt)')
             if Lib.load_coil(filename[0]) == True:
                 self.refresh_coiltab()
-                QtWidgets.QMessageBox.warning(self,'Information','Coil File loaded.',QtWidgets.QMessageBox.Ok)
+                QtWidgets.QMessageBox.information(self,'Information','Coil File loaded.',QtWidgets.QMessageBox.Ok)
                 
             else:
-                QtWidgets.QMessageBox.warning(self,'Information','Fail to load Coil File.',QtWidgets.QMessageBox.Ok) 
+                QtWidgets.QMessageBox.warning(self,'Attention','Fail to load Coil File.',QtWidgets.QMessageBox.Ok) 
         except:
             return
     
@@ -1049,17 +1058,19 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         except:
             traceback.print_exc(file=sys.stdout)
             return
-            
+        
     def start_meas(self):
         """ 
         """
-        Lib.flags.stop_all = False
+        self.ui.pb_start_meas.setEnabled(False)
+        Lib.flags.stop_all = False        
         
         # data array
         self.data_array = np.array([])
         self.df_rawcurves = None   
         
         # check components
+#         self.collect_infocomponents()
         
         # configure integrator
         self.configure_integrator()
@@ -1082,22 +1093,173 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         
         # write table
         self.fill_multipole_table()        
+        
+        # write database
+        Lib.db_save_measurement()
 
         if Lib.flags.stop_all == False:
             QtWidgets.QMessageBox.warning(self,'Information','Measurement completed.',QtWidgets.QMessageBox.Ok)
         else:
             QtWidgets.QMessageBox.warning(self,'Information','Failure during measurement.',QtWidgets.QMessageBox.Ok) 
     
+        self.ui.pb_start_meas.setEnabled(True)
+        self.ui.tabWidget.setTabEnabled(7, True)
+        
+    def max_gain_check(self):
+        if (self.ui.cb_integrator_gain.currentText() != '100'):
+            info = QtWidgets.QMessageBox.question(self,'Configuration.','Do you want to set up Integrator Max Gain?',QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,QtWidgets.QMessageBox.Yes)
+            if info == QtWidgets.QMessageBox.Yes:
+                self.ui.cb_integrator_gain.setCurrentIndex(6)
+                QtWidgets.QApplication.processEvents()
+                
+    def misalignment(self):
+        '''
+        Check misalignment before measurement with ND780
+        '''
+        #try:
+        Lib.comm.display.readdisplay_ND780()
+        time.sleep(0.3)
+        _Disp_pos = Lib.comm.display.DisplayPos
+        print(_Disp_pos)
+        Lib.vars.ref_encoder_A = _Disp_pos[0] 
+        Lib.vars.ref_encoder_B = _Disp_pos[1]
+        if self.ui.chb_disable_aligment_interlock.isChecked():
+            return True
+        else:
+            if (abs(Lib.vars.ref_encoder_A)>0.005) or (abs(Lib.vars.ref_encoder_B)>0.005):
+                QtWidgets.QMessageBox.warning(self, 'Attention', 'Fix the transversal motors', QtWidgets.QMessageBox.Ok)
+                return False
+            else:
+                return True
+        #=======================================================================
+        # except:
+        #     QtWidgets.QMessageBox.warning(self, 'Attention', 'Impossible to read Display ND 780', QtWidgets.QMessageBox.Ok)
+        #     return False
+        #=======================================================================
+     
+    def collect_infocomponents(self):
+        '''
+        Currents and setup verification routines
+        '''
+        try:
+            _misalignment = self.misalignment()
+            print(_misalignment)
+            if _misalignment == False:
+                return False
+            
+            #IMPLEMENT==========================================================
+            # _interlocks = self.check_interlocks()
+            # if _interlocks == False:
+            #     return False       
+            #===================================================================
+    #         except:
+    #             QtWidgets.QMessageBox.warning(self,'Attention','Stages alignment or interlocks activated.',QtWidgets.QMessageBox.Ok)
+             
+    #         if (Lib.vars.Status_PS == 1): #and (Lib.vars.PS_ready == 0):
+    #             QtWidgets.QMessageBox.warning(self,'Attention','Power supply is not ready./nVerify PS data.',QtWidgets.QMessageBox.Ok)
+    #             return False
+    #         if self.ui.lb_status_ps.text() == 'NOK':
+    #             QtWidgets.QMessageBox.warning(self,'Attention','Power supply is not ready./nVerify PS data.',QtWidgets.QMessageBox.Ok)
+    #             return False
+            if self.ui.lb_status_coil.text() == 'NOK':
+                QtWidgets.QMessageBox.warning(self,'Attention','Please, load the coil data.',QtWidgets.QMessageBox.Ok)
+                return False
+            if self.ui.lb_status_integrator.text() == 'NOK':
+                QtWidgets.QMessageBox.warning(self,'Attention','Please, configure the Integrator FDI 2056.',QtWidgets.QMessageBox.Ok)
+                return False
+                
+            if (self.ui.tabWidget.isTabEnabled(4) == True) and (self.ui.chb_automatic_ps.isChecked()):
+                _collect_type = 2  #Automatic collect
+            elif self.ui.chb_seriesofmeas.isChecked():
+                _collect_type = 1 # Sussesive collect  
+            else:
+                _collect_type = 0
+            
+            self.collect_routine(_collect_type)
+        except:
+            traceback.print_exc(file=sys.stdout)
+            
+    def collect_routine(self,collect_type):
+        """
+        Currents and setup verification routines
+        """
+        self.max_gain_check()
+        self.configure_integrator()
+        self.ui.lb_meas_counter.setText('0')
+        QtWidgets.QApplication.processEvents()
+        try:
+            if collect_type == 0:
+                self.coil_position_correction()
+        except:
+            QtWidgets.QMessageBox.warning(self,'Attention','collect routine fault',QtWidgets.QMessageBox.Ok)
+            return        
+            
+    def coil_position_correction(self):
+        """
+        Befere start meas, keep coil in ref trigger + half turn
+        """
+        try:
+            velocity = int(self.ui.le_rotation_motor_speed.text())
+        except ValueError:
+            velocity = Lib.get_value(Lib.data_settings,'rotation_motor_speed',int)
+        try:
+            acceleration = int(self.ui.le_rotation_motor_acceleration.text())
+        except ValueError:
+            acceleration = Lib.get_value(Lib.data_settings,'rotation_motor_acceleration',int)
+        try:
+            _trigger = int(self.ui.le_trigger_ref.text())
+        except ValueError:
+            _trigger = Lib.get_value(Lib.coil_settings,'trigger_ref',int)
+            
+        try:
+            _encoder_pulse = int(self.ui.le_n_encoder_pulses.text())
+        except ValueError:
+            _encoder_pulse = Lib.get_value(Lib.data_settings,'n_encoder_pulses',int)
+    
+        _position = _trigger + (_encoder_pulse / 2)
+        if _position > _encoder_pulse:
+            _position = _position - _encoder_pulse
+            
+        _address_motor = Lib.get_value(Lib.data_settings,'rotation_motor_address',int)
+        
+        self.angular_position(_position,_address_motor,velocity,acceleration,_encoder_pulse)
+        time.sleep(2)
+        
+    def angular_position(self,position,address_motor,velocity,acceleration,pulse_encoder):
+        Lib.comm.fdi.flushTxRx()
+        Lib.comm.fdi.send(Lib.comm.fdi.PDIReadEncoder)
+        time.sleep(0.1)
+        _valor =  Lib.comm.fdi.ser.readall().strip()
+        _valor = str(_valor).strip('b').strip("'")
+        _valor = int(_valor)
+        shift = position -_valor
+        if shift < 0:
+            way = 0
+        else:
+            way = 1
+        #Rotation resolution
+        rotation_motor_resolution = Lib.get_value(Lib.data_settings,'rotation_motor_resolution',int)
+        
+        #Direction
+        clockwise_index = self.ui.cb_coil_rotation_direction.currentIndex()        
+        
+        _steps = int(rotation_motor_resolution*abs(shift)/pulse_encoder)  #/10000
+        Lib.comm.parker.conf_motor(address_motor,rotation_motor_resolution,velocity,acceleration,_steps,clockwise_index,mode=0)
+        Lib.comm.parker.conf_mode(address_motor,0,way)
+        Lib.comm.parker.movemotor(address_motor)
+        
+        
     def multipoles_normalization(self): # Ok
         """
         """
-        _magnet_model = self.ui.cb_magnet_model.currentIndex()
+        _magnet_model = Lib.get_value(Lib.measurement_settings, 'magnet_model', int)
         
-        r_ref = float(self.ui.le_norm_radius.text())/1000 # convert meters
-        n_ref = self.ui.cb_magnet_model.currentIndex()
+        r_ref = Lib.get_value(Lib.measurement_settings, 'norm_radius', float)
+        n_ref = _magnet_model
         i_ref = self.df_norm_multipoles.index.values
         
         if _magnet_model == 4: #Skew magnet normalization
+            n_ref = 2 #The only skew magnet is a quadrupole
             self.df_norm_multipoles_norm = self.df_norm_multipoles / self.df_skew_multipoles.iloc[n_ref-1,:]
             self.df_skew_multipoles_norm = self.df_skew_multipoles / self.df_skew_multipoles.iloc[n_ref-1,:]        
              
@@ -1123,30 +1285,41 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.averageS_norm = self.df_skew_multipoles_norm.mean(axis=1)
             self.stdS_norm = 1/(self.averageN.values[n_ref-1]) * np.sqrt(self.stdS**2 + (self.stdN**2)*(self.averageS**2)/(self.averageN.values[n_ref-1]**2)) * (r_ref**(i_ref-n_ref))
      
-    def pop_up_meas(self):
-        self.dialog = QtWidgets.QDialog()
-        self.dialog.ui = Ui_Pop_Up()
-        self.dialog.ui.setupUi(self.dialog)
-        self.dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
-        self.dialog.ui.le_magnet_name
-        self.dialog.ui.le_temperature
-        self.dialog.ui.cb_magnet_model
-        self.dialog.ui.le_meas_details
-        self.dialog.ui.cb_operator
-        self.dialog.ui.le_date
+    def popup_meas(self):
+        try:
+            self.dialog = QtWidgets.QDialog()
+            self.dialog.ui = Ui_Pop_Up()
+            self.dialog.ui.setupUi(self.dialog)
+            self.dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+            #=======================================================================
+            # self.dialog.ui.le_magnet_name
+            # self.dialog.ui.le_temperature
+            # self.dialog.ui.cb_magnet_model
+            # self.dialog.ui.le_meas_details
+            # self.dialog.ui.cb_operator
+            # self.dialog.ui.le_date
+            #=======================================================================
+            
+            self.dialog.ui.bB_ok_cancel.accepted.connect(self.ok_popup)
+            self.dialog.ui.bB_ok_cancel.rejected.connect(self.cancel_popup)        
+            self.dialog.exec_()
+        except:
+            traceback.print_exc(file=sys.stdout)
         
-        self.dialog.exec_()
-        
-    def ok_cancel_popup(self):
-        pass
+    def ok_popup(self):
+        Lib.measurement_df()
+        self.dialog.done(1)
+        self.start_meas()
     
-                
+    def cancel_popup(self):
+        self.dialog.deleteLater()
+                        
     def multipoles_calculation(self): # Ok
         """
         """
         _nmax = 15
         _n_of_turns = Lib.get_value(Lib.data_settings,'total_number_of_turns',int)
-        _n_integration_points = int(self.ui.cb_n_integration_points.currentText())
+        _n_integration_points = Lib.get_value(Lib.data_settings,'n_integration_points',int)
                 
         _coil_type = Lib.get_value(Lib.coil_settings,'coil_type', str)
         if _coil_type == 'Radial':
@@ -1156,7 +1329,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         _n_coil_turns = Lib.get_value(Lib.coil_settings,'n_turns_normal',int)
         _radius1 = Lib.get_value(Lib.coil_settings,'radius1_normal',float)
         _radius2 = Lib.get_value(Lib.coil_settings,'radius2_normal',float)
-        _magnet_model = self.ui.cb_magnet_model.currentIndex()
+        _magnet_model = Lib.get_value(Lib.measurement_settings, 'magnet_model', int)
 
         self.df_norm_multipoles = pd.DataFrame(index=range(1,_nmax+1), columns=range(_n_of_turns))
         self.df_skew_multipoles = pd.DataFrame(index=range(1,_nmax+1), columns=range(_n_of_turns))        
@@ -1223,7 +1396,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.df_fft[i] = _tmpfft
             
     def displacement_calculation(self):
-        _main_harmonic = int(self.ui.cb_magnet_model.currentIndex())
+        _main_harmonic = Lib.get_value(Lib.measurement_settings, 'magnet_model', int)
 
         if _main_harmonic > 1:
             if _main_harmonic == 4: #Skew quadrupole
@@ -1247,6 +1420,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
             self.ui.le_magnetic_center_x.setText(str(_dx_um))
             self.ui.le_magnetic_center_y.setText(str(_dy_um))
+            
+            Lib.write_value(Lib.measurement_settings, 'magnetic_center_x', _dx)
+            Lib.write_value(Lib.measurement_settings, 'magnetic_center_y', _dy)
 
         else:
             self.ui.le_magnetic_center_x.setText("")
@@ -1257,11 +1433,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         """
         _n_of_turns = Lib.get_value(Lib.data_settings,'total_number_of_turns',int)
 
-        _n_encoder_pulses = int(Lib.get_value(Lib.data_settings,'n_encoder_pulses',float)/4)
-        _gain = self.ui.cb_integrator_gain.currentText()
+        _n_encoder_pulses = int(Lib.get_value(Lib.data_settings, 'n_encoder_pulses', float)/4)
+        _gain =  Lib.get_value(Lib.data_settings, 'integrator_gain', int)
         _direction = self.ui.cb_coil_rotation_direction.currentIndex()
-        _trigger_ref = Lib.get_value(Lib.coil_settings,'trigger_ref',int)
-        _n_integration_points = int(self.ui.cb_n_integration_points.currentText())
+        _trigger_ref = Lib.get_value(Lib.coil_settings, 'trigger_ref', int)
+        _n_integration_points = Lib.get_value(Lib.data_settings, 'n_integration_points', int)
         _total_n_of_points = _n_integration_points * _n_of_turns
         
         Lib.comm.fdi.config_measurement(_n_encoder_pulses, _gain, _direction, _trigger_ref, _n_integration_points, _n_of_turns)       
@@ -1272,19 +1448,17 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         # start measurement
         Lib.comm.fdi.start_measurement()
         
-        _n_of_turns = Lib.get_value(Lib.data_settings,'total_number_of_turns',int)
-        _n_integration_points = int(self.ui.cb_n_integration_points.currentText())
+        _n_of_turns = Lib.get_value(Lib.data_settings, 'total_number_of_turns', int)
+        _n_integration_points = Lib.get_value(Lib.data_settings, 'n_integration_points', int)
         _total_n_of_points = _n_integration_points * _n_of_turns
 
         # move motor                  
         self.move_motor_measurement(_n_of_turns)
-        
         # start collecting data
         _status = int(Lib.comm.fdi.status('1')[-3])
         while (_status != 1) and (Lib.flags.stop_all == False):
             _status = int(Lib.comm.fdi.status('1')[-3])            
             QtWidgets.QApplication.processEvents()
-        
         if Lib.flags.stop_all == False:       
             _results = Lib.comm.fdi.get_data()
             self.data_array = np.fromstring(_results[:-1], dtype=np.float64, sep=' A')
@@ -1313,7 +1487,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         _graph2 = pg.BarGraphItem(x=px, height=self.df_skew_multipoles_norm.iloc[:,0].values, width=0.6, brush='b')
         
         self.ui.gv_multipoles.addItem(_graph)
-        self.ui.gv_multipoles.addItem(_graph2)        
+        self.ui.gv_multipoles.addItem(_graph2)
+        
+    def save_data_results(self):
+        """Save results to log file"""
+        Lib.save_log_file()
         
     def stop_meas(self): # Ok
         self.stop_motor()
@@ -1351,15 +1529,12 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui.cb_ps_port.addItems(self.ports)
         
         # Connection Tab 
-        #self.ui.cb_display_type.setCurrentIndex(int(Lib.get_value(Lib.data_settings,'display_type')))
         self.ui.cb_display_type.setCurrentIndex(Lib.get_value(Lib.data_settings,'display_type',int))
-
         self.ui.cb_disp_port.setCurrentText(Lib.get_value(Lib.data_settings,'disp_port',str))
         self.ui.cb_driver_port.setCurrentText(Lib.get_value(Lib.data_settings,'driver_port',str))
         self.ui.cb_integrator_port.setCurrentText(Lib.get_value(Lib.data_settings,'integrator_port',str))
-        self.ui.cb_ps_type.setCurrentIndex(Lib.get_value(Lib.data_settings,'ps_type',int))
         self.ui.cb_ps_port.setCurrentText(Lib.get_value(Lib.data_settings,'ps_port',str))
-        #self.ui.sb_ps_address.setValue(int(Lib.get_value(Lib.data_settings,'ps_address')))
+        #self.ui.sb_ps_address.setValue(Lib.get_value(Lib.data_settings,'ps_address',int))
          
         self.ui.chb_enable_Agilent33220A.setChecked(Lib.get_value(Lib.data_settings,'enable_Agilent33220A',int))
         self.ui.sb_agilent33220A_address.setValue(Lib.get_value(Lib.data_settings,'agilent33220A_address',int))
@@ -1387,12 +1562,14 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui.le_poscoil_assembly.setText(Lib.get_value(Lib.data_settings,'poscoil_assembly',str))
         self.ui.le_n_encoder_pulses.setText(Lib.get_value(Lib.data_settings,'n_encoder_pulses',str))        
         
-        self.ui.cb_integrator_gain.setCurrentIndex(Lib.get_value(Lib.data_settings,'integrator_gain',int))
-        self.ui.cb_n_integration_points.setCurrentIndex(Lib.get_value(Lib.data_settings,'n_integration_points',int))
+        self.ui.cb_integrator_gain.setCurrentText(str(Lib.get_value(Lib.data_settings,'integrator_gain',int)))
+        self.ui.cb_n_integration_points.setCurrentText(str(Lib.get_value(Lib.data_settings,'n_integration_points',int)))
         
         self.ui.chb_save_turn_angles.setChecked(Lib.get_value(Lib.data_settings,'save_turn_angles',int))
         self.ui.chb_disable_aligment_interlock.setChecked(Lib.get_value(Lib.data_settings,'disable_aligment_interlock',int))
         self.ui.chb_disable_ps_interlock.setChecked(Lib.get_value(Lib.data_settings,'disable_ps_interlock',int))
+        
+        self.ui.cb_bench.setCurrentIndex(Lib.get_value(Lib.data_settings,'bench',int))
 
         # Motor Tab
         self.ui.le_motor_vel.setText(Lib.get_value(Lib.data_settings,'rotation_motor_speed',str))
@@ -1407,11 +1584,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         """
         # Connection Tab 
         Lib.write_value(Lib.data_settings,'display_type',self.ui.cb_display_type.currentIndex())
-        Lib.write_value(Lib.data_settings,'disp_port',self.ui.cb_disp_port.currentIndex())
-        Lib.write_value(Lib.data_settings,'driver_port',self.ui.cb_driver_port.currentIndex())
-        Lib.write_value(Lib.data_settings,'integrator_port',self.ui.cb_integrator_port.currentIndex())
-        Lib.write_value(Lib.data_settings,'ps_type',self.ui.cb_ps_type.currentIndex())
-        Lib.write_value(Lib.data_settings,'ps_port',self.ui.cb_ps_port.currentIndex())
+        Lib.write_value(Lib.data_settings,'disp_port',self.ui.cb_disp_port.currentText())
+        Lib.write_value(Lib.data_settings,'driver_port',self.ui.cb_driver_port.currentText())
+        Lib.write_value(Lib.data_settings,'integrator_port',self.ui.cb_integrator_port.currentText())
+        Lib.write_value(Lib.data_settings,'ps_port',self.ui.cb_ps_port.currentText())
         Lib.write_value(Lib.data_settings,'ps_address',self.ui.sb_ps_address.value())
 
         Lib.write_value(Lib.data_settings,'enable_Agilent33220A',self.ui.chb_enable_Agilent33220A.checkState())
@@ -1440,12 +1616,14 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         Lib.write_value(Lib.data_settings,'poscoil_assembly',self.ui.le_poscoil_assembly.text())
         Lib.write_value(Lib.data_settings,'n_encoder_pulses',self.ui.le_n_encoder_pulses.text())        
 
-        Lib.write_value(Lib.data_settings,'integrator_gain',self.ui.cb_integrator_gain.currentIndex())
-        Lib.write_value(Lib.data_settings,'n_integration_points',self.ui.cb_n_integration_points.currentIndex())
+        Lib.write_value(Lib.data_settings,'integrator_gain',int(self.ui.cb_integrator_gain.currentText()))
+        Lib.write_value(Lib.data_settings,'n_integration_points',int(self.ui.cb_n_integration_points.currentText()))
 
         Lib.write_value(Lib.data_settings,'save_turn_angles',self.ui.chb_save_turn_angles.checkState())
         Lib.write_value(Lib.data_settings,'disable_aligment_interlock',self.ui.chb_disable_aligment_interlock.checkState())
         Lib.write_value(Lib.data_settings,'disable_ps_interlock',self.ui.chb_disable_ps_interlock.checkState())
+        
+        Lib.write_value(Lib.data_settings,'bench',self.ui.cb_bench.currentIndex())
   
     def refresh_coiltab(self): # Ok     
         # Coil Tab
@@ -1490,9 +1668,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui.le_PS_type.setText(Lib.get_value(Lib.PS_settings,'Power Supply Type',str))
         self.ui.le_PS_Name.setText(Lib.get_value(Lib.PS_settings,'Power Supply Name',str))
         #Current Adjustment
-        self.ui.le_current_setpoint.setText(Lib.get_value(Lib.PS_settings,'Current Setpoint',str))
-        self.ui.le_Amplitude_Linear.setText(Lib.get_value(Lib.PS_settings,'Amplitude Step',str))
-        self.ui.le_Time_Linear.setText(Lib.get_value(Lib.PS_settings,'Delay/Step',str))
+        self.ui.dsb_current_setpoint.setValue(Lib.get_value(Lib.PS_settings,'Current Setpoint',float))
+        self.ui.dsb_Amplitude_Linear.setValue(Lib.get_value(Lib.PS_settings,'Amplitude Step',float))
+        self.ui.dsb_Time_Linear.setValue(Lib.get_value(Lib.PS_settings,'Delay/Step',float))
         self.keep_auto_values()
         #Demagnetization Curves
         #Sinusoidal
@@ -1531,9 +1709,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         # Power Supply Tab
         Lib.write_value(Lib.PS_settings,'Power Supply Name',self.ui.le_PS_Name.text())
         Lib.write_value(Lib.PS_settings,'Power Supply Type', self.ui.le_PS_type.text())
-        Lib.write_value(Lib.PS_settings,'Current Setpoint',self.ui.le_current_setpoint.text())
-        Lib.write_value(Lib.PS_settings,'Amplitude Step',self.ui.le_Amplitude_Linear.text())
-        Lib.write_value(Lib.PS_settings,'Delay/Step',self.ui.le_Time_Linear.text())
+        Lib.write_value(Lib.PS_settings,'Current Setpoint',self.ui.dsb_current_setpoint.text())
+        Lib.write_value(Lib.PS_settings,'Amplitude Step',self.ui.dsb_Amplitude_Linear.text())
+        Lib.write_value(Lib.PS_settings,'Delay/Step',self.ui.dsb_Time_Linear.text())
         Lib.write_value(Lib.PS_settings,'Sinusoidal Amplitude (App)',self.ui.le_Sinusoidal_Amplitude.text())
         Lib.write_value(Lib.PS_settings,'Sinusoidal Offset',self.ui.le_Sinusoidal_Offset.text())
         Lib.write_value(Lib.PS_settings,'Sinusoidal Frequency',self.ui.le_Sinusoidal_Frequency.text())
@@ -1604,9 +1782,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.set_table_item(self.ui.tw_multipoles_table,i, 6, self.averageAngle.values[i])
             self.set_table_item(self.ui.tw_multipoles_table,i, 7, self.stdAngle.values[i])            
             self.set_table_item(self.ui.tw_multipoles_table,i, 8, self.averageN_norm.values[i])
-#             self.set_table_item(self.ui.tw_multipoles_table,i, 9, self.stdN_norm.values[i])
-            self.set_table_item(self.ui.tw_multipoles_table,i, 9, self.averageS_norm.values[i])    
-#             self.set_table_item(self.ui.tw_multipoles_table,i, 11, self.stdS_norm.values[i])            
+            self.set_table_item(self.ui.tw_multipoles_table,i, 9, self.stdN_norm.values[i])
+            self.set_table_item(self.ui.tw_multipoles_table,i, 10, self.averageS_norm.values[i])    
+            self.set_table_item(self.ui.tw_multipoles_table,i, 11, self.stdS_norm.values[i])            
 
     def set_table_item(self,table,row,col,val): # Ok
         """
@@ -1620,16 +1798,15 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             table.setItem(row, col, item)
             item.setText(str(val))
         
-
          
 #===============================================================================
 # class main(object):
-#      def __init__(self):
-#          self.app = QtWidgets.QApplication(sys.argv)
-#          self.myapp = ApplicationWindow()
-#          self.myapp.show()
-#          sys.exit(self.app.exec_())
-#   
+#     def __init__(self):
+#         self.app = QtWidgets.QApplication(sys.argv)
+#         self.myapp = ApplicationWindow()
+#         self.myapp.show()
+#         sys.exit(self.app.exec_())
+#       
 # if __name__ == "__main__":
 #     Lib = Library.RotatingCoil_Library()
 #     Lib.App = main()
@@ -1639,13 +1816,13 @@ class main(threading.Thread): # Ok
     def __init__(self):
         threading.Thread.__init__(self)
         self.start()
-  
+      
     def run(self):
         self.app = QtWidgets.QApplication(sys.argv)
         self.myapp = ApplicationWindow()
         self.myapp.show()
         sys.exit(self.app.exec_())
-
+    
 if __name__ == '__main__':
 #if __name__ == 'builtins':
     print(__name__ + ' ok' )

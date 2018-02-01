@@ -189,7 +189,7 @@ class SerialCom(object):
             adjust = self.Value
             self.fushTxRx()
             self.ser.write(adjust.encode('utf-8'))
-            time.sleep(0.1)
+            time.sleep(0.3)
             reading = self.ser.read(60)
             
             reading = reading.decode('utf-8')

@@ -517,13 +517,6 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="0">
-        <widget class="QCheckBox" name="chb_enable_Agilent33220A">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="3">
         <widget class="QLabel" name="lb_status_33220A">
          <property name="font">
@@ -533,54 +526,6 @@
          </property>
          <property name="text">
           <string>Disconnected</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QCheckBox" name="chb_enable_Agilent34401A">
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Para a bancada 2, esta conexão é Serial.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLabel" name="label_55">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="font">
-          <font>
-           <italic>false</italic>
-           <strikeout>false</strikeout>
-          </font>
-         </property>
-         <property name="text">
-          <string>Agilent 33220A - Generator</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLabel" name="label_56">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="font">
-          <font>
-           <italic>false</italic>
-           <strikeout>false</strikeout>
-          </font>
-         </property>
-         <property name="text">
-          <string>Agilent 34401A - Multimeter</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
          </property>
         </widget>
        </item>
@@ -600,10 +545,10 @@
        <item row="2" column="0">
         <widget class="QCheckBox" name="chb_enable_Agilent34970A">
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Para a bancada 2, esta conexão é Serial.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="text">
-          <string/>
+          <string>Agilent 34970A - Multichannel</string>
          </property>
         </widget>
        </item>
@@ -631,25 +576,6 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
-        <widget class="QLabel" name="label_186">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="font">
-          <font>
-           <italic>false</italic>
-           <strikeout>false</strikeout>
-          </font>
-         </property>
-         <property name="text">
-          <string>Agilent 34970A - Multichannel</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
        <item row="2" column="2">
         <widget class="QSpinBox" name="sb_agilent34970A_address">
          <property name="enabled">
@@ -660,6 +586,23 @@
          </property>
          <property name="value">
           <number>0</number>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" colspan="2">
+        <widget class="QCheckBox" name="chb_enable_Agilent33220A">
+         <property name="text">
+          <string>Agilent 33220A - Generator</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="QCheckBox" name="chb_enable_Agilent34401A">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string>Agilent 34401A - Multimeter</string>
          </property>
         </widget>
        </item>
@@ -830,7 +773,7 @@
         <x>20</x>
         <y>20</y>
         <width>650</width>
-        <height>530</height>
+        <height>551</height>
        </rect>
       </property>
       <property name="title">
@@ -1073,7 +1016,7 @@
          <x>310</x>
          <y>29</y>
          <width>16</width>
-         <height>490</height>
+         <height>501</height>
         </rect>
        </property>
        <property name="frameShadow">
@@ -1350,7 +1293,7 @@
        <property name="geometry">
         <rect>
          <x>390</x>
-         <y>460</y>
+         <y>490</y>
          <width>190</width>
          <height>50</height>
         </rect>
@@ -1373,7 +1316,7 @@
        <property name="geometry">
         <rect>
          <x>390</x>
-         <y>400</y>
+         <y>430</y>
          <width>190</width>
          <height>50</height>
         </rect>
@@ -1745,7 +1688,7 @@
        <property name="geometry">
         <rect>
          <x>325</x>
-         <y>113</y>
+         <y>140</y>
          <width>317</width>
          <height>16</height>
         </rect>
@@ -1767,9 +1710,9 @@
        <property name="geometry">
         <rect>
          <x>327</x>
-         <y>370</y>
-         <width>317</width>
-         <height>16</height>
+         <y>410</y>
+         <width>321</width>
+         <height>21</height>
         </rect>
        </property>
        <property name="frameShadow">
@@ -1783,6 +1726,72 @@
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_102">
+       <property name="geometry">
+        <rect>
+         <x>430</x>
+         <y>160</y>
+         <width>110</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Bench Type</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="cb_bench">
+       <property name="geometry">
+        <rect>
+         <x>530</x>
+         <y>200</y>
+         <width>101</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <item>
+        <property name="text">
+         <string>RC Bench 1</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>RC Bench 2</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QLabel" name="label_7">
+       <property name="geometry">
+        <rect>
+         <x>340</x>
+         <y>200</y>
+         <width>47</width>
+         <height>13</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Bench:</string>
        </property>
       </widget>
      </widget>
@@ -2926,7 +2935,7 @@ p, li { white-space: pre-wrap; }
         </rect>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <property name="iconSize">
         <size>
@@ -3488,42 +3497,6 @@ p, li { white-space: pre-wrap; }
          <property name="title">
           <string>Manual Settings</string>
          </property>
-         <widget class="QLineEdit" name="le_current_setpoint">
-          <property name="geometry">
-           <rect>
-            <x>170</x>
-            <y>30</y>
-            <width>71</width>
-            <height>31</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="le_Amplitude_Linear">
-          <property name="geometry">
-           <rect>
-            <x>170</x>
-            <y>80</y>
-            <width>71</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="le_Time_Linear">
-          <property name="geometry">
-           <rect>
-            <x>170</x>
-            <y>130</y>
-            <width>71</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
          <widget class="QLabel" name="label_81">
           <property name="geometry">
            <rect>
@@ -3575,7 +3548,7 @@ p, li { white-space: pre-wrap; }
          <widget class="QLabel" name="label_89">
           <property name="geometry">
            <rect>
-            <x>250</x>
+            <x>270</x>
             <y>80</y>
             <width>21</width>
             <height>31</height>
@@ -3588,7 +3561,7 @@ p, li { white-space: pre-wrap; }
          <widget class="QLabel" name="label_90">
           <property name="geometry">
            <rect>
-            <x>250</x>
+            <x>270</x>
             <y>130</y>
             <width>21</width>
             <height>31</height>
@@ -3601,7 +3574,7 @@ p, li { white-space: pre-wrap; }
          <widget class="QLabel" name="label_96">
           <property name="geometry">
            <rect>
-            <x>250</x>
+            <x>270</x>
             <y>30</y>
             <width>21</width>
             <height>31</height>
@@ -3631,6 +3604,39 @@ p, li { white-space: pre-wrap; }
           <property name="icon">
            <iconset resource="resource_file.qrc">
             <normaloff>:/Images/imagens/1351621501_Check.png</normaloff>:/Images/imagens/1351621501_Check.png</iconset>
+          </property>
+         </widget>
+         <widget class="QDoubleSpinBox" name="dsb_current_setpoint">
+          <property name="geometry">
+           <rect>
+            <x>190</x>
+            <y>30</y>
+            <width>71</width>
+            <height>31</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QDoubleSpinBox" name="dsb_Amplitude_Linear">
+          <property name="geometry">
+           <rect>
+            <x>190</x>
+            <y>80</y>
+            <width>71</width>
+            <height>31</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QDoubleSpinBox" name="dsb_Time_Linear">
+          <property name="geometry">
+           <rect>
+            <x>190</x>
+            <y>130</y>
+            <width>71</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="minimum">
+           <double>0.100000000000000</double>
           </property>
          </widget>
         </widget>
@@ -5955,14 +5961,14 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QCheckBox" name="chb_DCCT">
+        <widget class="QCheckBox" name="chb_dcct">
          <property name="font">
           <font>
            <pointsize>10</pointsize>
           </font>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Essa opção permite a leitura da corrente diretamente do multímetro através da saída do DCCT.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="text">
           <string>DCCT</string>
@@ -6028,7 +6034,7 @@ p, li { white-space: pre-wrap; }
        <string>Power Supply Reading</string>
       </property>
      </widget>
-     <widget class="QComboBox" name="DCCT_select">
+     <widget class="QComboBox" name="dcct_select">
       <property name="geometry">
        <rect>
         <x>900</x>
@@ -6211,7 +6217,7 @@ Coil</string>
        </font>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Marcando essa opção o programa coletará a tensão no ímã. Certifique-se de que o Data Acquisition 34970A esteja conectado e com o canal apropriado configurado.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
        <string>Read
@@ -6646,8 +6652,8 @@ Loop:</string>
       <widget class="QGroupBox" name="groupBox_10">
        <property name="geometry">
         <rect>
-         <x>220</x>
-         <y>180</y>
+         <x>30</x>
+         <y>200</y>
          <width>200</width>
          <height>120</height>
         </rect>
@@ -6751,8 +6757,8 @@ Loop:</string>
       <widget class="QGroupBox" name="groupBox_22">
        <property name="geometry">
         <rect>
-         <x>430</x>
-         <y>180</y>
+         <x>240</x>
+         <y>200</y>
          <width>261</width>
          <height>121</height>
         </rect>
@@ -6798,7 +6804,7 @@ Loop:</string>
         <rect>
          <x>30</x>
          <y>28</y>
-         <width>610</width>
+         <width>641</width>
          <height>150</height>
         </rect>
        </property>
@@ -6866,7 +6872,7 @@ Loop:</string>
        <widget class="QGroupBox" name="groupBox_20">
         <property name="geometry">
          <rect>
-          <x>310</x>
+          <x>330</x>
           <y>20</y>
           <width>281</width>
           <height>110</height>
@@ -6896,10 +6902,10 @@ Loop:</string>
       <widget class="QGroupBox" name="groupBox_2">
        <property name="geometry">
         <rect>
-         <x>670</x>
+         <x>699</x>
          <y>38</y>
-         <width>330</width>
-         <height>140</height>
+         <width>301</width>
+         <height>281</height>
         </rect>
        </property>
        <property name="title">
@@ -6908,6 +6914,11 @@ Loop:</string>
        <layout class="QGridLayout" name="gridLayout_11">
         <item row="0" column="0">
          <widget class="QLabel" name="label_175">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
           <property name="text">
            <string>Normalization Radius:</string>
           </property>
@@ -6959,14 +6970,46 @@ Loop:</string>
           </item>
          </widget>
         </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_36">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Accelarator Type:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QComboBox" name="cb_accelerator_type">
+          <property name="currentIndex">
+           <number>1</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>Booster</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Storage Ring</string>
+           </property>
+          </item>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QPushButton" name="pb_stop_meas">
        <property name="geometry">
         <rect>
-         <x>470</x>
-         <y>320</y>
-         <width>160</width>
+         <x>520</x>
+         <y>270</y>
+         <width>151</width>
          <height>51</height>
         </rect>
        </property>
@@ -6990,9 +7033,9 @@ Loop:</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>300</x>
-         <y>320</y>
-         <width>160</width>
+         <x>520</x>
+         <y>200</y>
+         <width>151</width>
          <height>51</height>
         </rect>
        </property>
@@ -7293,7 +7336,17 @@ Loop:</string>
       </column>
       <column>
        <property name="text">
+        <string>Er N_Nn@r_ref</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
         <string>N_Sn@r_ref</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Er N_Sn@r_ref</string>
        </property>
       </column>
      </widget>
@@ -7544,10 +7597,7 @@ Loop:</string>
   <tabstop>pb_save_data_results</tabstop>
   <tabstop>chb_seriesofmeas</tabstop>
   <tabstop>tabWidget_2</tabstop>
-  <tabstop>le_current_setpoint</tabstop>
   <tabstop>le_Sinusoidal_Frequency</tabstop>
-  <tabstop>le_Amplitude_Linear</tabstop>
-  <tabstop>le_Time_Linear</tabstop>
   <tabstop>le_n_series</tabstop>
   <tabstop>chb_automatic_ps</tabstop>
   <tabstop>le_Initial_Phase</tabstop>
@@ -7557,8 +7607,8 @@ Loop:</string>
   <tabstop>le_fre</tabstop>
   <tabstop>Ciclos_Curva_2</tabstop>
   <tabstop>chb_PS_reading</tabstop>
-  <tabstop>chb_DCCT</tabstop>
-  <tabstop>DCCT_select</tabstop>
+  <tabstop>chb_dcct</tabstop>
+  <tabstop>dcct_select</tabstop>
   <tabstop>check_aux</tabstop>
   <tabstop>check_chCoil</tabstop>
   <tabstop>check_TrimCoil</tabstop>
