@@ -330,7 +330,7 @@ class RotatingCoil_Library(object):
         _con.close()
         return _raw_curve
     
-    def save_log_file(self, idn=None):
+    def save_log_file(self, idn=None, path=None):
         """
         TEST!!!
         Saves log file from database entry idn (last entry if idn = None), similar to old log file format
@@ -387,8 +387,14 @@ class RotatingCoil_Library(object):
         _magnetic_center_y = _measurement_entry[48]         
         #Raw data
         _raw_curve = _measurement_entry[50]
+        
+        if path == None or path == False:
+            _dir = self.dir_path
+        else:
+            _dir = path
+            
         try:
-            with open((self.dir_path+_filename), 'w') as f:
+            with open((_dir+_filename), 'w') as f:
                 f.write('########## EXCITATION CURVE - ROTATING COIL ##########')
                 f.write('\n\n')
                 f.write('### Configuration Data ###')
@@ -535,14 +541,20 @@ class RotatingCoil_Library(object):
     def measurement_df(self):
         _n_turns = self.get_value(self.data_settings, 'total_number_of_turns', int) #check if n_turns really is the total number of turns
         try:
-            _le_n_series = int(self.App.myapp.ui.le_n_series.text())
+            _le_n_collections = int(self.App.myapp.ui.le_n_collections.text())
         except ValueError:
-            _le_n_series = 1
+            _le_n_collections = 1
             
         try:
             _analisys_interval = self.App.myapp.ui.le_remove_initial_turns.text() + '-' + str(_n_turns - int(self.App.myapp.ui.le_remove_final_turns.text()))
         except ValueError:
             _analisys_interval = '0'
+        
+        _comments = ''
+        if self.App.myapp.ui.chb_disable_alignment_interlock.isChecked():
+            _comments = _comments + 'Warning: Alignment interlock is disabled; Ref_encoder_A = {0:0.6f}, Ref_encoder_B = {1:0.6f} .\n'.format(self.vars.ref_encoder_A, self.vars.ref_encoder_B)
+        if self.App.myapp.ui.chb_disable_ps_interlock.isChecked():
+            _comments = _comments + 'Warning: Power supply interlock is disabled.\n'
         _datavars = ['name',
                      'operator',
                      'software_version',
@@ -562,7 +574,7 @@ class RotatingCoil_Library(object):
                        'v3',
                        float(self.App.myapp.dialog.ui.le_temperature.text()),
                        self.App.myapp.ui.cb_driver_direction.currentText(),
-                       _le_n_series,
+                       _le_n_collections,
                        _analisys_interval,
                        self.App.myapp.ui.cb_accelerator_type.currentText(),
                        self.App.myapp.dialog.ui.cb_magnet_model.currentIndex(),

@@ -90,7 +90,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 #         self.ui.cb_n_integration_points
 #         
 #         self.ui.chb_save_turn_angles
-#         self.ui.chb_disable_aligment_interlock
+#         self.ui.chb_disable_alignment_interlock
 #         self.ui.chb_disable_ps_interlock
         self.ui.pb_save_config.clicked.connect(self.save_config) # Ok
         self.ui.pb_config.clicked.connect(self.config) # Ok
@@ -1123,11 +1123,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         print(_Disp_pos)
         Lib.vars.ref_encoder_A = _Disp_pos[0] 
         Lib.vars.ref_encoder_B = _Disp_pos[1]
-        if self.ui.chb_disable_aligment_interlock.isChecked():
+        if self.ui.chb_disable_alignment_interlock.isChecked():
             return True
         else:
             if (abs(Lib.vars.ref_encoder_A)>0.005) or (abs(Lib.vars.ref_encoder_B)>0.005):
-                QtWidgets.QMessageBox.warning(self, 'Attention', 'Fix the transversal motors', QtWidgets.QMessageBox.Ok)
+                QtWidgets.QMessageBox.warning(self, 'Attention', 'Fix the transversal encoders', QtWidgets.QMessageBox.Ok)
                 return False
             else:
                 return True
@@ -1171,7 +1171,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             if (self.ui.tabWidget.isTabEnabled(4) == True) and (self.ui.chb_automatic_ps.isChecked()):
                 _collect_type = 2  #Automatic collect
             elif self.ui.chb_seriesofmeas.isChecked():
-                _collect_type = 1 # Sussesive collect  
+                _collect_type = 1 #Succesive collect  
             else:
                 _collect_type = 0
             
@@ -1184,7 +1184,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         Currents and setup verification routines
         """
         self.max_gain_check()
-        self.configure_integrator()
         self.ui.lb_meas_counter.setText('0')
         QtWidgets.QApplication.processEvents()
         try:
@@ -1198,23 +1197,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         """
         Befere start meas, keep coil in ref trigger + half turn
         """
-        try:
-            velocity = int(self.ui.le_rotation_motor_speed.text())
-        except ValueError:
-            velocity = Lib.get_value(Lib.data_settings,'rotation_motor_speed',int)
-        try:
-            acceleration = int(self.ui.le_rotation_motor_acceleration.text())
-        except ValueError:
-            acceleration = Lib.get_value(Lib.data_settings,'rotation_motor_acceleration',int)
-        try:
-            _trigger = int(self.ui.le_trigger_ref.text())
-        except ValueError:
-            _trigger = Lib.get_value(Lib.coil_settings,'trigger_ref',int)
-            
-        try:
-            _encoder_pulse = int(self.ui.le_n_encoder_pulses.text())
-        except ValueError:
-            _encoder_pulse = Lib.get_value(Lib.data_settings,'n_encoder_pulses',int)
+        _velocity = Lib.get_value(Lib.data_settings,'rotation_motor_speed',int)
+        _acceleration = Lib.get_value(Lib.data_settings,'rotation_motor_acceleration',int)
+        _trigger = Lib.get_value(Lib.coil_settings,'trigger_ref',int)
+        _encoder_pulse = Lib.get_value(Lib.data_settings,'n_encoder_pulses',int)
     
         _position = _trigger + (_encoder_pulse / 2)
         if _position > _encoder_pulse:
@@ -1222,7 +1208,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             
         _address_motor = Lib.get_value(Lib.data_settings,'rotation_motor_address',int)
         
-        self.angular_position(_position,_address_motor,velocity,acceleration,_encoder_pulse)
+        self.angular_position(_position,_address_motor,_velocity,_acceleration,_encoder_pulse)
         time.sleep(2)
         
     def angular_position(self,position,address_motor,velocity,acceleration,pulse_encoder):
@@ -1491,16 +1477,17 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         
     def save_data_results(self):
         """Save results to log file"""
-        Lib.save_log_file()
-        
+        _dir = QtWidgets.QFileDialog.getExistingDirectory(self, 'Save Directory', Lib.dir_path).replace('/', '\\\\') + '\\\\'
+        Lib.save_log_file(path=_dir)
+
     def stop_meas(self): # Ok
         self.stop_motor()
-           
+
     def refresh_interface(self):
         """
         """
         self.refresh_connection_settings_tab()
-    
+
     def refresh_connection_settings_tab(self): # Ok
         """
         Refresh inteface with defaults settings
@@ -1566,7 +1553,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui.cb_n_integration_points.setCurrentText(str(Lib.get_value(Lib.data_settings,'n_integration_points',int)))
         
         self.ui.chb_save_turn_angles.setChecked(Lib.get_value(Lib.data_settings,'save_turn_angles',int))
-        self.ui.chb_disable_aligment_interlock.setChecked(Lib.get_value(Lib.data_settings,'disable_aligment_interlock',int))
+        self.ui.chb_disable_alignment_interlock.setChecked(Lib.get_value(Lib.data_settings,'disable_alignment_interlock',int))
         self.ui.chb_disable_ps_interlock.setChecked(Lib.get_value(Lib.data_settings,'disable_ps_interlock',int))
         
         self.ui.cb_bench.setCurrentIndex(Lib.get_value(Lib.data_settings,'bench',int))
@@ -1620,7 +1607,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         Lib.write_value(Lib.data_settings,'n_integration_points',int(self.ui.cb_n_integration_points.currentText()))
 
         Lib.write_value(Lib.data_settings,'save_turn_angles',self.ui.chb_save_turn_angles.checkState())
-        Lib.write_value(Lib.data_settings,'disable_aligment_interlock',self.ui.chb_disable_aligment_interlock.checkState())
+        Lib.write_value(Lib.data_settings,'disable_aligment_interlock',self.ui.chb_disable_alignment_interlock.checkState())
         Lib.write_value(Lib.data_settings,'disable_ps_interlock',self.ui.chb_disable_ps_interlock.checkState())
         
         Lib.write_value(Lib.data_settings,'bench',self.ui.cb_bench.currentIndex())
@@ -1798,7 +1785,29 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             table.setItem(row, col, item)
             item.setText(str(val))
         
-         
+    def monitor_thread(self):
+        """Function to generate a thread which monitors power supply 
+        currents and interlocks, as well as emergency button pressed"""
+        pass
+        #check emergency pressed (Lib.stop_all flag?), if positive,
+        #cut power supply, stop motors, abort integrator, send warning
+        
+        #check interlock if chb_disable_ps_interlock not checked
+        
+        #monitor main coil current
+        
+        #monitor ch coil current
+        
+        #monitor cv coil current
+        
+        #monitor qs coil current
+        
+        #monitor trim coil current
+        
+        #monitor main coil volt (dcct)
+        
+        #calc magnet resistence
+        
 #===============================================================================
 # class main(object):
 #     def __init__(self):
