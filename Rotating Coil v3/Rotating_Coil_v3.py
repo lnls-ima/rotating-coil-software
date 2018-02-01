@@ -174,50 +174,90 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         """
         connect devices and check status
         """
-        try:
-            # connect display
-            Lib.comm.display = Display_Heidenhain.SerialCom(Lib.get_value(Lib.data_settings,'disp_port',str),'ND-780')
-            Lib.comm.display.connect()
-    
-            # connect driver 
-            Lib.comm.parker = Parker_Drivers.SerialCom(Lib.get_value(Lib.data_settings,'driver_port',str))
-            Lib.comm.parker.connect()
-    
-            # connect integrator
-            Lib.comm.fdi = FDI2056.SerialCom(Lib.get_value(Lib.data_settings,'integrator_port',str))
-            Lib.comm.fdi.connect()
-            
-            # connect agilent 33220a - function generator
-            if self.ui.chb_enable_Agilent33220A.checkState() != 0:
-                self.ui.sb_agilent33220A_address.setEnabled(True)        
-                Lib.comm.agilent33220a = Agilent_33220A.GPIB()
-                Lib.comm.agilent33220a.connect(Lib.get_value(Lib.data_settings,'enable_Agilent33220A',int))
-                self.ui.lb_status_33220A.setText('Connected')        
-    
-            # connect agilent 34401a - voltmeter
-            if self.ui.chb_enable_Agilent34401A.checkState() != 0:
-                self.ui.sb_agilent34401A_address.setEnabled(True)        
-                Lib.comm.agilent34401a = Agilent_34401A.GPIB()
-                Lib.comm.agilent34401a.connect(Lib.get_value(Lib.data_settings,'enable_Agilent34401A',int))        
-                self.ui.lb_status_34401A.setText('Connected')        
-    
-            # connect agilent 34970a - multichannel
-            if self.ui.chb_enable_Agilent34970A.checkState() != 0:
-                self.ui.sb_agilent34970A_address.setEnabled(True)                        
-                Lib.comm.agilent34970a = Agilent_34970A.GPIB()
-                Lib.comm.agilent34970a.connect(Lib.get_value(Lib.data_settings,'enable_Agilent34970A',int))
-                self.ui.lb_status_34970A.setText('Connected')
-                 
-            # connect digital power supply
-            Lib.comm.drs = SerialDRS.SerialDRS_FBP()
-            Lib.comm.drs.Connect(Lib.get_value(Lib.data_settings,'ps_port',str))
-            
-            QtWidgets.QMessageBox.information(self,'Information','Devices connected.',QtWidgets.QMessageBox.Ok)
-            self.ui.pb_connect_devices.setText('Devices connected')
-            for i in range(1,7):
-                self.ui.tabWidget.setTabEnabled(i,True)            # Unlock main Tabs
-        except:
-            QtWidgets.QMessageBox.warning(self,'Attention','Fail to connect devices',QtWidgets.QMessageBox.Ok)
+        if not Lib.flags.devices_connected:
+            try:
+                # connect display
+                Lib.comm.display = Display_Heidenhain.SerialCom(Lib.get_value(Lib.data_settings,'disp_port',str),'ND-780')
+                Lib.comm.display.connect()
+        
+                # connect driver 
+                Lib.comm.parker = Parker_Drivers.SerialCom(Lib.get_value(Lib.data_settings,'driver_port',str))
+                Lib.comm.parker.connect()
+        
+                # connect integrator
+                Lib.comm.fdi = FDI2056.SerialCom(Lib.get_value(Lib.data_settings,'integrator_port',str))
+                Lib.comm.fdi.connect()
+                
+                Lib.write_value(Lib.data_settings, 'agilent33220A_address', self.ui.sb_agilent33220A_address.value())
+                Lib.write_value(Lib.data_settings, 'agilent34401A_address', self.ui.sb_agilent34401A_address.value())
+                Lib.write_value(Lib.data_settings, 'agilent34970A_address', self.ui.sb_agilent34970A_address.value())
+                
+                # connect agilent 33220a - function generator
+                if self.ui.chb_enable_Agilent33220A.checkState() != 0:
+                    Lib.comm.agilent33220a = Agilent_33220A.GPIB()
+                    Lib.comm.agilent33220a.connect(Lib.get_value(Lib.data_settings,'agilent33220A_address',int))
+                    self.ui.lb_status_33220A.setText('Connected')        
+        
+                # connect agilent 34401a - voltmeter
+                if self.ui.chb_enable_Agilent34401A.checkState() != 0:
+                    Lib.comm.agilent34401a = Agilent_34401A.GPIB()
+                    Lib.comm.agilent34401a.connect(Lib.get_value(Lib.data_settings,'agilent34401A_address',int))        
+                    self.ui.lb_status_34401A.setText('Connected')        
+        
+                # connect agilent 34970a - multichannel
+                if self.ui.chb_enable_Agilent34970A.checkState() != 0:
+                    Lib.comm.agilent34970a = Agilent_34970A.GPIB()
+                    Lib.comm.agilent34970a.connect(Lib.get_value(Lib.data_settings,'agilent34970A_address',int))
+                    self.ui.lb_status_34970A.setText('Connected')
+                     
+                # connect digital power supply
+                Lib.comm.drs = SerialDRS.SerialDRS_FBP()
+                Lib.comm.drs.Connect(Lib.get_value(Lib.data_settings,'ps_port',str))
+                
+                QtWidgets.QMessageBox.information(self,'Information','Devices connected.',QtWidgets.QMessageBox.Ok)
+                self.ui.pb_connect_devices.setText('Disconnect Devices')
+                Lib.flags.devices_connected = True
+                for i in range(1,7):
+                    self.ui.tabWidget.setTabEnabled(i,True)            # Unlock main Tabs
+            except:
+                QtWidgets.QMessageBox.warning(self,'Attention','Fail to connect devices',QtWidgets.QMessageBox.Ok)
+             
+        else:
+            try:
+                # connect display
+                Lib.comm.display.disconnect()
+        
+                # connect driver 
+                Lib.comm.parker.disconnect()
+        
+                # connect integrator
+                Lib.comm.fdi.disconnect()
+                
+                # connect agilent 33220a - function generator
+                if self.ui.chb_enable_Agilent33220A.checkState() != 0:
+                    Lib.comm.agilent33220a.disconnect()
+                    self.ui.lb_status_33220A.setText('Disconnected')        
+        
+                # connect agilent 34401a - voltmeter
+                if self.ui.chb_enable_Agilent34401A.checkState() != 0:
+                    Lib.comm.agilent34401a.disconnect()       
+                    self.ui.lb_status_34401A.setText('Disconnected')        
+        
+                # connect agilent 34970a - multichannel
+                if self.ui.chb_enable_Agilent34970A.checkState() != 0:
+                    Lib.comm.agilent34970a.disconnect()
+                    self.ui.lb_status_34970A.setText('Disconnected')
+                     
+                # connect digital power supply
+                Lib.comm.drs.Disconnect()
+                
+                QtWidgets.QMessageBox.information(self,'Information','Devices disconnected.',QtWidgets.QMessageBox.Ok)
+                self.ui.pb_connect_devices.setText('Connect Devices')
+                Lib.flags.devices_connected = False
+                for i in range(1,7):
+                    self.ui.tabWidget.setTabEnabled(i,False)            # Lock main Tabs
+            except:
+                QtWidgets.QMessageBox.warning(self,'Attention','Fail to disconnect devices',QtWidgets.QMessageBox.Ok)
                         
     def save_config(self): # Ok
         """

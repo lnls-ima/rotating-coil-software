@@ -507,7 +507,7 @@
        <item row="0" column="2">
         <widget class="QSpinBox" name="sb_agilent33220A_address">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="maximum">
           <number>40</number>
@@ -532,7 +532,7 @@
        <item row="1" column="2">
         <widget class="QSpinBox" name="sb_agilent34401A_address">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="maximum">
           <number>40</number>
@@ -579,7 +579,7 @@
        <item row="2" column="2">
         <widget class="QSpinBox" name="sb_agilent34970A_address">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="maximum">
           <number>40</number>
@@ -779,7 +779,7 @@
       <property name="title">
        <string>Configuration</string>
       </property>
-      <widget class="QCheckBox" name="chb_disable_aligment_interlock">
+      <widget class="QCheckBox" name="chb_disable_alignment_interlock">
        <property name="geometry">
         <rect>
          <x>396</x>
@@ -6823,7 +6823,7 @@ Loop:</string>
         <property name="title">
          <string>Manual</string>
         </property>
-        <widget class="QLineEdit" name="le_n_series">
+        <widget class="QLineEdit" name="le_n_collections">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -7465,14 +7465,23 @@ Loop:</string>
            <pointsize>10</pointsize>
           </font>
          </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
        <item row="0" column="3">
         <widget class="QLineEdit" name="le_magnetic_center_y">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
          <property name="font">
           <font>
            <pointsize>10</pointsize>
           </font>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -7539,7 +7548,7 @@ Loop:</string>
   <tabstop>le_ref_encoder_B</tabstop>
   <tabstop>le_poscoil_assembly</tabstop>
   <tabstop>chb_save_turn_angles</tabstop>
-  <tabstop>chb_disable_aligment_interlock</tabstop>
+  <tabstop>chb_disable_alignment_interlock</tabstop>
   <tabstop>pb_save_config</tabstop>
   <tabstop>pb_config</tabstop>
   <tabstop>pb_emergency1</tabstop>
@@ -7598,7 +7607,7 @@ Loop:</string>
   <tabstop>chb_seriesofmeas</tabstop>
   <tabstop>tabWidget_2</tabstop>
   <tabstop>le_Sinusoidal_Frequency</tabstop>
-  <tabstop>le_n_series</tabstop>
+  <tabstop>le_n_collections</tabstop>
   <tabstop>chb_automatic_ps</tabstop>
   <tabstop>le_Initial_Phase</tabstop>
   <tabstop>le_cush_sin_nCicles</tabstop>

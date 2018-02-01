@@ -37,7 +37,14 @@ class GPIB(object):
             return True
         except:
             return False
-        
+         
+    def disconnect(self):
+        try:
+            self.inst.close()
+            return True
+        except:
+            return False
+           
     def send(self,comando):
         try:
             self.inst.write(comando)

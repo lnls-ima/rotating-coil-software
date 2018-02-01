@@ -1,0 +1,37 @@
+#Implementar
+-> Implementar função disconnect
+-> monitor_thread:
+  -> Interlocks:
+    -> Thread lê status das fontes e regua
+    -> Implementar emergencia
+  -> Implementar leituras de corrente/tensão durante coleta (Vitor)
+
+-> Implementar série de medições(ui le_n_series e chb_seriesofmeas) (lucas)
+  -> Checar status geral ao final de cada medida
+-> Implementar descarte de voltas iniciais/finais (lucas)
+
+-. Função cria entrada de medida na DB
+  -> De onde pegar versão do software?
+  -> Checar se está gravando dados na ordem correta
+
+-. Função salva arquivo texto classico
+  -> Formatar dados(?)
+  -> Implementar Save turn angles
+
+-> Aplicar mesmas correcoes feitas em measurements_df para db_save_measurements(?)
+
+
+#Conferir
+-. Conferir configurações do integrador
+-> Conferir calculo bobina tangencial (multipoles_calculation)
+-> Chegar novamente calculos e propagação de erros Nn e Sn normalizados e angulo, e deslocamento do centro e bobina tangencial
+-> measurements_df: _software_version e _analisys_interval
+-> Disconnect gpib devices
+
+#To do after the software is working properly:
+-> Leitura temperatura automatica
+  -> 2 pt100/bancada no multicanal
+-> Função backup DB em repositorio
+-. Função carrega entrada da DB
+  -. Le por data, nome, operator, magnet model e coil name, bench, software version
+  -> Combinar mais de um campo de busca

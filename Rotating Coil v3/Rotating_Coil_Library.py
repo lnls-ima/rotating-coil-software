@@ -609,6 +609,7 @@ class RotatingCoil_Library(object):
 class flags(object):
     def __init__(self):
         self.coil_ref_flag = False
+        self.devices_connected = False
         self.stop_all = False        
 
 class communication(object):
