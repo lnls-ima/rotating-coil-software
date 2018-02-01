@@ -535,9 +535,9 @@ class RotatingCoil_Library(object):
     def measurement_df(self):
         _n_turns = self.get_value(self.data_settings, 'total_number_of_turns', int) #check if n_turns really is the total number of turns
         try:
-            _le_n_series = int(self.App.myapp.ui.le_n_series.text())
+            _le_n_collections = int(self.App.myapp.ui.le_n_collections.text())
         except ValueError:
-            _le_n_series = 1
+            _le_n_collections = 1
             
         try:
             _analisys_interval = self.App.myapp.ui.le_remove_initial_turns.text() + '-' + str(_n_turns - int(self.App.myapp.ui.le_remove_final_turns.text()))
@@ -562,7 +562,7 @@ class RotatingCoil_Library(object):
                        'v3',
                        float(self.App.myapp.dialog.ui.le_temperature.text()),
                        self.App.myapp.ui.cb_driver_direction.currentText(),
-                       _le_n_series,
+                       _le_n_collections,
                        _analisys_interval,
                        self.App.myapp.ui.cb_accelerator_type.currentText(),
                        self.App.myapp.dialog.ui.cb_magnet_model.currentIndex(),

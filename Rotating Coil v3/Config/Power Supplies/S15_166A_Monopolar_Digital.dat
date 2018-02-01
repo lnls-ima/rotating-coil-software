@@ -5,7 +5,7 @@
 Power Supply Name	S15_166A_Monopolar_Digital
 Power Supply Type	225
 Current Setpoint	0.0
-Amplitude Step	5.0
+Amplitude Step	1.0
 Delay/Step	0.1
 Sinusoidal Amplitude (App)	10.0
 Sinusoidal Offset	0.0

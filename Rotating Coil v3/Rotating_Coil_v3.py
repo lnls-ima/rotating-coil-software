@@ -30,6 +30,7 @@ import Agilent_34970A
 import SerialDRS
 
 import pyqtgraph as pg
+from numpy import float64
 
 class ApplicationWindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -90,7 +91,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 #         self.ui.cb_n_integration_points
 #         
 #         self.ui.chb_save_turn_angles
-#         self.ui.chb_disable_aligment_interlock
+#         self.ui.chb_disable_alignment_interlock
 #         self.ui.chb_disable_ps_interlock
         self.ui.pb_save_config.clicked.connect(self.save_config) # Ok
         self.ui.pb_config.clicked.connect(self.config) # Ok
@@ -1120,14 +1121,13 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         Lib.comm.display.readdisplay_ND780()
         time.sleep(0.3)
         _Disp_pos = Lib.comm.display.DisplayPos
-        print(_Disp_pos)
         Lib.vars.ref_encoder_A = _Disp_pos[0] 
         Lib.vars.ref_encoder_B = _Disp_pos[1]
-        if self.ui.chb_disable_aligment_interlock.isChecked():
+        if self.ui.chb_disable_alignment_interlock.isChecked():
             return True
         else:
             if (abs(Lib.vars.ref_encoder_A)>0.005) or (abs(Lib.vars.ref_encoder_B)>0.005):
-                QtWidgets.QMessageBox.warning(self, 'Attention', 'Fix the transversal motors', QtWidgets.QMessageBox.Ok)
+                QtWidgets.QMessageBox.warning(self, 'Attention', 'Fix the transversal encoders', QtWidgets.QMessageBox.Ok)
                 return False
             else:
                 return True
@@ -1156,10 +1156,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
     #             QtWidgets.QMessageBox.warning(self,'Attention','Stages alignment or interlocks activated.',QtWidgets.QMessageBox.Ok)
              
     #         if (Lib.vars.Status_PS == 1): #and (Lib.vars.PS_ready == 0):
-    #             QtWidgets.QMessageBox.warning(self,'Attention','Power supply is not ready./nVerify PS data.',QtWidgets.QMessageBox.Ok)
+    #             QtWidgets.QMessageBox.warning(self,'Attention','Power supply is not ready.\nVerify PS data.',QtWidgets.QMessageBox.Ok)
     #             return False
     #         if self.ui.lb_status_ps.text() == 'NOK':
-    #             QtWidgets.QMessageBox.warning(self,'Attention','Power supply is not ready./nVerify PS data.',QtWidgets.QMessageBox.Ok)
+    #             QtWidgets.QMessageBox.warning(self,'Attention','Power supply is not ready.\nVerify PS data.',QtWidgets.QMessageBox.Ok)
     #             return False
             if self.ui.lb_status_coil.text() == 'NOK':
                 QtWidgets.QMessageBox.warning(self,'Attention','Please, load the coil data.',QtWidgets.QMessageBox.Ok)
@@ -1171,7 +1171,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             if (self.ui.tabWidget.isTabEnabled(4) == True) and (self.ui.chb_automatic_ps.isChecked()):
                 _collect_type = 2  #Automatic collect
             elif self.ui.chb_seriesofmeas.isChecked():
-                _collect_type = 1 # Sussesive collect  
+                _collect_type = 1 #Successive collect  
             else:
                 _collect_type = 0
             
@@ -1184,37 +1184,139 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         Currents and setup verification routines
         """
         self.max_gain_check()
-        self.configure_integrator()
         self.ui.lb_meas_counter.setText('0')
         QtWidgets.QApplication.processEvents()
         try:
-            if collect_type == 0:
+            if collect_type == 0:               #Collect routine for manual current for single collect
                 self.coil_position_correction()
+#                 _verify = Collect_Data()         #IMPLEMENT!! - Check the maximum standard deviation
+#                 if _verify == False:
+#                     QtWidgets.QMessageBox.warning(self, "Attention","High Standard deviation. Process done. \nCheck parameters and equipments",QtWidgets.QMessageBox.Ok)
+#                     ret = QtWidgets.QMessageBox.question(self,'Standard Deviation','Show data with high Standard Deviation?',QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,QtWidgets.QMessageBox.Yes)
+#                     if ret == QtWidgets.QMessageBox.Yes:
+#                         self.ui.pb_start_meas.setEnabled(True)
+# #                         self.multipoles_table()        # Call multipoles table
+#                         self.ui.lb_meas_counter.setText('1')
+#                         QtWidgets.QApplication.processEvents()
+#                         return
+#                     else:
+#                         self.ui.pb_start_meas.setEnabled(True)
+#                         QtWidgets.QApplication.processEvents()
+#                         return
+                #self.multipoles_calculation()            # Call multipoles calculation
+                self.ui.lb_meas_counter.setText('1')
+                QtWidgets.QApplication.processEvents()
+    
+            if collect_type == 1: #Collect routine for the manual current with successive collects
+                try:
+                    number_col = Lib.get_value(Lib.measurement_df,'n_collections',int)
+                    if number_col <= 1:
+                        QtWidgets.QMessageBox.warning(self,'Attention',' Number of collects must be greater than 1.\nTry again.',QtWidgets.QMessageBox.Ok)
+                        return
+                except:
+                    QtWidgets.QMessageBox.warning(self,'Attention','Number of successive collects not integer.\nTry again.',QtWidgets.QMessageBox.Ok)
+                    return
+                ret = QtWidgets.QMessageBox.question(self,'Automatic collect','Do you want automatically collect ' + str(number_col) + ' measures in the same current?',QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,QtWidgets.QMessageBox.No)
+                if ret == QtWidgets.QMessageBox.No:
+                    return
+                #lib.FileName = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File - Automatic collect Manual Current', nome,'Data files')
+                self.ui.pb_start_meas.setEnabled(False)
+                self.ui.le_n_collections.setEnabled(False)
+                for i in range(0,number_col,1):
+                    self.coil_position_correction()
+#                     _verify = Collect_Data(number_col)  #IMPLEMENT
+#                     if _verify == False:
+#                         QtWidgets.QMessageBox.warning(self,'Warning','High Standard deviation. Process done. \nCheck parameters and equipments.',QtWidgets.QMessageBox.Ok)
+#                         ret = QtWidgets.QMessageBox.question(self,'Standard Deviation','High Standard Deviation. \nD you want to save this measurement?',QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,QtWidgets.QMessageBox.Yes)
+#                         if ret == QtWidgets.QMessageBox.Yes:
+#                             pass
+#                         else:
+#                             ret = QtWidgets.QMessageBox.question(self,'Standard Deviation','Do you want to continue with the process?',QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,QtWidgets.QMessageBox.Yes)
+#                             if ret == QtWidgets.QMessageBox.Yes:
+#                                 continue
+#                             else:
+#                                 self.ui.pb_start_meas.setEnabled(True)
+#                                 self.ui.le_n_collections.setEnabled(True)
+#                                 QtWidgets.QApplication.processEvents()
+#                                 return
+                    time.sleep(1)
+                    #self.Salvar_Coletas(1,(i+1),dados_corrente)
+                    self.ui.lb_meas_counter.setText(str(i+1))
+                    QtWidgets.QApplication.processEvents()  
+                
+                QtWidgets.QMessageBox.information(self,'Information','Automatic Collection Process Completed.',QtWidgets.QMessageBox.Ok)
+                self.ui.pb_start_meas.setEnabled(True)
+                self.ui.le_n_collections.setEnabled(True)
+                
+            if collect_type == 2:  #Collect routine with automatic current
+                try:
+                    _current_data = self.Converter_Corrente_Arbitraria(self.ui.Corrente_Arbitraria_PUC.toPlainText(),0) ### Armazena os valores de corrente inseridos no campo correntes (A) (QPlainTexyEdit).
+                    if (self.ui.Hab_Selecao.isChecked()):
+                        dados_selecao_correntes = self.Converter_Corrente_Arbitraria(self.ui.Selecao_Corrente_Arbitraria_PUC.toPlainText(),2) ###
+                        if (len(_current_data)) != (len(dados_selecao_correntes)):
+                            QtWidgets.QMessageBox.warning(self,'Atenção.','Quantidade de Dados entre Correntes Automáticas e Seleção de Medida são DIFERENTES.\nTente Novamente.',QtWidgets.QMessageBox.Ok)
+                            return
+                    else:
+                        vetor_selecao = []
+                        for i in range(len(_current_data)):
+                            vetor_selecao.append('Y')
+                        dados_selecao_correntes = vetor_selecao
+                            
+                    for i in range(len(_current_data)):
+                            _current_data[i]=self.Verificar_Limite_Corrente(1,_current_data[i])
+                            if (_current_data[i] == 'False'):
+                                return
+                    self.ui.Corrente_Arbitraria_PUC.setPlainText(self.Recuperar_Valor(0,str(_current_data)))
+                except:
+                    QtWidgets.QMessageBox.warning(self,'Atenção.','Verificar Valores de Corrente Automático.\nTente Novamente.',QtWidgets.QMessageBox.Ok)
+                    return
+                ret = QtWidgets.QMessageBox.question(self,'Coleta Automatica.','Deseja Coletar Automaticamente ' + str(len(_current_data)) + ' Medidas em Diferentes Correntes?',QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,QtWidgets.QMessageBox.No)
+                if ret == QtWidgets.QMessageBox.No:
+                    return            
+                #lib.FileName = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File - Coleta Automática Corrente Automática', nome,'Data files')
+                self.ui.groupBox_2.setEnabled(False)
+                self.ui.coletar.setEnabled(False)
+                self.ui.Nome_Ima.setEnabled(False)
+                self.ui.tempLine.setEnabled(False)
+                self.ui.observacao.setEnabled(False)
+                self.Rampa_Corrente_Automatico(_current_data,dados_selecao_correntes)
+                self.ui.groupBox_2.setEnabled(True)
+                self.ui.coletar.setEnabled(True)
+                self.ui.tempLine.setEnabled(True)
+                self.ui.observacao.setEnabled(True)
+                self.ui.Nome_Ima.setEnabled(True)
+                
         except:
             QtWidgets.QMessageBox.warning(self,'Attention','collect routine fault',QtWidgets.QMessageBox.Ok)
             return        
+     
+    def convert_automatic_current(self):
+        """
+        Storage the current values from the automatic settings field
+        """
+        _values_arr = np.array([])
+        _values_len = self.ui.tw_auto_set.rowCount()
+        for i in range (_values_len-3):
+            self.ui.tw_auto_set.setCurrentCell(i,0)
+            _values_arr = np.append(_values_arr,self.ui.tw_auto_set.currentItem().text())
+            
+        _values_arr = np.asarray(_values_arr, dtype=float64)    
+        
+            
+            
+            
+        
+        
+     
             
     def coil_position_correction(self):
         """
-        Befere start meas, keep coil in ref trigger + half turn
+        Before start meas, keep coil in ref trigger + half turn
         """
-        try:
-            velocity = int(self.ui.le_rotation_motor_speed.text())
-        except ValueError:
-            velocity = Lib.get_value(Lib.data_settings,'rotation_motor_speed',int)
-        try:
-            acceleration = int(self.ui.le_rotation_motor_acceleration.text())
-        except ValueError:
-            acceleration = Lib.get_value(Lib.data_settings,'rotation_motor_acceleration',int)
-        try:
-            _trigger = int(self.ui.le_trigger_ref.text())
-        except ValueError:
-            _trigger = Lib.get_value(Lib.coil_settings,'trigger_ref',int)
-            
-        try:
-            _encoder_pulse = int(self.ui.le_n_encoder_pulses.text())
-        except ValueError:
-            _encoder_pulse = Lib.get_value(Lib.data_settings,'n_encoder_pulses',int)
+        _velocity = Lib.get_value(Lib.data_settings,'rotation_motor_speed',int)
+        _acceleration = Lib.get_value(Lib.data_settings,'rotation_motor_acceleration',int)
+        _trigger = Lib.get_value(Lib.coil_settings,'trigger_ref',int)
+        _encoder_pulse = Lib.get_value(Lib.data_settings,'n_encoder_pulses',int)
     
         _position = _trigger + (_encoder_pulse / 2)
         if _position > _encoder_pulse:
@@ -1222,10 +1324,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             
         _address_motor = Lib.get_value(Lib.data_settings,'rotation_motor_address',int)
         
-        self.angular_position(_position,_address_motor,velocity,acceleration,_encoder_pulse)
+        self.angular_position(_position,_address_motor,_velocity,_acceleration,_encoder_pulse)
         time.sleep(2)
         
-    def angular_position(self,position,address_motor,velocity,acceleration,pulse_encoder):
+    def angular_position(self,position,address_motor,_velocity,_acceleration,pulse_encoder):
         Lib.comm.fdi.flushTxRx()
         Lib.comm.fdi.send(Lib.comm.fdi.PDIReadEncoder)
         time.sleep(0.1)
@@ -1244,7 +1346,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         clockwise_index = self.ui.cb_coil_rotation_direction.currentIndex()        
         
         _steps = int(rotation_motor_resolution*abs(shift)/pulse_encoder)  #/10000
-        Lib.comm.parker.conf_motor(address_motor,rotation_motor_resolution,velocity,acceleration,_steps,clockwise_index,mode=0)
+        Lib.comm.parker.conf_motor(address_motor,rotation_motor_resolution,_velocity,_acceleration,_steps,clockwise_index,mode=0)
         Lib.comm.parker.conf_mode(address_motor,0,way)
         Lib.comm.parker.movemotor(address_motor)
         
@@ -1566,7 +1668,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui.cb_n_integration_points.setCurrentText(str(Lib.get_value(Lib.data_settings,'n_integration_points',int)))
         
         self.ui.chb_save_turn_angles.setChecked(Lib.get_value(Lib.data_settings,'save_turn_angles',int))
-        self.ui.chb_disable_aligment_interlock.setChecked(Lib.get_value(Lib.data_settings,'disable_aligment_interlock',int))
+        self.ui.chb_disable_alignment_interlock.setChecked(Lib.get_value(Lib.data_settings,'disable_alignment_interlock',int))
         self.ui.chb_disable_ps_interlock.setChecked(Lib.get_value(Lib.data_settings,'disable_ps_interlock',int))
         
         self.ui.cb_bench.setCurrentIndex(Lib.get_value(Lib.data_settings,'bench',int))
@@ -1620,7 +1722,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         Lib.write_value(Lib.data_settings,'n_integration_points',int(self.ui.cb_n_integration_points.currentText()))
 
         Lib.write_value(Lib.data_settings,'save_turn_angles',self.ui.chb_save_turn_angles.checkState())
-        Lib.write_value(Lib.data_settings,'disable_aligment_interlock',self.ui.chb_disable_aligment_interlock.checkState())
+        Lib.write_value(Lib.data_settings,'disable_aligment_interlock',self.ui.chb_disable_alignment_interlock.checkState())
         Lib.write_value(Lib.data_settings,'disable_ps_interlock',self.ui.chb_disable_ps_interlock.checkState())
         
         Lib.write_value(Lib.data_settings,'bench',self.ui.cb_bench.currentIndex())
