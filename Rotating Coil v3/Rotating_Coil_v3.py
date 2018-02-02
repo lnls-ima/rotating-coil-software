@@ -234,17 +234,17 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 Lib.comm.fdi.disconnect()
                 
                 # connect agilent 33220a - function generator
-                if self.ui.chb_enable_Agilent33220A.checkState() != 0:
+                if self.ui.lb_status_33220A.text() == 'Connected':
                     Lib.comm.agilent33220a.disconnect()
                     self.ui.lb_status_33220A.setText('Disconnected')        
         
                 # connect agilent 34401a - voltmeter
-                if self.ui.chb_enable_Agilent34401A.checkState() != 0:
+                if self.ui.lb_status_34401A.text() == 'Connected':
                     Lib.comm.agilent34401a.disconnect()       
                     self.ui.lb_status_34401A.setText('Disconnected')        
         
                 # connect agilent 34970a - multichannel
-                if self.ui.chb_enable_Agilent34970A.checkState() != 0:
+                if self.ui.lb_status_34970A.text() == 'Connected':
                     Lib.comm.agilent34970a.disconnect()
                     self.ui.lb_status_34970A.setText('Disconnected')
                      
@@ -1647,7 +1647,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         Lib.write_value(Lib.data_settings,'n_integration_points',int(self.ui.cb_n_integration_points.currentText()))
 
         Lib.write_value(Lib.data_settings,'save_turn_angles',self.ui.chb_save_turn_angles.checkState())
-        Lib.write_value(Lib.data_settings,'disable_aligment_interlock',self.ui.chb_disable_alignment_interlock.checkState())
+        Lib.write_value(Lib.data_settings,'disable_alignment_interlock',self.ui.chb_disable_alignment_interlock.checkState())
         Lib.write_value(Lib.data_settings,'disable_ps_interlock',self.ui.chb_disable_ps_interlock.checkState())
         
         Lib.write_value(Lib.data_settings,'bench',self.ui.cb_bench.currentIndex())
