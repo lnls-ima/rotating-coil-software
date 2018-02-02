@@ -779,7 +779,7 @@
       <property name="title">
        <string>Configuration</string>
       </property>
-      <widget class="QCheckBox" name="chb_disable_aligment_interlock">
+      <widget class="QCheckBox" name="chb_disable_alignment_interlock">
        <property name="geometry">
         <rect>
          <x>396</x>
@@ -3679,151 +3679,6 @@ p, li { white-space: pre-wrap; }
             <height>251</height>
            </rect>
           </property>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
           <column>
            <property name="text">
             <string>Currents (A)</string>
@@ -3841,8 +3696,8 @@ p, li { white-space: pre-wrap; }
           <property name="geometry">
            <rect>
             <x>40</x>
-            <y>300</y>
-            <width>101</width>
+            <y>290</y>
+            <width>91</width>
             <height>31</height>
            </rect>
           </property>
@@ -4036,6 +3891,24 @@ p, li { white-space: pre-wrap; }
             <set>AlignLeading|AlignVCenter</set>
            </property>
           </column>
+         </widget>
+         <widget class="QPushButton" name="pb_clear_table">
+          <property name="geometry">
+           <rect>
+            <x>140</x>
+            <y>290</y>
+            <width>51</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Clear</string>
+          </property>
          </widget>
         </widget>
        </widget>
@@ -5767,7 +5640,7 @@ p, li { white-space: pre-wrap; }
       <widget class="QPushButton" name="pb_save_PS">
        <property name="geometry">
         <rect>
-         <x>620</x>
+         <x>630</x>
          <y>30</y>
          <width>151</width>
          <height>31</height>
@@ -5809,7 +5682,7 @@ p, li { white-space: pre-wrap; }
         <rect>
          <x>10</x>
          <y>50</y>
-         <width>761</width>
+         <width>771</width>
          <height>31</height>
         </rect>
        </property>
@@ -6823,7 +6696,7 @@ Loop:</string>
         <property name="title">
          <string>Manual</string>
         </property>
-        <widget class="QLineEdit" name="le_n_series">
+        <widget class="QLineEdit" name="le_n_collections">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -7465,6 +7338,9 @@ Loop:</string>
            <pointsize>10</pointsize>
           </font>
          </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
        <item row="0" column="3">
@@ -7473,6 +7349,9 @@ Loop:</string>
           <font>
            <pointsize>10</pointsize>
           </font>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -7539,7 +7418,7 @@ Loop:</string>
   <tabstop>le_ref_encoder_B</tabstop>
   <tabstop>le_poscoil_assembly</tabstop>
   <tabstop>chb_save_turn_angles</tabstop>
-  <tabstop>chb_disable_aligment_interlock</tabstop>
+  <tabstop>chb_disable_alignment_interlock</tabstop>
   <tabstop>pb_save_config</tabstop>
   <tabstop>pb_config</tabstop>
   <tabstop>pb_emergency1</tabstop>
@@ -7598,7 +7477,7 @@ Loop:</string>
   <tabstop>chb_seriesofmeas</tabstop>
   <tabstop>tabWidget_2</tabstop>
   <tabstop>le_Sinusoidal_Frequency</tabstop>
-  <tabstop>le_n_series</tabstop>
+  <tabstop>le_n_collections</tabstop>
   <tabstop>chb_automatic_ps</tabstop>
   <tabstop>le_Initial_Phase</tabstop>
   <tabstop>le_cush_sin_nCicles</tabstop>

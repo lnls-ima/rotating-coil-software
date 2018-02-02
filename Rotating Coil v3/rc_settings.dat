@@ -31,6 +31,6 @@ integrator_gain	100
 n_integration_points	144
 poscoil_vertical_ref	339082.0
 save_turn_angles	0
-disable_aligment_interlock	0
+disable_alignment_interlock	0
 disable_ps_interlock	0
 bench	0
