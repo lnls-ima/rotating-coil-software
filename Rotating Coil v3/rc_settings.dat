@@ -8,7 +8,6 @@ driver_port	COM1
 integrator_port	COM6
 ps_type	1.0
 ps_port	COM7
-ps_address	0
 enable_Agilent33220A	0
 agilent33220A_address	19
 enable_Agilent34401A	0

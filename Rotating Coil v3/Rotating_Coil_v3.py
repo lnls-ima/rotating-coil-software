@@ -53,7 +53,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 #         self.ui.cb_integrator_port
 #         self.ui.cb_ps_type
 #         self.ui.cb_ps_port
-#         self.ui.sb_ps_address
 #         
 #         self.ui.chb_enable_Agilent33220A
 #         self.ui.sb_agilent33220A_address
@@ -146,13 +145,24 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui.pb_load_PS.clicked.connect(self.load_PowerSupply) #Ok
         self.ui.pb_save_PS.clicked.connect(self.save_PowerSupply)
         self.ui.pb_send.clicked.connect(self.linear_manual_ramp) #Ok
-        self.ui.sb_ps_address.valueChanged.connect(self.update_seraddress)
         self.ui.pb_rows_auto.clicked.connect(self.add_rows) #Ok
         self.ui.pb_send_curve.clicked.connect(self.send_curve) #Ok
         self.ui.pb_config_PID.clicked.connect(self.pid_Setting) #Ok
         self.ui.pb_reset_inter.clicked.connect(self.reset_interlocks)
-        self.ui.pb_cicle.clicked.connect(self.cycling_PS)
-
+        self.ui.pb_cycle.clicked.connect(self.cycling_ps)
+        self.ui.pb_config_ps.clicked.connect(self.config_ps)
+        #Secondary Power Supply
+        self.ui.pb_PS_button_2.clicked.connect(lambda: self.start_powersupply(True))
+        self.ui.pb_load_PS_2.clicked.connect(lambda: self.load_PowerSupply(True))
+        self.ui.pb_save_PS_2.clicked.connect(lambda: self.save_PowerSupply(True))
+        self.ui.pb_send_2.clicked.connect(lambda: self.linear_manual_ramp(True))
+        self.ui.pb_rows_auto_2.clicked.connect(lambda: self.add_rows(True))
+        self.ui.pb_send_curve_2.clicked.connect(lambda: self.send_curve(True))
+        self.ui.pb_reset_inter_2.clicked.connect(lambda: self.reset_interlocks(True))
+        self.ui.pb_cycle_2.clicked.connect(lambda: self.cycling_ps(True))
+        self.ui.pb_config_ps_2.clicked.connect(self.config_ps_2)
+        self.ui.pb_emergency4.clicked.connect(self.emergency)
+        
         # Measurements Tab
 #         self.ui.chb_seriesofmeas
 #         self.ui.le_n_series
@@ -166,9 +176,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 #         self.ui.lb_meas_counter
         self.ui.pb_start_meas.clicked.connect(self.popup_meas)
         self.ui.pb_stop_meas.clicked.connect(self.stop_meas)
+        self.ui.pb_emergency5.clicked.connect(self.emergency)
         
         # Results Tab
         self.ui.pb_save_data_results.clicked.connect(self.save_data_results)
+        self.ui.pb_emergency6.clicked.connect(self.emergency)
         
     def connect_devices(self):
         """
@@ -271,78 +283,67 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         config interface data into variables
         """
         self.config_variables()
-    
-    def emergency(self):
-        """
-        """
-        pass
-        
-    def emergency_powersupply(self):
-        """
-        Stop PS in emergency case
-        """
-        if Lib.vars.Status_PS == 1:
-            if Lib.vars.PS_cicle == 1:
-                Lib.comm.drs.TurnOff()
-                time.sleep(.1)
-            Lib.comm.drs.OpMode(0)
-            Lib.comm.drs.SetISlowRef(0)
-            Lib.comm.drs.TurnOff()           # Turn off PS output
-            its_worked = Lib.comm.drs.Read_ps_OnOff()
-            if its_worked == 0:
-                QtWidgets.QMessageBox.critical(self,'Warning','Emergency situation. \nPower Supply turned off.',QtWidgets.QMessageBox.Ok)                 
-            time.sleep(.1)
-        Lib.vars.Status_Fonte = 0
-        Lib.vars.PS_cicle = 0
-        
-    def update_seraddress(self):
-        Lib.comm.drs.SetSlaveAdd(self.ui.sb_ps_address.value())
-    
-    def start_powersupply(self):
-        try:
-            Addr_PS = int(self.ui.sb_ps_address.text())
-            Lib.comm.drs.SetSlaveAdd(Addr_PS)
-                        
-            if self.ui.pb_PS_button.isChecked():
-                self.ui.pb_PS_button.setText('Power ON')    
-            else:
-                #self.ui.pb_PS_button.setChecked(False)
-                self.ui.pb_PS_button.setText('Power OFF')
+
+    def start_powersupply(self, secondary=False):
+        if not secondary:
+            _df = Lib.ps_settings
+            _status_ps = Lib.get_value(Lib.aux_settings, 'status_ps', int)
+        else:
+            _df = Lib.ps_settings_2
+            _status_ps = Lib.get_value(Lib.aux_settings, 'status_ps', int)
             
-            Safety_enabled = 1
-            if (self.ui.chb_disable_ps_interlock.isChecked()) and (Lib.vars.Status_PS == 0):
-                ret = QtWidgets.QMessageBox.question(self,'Attention','Do you want to turn on the Power Supply with Safety Control DISABLED?',QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,QtWidgets.QMessageBox.No)
-                if ret == QtWidgets.QMessageBox.Yes:
-                    Safety_enabled = 0
+        try:
+            _ps_type = Lib.get_value(_df, 'Power Supply Type', int)
+            Lib.comm.drs.SetSlaveAdd(_ps_type)
+                        
+            if not secondary:
+                if self.ui.pb_PS_button.isChecked():
+                    self.ui.pb_PS_button.setText('Power ON')    
+                else:
+                    self.ui.pb_PS_button.setText('Power OFF')
+            else:
+                if self.ui.pb_PS_button_2.isChecked():
+                    self.ui.pb_PS_button_2.setText('Power ON')    
+                else:
+                    self.ui.pb_PS_button_2.setText('Power OFF')
+
+            _safety_enabled = 1
+            if Lib.get_value(Lib.data_settings, 'disable_ps_interlock', int) and ((secondary == False and _status_ps == 0) or (secondary == True and _status_ps == 0)):
+                _ret = QtWidgets.QMessageBox.question(self,'Attention','Do you want to turn on the Power Supply with Safety Control DISABLED?',QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,QtWidgets.QMessageBox.No)
+                if _ret == QtWidgets.QMessageBox.Yes:
+                    _safety_enabled = 0
                 else:
                     return
-            if Lib.vars.Status_PS == 0:         # Status PS is OFF                
+            if (secondary == False and _status_ps == 0) or (secondary == True and _status_ps == 0):         # Status PS is OFF                
                 try:
                     Lib.comm.drs.Read_iLoad1()
                 except:
                     QtWidgets.QMessageBox.warning(self,'Warning','Impossible to read the digital current.',QtWidgets.QMessageBox.Ok)
                     return
-                if Safety_enabled == 1:
-                    status_interlocks = Lib.comm.drs.Read_ps_SoftInterlocks()
+                if _safety_enabled == 1:
+                    _status_interlocks = Lib.comm.drs.Read_ps_SoftInterlocks()
                     time.sleep(0.25)
-                    if status_interlocks != 0:  
+                    if _status_interlocks != 0:  
                         QtWidgets.QMessageBox.critical(self,'Attention','Soft Interlock activated!',QtWidgets.QMessageBox.Ok)
                         return
-                    status_interlocks = Lib.comm.drs.Read_ps_HardInterlocks()
+                    _status_interlocks = Lib.comm.drs.Read_ps_HardInterlocks()
                     time.sleep(0.25)
-                    if status_interlocks != 0:  
+                    if _status_interlocks != 0:  
                         QtWidgets.QMessageBox.critical(self,'Attention','Hard Interlock activated!',QtWidgets.QMessageBox.Ok)
                         return
-                    PSType = self.check_PS_type()
-                    if PSType == 1:                     # PS 225 A
+                    
+                    if _ps_type > 1:                     # PS 225 A or 10 A
                         Lib.comm.drs.TurnOn()           # Turn ON the Digital Power Supply
                         time.sleep(0.5)
-                        its_worked = Lib.comm.drs.Read_ps_OnOff()
-                        if its_worked == 1:
-                            Lib.vars.Status_PS = 1      # Status PS is ON
-                            Lib.vars.Actual_current = 0
-                            self.ui.tabWidget_2.setEnabled(True)
-                            self.ui.tabWidget_3.setEnabled(True)
+                        if Lib.comm.drs.Read_ps_OnOff() == 1:
+                            if not secondary:
+                                Lib.write_value(Lib.aux_settings, 'status_ps', 1)      # Status PS is ON
+                                Lib.write_value(Lib.aux_settings, 'actual_current', 0)
+                                self.ui.tabWidget_2.setEnabled(True)
+                                self.ui.tabWidget_3.setEnabled(True)
+                            else:
+                                Lib.write_value(Lib.aux_settings, 'status_ps_2', 1)      # Status PS is ON
+                                Lib.write_value(Lib.aux_settings, 'actual_current_2', 0)
                             QtWidgets.QMessageBox.information(self,'Information','The Power Supply has started successfully.',QtWidgets.QMessageBox.Ok)
                             #return
                         else:
@@ -352,23 +353,24 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                         # Closed Loop
                         Lib.comm.drs.ClosedLoop()       
                         time.sleep(0.5)
-                        if (Lib.comm.drs.Read_ps_OpenLoop() == 1):
+                        if Lib.comm.drs.Read_ps_OpenLoop() == 1:
                             QtWidgets.QMessageBox.warning(self,'Attention',"Power Supply circuit loop is not closed.",QtWidgets.QMessageBox.Ok)
                             #return
-                        self.ui.le_status_fonte.setText('Closed')
-                        self.ui.sb_ps_dclink.setEnabled(False)
-                        self.ui.pb_refresh.setEnabled(True)
+                        if not secondary:
+                            self.ui.le_status_fonte.setText('Closed')
+    #                         self.ui.sb_ps_dclink.setEnabled(False)
+                            self.ui.pb_refresh.setEnabled(True)
+                        else:
+                            self.ui.le_status_fonte_2.setText('Closed')
                         QtWidgets.QApplication.processEvents()
-                    else:                               # PS 1000 A
-                        addr_dclink = 1
-                        Lib.comm.drs.SetSlaveAdd(addr_dclink)
+                    else:                               # PS 1000 A (always primary)
+                        Lib.comm.drs.SetSlaveAdd(_ps_type-1)
                         time.sleep(.1)
                         # Turn ON PS DClink
                         try:
                             Lib.comm.drs.TurnOn()           # Turn ON the DC Link of the PS
                             time.sleep(.5)
-                            its_worked = Lib.comm.drs.Read_ps_OnOff()
-                            if (its_worked == 1):
+                            if Lib.comm.drs.Read_ps_OnOff() == 1:
                                 QtWidgets.QMessageBox.information(self,'Information',"Power Supply Capacitor Bank turned on.",QtWidgets.QMessageBox.Ok)
                         except:
                             QtWidgets.QMessageBox.critical(self,'Attention',"Power Supply Capacitor Bank did not initialized",QtWidgets.QMessageBox.Ok)
@@ -391,25 +393,34 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                         
                         # Set ISlowRef for DC Link (Capacitor Bank)
                         time.sleep(.2)
-                        mode = 0
-                        Lib.comm.drs.OpMode(mode)                     # Operation mode selection for Slowref
-                        dclink_value = int(self.ui.sb_ps_dclink.text())
-                        Lib.comm.drs.SetISlowRef(dclink_value)        # Set 30 V for Capacitor Bank (default value according to the ELP Group)
-                        feedback_DCLink = float(Lib.comm.drs.Read_vDCMod1)
-                        if feedback_DCLink == 0:
+                        _mode = 0
+                        Lib.comm.drs.OpMode(_mode)                     # Operation mode selection for Slowref
+                        _dclink_value = Lib.get_value(Lib.aux_settings, 'dclink_value', float) #30 
+                        Lib.comm.drs.SetISlowRef(_dclink_value)        # Set 30 V for Capacitor Bank (default value according to the ELP Group)
+                        _feedback_DCLink = float(Lib.comm.drs.Read_vDCMod1)
+                        if _feedback_DCLink == 0:
                             QtWidgets.QMessageBox.warning(self,'Attention',"Setpoint DC link is not set.",QtWidgets.QMessageBox.Ok)
                             return
                         QtWidgets.QApplication.processEvents()
             else:
-                if not self.ui.pb_PS_button.isChecked():
-                    self.ui.pb_PS_button.setText('Power Off')
-                status = Lib.comm.drs.Read_ps_OnOff()
-                if status == 1:
-                    Lib.vars.Status_PS = 0              
-                    Lib.vars.Actual_current = 0
+                if not secondary:
+                    if not self.ui.pb_PS_button.isChecked():
+                        self.ui.pb_PS_button.setText('Power Off')
+                else:
+                    if not self.ui.pb_PS_button_2.isChecked():
+                        self.ui.pb_PS_button_2.setText('Power Off')
+                _status = Lib.comm.drs.Read_ps_OnOff()
+                if _status == 1:
+                    if not secondary:
+                        Lib.write_value(Lib.aux_settings, 'status_ps', 0)      # Status PS is OFF
+                        Lib.write_value(Lib.aux_settings, 'actual_current', 0)
+                        self.ui.tabWidget_2.setEnabled(False)
+                        self.ui.le_status_fonte.setText('Open')
+                    else:
+                        Lib.write_value(Lib.aux_settings, 'status_ps_2', 0)      # Status PS_2 is OFF
+                        Lib.write_value(Lib.aux_settings, 'actual_current_2', 0)
+                        self.ui.le_status_fonte_2.setText('Open')
                     Lib.comm.drs.TurnOff()                    # Turn OFF the Power Supply
-                    self.ui.tabWidget_2.setEnabled(False)
-                    self.ui.le_status_fonte.setText('Open')
                 else:
                     Lib.comm.drs.TurnOff()
                     QtWidgets.QMessageBox.critical(self,'Attention','Digital Source did not receive the command.',QtWidgets.QMessageBox.Ok)
@@ -417,35 +428,29 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         except:
             QtWidgets.QMessageBox.critical(self,'Fail','Power Supply start failed.',QtWidgets.QMessageBox.Ok)
             return
-            
-    def check_PS_type(self):
-        if self.ui.le_PS_type.text() == '225':
-            PS_type = 1
-        else:
-            PS_type = 2
-        return PS_type
     
     def pid_Setting(self):
         '''
         Set by software the PID configurations  
         '''
-        addr_PS = int(self.ui.sb_ps_address.text())
-        Lib.comm.drs.SetSlaveAdd(addr_PS)
-        ID_mode = 0
-        ELP_PI_dawu = 3
+        _ps_type = Lib.get_value(Lib.ps_settings, 'Power Supply Type', int)
+        Lib.comm.drs.SetSlaveAdd(_ps_type)
+        _id_mode = 0
+        _elp_PI_dawu = 3
         try:
-            Lib.comm.drs.Write_dp_ID(ID_mode)           #Write ID module from controller
-            Lib.comm.drs.Write_dp_Class(ELP_PI_dawu)    #Write DP Class for setting PI 
+            Lib.comm.drs.Write_dp_ID(_id_mode)           #Write ID module from controller
+            Lib.comm.drs.Write_dp_Class(_elp_PI_dawu)    #Write DP Class for setting PI 
         except:
             QtWidgets.QMessageBox.critical(self,'Fail','Power Supply PID configuration fault.',QtWidgets.QMessageBox.Ok)
             traceback.print_exc(file=sys.stdout)
             return
         try:
-            list_coeffs = np.zeros(16)
-            kp, ki = float(self.ui.sb_kp.text()), float(self.ui.sb_ki.text())
-            list_coeffs[0] = kp
-            list_coeffs[1] = ki
-            Lib.comm.drs.Write_dp_Coeffs(list_coeffs.tolist())        #Write kp and ki
+            _list_coeffs = np.zeros(16)
+            _kp = Lib.get_value(Lib.ps_settings, 'Kp', float)
+            _ki = Lib.get_value(Lib.ps_settings, 'Ki', float)
+            _list_coeffs[0] = _kp
+            _list_coeffs[1] = _ki
+            Lib.comm.drs.Write_dp_Coeffs(_list_coeffs.tolist())        #Write kp and ki
             Lib.comm.drs.ConfigDPModule()                             #Configure kp and ki
             QtWidgets.QMessageBox.information(self,'Success','PID configured.',QtWidgets.QMessageBox.Ok)
 
@@ -467,18 +472,20 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 self.read_curr = (float(reading_34401))*32
         return self.read_curr
         
-    def display_current(self):
+    def display_current(self):  
+        _ps_type = Lib.get_value(Lib.ps_settings, 'Power Supply Type', int)
+        Lib.comm.drs.SetSlaveAdd(_ps_type)
         try:
             time.sleep(0.3)
-            refresh_current = round(float(Lib.comm.drs.Read_iLoad1()),3)
-            self.ui.lcd_PS_reading.display(refresh_current)
+            _refresh_current = round(float(Lib.comm.drs.Read_iLoad1()),3)
+            self.ui.lcd_PS_reading.display(_refresh_current)
             if ((self.ui.chb_dcct.isChecked() == True) and (self.ui.chb_enable_Agilent34401A.checkState() != 0)):
                 #time.sleep(.1)
                 self.ui.lcd_current_dcct.setEnabled(True)
                 self.ui.label_161.setEnabled(True)
                 self.ui.label_164.setEnabled(True)
-                corrente4 = round(self.dcct_convert(), 3)
-                self.ui.lcd_current_dcct.display(corrente4)
+                _current = round(self.dcct_convert(), 3)
+                self.ui.lcd_current_dcct.display(_current)
                 QtWidgets.QApplication.processEvents()
     
         except:
@@ -486,24 +493,14 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             return
     
     def linear_ramp(self,final,actual,step,timer):
-        mode = 0                    # OpMode ISlowRef
-        Lib.comm.drs.OpMode(mode)
-        #faixa = np.array([])
+        _mode = 0                    # OpMode ISlowRef
+        Lib.comm.drs.OpMode(_mode)
         try:
-            delta = abs(final - actual)
-            faixa = np.linspace(actual, final, round(delta/step)+1)
-                                
-            #===================================================================
-            # if final > actual:
-            #     faixa = np.arange(actual+step,final,step)
-            # else:
-            #     faixa = np.arange(final,actual,step)
-            #     faixa = faixa[::-1]
-            # faixa[-1] = final
-            #===================================================================
+            _delta = abs(final - actual)
+            _faixa = np.linspace(actual, final, round(_delta/step)+1)
             
-            for i in faixa:
-                if (Lib.vars.stop_all == 0):
+            for i in _faixa:
+                if (Lib.flags.stop_all == 0):
                     #time = 0.1
                     time.sleep(timer)
                     Lib.comm.drs.SetISlowRef(i)
@@ -523,305 +520,374 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             except:
                 return False
     
-    def verify_current_limits(self, index, current, offset=0):
+    def verify_current_limits(self, index, current, offset=0, secondary=False):
         '''
         Check the conditions of the Current values sets
         '''
-        current = float(current)
+        _current = float(current)
+        if not secondary:
+            _df = Lib.ps_settings
+        else:
+            _df = Lib.ps_settings_2
+            
         try:
-            current_max = float(self.ui.le_maximum_current.text())
+            _current_max = Lib.get_value(_df, 'Maximum Current', float)
         except:
             QtWidgets.QMessageBox.warning(self, 'Attention', 'Incorrect value for maximum Supply Current.\nPlease, verify the value.',QtWidgets.QMessageBox.Ok)
-            current = 'False'
-            return (current)
+            return False
         try:
-            current_min = float(self.ui.le_minimum_current.text())
+            _current_min = Lib.get_value(_df, 'Minimum Current', float)
         except:
             QtWidgets.QMessageBox.warning(self,'Attention','Incorrect value for minimum Supply Current.\nPlease, verify the value.',QtWidgets.QMessageBox.Ok)
-            current = 'False'
-            return (current)
+            return False
         
-        if (index == 0) or (index == 1):
-            if (current)>(current_max):
+        if index == 0 or index == 1:
+            if _current > _current_max:
                 if (index == 0):
                     QtWidgets.QMessageBox.warning(self,'Attention','Value of current higher than the Supply Limit.',QtWidgets.QMessageBox.Ok)
-                current = current_max
-            if (current)<(current_min):
-                if (index == 0):
+                _current = _current_max
+            if _current < _current_min:
+                if index == 0:
                     QtWidgets.QMessageBox.warning(self,'Attention','Current value lower than the Supply Limit.',QtWidgets.QMessageBox.Ok)
-                current = current_min
-        if (index == 2):
-            if ((current/2)+offset) > (current_max):
+                _current = _current_min
+        elif index == 2:
+            if ((_current/2)+offset) > _current_max:
                 QtWidgets.QMessageBox.warning(self,'Attention','Check Peak to Peak Current and Offset values.\nValues out of source limit.',QtWidgets.QMessageBox.Ok)
-                current = 'False'
-                return (current)
+                return False
             
-            if ((-current/2)+offset) < (current_min):
+            if ((-_current/2)+offset) < _current_min:
                 QtWidgets.QMessageBox.warning(self,'Attention','Check Peak to Peak Current and Offset values.\nValues out of source limit.',QtWidgets.QMessageBox.Ok)
-                current = 'False'
-                return (current)
+                return False
             
-        return(float(current)) 
+        return float(_current) 
               
-    def linear_manual_ramp(self):
-        actual = round(float(Lib.comm.drs.Read_iLoad1()),3)
+    def linear_manual_ramp(self, secondary=False):
+        if not secondary:
+            _df = Lib.ps_settings
+        else:
+            _df = Lib.ps_settings_2            
+        _ps_type = Lib.get_value(_df, 'Power Supply Type', int)
+        Lib.comm.drs.SetSlaveAdd(_ps_type)
+        
+        _actual = round(float(Lib.comm.drs.Read_iLoad1()),3)
         try:
-            final_value = self.verify_current_limits(0, self.ui.dsb_current_setpoint.value())
-            if final_value == 'False':
+            if not secondary:
+                _df = Lib.ps_settings
+            else:
+                _df = Lib.ps_settings_2
+            _current_setpoint = Lib.get_value(_df,'Current Setpoint',float)
+            _final_value = self.verify_current_limits(0, _current_setpoint,secondary)
+            if not _final_value:
                 return
-            self.ui.dsb_current_setpoint.setValue(float(final_value))
-            Lib.vars.Actual_current = self.ui.dsb_current_setpoint.value()
-            step = self.ui.dsb_current_setpoint.value()
-            time = self.ui.dsb_Time_Linear.value()
+            Lib.write_value(_df,'Current Setpoint',_final_value)
+            if not secondary:
+                self.ui.dsb_current_setpoint.setValue(float(_final_value))
+                Lib.write_value(Lib.aux_settings,'actual_current', Lib.get_value(_df,'Current Setpoint',float))
+            else:
+                self.ui.dsb_current_setpoint_2.setValue(float(_final_value))
+                Lib.write_value(Lib.aux_settings,'actual_current_2', Lib.get_value(_df,'Current Setpoint',float))
+            _step = Lib.get_value(_df,'Amplitude Step',float)
+            _time = Lib.get_value(_df,'Delay/Stepself',float)
         except:
             QtWidgets.QMessageBox.warning(self,'Attention','Invalid values or not numeric.',QtWidgets.QMessageBox.Ok)
-            self.ui.dsb_current_setpoint.setValue(float(0))
+            Lib.write_value(_df,'Current Setpoint', 0)
+            if not secondary:
+                self.ui.dsb_current_setpoint.setValue(float(0))
+            else:
+                self.ui.dsb_current_setpoint_2.setValue(float(0))
+            Lib.write_value(_df,'Current Setpoint',0.0)
             #return
-        self.ui.tabWidget_2.setEnabled(False)           #Disabled tabWidget until complete load current
+        if not secondary:
+            self.ui.tabWidget_2.setEnabled(False)           #Disabled tabWidget until complete load current
         QtWidgets.QApplication.processEvents()
         
-        ramp = self.linear_ramp(final_value, actual, step, time)
+        _ramp = self.linear_ramp(_final_value, _actual, _step, _time)
         
-        if ramp == True:
+        if _ramp == True:
             QtWidgets.QMessageBox.information(self,'Information','Select current successfully.',QtWidgets.QMessageBox.Ok)
         else:
             QtWidgets.QMessageBox.critical(self,'Attention','Fail! \nVerify the Power Supply current values.',QtWidgets.QMessageBox.Ok)
-        self.ui.tabWidget_2.setEnabled(True)
+        if not secondary:
+            self.ui.tabWidget_2.setEnabled(True)
         QtWidgets.QApplication.processEvents()
         
-    def linear_automatic_ramp(self, data_current, data_seletion_currents):
+    def linear_automatic_ramp(self, data_current, data_selection_currents, secondary=False):
+        if not secondary:
+            _df = Lib.ps_settings
+        else:
+            _df = Lib.ps_settings_2            
+        _ps_type = Lib.get_value(_df, 'Power Supply Type', int)
+        Lib.comm.drs.SetSlaveAdd(_ps_type)
+        
         try:
-            step = self.ui.dsb_Amplitude_Linear.value()
-            time = self.ui.dsb_Time_Linear.value()
+            if not secondary:
+                _df = Lib.ps_settings
+            else:
+                _df = Lib.ps_settings_2
+            _step = Lib.get_value(_df,'Amplitude Step',float)
+            _time = Lib.get_value(_df,'Delay/Stepself',float)            
         except:
             QtWidgets.QMessageBox.critical(self,'Attention','Invalid step or time values.',QtWidgets.QMessageBox.Ok)
             return
         for i in range (len(data_current)):
-            if data_seletion_currents[i] == 'Y' or data_seletion_currents[i] == 'y' or data_seletion_currents[i] == 'S' or data_seletion_currents[i] == 's':
-                actual_current = round(float(Lib.comm.drs.Read_iLoad1()),3)
-                self.linear_ramp(data_current[i], actual_current, step, time)
+            if data_selection_currents[i] == 'Y' or data_selection_currents[i] == 'y' or data_selection_currents[i] == 'S' or data_selection_currents[i] == 's':
+                _actual_current = round(float(Lib.comm.drs.Read_iLoad1()),3)
+                self.linear_ramp(data_current[i], _actual_current, _step, _time)
                 time.sleep(.2)
             else:
-                if abs(data_current[i]-data_current[i-1])> step:
-                    actual_current = round(float(Lib.comm.drs.Read_iLoad1()),3)
-                    self.linear_ramp(data_current[i], actual_current, step, time)
+                if abs(data_current[i]-data_current[i-1]) > _step:
+                    _actual_current = round(float(Lib.comm.drs.Read_iLoad1()),3)
+                    self.linear_ramp(data_current[i], _actual_current, _step, _time)
                 else:
                     Lib.comm.drs.SetISlowRef(data_current[i])
                        
         QtWidgets.QMessageBox.information(self,'Information','Automatic collect process done.',QtWidgets.QMessageBox.Ok)    
                             
-    def send_curve(self):
-        self.ui.tabWidget_2.setEnabled(False)
-        if self.curve_gen() == True:
+    def send_curve(self, secondary=False):
+        if not secondary:
+            self.ui.tabWidget_2.setEnabled(False)
+        if self.curve_gen(secondary) == True:
             QtWidgets.QMessageBox.information(self,'Information','Sending Curve Successfully.',QtWidgets.QMessageBox.Ok)
-            self.ui.tabWidget_2.setEnabled(True)
-            self.ui.pb_cicle.setEnabled(True)
+            if not secondary:
+                self.ui.tabWidget_2.setEnabled(True)
+                self.ui.pb_cycle.setEnabled(True)
+            else:
+                self.ui.pb_cycle_2.setEnabled(True)
             QtWidgets.QApplication.processEvents()
         else:
             QtWidgets.QMessageBox.critical(self,'Warning','Fail to Sending Curve.',QtWidgets.QMessageBox.Ok)
-            self.ui.tabWidget_2.setEnabled(True)
+            if not secondary:
+                self.ui.tabWidget_2.setEnabled(True)
             QtWidgets.QApplication.processEvents()
             return False
     
-    def curve_gen(self):
-        self.Curve_Type = int(self.ui.tabWidget_3.currentIndex())
-                                            
-        if self.Curve_Type == 0:    # Sinusoidal
+    def curve_gen(self, secondary=False):
+        if not secondary:
+            _curve_type = int(self.ui.tabWidget_3.currentIndex())
+            _df = Lib.ps_settings
+        else:
+            _curve_type = 1 #Only curve available on secondary ps is damped sinusoidal
+            _df = Lib.ps_settings_2
+            
+        _ps_type = Lib.get_value(_df, 'Power Supply Type', int)
+        Lib.comm.drs.SetSlaveAdd(_ps_type)
+                                      
+        if _curve_type == 0:    # Sinusoidal
             #For Offset
             try:
-                self.offset = self.verify_current_limits(0, float(self.ui.le_Sinusoidal_Offset.text()))
-                if (self.offset == 'False'):
+                _offset = Lib.get_value(_df, 'Sinusoidal Offset', float)
+                _offset = self.verify_current_limits(0, _offset)
+                if not _offset:
                     self.ui.le_Sinusoidal_Offset.setText('0')
+                    Lib.write_value(_df, 'Sinusoidal Offset', 0)
                     return False
-                self.ui.le_Sinusoidal_Offset.setText(str(self.offset))
+                self.ui.le_Sinusoidal_Offset.setText(str(_offset))
+                Lib.write_value(_df, 'Sinusoidal Offset', _offset)
             except:
                 QtWidgets.QMessageBox.warning(self,'Warning','Please, verify the Offset parameter of the curve.',QtWidgets.QMessageBox.Ok)
             #For Amplitude
             try:
-                self.Amp = self.verify_current_limits(2,abs(float(self.ui.le_Sinusoidal_Amplitude.text())),self.offset)
-                if self.Amp == 'False':
+                _amp = Lib.get_value(_df, 'Sinusoidal Amplitude', float)
+                _amp = self.verify_current_limits(2,abs(_amp),_offset)
+                if not _amp:
                     self.ui.le_Sinusoidal_Amplitude.setText('0')
+                    Lib.write_value(_df, 'Sinusoidal Amplitude', 0)
                     return False
-                self.ui.le_Sinusoidal_Amplitude.setText(str(self.Amp))
+                self.ui.le_Sinusoidal_Amplitude.setText(str(_amp))
+                Lib.write_value(_df, 'Sinusoidal Amplitude', _amp)
             except:
                 QtWidgets.QMessageBox.warning(self,'Warning','Please, verify the Amplitude parameter of the curve.',QtWidgets.QMessageBox.Ok)
             #For Frequency
             try:
-                self.freq = float(self.ui.le_Sinusoidal_Frequency.text())
+                _freq = Lib.get_value(_df, 'Sinusoidal Frequency', float)
             except:
                 QtWidgets.QMessageBox.warning(self,'Warning','Please, verify the Frequency parameter of the curve.',QtWidgets.QMessageBox.Ok)
-            #For N-Cicles
+            #For N-cycles
             try:
-                self.n_cicles = int(self.ui.le_Sinusoidal_n_cicles.text())
+                _n_cycles = Lib.get_value(_df, 'Sinusoidal N Cycles', float)
             except:
-                QtWidgets.QMessageBox.warning(self,'Warning','Please, verify the #Cicles parameter of the curve.',QtWidgets.QMessageBox.Ok)
+                QtWidgets.QMessageBox.warning(self,'Warning','Please, verify the #cycles parameter of the curve.',QtWidgets.QMessageBox.Ok)
             #For Phase shift
             try:
-                self.phase_shift = float(self.ui.le_Initial_Phase.text())
+                _phase_shift = Lib.get_value(_df, 'Sinusoidal Initial Phase', float)
             except:
                 QtWidgets.QMessageBox.warning(self,'Warning','Please, verify the Phase parameter of the curve.',QtWidgets.QMessageBox.Ok)
             #For Final phase
             try:
-                self.Final_Phase = float(self.ui.le_Final_Phase.text())
+                _final_phase = Lib.get_value(_df, 'Sinusoidal Final Phase', float)
             except:
                 QtWidgets.QMessageBox.warning(self,'Warning','Please, verify the Final phase parameter of the curve.',QtWidgets.QMessageBox.Ok)
             
-        if self.Curve_Type == 1:    # Cushioned Sinusoidal
+        if _curve_type == 1:    # Damped Sinusoidal (can be primary or secondary ps)
             #For Offset
             try:
-                self.offset = self.verify_current_limits(0, float(self.ui.le_cush_sin_Offset.text()))
-                if (self.offset == 'False'):
-                    self.ui.le_cush_sin_Offset.setText('0')
+                _offset = Lib.get_value(_df, 'Damped Sinusoidal Offset', float)
+                _offset = self.verify_current_limits(0, _offset)
+                if not _offset:
+                    Lib.write_value(_df, 'Damped Sinusoidal Offset', 0)
+                    if not secondary:
+                        self.ui.le_damp_sin_Offset.setText('0')
+                    else:
+                        self.ui.le_damp_sin_Offset_2.setText('0')
                     return False
-                self.ui.le_cush_sin_Offset.setText(str(self.offset))
+                Lib.write_value(_df, 'Damped Sinusoidal Offset', _offset)
+                if not secondary:
+                    self.ui.le_damp_sin_Offset.setText(str(_offset))
+                else:
+                    self.ui.le_damp_sin_Offset_2.setText(str(_offset))
             except:
                 QtWidgets.QMessageBox.warning(self,'Warning','Please, verify the Offset parameter of the curve.',QtWidgets.QMessageBox.Ok)
             #For Amplitude
             try:
-                self.Amp = self.verify_current_limits(2,abs(float(self.ui.le_cush_sin_Ampl.text())),self.offset)
-                if self.Amp == 'False':
-                    self.ui.le_cush_sin_Ampl.setText('0')
+                _amp = Lib.get_value(_df, 'Damped Sinusoidal Amplitude', float)
+                _amp = self.verify_current_limits(2,abs(_amp),_offset)
+                if not _amp:
+                    Lib.write_value(_df, 'Damped Sinusoidal Amplitude', 0)
+                    if not secondary:
+                        self.ui.le_damp_sin_Ampl.setText('0')
+                    else:
+                        self.ui.le_damp_sin_Ampl_2.setText('0')
                     return False
-                self.ui.le_cush_sin_Ampl.setText(str(self.Amp))
+                Lib.write_value(_df, 'Damped Sinusoidal Amplitude', _amp)
+                if not secondary:
+                    self.ui.le_damp_sin_Ampl.setText(str(_amp))
+                else:
+                    self.ui.le_damp_sin_Ampl_2.setText(str(_amp))
             except:
                 QtWidgets.QMessageBox.warning(self,'Warning','Please, verify the Amplitude parameter of the curve.',QtWidgets.QMessageBox.Ok)
             #For Frequency
             try:
-                self.freq = float(self.ui.le_cush_sin_Freq.text())
+                _freq = Lib.get_value(_df, 'Damped Sinusoidal Frequency', float)
             except:
                 QtWidgets.QMessageBox.warning(self,'Warning','Please, verify the Frequency parameter of the curve.',QtWidgets.QMessageBox.Ok)
-            #For N-Cicles
+            #For N-cycles
             try:
-                self.n_cicles = int(self.ui.le_cush_sin_nCicles.text())
+                _n_cycles = Lib.get_value(_df, 'Damped Sinusoidal N Cycles', float)
             except:
-                QtWidgets.QMessageBox.warning(self,'Warning','Please, verify the #Cicles parameter of the curve.',QtWidgets.QMessageBox.Ok)
+                QtWidgets.QMessageBox.warning(self,'Warning','Please, verify the #cycles parameter of the curve.',QtWidgets.QMessageBox.Ok)
             #For Phase shift
             try:
-                self.phase_shift = float(self.ui.le_cush_sin_phaseShift.text())
+                _phase_shift = Lib.get_value(_df, 'Damped Sinusoidal Phase Shift', float)
             except:
                 QtWidgets.QMessageBox.warning(self,'Warning','Please, verify the Phase parameter of the curve.',QtWidgets.QMessageBox.Ok)
             #For Final phase
             try:
-                self.Final_Phase = float(self.ui.le_cush_sin_finalPhase.text())
+                _final_phase = Lib.get_value(_df, 'Damped Sinusoidal Final Phase', float)
             except:
                 QtWidgets.QMessageBox.warning(self,'Warning','Please, verify the Final Phase parameter of the curve.',QtWidgets.QMessageBox.Ok)
             #For Damping
             try:
-                self.Damping = float(self.ui.le_cush_sin_Damping.text())
+                _damping = Lib.get_value(_df, 'Damped Sinusoidal Damping', float)
             except:
                 QtWidgets.QMessageBox.warning(self,'Warning','Please, verify the Damping time parameter of the curve.',QtWidgets.QMessageBox.Ok)
                 
-        if self.Curve_Type == 2:        # Triangular softened
+        if _curve_type == 2:        # Triangular softened
             #For Offset
             try:
-                self.offset = self.verify_current_limits(0, float(self.ui.le_softened_Offset.text()))
-                if (self.offset == 'False'):
+                _offset = Lib.get_value(_df, 'Triangular Softened Offset', float)
+                _offset = self.verify_current_limits(0, _offset)
+                if not _offset:
+                    Lib.write_value(_df, 'Triangular Softened Offset', 0)
                     self.ui.le_softened_Offset.setText('0')
                     return False
-                self.ui.le_softened_Offset.setText(str(self.offset))
+                Lib.write_value(_df, 'Triangular Softened Offset', _offset)
+                self.ui.le_softened_Offset.setText(str(_offset))
             except:
                 QtWidgets.QMessageBox.warning(self,'Warning','Please, verify the Offset parameter of the curve.',QtWidgets.QMessageBox.Ok)
             #For Amplitude
             try:
-                self.Amp = self.verify_current_limits(2,abs(float(self.ui.le_softened_Ampl.text())),self.offset)
-                if self.Amp == 'False':
+                _amp = Lib.get_value(_df, 'Triangular Softened Amplitude', float)
+                _amp = self.verify_current_limits(2,abs(_amp),_offset)
+                if not _amp:
+                    Lib.write_value(_df, 'Triangular Softened Amplitude', 0)
                     self.ui.le_softened_Ampl.setText('0')
                     return False
-                self.ui.le_softened_Ampl.setText(str(self.Amp))
+                Lib.write_value(_df, 'Triangular Softened Amplitude', _amp)
+                self.ui.le_softened_Ampl.setText(str(_amp))
             except:
                 QtWidgets.QMessageBox.warning(self,'Warning','Please, verify the Amplitude parameter of the curve.',QtWidgets.QMessageBox.Ok)
             #For Frequency
             try:
-                self.freq = float(self.ui.le_softened_Freq.text())
+                _freq = Lib.get_value(_df, 'Triangular Softened Frequency', float)
             except:
                 QtWidgets.QMessageBox.warning(self,'Warning','Please, verify the Frequency parameter of the curve.',QtWidgets.QMessageBox.Ok)
-            #For N-Cicles
+            #For N-cycles
             try:
-                self.n_cicles = int(self.ui.le_softened_nCicles.text())
+                _n_cycles = Lib.get_value(_df, 'Triangular Softened N Cycles', float)
             except:
-                QtWidgets.QMessageBox.warning(self,'Warning','Please, verify the #Cicles parameter of the curve.',QtWidgets.QMessageBox.Ok)
+                QtWidgets.QMessageBox.warning(self,'Warning','Please, verify the #cycles parameter of the curve.',QtWidgets.QMessageBox.Ok)
             #For Phase shift
             try:
-                self.phase_shift = float(self.ui.le_softened_phaseShift.text())
+                _phase_shift = Lib.get_value(_df, 'Triangular Softened Phase Shift', float)
             except:
                 QtWidgets.QMessageBox.warning(self,'Warning','Please, verify the Phase parameter of the curve.',QtWidgets.QMessageBox.Ok)
             #For Final phase
             try:
-                self.Final_Phase = float(self.ui.le_softened_finalPhase.text())
+                _final_phase = Lib.get_value(_df, 'Triangular Softened Final Phase', float)
             except:
                 QtWidgets.QMessageBox.warning(self,'Warning','Please, verify the Final phase parameter of the curve.',QtWidgets.QMessageBox.Ok)
         
-        if self.Curve_Type == 3:        # Arbitrary Curve
+        if _curve_type == 3:        # Arbitrary Curve
             #For Amplitude
             try:
-                self.Amp = self.verify_current_limits(2,abs(float(self.ui.le_amplitude_arbitrary.text())),self.offset)
-                if self.Amp == 'False':
+                _amp = self.verify_current_limits(2,abs(float(self.ui.le_amplitude_arbitrary.text())),_offset)
+                if _amp == 'False':
                     self.ui.le_amplitude_arbitrary.setText('0')
                     return False
-                self.ui.le_amplitude_arbitrary.setText(str(self.Amp))
+                self.ui.le_amplitude_arbitrary.setText(str(_amp))
             except:
                 QtWidgets.QMessageBox.warning(self,'Warning','Please, verify the Amplitude parameter of the curve.',QtWidgets.QMessageBox.Ok)
             #For Frequency
             try:
-                self.freq = float(self.ui.le_frequency_arbitrary.text())
+                _freq = float(self.ui.le_frequency_arbitrary.text())
             except:
                 QtWidgets.QMessageBox.warning(self,'Warning','Please, verify the Frequency parameter of the curve.',QtWidgets.QMessageBox.Ok)
-            #For N-Cicles
+            #For N-cycles
             try:
-                self.n_cicles = int(self.ui.le_nCicles_arbitrary.text())
+                _n_cycles = int(self.ui.le_ncycles_arbitrary.text())
             except:
-                QtWidgets.QMessageBox.warning(self,'Warning','Please, verify the #Cicles parameter of the curve.',QtWidgets.QMessageBox.Ok)
+                QtWidgets.QMessageBox.warning(self,'Warning','Please, verify the #cycles parameter of the curve.',QtWidgets.QMessageBox.Ok)
                 
         #Generating curves
         try:
-            if self.Curve_Type == 0:        # Sinusoidal
+            try:
+                _mode=3          #Operating mode
+                Lib.comm.drs.OpMode(_mode)
+                if Lib.comm.drs.Read_ps_OpMode()!=3:
+                    QtWidgets.QMessageBox.warning(self,'Attention','Signal generator not configured correctly.',QtWidgets.QMessageBox.Ok)
+                    return False
+            except:
+                QtWidgets.QMessageBox.warning(self,'Attention','Signal generator not configured correctly. Verify PS settings.',QtWidgets.QMessageBox.Ok)
+                return
+                            
+            if _curve_type == 0:        # Sinusoidal
                 try:
-                    sigType=0
-                    mode=3          #Operating mode
-                    Lib.comm.drs.OpMode(mode)
-                    if Lib.comm.drs.Read_ps_OpMode()!=3:
-                        QtWidgets.QMessageBox.warning(self,'Attention','Signal generator not configured correctly.',QtWidgets.QMessageBox.Ok)
-                        return False
-                except:
-                    QtWidgets.QMessageBox.warning(self,'Attention','Signal generator not configured correctly. Verify PS settings.',QtWidgets.QMessageBox.Ok)
-                    return
-                
-                try:
-                    Lib.comm.drs.Write_sigGen_Freq(float(self.freq))        #send Frequency
-                    Lib.comm.drs.Write_sigGen_Amplitude(float(self.Amp))    #send Amplitude
-                    Lib.comm.drs.Write_sigGen_Offset(float(self.offset))    #send Offset
+                    _sigType=0
+                    Lib.comm.drs.Write_sigGen_Freq(float(_freq))        #send Frequency
+                    Lib.comm.drs.Write_sigGen_Amplitude(float(_amp))    #send Amplitude
+                    Lib.comm.drs.Write_sigGen_Offset(float(_offset))    #send Offset
                     #Sending curves to PS Controller
-                    Lib.comm.drs.ConfigSigGen(sigType, self.n_cicles, self.phase_shift, self.Final_Phase)
+                    Lib.comm.drs.ConfigSigGen(_sigType, _n_cycles, _phase_shift, _final_phase)
                 except:
                     QtWidgets.QMessageBox.warning(self,'Attention','Fail to send config to Controller.\nPlease, verify the parameters of the Power Supply.',QtWidgets.QMessageBox.Ok)
                     return
                 
-            if self.Curve_Type == 1:        # Cushioned Sinusoidal
+            if _curve_type == 1:        # Damped Sinusoidal                
                 try:
-                    sigType=4
-                    mode=3
-                    Lib.comm.drs.OpMode(mode)
-                    if (Lib.comm.drs.Read_ps_OpMode() != 3):
-                        QtWidgets.QMessageBox.warning(self,'Attention','Signal generator not configured correctly.',QtWidgets.QMessageBox.Ok)
-                        return False
-                except:
-                    QtWidgets.QMessageBox.warning(self,'Attention','Signal generator not configured correctly. Verify PS settings.',QtWidgets.QMessageBox.Ok)
-                    return
-                
-                try:
-                    Lib.comm.drs.Write_sigGen_Freq(float(self.freq))             
-                    Lib.comm.drs.Write_sigGen_Amplitude(float(self.Amp))         
-                    Lib.comm.drs.Write_sigGen_Offset(float(self.offset))    
+                    _sigType=4
+                    Lib.comm.drs.Write_sigGen_Freq(float(_freq))             
+                    Lib.comm.drs.Write_sigGen_Amplitude(float(_amp))         
+                    Lib.comm.drs.Write_sigGen_Offset(float(_offset))    
                 except:
                     QtWidgets.QMessageBox.warning(self,'Attention','Please, verify the parameters of the Power Supply.',QtWidgets.QMessageBox.Ok)
                     return
     
                 #Sending sigGenAmortecido
                 try:
-                    Lib.comm.drs.Write_sigGen_Aux(float(self.ui.le_cush_sin_Damping.text()))
-                    Lib.comm.drs.ConfigSigGen(sigType, self.n_cicles, self.phase_shift, self.Final_Phase)
+                    Lib.comm.drs.Write_sigGen_Aux(float(self.ui.le_damp_sin_Damping.text()))
+                    Lib.comm.drs.ConfigSigGen(_sigType, _n_cycles, _phase_shift, _final_phase)
                 except:
-                    QtWidgets.QMessageBox.warning(self,'Attention.','Cushioned Sinusoidal fault.',QtWidgets.QMessageBox.Ok)
+                    QtWidgets.QMessageBox.warning(self,'Attention.','Damped Sinusoidal fault.',QtWidgets.QMessageBox.Ok)
                     traceback.print_exc(file=sys.stdout)
                     return False
             
@@ -829,47 +895,79 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         except:
             return False
         
-    def reset_interlocks(self):
+    def reset_interlocks(self, secondary=False):
+        if not secondary:
+            _df = Lib.ps_settings
+        else:
+            _df = Lib.ps_settings_2
+        _ps_type = Lib.get_value(_df, 'Power Supply Type', int)
+        Lib.comm.drs.SetSlaveAdd(_ps_type)
+        
         try:
             Lib.comm.drs.ResetInterlocks()
-            if self.ui.pb_Hard_interlock.isChecked(): self.ui.pb_Hard_interlock.setChecked(False)
-            if self.ui.pb_Soft_interlock.isChecked(): self.ui.pb_Soft_interlock.setChecked(False)
+            if not secondary:
+                if self.ui.pb_Hard_interlock.isChecked():
+                    self.ui.pb_Hard_interlock.setChecked(False)
+                if self.ui.pb_Soft_interlock.isChecked():
+                    self.ui.pb_Soft_interlock.setChecked(False)
+            else:
+                if self.ui.pb_Hard_interlock_2.isChecked():
+                    self.ui.pb_Hard_interlock_2.setChecked(False)
+                if self.ui.pb_Soft_interlock_2.isChecked():
+                    self.ui.pb_Soft_interlock_2.setChecked(False)
             QtWidgets.QMessageBox.information(self,'Information','Interlocks reseted.',QtWidgets.QMessageBox.Ok)
         except:
             QtWidgets.QMessageBox.warning(self,'Attention','Interlocks not reseted.',QtWidgets.QMessageBox.Ok)
             return
-            
-    def plot_curves(self):
-        pass
-    
-    def cycling_PS(self):
+
+    def cycling_ps(self, secondary=False):
+        if not secondary:
+            _curve_type = int(self.ui.tabWidget_3.currentIndex())
+            _df = Lib.ps_settings
+        else:
+            _curve_type = 1 #Only curve available on secondary ps is damped sinusoidal
+            _df = Lib.ps_settings_2
+
+        _ps_type = Lib.get_value(_df, 'Power Supply Type', int)
+        Lib.comm.drs.SetSlaveAdd(_ps_type)
+
         try:
-            if self.Curve_Type == 0: Lib.comm.drs.EnableSigGen()
-            if self.Curve_Type == 1:
+            if _curve_type == 0:
                 Lib.comm.drs.EnableSigGen()
+                _freq = Lib.get_value(_df, 'Sinusoidal Frequency', float)
+                _n_cycles = Lib.get_value(_df, 'Sinusoidal N Cycles', float)
+            if _curve_type == 1:
+                Lib.comm.drs.EnableSigGen()
+                _freq = Lib.get_value('Damped Sinusoidal Frequency', float)
+                _n_cycles = Lib.get_value('Damped Sinusoidal N Cycles', float) 
                 time.sleep(.2)
-            deadline = time.monotonic() + (1/float(self.ui.le_cush_sin_Freq.text())*float(self.ui.le_cush_sin_nCicles.text()))
-            while time.monotonic() < deadline:
-                self.ui.tabWidget_2.setEnabled(False)
+            _deadline = time.monotonic() + (1/_freq*_n_cycles)
+            while time.monotonic() < _deadline:
+                if not secondary:
+                    self.ui.tabWidget_2.setEnabled(False)
+                    self.ui.pb_load_PS.setEnabled(False)
+                    self.ui.pb_refresh.setEnabled(False)
+                else:
+                    self.ui.pb_load_PS_2.setEnabled(False)
                 self.ui.pb_start_meas.setEnabled(False)
-                self.ui.pb_load_PS.setEnabled(False)
-                self.ui.pb_refresh.setEnabled(False)
                 QtWidgets.QApplication.processEvents()
             
             QtWidgets.QMessageBox.information(self,'Information','Successful cycle process.',QtWidgets.QMessageBox.Ok)
             Lib.comm.drs.DisableSigGen()
-            self.ui.tabWidget_2.setEnabled(True)
+            if not secondary:
+                self.ui.tabWidget_2.setEnabled(True)
+                self.ui.pb_load_PS.setEnabled(True)
+                self.ui.pb_refresh.setEnabled(True)
+            else:
+                self.ui.pb_load_PS_2.setEnabled(True)
             self.ui.pb_start_meas.setEnabled(True)
-            self.ui.pb_load_PS.setEnabled(True)
-            self.ui.pb_refresh.setEnabled(True)
             QtWidgets.QApplication.processEvents()
             
-            if self.Curve_Type == 2:
+            if _curve_type == 2:
                 pass
         except:
             QtWidgets.QMessageBox.warning(self,'Attention','Cycling process not realized.',QtWidgets.QMessageBox.Ok)
             return       
-    
     
     def move_motor_until_stops(self, address): # Ok
         """
@@ -881,40 +979,40 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         while ( (Lib.comm.parker.ready(address) == False) and (Lib.flags.stop_all == False) ):
             Lib.comm.parker.flushTxRx()
             QtWidgets.QApplication.processEvents()
-        
+
         Lib.flags.stop_all = False        
-    
+
     def move_motor_manual(self): # Ok
         """
         """
-        address = Lib.get_value(Lib.data_settings,'rotation_motor_address',int)
+        _address = Lib.get_value(Lib.data_settings,'rotation_motor_address',int)
         _ratio = Lib.get_value(Lib.data_settings,'rotation_motor_ratio',float)
 
-        resolution = Lib.get_value(Lib.data_settings,'rotation_motor_resolution',int)        
-        vel = float(self.ui.le_motor_vel.text()) * _ratio
-        acce = float(self.ui.le_motor_ace.text()) * _ratio
-        nturns = float(self.ui.le_motor_turns.text()) * _ratio
-        
-        direction = self.ui.cb_driver_direction.currentIndex()
-        steps = abs(int(nturns * Lib.get_value(Lib.data_settings,'rotation_motor_resolution',float)))
-        
+        _resolution = Lib.get_value(Lib.data_settings,'rotation_motor_resolution',int)        
+        _vel = float(self.ui.le_motor_vel.text()) * _ratio
+        _acce = float(self.ui.le_motor_ace.text()) * _ratio
+        _nturns = float(self.ui.le_motor_turns.text()) * _ratio
+
+        _direction = self.ui.cb_driver_direction.currentIndex()
+        _steps = abs(int(_nturns * Lib.get_value(Lib.data_settings,'rotation_motor_resolution',float)))
+
         # mode
         if self.ui.cb_driver_mode.currentIndex() == 0:
             _mode = 0
         else:
             _mode = 1
 
-        Lib.comm.parker.conf_motor(address, resolution, vel, acce, steps, direction, _mode)
-        
-        self.move_motor_until_stops(address)
+        Lib.comm.parker.conf_motor(_address, _resolution, _vel, _acce, _steps, _direction, _mode)
+
+        self.move_motor_until_stops(_address)
 
     def stop_motor(self): # Ok
         """
         """
         Lib.flags.stop_all = True        
-        address = Lib.get_value(Lib.data_settings,'rotation_motor_address',int)
-        Lib.comm.parker.stopmotor(address)
-        
+        _address = Lib.get_value(Lib.data_settings,'rotation_motor_address',int)
+        Lib.comm.parker.stopmotor(_address)
+
     def encoder_reading(self): # Ok
         """
         read encoder from integrator and update interface value
@@ -928,44 +1026,44 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         _encoder_current = int(self.ui.le_encoder_reading.text())
         _encoder_setpoint = int(self.ui.le_encoder_setpoint.text())
         _pulses_to_go = _encoder_current - _encoder_setpoint 
-        
+
         return _pulses_to_go
-        
+
     def move_to_encoder_position(self): # Ok / implement automatic search in closed loop
         """
         """
         Lib.flags.stop_all = False
-        
-        address = Lib.get_value(Lib.data_settings,'rotation_motor_address',int)
+
+        _address = Lib.get_value(Lib.data_settings,'rotation_motor_address',int)
         _ratio = Lib.get_value(Lib.data_settings,'rotation_motor_ratio',float)
-        
-        resolution = Lib.get_value(Lib.data_settings,'rotation_motor_resolution',int)
-        vel = float(self.ui.le_motor_vel.text()) * _ratio
-        acce = float(self.ui.le_motor_ace.text()) * _ratio
-        
+
+        _resolution = Lib.get_value(Lib.data_settings,'rotation_motor_resolution',int)
+        _vel = float(self.ui.le_motor_vel.text()) * _ratio
+        _acce = float(self.ui.le_motor_ace.text()) * _ratio
+
         _pulses = self.pulses_to_go()
-        steps =  abs(int( _pulses * Lib.get_value(Lib.data_settings,'rotation_motor_resolution',int) / Lib.get_value(Lib.data_settings,'n_encoder_pulses',int) * _ratio))
+        _steps =  abs(int( _pulses * Lib.get_value(Lib.data_settings,'rotation_motor_resolution',int) / Lib.get_value(Lib.data_settings,'n_encoder_pulses',int) * _ratio))
 
         if _pulses >= 0:
-            direction = 0
+            _direction = 0
         else:
-            direction = 1
+            _direction = 1
 
-        Lib.comm.parker.conf_motor(address, resolution, vel, acce, steps, direction, 0)
-        self.move_motor_until_stops(address)
-             
+        Lib.comm.parker.conf_motor(_address, _resolution, _vel, _acce, _steps, _direction, 0)
+        self.move_motor_until_stops(_address)
+
         self.encoder_reading()  
-        
+
     def adjust_offset(self): # Ok
         """
         """
         Lib.flags.stop_all = False
-        
+
         Lib.comm.fdi.send(Lib.comm.fdi.PDIShortCircuitOn)
         time.sleep(0.5)
-        
+
         Lib.comm.fdi.send(Lib.comm.fdi.PDIOffsetOn)
-        
+
         while (int(Lib.comm.fdi.status('1')[-4]) != 1) and (Lib.flags.stop_all == False):
             QtWidgets.QApplication.processEvents()
 
@@ -988,45 +1086,57 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.ui.label_status_7.setText(Lib.comm.fdi.status('7'))
         except:
             pass
-   
+
     def move_motor_measurement(self, turns): # Ok
         """ """
-        address = Lib.get_value(Lib.data_settings,'rotation_motor_address',int)
+        _address = Lib.get_value(Lib.data_settings,'rotation_motor_address',int)
         _ratio = Lib.get_value(Lib.data_settings,'rotation_motor_ratio',float)
-        
-        resolution = Lib.get_value(Lib.data_settings,'rotation_motor_resolution',int)
-        vel = Lib.get_value(Lib.data_settings,'rotation_motor_speed',float) * _ratio
-        acce = Lib.get_value(Lib.data_settings,'rotation_motor_acceleration',float) * _ratio
+
+        _resolution = Lib.get_value(Lib.data_settings,'rotation_motor_resolution',int)
+        _vel = Lib.get_value(Lib.data_settings,'rotation_motor_speed',float) * _ratio
+        _acce = Lib.get_value(Lib.data_settings,'rotation_motor_acceleration',float) * _ratio
 #         nturns = float(self.ui.le_motor_turns.text()) * _ratio
-        nturns = turns * _ratio        
-        
-        direction = self.ui.cb_coil_rotation_direction.currentIndex()
-        steps = abs(int(nturns * Lib.get_value(Lib.data_settings,'rotation_motor_resolution',float)))
-        
+        _nturns = turns * _ratio        
+
+        try:
+            if Lib.get_value(Lib.measurement_settings, 'coil_rotation_direction', str) == 'Clockwise':
+                _direction = 0
+            else:
+                _direction = 1
+        except:
+            _direction = self.ui.cb_coil_rotation_direction.currentIndex()
+        _steps = abs(int(_nturns * Lib.get_value(Lib.data_settings,'rotation_motor_resolution',float)))
+
         _mode = 0
-    
-        Lib.comm.parker.conf_motor(address, resolution, vel, acce, steps, direction, _mode)
+
+        Lib.comm.parker.conf_motor(_address, _resolution, _vel, _acce, _steps, _direction, _mode)
         
-        self.move_motor_until_stops(address)
+        self.move_motor_until_stops(_address)
         
     def get_coil_ref(self): # Ok
         """
         """
         Lib.flags.stop_all = False
-        
+
         _res = QtWidgets.QMessageBox.warning(self,'Search Index','Continue to search for coil index?',QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
         if _res == QtWidgets.QMessageBox.Yes:
             # configure integrator encoder
             _n_encoder_pulses = int(Lib.get_value(Lib.data_settings,'n_encoder_pulses',float)/4)
             Lib.comm.fdi.config_encoder(_n_encoder_pulses)
-           
-            # Send command to find integrator reference]
-            direction = self.ui.cb_coil_rotation_direction.currentIndex()
-            Lib.comm.fdi.index_search(direction)
-            
+
+            # Send command to find integrator reference
+            try:
+                if Lib.get_value(Lib.measurement_settings, 'coil_rotation_direction', str) == 'Clockwise':
+                    _direction = 0
+                else:
+                    _direction = 1
+            except:
+                _direction = self.ui.cb_coil_rotation_direction.currentIndex()
+            Lib.comm.fdi.index_search(_direction)
+
             # Move Motor - 1 turn
             self.move_motor_measurement(turns=1)
-            
+
             while (int(Lib.comm.fdi.status('1')[-1]) != 1) and (Lib.flags.stop_all == False):
                 QtWidgets.QApplication.processEvents()
             
@@ -1035,7 +1145,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         else:
             Lib.flags.coil_ref_flag = False
             QtWidgets.QMessageBox.warning(self,'Search Index','Coil index search is canceled',QtWidgets.QMessageBox.Ok)
-            
+
     def load_coil(self): # Ok
         """
         """
@@ -1065,29 +1175,41 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         except:
             return
         
-    def save_PowerSupply(self):
+    def save_PowerSupply(self, secondary=False):
         """
         save settings of the Power Supply in external file
         """
         try:
             filename = QtWidgets.QFileDialog.getSaveFileName(self, 'Save Power Supply File', Lib.dir_path, 'Data files (*.dat);;Text files (*.txt)')
             
-            self.config_PS()
-            if Lib.save_PS(filename[0]) == True:
+            if not secondary:
+                self.config_ps()
+                _ans = Lib.save_ps(filename[0])
+            else:
+                self.config_ps_2()
+                _ans = Lib.save_ps(filename[0], secondary=True)
+            if _ans:
                 QtWidgets.QMessageBox.warning(self,'Information','Power Supply File saved.',QtWidgets.QMessageBox.Ok)
             else:
                 QtWidgets.QMessageBox.warning(self,'Information','Fail to save Power Supply File.',QtWidgets.QMessageBox.Ok) 
         except:
             return
         
-    def load_PowerSupply(self):
+    def load_PowerSupply(self, secondary=False):
         """
         load settings of the Power Supply in the interface
         """
         try:
             filename = QtWidgets.QFileDialog.getOpenFileName(self,'Load Power Supply File' , Lib.dir_path, 'Data files (*.dat);;Text files (*.txt)')
-            if Lib.load_PS(filename[0]) == True:
-                self.refresh_PS_settings()
+            if not secondary:
+                _ans = Lib.load_ps(filename[0])
+            else:
+                _ans = Lib.load_ps(filename[0], secondary=True)
+            if _ans == True:
+                if not secondary:
+                    self.refresh_ps_settings()
+                else:
+                    self.refresh_ps_settings_2()
                 QtWidgets.QMessageBox.information(self,'Information','Power Supply File loaded.',QtWidgets.QMessageBox.Ok)
                 #self.ui.tabWidget_2.setEnabled(True)
                 #self.ui.tabWidget_3.setEnabled(True)
@@ -1159,14 +1281,14 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         #try:
         Lib.comm.display.readdisplay_ND780()
         time.sleep(0.3)
-        _Disp_pos = Lib.comm.display.DisplayPos
-        print(_Disp_pos)
-        Lib.vars.ref_encoder_A = _Disp_pos[0] 
-        Lib.vars.ref_encoder_B = _Disp_pos[1]
-        if self.ui.chb_disable_alignment_interlock.isChecked():
+        _disp_pos = Lib.comm.display.DisplayPos
+        print(_disp_pos)
+        Lib.write_value(Lib.aux_settings, 'ref_encoder_A', _disp_pos[0])
+        Lib.write_value(Lib.aux_settings, 'ref_encoder_B', _disp_pos[1])
+        if Lib.get_value(Lib.data_settings, 'disable_alignment_interlock', int):
             return True
         else:
-            if (abs(Lib.vars.ref_encoder_A)>0.005) or (abs(Lib.vars.ref_encoder_B)>0.005):
+            if (abs(Lib.get_value(Lib.aux_settings, 'ref_encoder_A', float))>0.005) or (abs(Lib.get_value(Lib.aux_settings, 'ref_encoder_B', float))>0.005):
                 QtWidgets.QMessageBox.warning(self, 'Attention', 'Fix the transversal encoders', QtWidgets.QMessageBox.Ok)
                 return False
             else:
@@ -1264,17 +1386,22 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         else:
             way = 1
         #Rotation resolution
-        rotation_motor_resolution = Lib.get_value(Lib.data_settings,'rotation_motor_resolution',int)
+        _rotation_motor_resolution = Lib.get_value(Lib.data_settings,'rotation_motor_resolution',int)
         
         #Direction
-        clockwise_index = self.ui.cb_coil_rotation_direction.currentIndex()        
-        
-        _steps = int(rotation_motor_resolution*abs(shift)/pulse_encoder)  #/10000
-        Lib.comm.parker.conf_motor(address_motor,rotation_motor_resolution,velocity,acceleration,_steps,clockwise_index,mode=0)
+        try:
+            if Lib.get_value(Lib.measurement_settings, 'coil_rotation_direction', str) == 'Clockwise':
+                _direction = 0
+            else:
+                _direction = 1
+        except:
+            _direction = self.ui.cb_coil_rotation_direction.currentIndex()        
+
+        _steps = int(_rotation_motor_resolution*abs(shift)/pulse_encoder)  #/10000
+        Lib.comm.parker.conf_motor(address_motor,_rotation_motor_resolution,velocity,acceleration,_steps,_direction,mode=0)
         Lib.comm.parker.conf_mode(address_motor,0,way)
         Lib.comm.parker.movemotor(address_motor)
-        
-        
+
     def multipoles_normalization(self): # Ok
         """
         """
@@ -1325,7 +1452,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             # self.dialog.ui.cb_operator
             # self.dialog.ui.le_date
             #=======================================================================
-            
+            if Lib.get_value(Lib.aux_settings, 'status_ps_2', int):
+                self.dialog.cb_trim_coil_type.setEnabled(True)
             self.dialog.ui.bB_ok_cancel.accepted.connect(self.ok_popup)
             self.dialog.ui.bB_ok_cancel.rejected.connect(self.cancel_popup)        
             self.dialog.exec_()
@@ -1334,6 +1462,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         
     def ok_popup(self):
         Lib.measurement_df()
+        if Lib.get_value(Lib.aux_settings, 'status_ps_2', int):
+            Lib.write_value(Lib.measurement_settings, 'trim_coil_type', self.dialog.cb_trim_coil_type.currentIndex())
         self.dialog.done(1)
         self.start_meas()
     
@@ -1461,7 +1591,13 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
         _n_encoder_pulses = int(Lib.get_value(Lib.data_settings, 'n_encoder_pulses', float)/4)
         _gain =  Lib.get_value(Lib.data_settings, 'integrator_gain', int)
-        _direction = self.ui.cb_coil_rotation_direction.currentIndex()
+        try:
+            if Lib.get_value(Lib.measurement_settings, 'coil_rotation_direction', str) == 'Clockwise':
+                _direction = 0
+            else:
+                _direction = 1
+        except:
+            _direction = self.ui.cb_coil_rotation_direction.currentIndex()
         _trigger_ref = Lib.get_value(Lib.coil_settings, 'trigger_ref', int)
         _n_integration_points = Lib.get_value(Lib.data_settings, 'n_integration_points', int)
         _total_n_of_points = _n_integration_points * _n_of_turns
@@ -1471,6 +1607,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
     def measure_and_read(self): # Ok
         """
         """
+        #if it is a series of measurements, starts monitor thread
+        if self.ui.chb_seriesofmeas.isChecked():
+            _thread = threading.Thread(target=self.monitor_thread, name='Monitor Thread')
+            _thread.start()
+        
         # start measurement
         Lib.comm.fdi.start_measurement()
         
@@ -1554,14 +1695,13 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         for i in range(self.ui.cb_ps_port.count()):
             self.ui.cb_ps_port.removeItem(0)
         self.ui.cb_ps_port.addItems(self.ports)
-        
+    
         # Connection Tab 
         self.ui.cb_display_type.setCurrentIndex(Lib.get_value(Lib.data_settings,'display_type',int))
         self.ui.cb_disp_port.setCurrentText(Lib.get_value(Lib.data_settings,'disp_port',str))
         self.ui.cb_driver_port.setCurrentText(Lib.get_value(Lib.data_settings,'driver_port',str))
         self.ui.cb_integrator_port.setCurrentText(Lib.get_value(Lib.data_settings,'integrator_port',str))
         self.ui.cb_ps_port.setCurrentText(Lib.get_value(Lib.data_settings,'ps_port',str))
-        #self.ui.sb_ps_address.setValue(Lib.get_value(Lib.data_settings,'ps_address',int))
          
         self.ui.chb_enable_Agilent33220A.setChecked(Lib.get_value(Lib.data_settings,'enable_Agilent33220A',int))
         self.ui.sb_agilent33220A_address.setValue(Lib.get_value(Lib.data_settings,'agilent33220A_address',int))
@@ -1615,7 +1755,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         Lib.write_value(Lib.data_settings,'driver_port',self.ui.cb_driver_port.currentText())
         Lib.write_value(Lib.data_settings,'integrator_port',self.ui.cb_integrator_port.currentText())
         Lib.write_value(Lib.data_settings,'ps_port',self.ui.cb_ps_port.currentText())
-        Lib.write_value(Lib.data_settings,'ps_address',self.ui.sb_ps_address.value())
 
         Lib.write_value(Lib.data_settings,'enable_Agilent33220A',self.ui.chb_enable_Agilent33220A.checkState())
         Lib.write_value(Lib.data_settings,'agilent33220A_address',self.ui.sb_agilent33220A_address.value())
@@ -1686,91 +1825,146 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         Lib.write_value(Lib.coil_settings,'coil_type',self.ui.cb_coil_type.currentText())
         Lib.write_value(Lib.coil_settings,'comments',self.ui.te_comments.toPlainText())
         
-    def refresh_PS_settings(self):
+    def refresh_ps_settings(self):
         """
         When connected "Load Power Supply", refresh interface with values of the database 
         """
         #Power Supply Tab
         #Configuration
-        self.ui.le_PS_type.setText(Lib.get_value(Lib.PS_settings,'Power Supply Type',str))
-        self.ui.le_PS_Name.setText(Lib.get_value(Lib.PS_settings,'Power Supply Name',str))
+        self.ui.cb_ps_type.setCurrentIndex()(Lib.get_value(Lib.ps_settings,'Power Supply Type',int)-2)
+        self.ui.le_PS_Name.setText(Lib.get_value(Lib.ps_settings,'Power Supply Name',str))
         #Current Adjustment
-        self.ui.dsb_current_setpoint.setValue(Lib.get_value(Lib.PS_settings,'Current Setpoint',float))
-        self.ui.dsb_Amplitude_Linear.setValue(Lib.get_value(Lib.PS_settings,'Amplitude Step',float))
-        self.ui.dsb_Time_Linear.setValue(Lib.get_value(Lib.PS_settings,'Delay/Step',float))
+        self.ui.dsb_current_setpoint.setValue(Lib.get_value(Lib.ps_settings,'Current Setpoint',float))
+        self.ui.dsb_Amplitude_Linear.setValue(Lib.get_value(Lib.ps_settings,'Amplitude Step',float))
+        self.ui.dsb_Time_Linear.setValue(Lib.get_value(Lib.ps_settings,'Delay/Step',float))
         self.keep_auto_values()
         #Demagnetization Curves
         #Sinusoidal
-        self.ui.le_Sinusoidal_Amplitude.setText(Lib.get_value(Lib.PS_settings,'Sinusoidal Amplitude (App)',str))
-        self.ui.le_Sinusoidal_Offset.setText(Lib.get_value(Lib.PS_settings,'Sinusoidal Offset',str))
-        self.ui.le_Sinusoidal_Frequency.setText(Lib.get_value(Lib.PS_settings,'Sinusoidal Frequency',str))
-        self.ui.le_Sinusoidal_n_cicles.setText(Lib.get_value(Lib.PS_settings,'Sinusoidal N Cicles',str))
-        self.ui.le_Initial_Phase.setText(Lib.get_value(Lib.PS_settings,'Sinusoidal Initial Phase',str))
-        self.ui.le_Final_Phase.setText(Lib.get_value(Lib.PS_settings,'Sinusoidal Final Phase',str))
-        #Cushioned Sinusoidal
-        self.ui.le_cush_sin_Ampl.setText(Lib.get_value(Lib.PS_settings,'Cushioned Sinusoidal Amplitude',str))
-        self.ui.le_cush_sin_Offset.setText(Lib.get_value(Lib.PS_settings,'Cushioned Sinusoidal Offset',str))
-        self.ui.le_cush_sin_Freq.setText(Lib.get_value(Lib.PS_settings,'Cushioned Sinusoidal Frequency',str))
-        self.ui.le_cush_sin_nCicles.setText(Lib.get_value(Lib.PS_settings,'Cushioned Sinusoidal N Cicles',str))
-        self.ui.le_cush_sin_phaseShift.setText(Lib.get_value(Lib.PS_settings,'Cushioned Sinusoidal Phase Shift',str))
-        self.ui.le_cush_sin_finalPhase.setText(Lib.get_value(Lib.PS_settings,'Cushioned Sinusoidal Final Phase',str))
-        self.ui.le_cush_sin_Damping.setText(Lib.get_value(Lib.PS_settings,'Cushioned Sinusoidal Damping',str))
+        self.ui.le_Sinusoidal_Amplitude.setText(Lib.get_value(Lib.ps_settings,'Sinusoidal Amplitude',str))
+        self.ui.le_Sinusoidal_Offset.setText(Lib.get_value(Lib.ps_settings,'Sinusoidal Offset',str))
+        self.ui.le_Sinusoidal_Frequency.setText(Lib.get_value(Lib.ps_settings,'Sinusoidal Frequency',str))
+        self.ui.le_Sinusoidal_n_cycles.setText(Lib.get_value(Lib.ps_settings,'Sinusoidal N cycles',str))
+        self.ui.le_Initial_Phase.setText(Lib.get_value(Lib.ps_settings,'Sinusoidal Initial Phase',str))
+        self.ui.le_Final_Phase.setText(Lib.get_value(Lib.ps_settings,'Sinusoidal Final Phase',str))
+        #Damped Sinusoidal
+        self.ui.le_damp_sin_Ampl.setText(Lib.get_value(Lib.ps_settings,'Damped Sinusoidal Amplitude',str))
+        self.ui.le_damp_sin_Offset.setText(Lib.get_value(Lib.ps_settings,'Damped Sinusoidal Offset',str))
+        self.ui.le_damp_sin_Freq.setText(Lib.get_value(Lib.ps_settings,'Damped Sinusoidal Frequency',str))
+        self.ui.le_damp_sin_ncycles.setText(Lib.get_value(Lib.ps_settings,'Damped Sinusoidal N cycles',str))
+        self.ui.le_damp_sin_phaseShift.setText(Lib.get_value(Lib.ps_settings,'Damped Sinusoidal Phase Shift',str))
+        self.ui.le_damp_sin_finalPhase.setText(Lib.get_value(Lib.ps_settings,'Damped Sinusoidal Final Phase',str))
+        self.ui.le_damp_sin_Damping.setText(Lib.get_value(Lib.ps_settings,'Damped Sinusoidal Damping',str))
         #Triangular Softened
-        self.ui.le_softened_Ampl.setText(Lib.get_value(Lib.PS_settings,'Triangular Softened Amplitude',str))
-        self.ui.le_softened_Offset.setText(Lib.get_value(Lib.PS_settings,'Triangular Softened Offset',str))
-        self.ui.le_softened_Freq.setText(Lib.get_value(Lib.PS_settings,'Triangular Softened Frequency',str))
-        self.ui.le_softened_nCicles.setText(Lib.get_value(Lib.PS_settings,'Triangular Softened N Cicles',str))
-        self.ui.le_softened_phaseShift.setText(Lib.get_value(Lib.PS_settings,'Triangular Softened Phase Shift',str))
-        self.ui.le_softened_finalPhase.setText(Lib.get_value(Lib.PS_settings,'Triangular Softened Phase',str))
+        self.ui.le_softened_Ampl.setText(Lib.get_value(Lib.ps_settings,'Triangular Softened Amplitude',str))
+        self.ui.le_softened_Offset.setText(Lib.get_value(Lib.ps_settings,'Triangular Softened Offset',str))
+        self.ui.le_softened_Freq.setText(Lib.get_value(Lib.ps_settings,'Triangular Softened Frequency',str))
+        self.ui.le_softened_ncycles.setText(Lib.get_value(Lib.ps_settings,'Triangular Softened N cycles',str))
+        self.ui.le_softened_phaseShift.setText(Lib.get_value(Lib.ps_settings,'Triangular Softened Phase Shift',str))
+        self.ui.le_softened_finalPhase.setText(Lib.get_value(Lib.ps_settings,'Triangular Softened Phase',str))
         #Settings
-        self.ui.le_maximum_current.setText(Lib.get_value(Lib.PS_settings,'Maximum Current',str))
-        self.ui.le_minimum_current.setText(Lib.get_value(Lib.PS_settings,'Minimum Current',str))
-        self.ui.sb_kp.setValue(Lib.get_value(Lib.PS_settings,'Kp',float))
-        self.ui.sb_ki.setValue(Lib.get_value(Lib.PS_settings,'Ki',float))
+        self.ui.le_maximum_current.setText(Lib.get_value(Lib.ps_settings,'Maximum Current',str))
+        self.ui.le_minimum_current.setText(Lib.get_value(Lib.ps_settings,'Minimum Current',str))
+        self.ui.sb_kp.setValue(Lib.get_value(Lib.ps_settings,'Kp',float))
+        self.ui.sb_ki.setValue(Lib.get_value(Lib.ps_settings,'Ki',float))
         
         
-    def config_PS(self):
+    def config_ps(self):
         """
         Write variables with interface values for new features
         """
         # Power Supply Tab
-        Lib.write_value(Lib.PS_settings,'Power Supply Name',self.ui.le_PS_Name.text())
-        Lib.write_value(Lib.PS_settings,'Power Supply Type', self.ui.le_PS_type.text())
-        Lib.write_value(Lib.PS_settings,'Current Setpoint',self.ui.dsb_current_setpoint.text())
-        Lib.write_value(Lib.PS_settings,'Amplitude Step',self.ui.dsb_Amplitude_Linear.text())
-        Lib.write_value(Lib.PS_settings,'Delay/Step',self.ui.dsb_Time_Linear.text())
-        Lib.write_value(Lib.PS_settings,'Sinusoidal Amplitude (App)',self.ui.le_Sinusoidal_Amplitude.text())
-        Lib.write_value(Lib.PS_settings,'Sinusoidal Offset',self.ui.le_Sinusoidal_Offset.text())
-        Lib.write_value(Lib.PS_settings,'Sinusoidal Frequency',self.ui.le_Sinusoidal_Frequency.text())
-        Lib.write_value(Lib.PS_settings,'Sinusoidal N Cicles',self.ui.le_Sinusoidal_n_cicles.text())
-        Lib.write_value(Lib.PS_settings,'Sinusoidal Initial Phase',self.ui.le_Initial_Phase.text())
-        Lib.write_value(Lib.PS_settings,'Sinusoidal Final Phase', self.ui.le_Final_Phase.text())
-        #Cushioned Sinusoidal
-        Lib.write_value(Lib.PS_settings,'Cushioned Sinusoidal Amplitude',self.ui.le_cush_sin_Ampl.text())
-        Lib.write_value(Lib.PS_settings,'Cushioned Sinusoidal Offset',self.ui.le_cush_sin_Offset.text())
-        Lib.write_value(Lib.PS_settings,'Cushioned Sinusoidal Frequency',self.ui.le_cush_sin_Freq.text())
-        Lib.write_value(Lib.PS_settings,'Cushioned Sinusoidal N Cicles',self.ui.le_cush_sin_nCicles.text())
-        Lib.write_value(Lib.PS_settings,'Cushioned Sinusoidal Phase Shift',self.ui.le_cush_sin_phaseShift.text())
-        Lib.write_value(Lib.PS_settings,'Cushioned Sinusoidal Final Phase',self.ui.le_cush_sin_finalPhase.text())
-        Lib.write_value(Lib.PS_settings,'Cushioned Sinusoidal Damping',self.ui.le_cush_sin_Damping.text())
+        Lib.write_value(Lib.ps_settings,'Power Supply Name',self.ui.le_PS_Name.text())
+        Lib.write_value(Lib.ps_settings,'Power Supply Type', self.ui.cb_ps_type.currentIndex()+2)
+        Lib.write_value(Lib.ps_settings,'Current Setpoint',self.ui.dsb_current_setpoint.value())
+        Lib.write_value(Lib.ps_settings,'Amplitude Step',self.ui.dsb_Amplitude_Linear.value())
+        Lib.write_value(Lib.ps_settings,'Delay/Step',self.ui.dsb_Time_Linear.value())
+        Lib.write_value(Lib.ps_settings,'Sinusoidal Amplitude',self.ui.le_Sinusoidal_Amplitude.text())
+        Lib.write_value(Lib.ps_settings,'Sinusoidal Offset',self.ui.le_Sinusoidal_Offset.text())
+        Lib.write_value(Lib.ps_settings,'Sinusoidal Frequency',self.ui.le_Sinusoidal_Frequency.text())
+        Lib.write_value(Lib.ps_settings,'Sinusoidal N cycles',self.ui.le_Sinusoidal_n_cycles.text())
+        Lib.write_value(Lib.ps_settings,'Sinusoidal Initial Phase',self.ui.le_Initial_Phase.text())
+        Lib.write_value(Lib.ps_settings,'Sinusoidal Final Phase', self.ui.le_Final_Phase.text())
+        #Damped Sinusoidal
+        Lib.write_value(Lib.ps_settings,'Damped Sinusoidal Amplitude',self.ui.le_damp_sin_Ampl.text())
+        Lib.write_value(Lib.ps_settings,'Damped Sinusoidal Offset',self.ui.le_damp_sin_Offset.text())
+        Lib.write_value(Lib.ps_settings,'Damped Sinusoidal Frequency',self.ui.le_damp_sin_Freq.text())
+        Lib.write_value(Lib.ps_settings,'Damped Sinusoidal N cycles',self.ui.le_damp_sin_ncycles.text())
+        Lib.write_value(Lib.ps_settings,'Damped Sinusoidal Phase Shift',self.ui.le_damp_sin_phaseShift.text())
+        Lib.write_value(Lib.ps_settings,'Damped Sinusoidal Final Phase',self.ui.le_damp_sin_finalPhase.text())
+        Lib.write_value(Lib.ps_settings,'Damped Sinusoidal Damping',self.ui.le_damp_sin_Damping.text())
         #Triangular Softened
-        Lib.write_value(Lib.PS_settings,'Triangular Softened Amplitude',self.ui.le_softened_Ampl.text())
-        Lib.write_value(Lib.PS_settings,'Triangular Softened Offset',self.ui.le_softened_Offset.text())
-        Lib.write_value(Lib.PS_settings,'Triangular Softened Frequency',self.ui.le_softened_Freq.text())
-        Lib.write_value(Lib.PS_settings,'Triangular Softened N Cicles',self.ui.le_softened_nCicles.text())
-        Lib.write_value(Lib.PS_settings,'Triangular Softened Phase Shift',self.ui.le_softened_phaseShift.text())
-        Lib.write_value(Lib.PS_settings,'Triangular Softened Phase',self.ui.le_softened_finalPhase.text())
+        Lib.write_value(Lib.ps_settings,'Triangular Softened Amplitude',self.ui.le_softened_Ampl.text())
+        Lib.write_value(Lib.ps_settings,'Triangular Softened Offset',self.ui.le_softened_Offset.text())
+        Lib.write_value(Lib.ps_settings,'Triangular Softened Frequency',self.ui.le_softened_Freq.text())
+        Lib.write_value(Lib.ps_settings,'Triangular Softened N cycles',self.ui.le_softened_ncycles.text())
+        Lib.write_value(Lib.ps_settings,'Triangular Softened Phase Shift',self.ui.le_softened_phaseShift.text())
+        Lib.write_value(Lib.ps_settings,'Triangular Softened Phase',self.ui.le_softened_finalPhase.text())
         #Automatic setpoints
-        #Lib.write_value(Lib.PS_settings,'Automatic Setpoints',self.ui.le_Auto_Set.text()) # Need revision
+        #Lib.write_value(Lib.ps_settings,'Automatic Setpoints',self.ui.le_Auto_Set.text()) # Need revision
         #Settings
-        Lib.write_value(Lib.PS_settings,'Maximum Current',self.ui.le_maximum_current.text())
-        Lib.write_value(Lib.PS_settings,'Minimum Current',self.ui.le_minimum_current.text())
-        Lib.write_value(Lib.PS_settings,'Kp',self.ui.sb_kp.text())
-        Lib.write_value(Lib.PS_settings,'Ki',self.ui.sb_ki.text())      
+        Lib.write_value(Lib.ps_settings,'Maximum Current',self.ui.le_maximum_current.text())
+        Lib.write_value(Lib.ps_settings,'Minimum Current',self.ui.le_minimum_current.text())
+        Lib.write_value(Lib.ps_settings,'Kp',self.ui.sb_kp.text())
+        Lib.write_value(Lib.ps_settings,'Ki',self.ui.sb_ki.text())    
         
-    def keep_auto_values(self):
+    def refresh_ps_settings_2(self):
+        """
+        When connected "Load Power Supply", refresh interface with values of the database 
+        """
+        #Power Supply Tab
+        #Configuration
+        self.ui.cb_ps_type_2.setCurrentIndex()(Lib.get_value(Lib.ps_settings_2,'Power Supply Type',int)-4)
+        self.ui.le_PS_Name_2.setText(Lib.get_value(Lib.ps_settings_2,'Power Supply Name',str))
+        #Current Adjustment
+        self.ui.dsb_current_setpoint_2.setValue(Lib.get_value(Lib.ps_settings_2,'Current Setpoint',float))
+        self.ui.dsb_Amplitude_Linear_2.setValue(Lib.get_value(Lib.ps_settings_2,'Amplitude Step',float))
+        self.ui.dsb_Time_Linear_2.setValue(Lib.get_value(Lib.ps_settings_2,'Delay/Step',float))
+        self.keep_auto_values(secondary=True)
+        #Demagnetization Curves
+        #Damped Sinusoidal
+        self.ui.le_damp_sin_Ampl_2.setText(Lib.get_value(Lib.ps_settings_2,'Damped Sinusoidal Amplitude',str))
+        self.ui.le_damp_sin_Offset_2.setText(Lib.get_value(Lib.ps_settings_2,'Damped Sinusoidal Offset',str))
+        self.ui.le_damp_sin_Freq_2.setText(Lib.get_value(Lib.ps_settings_2,'Damped Sinusoidal Frequency',str))
+        self.ui.le_damp_sin_ncycles_2.setText(Lib.get_value(Lib.ps_settings_2,'Damped Sinusoidal N cycles',str))
+        self.ui.le_damp_sin_phaseShift_2.setText(Lib.get_value(Lib.ps_settings_2,'Damped Sinusoidal Phase Shift',str))
+        self.ui.le_damp_sin_finalPhase_2.setText(Lib.get_value(Lib.ps_settings_2,'Damped Sinusoidal Final Phase',str))
+        self.ui.le_damp_sin_Damping_2.setText(Lib.get_value(Lib.ps_settings_2,'Damped Sinusoidal Damping',str))
+        #Settings
+        self.ui.le_maximum_current_2.setText(Lib.get_value(Lib.ps_settings_2,'Maximum Current',str))
+        self.ui.le_minimum_current_2.setText(Lib.get_value(Lib.ps_settings_2,'Minimum Current',str))
+        
+    def config_ps_2(self):
+        """
+        Write variables with interface values for new features
+        """
+        # Power Supply Tab
+        Lib.write_value(Lib.ps_settings_2,'Power Supply Name',self.ui.le_PS_Name_2.text())
+        Lib.write_value(Lib.ps_settings_2,'Power Supply Type', self.ui.cb_ps_type_2.currentIndex()+4)
+        Lib.write_value(Lib.ps_settings_2,'Current Setpoint',self.ui.dsb_current_setpoint_2.value())
+        Lib.write_value(Lib.ps_settings_2,'Amplitude Step',self.ui.dsb_Amplitude_Linear_2.value())
+        Lib.write_value(Lib.ps_settings_2,'Delay/Step',self.ui.dsb_Time_Linear_2.value())
+        #Damped Sinusoidal
+        Lib.write_value(Lib.ps_settings_2,'Damped Sinusoidal Amplitude',self.ui.le_damp_sin_Ampl_2.text())
+        Lib.write_value(Lib.ps_settings_2,'Damped Sinusoidal Offset',self.ui.le_damp_sin_Offset_2.text())
+        Lib.write_value(Lib.ps_settings_2,'Damped Sinusoidal Frequency',self.ui.le_damp_sin_Freq_2.text())
+        Lib.write_value(Lib.ps_settings_2,'Damped Sinusoidal N cycles',self.ui.le_damp_sin_ncycles_2.text())
+        Lib.write_value(Lib.ps_settings_2,'Damped Sinusoidal Phase Shift',self.ui.le_damp_sin_phaseShift_2.text())
+        Lib.write_value(Lib.ps_settings_2,'Damped Sinusoidal Final Phase',self.ui.le_damp_sin_finalPhase_2.text())
+        Lib.write_value(Lib.ps_settings_2,'Damped Sinusoidal Damping',self.ui.le_damp_sin_Damping_2.text())
+        #Automatic setpoints
+        #Lib.write_value(Lib.ps_settings,'Automatic Setpoints',self.ui.le_Auto_Set.text()) # Need revision
+        #Settings
+        Lib.write_value(Lib.ps_settings_2,'Maximum Current',self.ui.le_maximum_current_2.text())
+        Lib.write_value(Lib.ps_settings_2,'Minimum Current',self.ui.le_minimum_current_2.text())
+        #Aux settings
+#         Lib.write_value(Lib.aux_settings, 'trim_coil_type', self.ui.cb_trim_coil_type.currentIndex())
+
+    def keep_auto_values(self, secondary=False):
         try:
-            auto = Lib.get_value(Lib.PS_settings,'Automatic Setpoints')
+            if not secondary:
+                auto = Lib.get_value(Lib.ps_settings,'Automatic Setpoints')
+            else:
+                auto = Lib.get_value(Lib.ps_settings_2,'Automatic Setpoints')
             dataset_list=''.join(auto)
             dataset_array = []
             for item in dataset_list.split(','):
@@ -1789,8 +1983,12 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         
     
     def add_rows(self):
-        rowPosition = self.ui.tw_auto_set.rowCount()-2
-        self.ui.tw_auto_set.insertRow(rowPosition)
+        _rowPosition = self.ui.tw_auto_set.rowCount()-2
+        self.ui.tw_auto_set.insertRow(_rowPosition)
+        
+    def add_rows_2(self):
+        _rowPosition = self.ui.tw_auto_set_2.rowCount()-2
+        self.ui.tw_auto_set_2.insertRow(_rowPosition)
         
         
     def fill_multipole_table(self): # Ok
@@ -1824,30 +2022,111 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             item = QtWidgets.QTableWidgetItem()
             table.setItem(row, col, item)
             item.setText(str(val))
+
+    def emergency(self):
+        """Function stops motor, integrador and power supplies in case of emergency
+        """
+        Lib.flags.stop_all = True
+        _secondary_flag = Lib.get_value(Lib.ps_settings_2, 'ps_status_2', int)
+        _ps_type = Lib.get_value(Lib.ps_settings, 'Power Supply Type', int)
+        if _secondary_flag:
+            _ps_type_2 = Lib.get_value(Lib.ps_settings_2, 'Power Supply Type', int)
+            
+        #stops motor
+        self.stop_motor()
+        #stops integrator
+        Lib.comm.fdi.send(Lib.comm.fdi.PDIStop)
         
+        #Turn off main power supply
+        Lib.comm.drs.SetSlaveAdd(_ps_type)
+        Lib.comm.drs.OpMode(0)
+        Lib.comm.drs.SetISlowRef(0)
+        Lib.comm.drs.TurnOff()
+        if Lib.comm.drs.Read_ps_OnOff() == 0:
+            Lib.write_value(Lib.aux_settings, 'status_ps', 0)
+            Lib.write_value(Lib.aux_settings, 'actual_current', 0)
+            self.ui.pb_PS_button.setText('Power Off')
+        time.sleep(.1)
+        #Turn off secondary power supply
+        if _secondary_flag:
+            Lib.comm.drs.SetSlaveAdd(_ps_type_2)
+            Lib.comm.drs.OpMode(0)
+            Lib.comm.drs.SetISlowRef(0)
+            Lib.comm.drs.TurnOff()
+            if Lib.comm.drs.Read_ps_OnOff() == 0:
+                Lib.write_value(Lib.aux_settings, 'status_ps_2', 0)
+                Lib.write_value(Lib.aux_settings, 'actual_current_2', 0)
+                self.ui.pb_PS_button_2.setText('Power Off')
+                
+        QtWidgets.QMessageBox.critical(self,'Warning','Emergency situation. \nMotor and Integrator are stopped, power supply(ies) turned off.',QtWidgets.QMessageBox.Ok)
+
     def monitor_thread(self):
         """Function to generate a thread which monitors power supply 
-        currents and interlocks, as well as emergency button pressed"""
-        pass
-        #check emergency pressed (Lib.stop_all flag?), if positive,
-        #cut power supply, stop motors, abort integrator, send warning
-        
-        #check interlock if chb_disable_ps_interlock not checked
-        
-        #monitor main coil current
-        
-        #monitor ch coil current
-        
-        #monitor cv coil current
-        
-        #monitor qs coil current
-        
-        #monitor trim coil current
-        
-        #monitor main coil volt (dcct)
-        
-        #calc magnet resistence
-        
+        currents and interlocks"""
+        #check interlock if disable_ps_interlock not checked
+        _disable_interlock = Lib.get_value(Lib.data_settings, 'disable_ps_interlock', int)
+        _secondary_flag = Lib.get_value(Lib.ps_settings_2, 'ps_status_2', int)
+        _voltage_flag = self.ui.chb_voltage.isChecked()
+        _ps_type = Lib.get_value(Lib.ps_settings, 'Power Supply Type', int)
+        _velocity = Lib.get_value(Lib.data_settings,'rotation_motor_speed', float)
+        if _secondary_flag:
+            _ps_type_2 = Lib.get_value(Lib.ps_settings_2, 'Power Supply Type', int)
+        _n_collections = Lib.get_value(Lib.measurement_df, 'n_collections', int)
+        for i in range(_n_collections):
+            _t = time.time()
+            
+            #monitor main coil current and interlocks
+            Lib.comm.drs.SetSlaveAdd(_ps_type)
+            if not _disable_interlock:
+                _soft_interlock = Lib.comm.drs.Read_ps_SoftInterlocks()
+    #             time.sleep(0.1)
+                _hard_interlock = Lib.comm.drs.Read_ps_HardInterlocks()
+    #             time.sleep(0.1)
+            _current = round(float(Lib.comm.drs.Read_iLoad1()),3)
+            _i = Lib.get_value(Lib.aux_settings, 'main_current_array')
+            _i = _i.append([_current], ignore_index=True)
+            Lib.write_value(Lib.aux_settings, 'main_current_array', _i)        
+            
+            #monitor secondary coil current  and interlocks if exists
+            if _secondary_flag:
+                Lib.comm.drs.SetSlaveAdd(_ps_type_2)
+                if not _disable_interlock:
+                    _soft_interlock_2 = Lib.comm.drs.Read_ps_SoftInterlocks()
+    #                 time.sleep(0.1)
+                    _hard_interlock_2 = Lib.comm.drs.Read_ps_HardInterlocks()
+    #                 time.sleep(0.1)
+                _current_2 = round(float(Lib.comm.drs.Read_iLoad1()),3)
+                _i_2 = Lib.get_value(Lib.aux_settings, 'secondary_current_array')
+                _i_2 = _i_2.append([_current_2], ignore_index=True)
+                Lib.write_value(Lib.aux_settings, 'secondary_current_array', _i_2)
+              
+            #monitor main coil voltage / magnet resistance (dcct)
+            if _voltage_flag: #voltage read from 34401A multimeter
+                _voltage = Lib.comm.agilent34401a.collect().split(',')
+                if len(_voltage) >= 1:
+                    _voltage = float(_voltage[-1])
+                else:
+                    _voltage = 0.
+                _v = Lib.get_value(Lib.aux_settings, 'main_voltage_array')
+                _v = _v.append([_voltage], ignore_index=True)
+                Lib.write_value(Lib.aux_settings, 'main_voltage_array', _v)
+                #calc magnet resistence
+                _i_avg = _i.mean[0]
+                _i_std = _i.std[0]
+                _v_avg = _v.mean[0]
+                _v_std = _v.std[0]
+                _r = _v_avg / _i_avg
+                _r_std = (1/_i_avg) * np.sqrt(_v_std**2 + (_v_avg**2/_i_avg**2) * _i_std**2)
+                Lib.write_value(Lib.aux_settings, 'magnet_resistance_avg', _r)
+                Lib.write_value(Lib.aux_settings, 'magnet_resistance_std', _r_std)
+            
+            #in case of interlock or emergency, cuts off power supply, stop motors, abort integrator, send warning
+            _interlock = _soft_interlock + _soft_interlock_2 + _hard_interlock + _hard_interlock_2
+            if _interlock or Lib.flags.stop_all:
+                self.emergency()
+            _t = (1/_velocity - 0.01) - (time.time()-_t)
+            if _t > 0: 
+                time.sleep(_t)
 #===============================================================================
 # class main(object):
 #     def __init__(self):

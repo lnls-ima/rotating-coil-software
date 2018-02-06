@@ -2924,7 +2924,7 @@ p, li { white-space: pre-wrap; }
       </property>
       <widget class="QTabWidget" name="tabWidget_2">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="geometry">
         <rect>
@@ -2935,7 +2935,7 @@ p, li { white-space: pre-wrap; }
         </rect>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <property name="iconSize">
         <size>
@@ -2947,537 +2947,487 @@ p, li { white-space: pre-wrap; }
         <attribute name="title">
          <string>Options</string>
         </attribute>
-        <widget class="QLineEdit" name="le_PS_type">
-         <property name="geometry">
-          <rect>
-           <x>110</x>
-           <y>50</y>
-           <width>101</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="frame">
+        <widget class="QTextBrowser" name="textBrowser">
+         <property name="enabled">
           <bool>false</bool>
          </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_35">
          <property name="geometry">
           <rect>
-           <x>70</x>
-           <y>40</y>
-           <width>31</width>
-           <height>41</height>
+           <x>340</x>
+           <y>200</y>
+           <width>361</width>
+           <height>192</height>
           </rect>
          </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>PS:</string>
+         <property name="html">
+          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Warning: each power supply has an unique fixed address, one must always remember to configure them after replacing or resetting an power supply in order for this software to work. The addresses are the following:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;1: 1000A capacitor bank&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;2: 1000A Power Supply&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;3: 225A Power Supply&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;4: 10A [1] Power Supply&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;5: 10A [2] Power Supply&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;6: 10A [3] Power Supply&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
         </widget>
-        <widget class="QLabel" name="label_137">
+        <widget class="QGroupBox" name="groupBox_24">
          <property name="geometry">
           <rect>
-           <x>-20</x>
-           <y>80</y>
-           <width>113</width>
-           <height>16</height>
+           <x>40</x>
+           <y>30</y>
+           <width>251</width>
+           <height>161</height>
           </rect>
          </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
+         <property name="title">
+          <string>General Settings</string>
          </property>
-         <property name="text">
-          <string>Hard Interlock:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
+         <widget class="QPushButton" name="pb_reset_inter">
+          <property name="geometry">
+           <rect>
+            <x>60</x>
+            <y>120</y>
+            <width>101</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Reset Interlocks</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="pb_Soft_interlock">
+          <property name="geometry">
+           <rect>
+            <x>160</x>
+            <y>90</y>
+            <width>21</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="resource_file.qrc">
+            <normaloff>:/Images/imagens/LEDverde.png</normaloff>
+            <normalon>:/Images/imagens/LEDvermelho.png</normalon>:/Images/imagens/LEDverde.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>20</width>
+            <height>61</height>
+           </size>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_35">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>20</y>
+            <width>121</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Power Supply Type:</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="pb_Hard_interlock">
+          <property name="geometry">
+           <rect>
+            <x>160</x>
+            <y>60</y>
+            <width>21</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="resource_file.qrc">
+            <normaloff>:/Images/imagens/LEDverde.png</normaloff>
+            <normalon>:/Images/imagens/LEDvermelho.png</normalon>:/Images/imagens/LEDverde.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>20</width>
+            <height>61</height>
+           </size>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_137">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>60</y>
+            <width>113</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Hard Interlock:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_180">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>88</y>
+            <width>111</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Soft Interlock:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="cb_ps_type">
+          <property name="geometry">
+           <rect>
+            <x>150</x>
+            <y>30</y>
+            <width>81</width>
+            <height>25</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="currentText">
+           <string>1000A</string>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>1000A</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>225A</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>10A[1]</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>10A[2]</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>10A[3]</string>
+           </property>
+          </item>
+         </widget>
         </widget>
-        <widget class="QLabel" name="label_180">
+        <widget class="QGroupBox" name="groupBox_25">
          <property name="geometry">
           <rect>
-           <x>-20</x>
-           <y>108</y>
-           <width>111</width>
-           <height>16</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Soft Interlock:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="pb_Hard_interlock">
-         <property name="geometry">
-          <rect>
-           <x>120</x>
-           <y>80</y>
-           <width>21</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="resource_file.qrc">
-           <normaloff>:/Images/imagens/LEDverde.png</normaloff>
-           <normalon>:/Images/imagens/LEDvermelho.png</normalon>:/Images/imagens/LEDverde.png</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>20</width>
-           <height>61</height>
-          </size>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="pb_Soft_interlock">
-         <property name="geometry">
-          <rect>
-           <x>120</x>
-           <y>110</y>
-           <width>21</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="resource_file.qrc">
-           <normaloff>:/Images/imagens/LEDverde.png</normaloff>
-           <normalon>:/Images/imagens/LEDvermelho.png</normalon>:/Images/imagens/LEDverde.png</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>20</width>
-           <height>61</height>
-          </size>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_98">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>240</y>
-           <width>110</width>
-           <height>16</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>PID Config</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-        <widget class="QDoubleSpinBox" name="sb_kp">
-         <property name="geometry">
-          <rect>
-           <x>60</x>
-           <y>270</y>
-           <width>121</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="decimals">
-          <number>4</number>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_2">
-         <property name="geometry">
-          <rect>
-           <x>20</x>
-           <y>260</y>
-           <width>41</width>
-           <height>41</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Kp:</string>
-         </property>
-        </widget>
-        <widget class="QDoubleSpinBox" name="sb_ki">
-         <property name="geometry">
-          <rect>
-           <x>60</x>
-           <y>310</y>
-           <width>121</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="decimals">
-          <number>4</number>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_5">
-         <property name="geometry">
-          <rect>
-           <x>20</x>
-           <y>300</y>
-           <width>41</width>
-           <height>41</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Ki:</string>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="pb_config_PID">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>350</y>
-           <width>91</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Configure</string>
-         </property>
-         <property name="icon">
-          <iconset resource="resource_file.qrc">
-           <normaloff>:/Images/imagens/configure.png</normaloff>:/Images/imagens/configure.png</iconset>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_184">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>190</y>
-           <width>71</width>
-           <height>20</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>DC Link (V):</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-        <widget class="QSpinBox" name="sb_ps_dclink">
-         <property name="geometry">
-          <rect>
-           <x>110</x>
-           <y>190</y>
-           <width>101</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="maximum">
-          <number>31</number>
-         </property>
-         <property name="value">
-          <number>30</number>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_185">
-         <property name="geometry">
-          <rect>
-           <x>220</x>
-           <y>190</y>
-           <width>51</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>(Default)</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-        <widget class="Line" name="line_8">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
+           <x>40</x>
            <y>220</y>
-           <width>331</width>
-           <height>21</height>
+           <width>251</width>
+           <height>161</height>
           </rect>
          </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+         <property name="title">
+          <string>PID Configuration</string>
          </property>
+         <widget class="QPushButton" name="pb_config_PID">
+          <property name="geometry">
+           <rect>
+            <x>60</x>
+            <y>110</y>
+            <width>121</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Configure PID</string>
+          </property>
+          <property name="icon">
+           <iconset resource="resource_file.qrc">
+            <normaloff>:/Images/imagens/configure.png</normaloff>:/Images/imagens/configure.png</iconset>
+          </property>
+         </widget>
+         <widget class="QDoubleSpinBox" name="sb_ki">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>70</y>
+            <width>121</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="decimals">
+           <number>4</number>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_5">
+          <property name="geometry">
+           <rect>
+            <x>40</x>
+            <y>60</y>
+            <width>41</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Ki:</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_2">
+          <property name="geometry">
+           <rect>
+            <x>40</x>
+            <y>20</y>
+            <width>41</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Kp:</string>
+          </property>
+         </widget>
+         <widget class="QDoubleSpinBox" name="sb_kp">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>30</y>
+            <width>121</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="decimals">
+           <number>4</number>
+          </property>
+         </widget>
         </widget>
-        <widget class="QPushButton" name="pb_reset_inter">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>140</y>
-           <width>101</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Reset Interlocks</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_99">
-         <property name="geometry">
-          <rect>
-           <x>29</x>
-           <y>26</y>
-           <width>111</width>
-           <height>20</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>General Aspects</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_132">
-         <property name="geometry">
-          <rect>
-           <x>615</x>
-           <y>90</y>
-           <width>21</width>
-           <height>41</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>A</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_125">
-         <property name="geometry">
-          <rect>
-           <x>615</x>
-           <y>50</y>
-           <width>21</width>
-           <height>41</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>A</string>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="le_maximum_current">
-         <property name="geometry">
-          <rect>
-           <x>530</x>
-           <y>60</y>
-           <width>81</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_126">
-         <property name="geometry">
-          <rect>
-           <x>380</x>
-           <y>50</y>
-           <width>131</width>
-           <height>41</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Maximum Current</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_133">
+        <widget class="QGroupBox" name="groupBox_27">
          <property name="geometry">
           <rect>
            <x>380</x>
-           <y>90</y>
-           <width>131</width>
-           <height>41</height>
+           <y>30</y>
+           <width>281</width>
+           <height>111</height>
           </rect>
          </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Minimum Current</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="le_minimum_current">
-         <property name="geometry">
-          <rect>
-           <x>530</x>
-           <y>100</y>
-           <width>81</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_101">
-         <property name="geometry">
-          <rect>
-           <x>450</x>
-           <y>20</y>
-           <width>111</width>
-           <height>20</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
+         <property name="title">
           <string>Current Limits</string>
          </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
+         <widget class="QLabel" name="label_133">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>60</y>
+            <width>131</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Minimum Current</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_132">
+          <property name="geometry">
+           <rect>
+            <x>235</x>
+            <y>60</y>
+            <width>21</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>A</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_126">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>20</y>
+            <width>131</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Maximum Current</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="le_maximum_current">
+          <property name="geometry">
+           <rect>
+            <x>150</x>
+            <y>30</y>
+            <width>81</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="le_minimum_current">
+          <property name="geometry">
+           <rect>
+            <x>150</x>
+            <y>70</y>
+            <width>81</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_125">
+          <property name="geometry">
+           <rect>
+            <x>235</x>
+            <y>20</y>
+            <width>21</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>A</string>
+          </property>
+         </widget>
         </widget>
-        <widget class="Line" name="line_9">
+        <widget class="QPushButton" name="pb_config_ps">
          <property name="geometry">
           <rect>
-           <x>343</x>
-           <y>10</y>
-           <width>20</width>
-           <height>401</height>
+           <x>410</x>
+           <y>150</y>
+           <width>221</width>
+           <height>41</height>
           </rect>
          </property>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
+         <property name="text">
+          <string>Configure Power Supply</string>
+         </property>
+         <property name="icon">
+          <iconset resource="resource_file.qrc">
+           <normaloff>:/Images/imagens/settings.png</normaloff>:/Images/imagens/settings.png</iconset>
          </property>
         </widget>
        </widget>
@@ -3652,33 +3602,18 @@ p, li { white-space: pre-wrap; }
          <property name="title">
           <string>Automatic Settings</string>
          </property>
-         <widget class="QCheckBox" name="Hab_Selecao">
-          <property name="geometry">
-           <rect>
-            <x>230</x>
-            <y>280</y>
-            <width>91</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Enable Step</string>
-          </property>
-         </widget>
          <widget class="QTableWidget" name="tw_auto_set">
           <property name="geometry">
            <rect>
-            <x>40</x>
+            <x>70</x>
             <y>30</y>
             <width>151</width>
             <height>251</height>
            </rect>
           </property>
+          <property name="rowCount">
+           <number>6</number>
+          </property>
           <row>
            <property name="text">
             <string/>
@@ -3704,126 +3639,7 @@ p, li { white-space: pre-wrap; }
             <string/>
            </property>
           </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
+          <row/>
           <column>
            <property name="text">
             <string>Currents (A)</string>
@@ -3840,7 +3656,7 @@ p, li { white-space: pre-wrap; }
          <widget class="QPushButton" name="pb_rows_auto">
           <property name="geometry">
            <rect>
-            <x>40</x>
+            <x>90</x>
             <y>300</y>
             <width>101</width>
             <height>31</height>
@@ -3865,191 +3681,19 @@ p, li { white-space: pre-wrap; }
            </size>
           </property>
          </widget>
-         <widget class="QTableWidget" name="tw_enable_step">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="geometry">
-           <rect>
-            <x>230</x>
-            <y>30</y>
-            <width>81</width>
-            <height>251</height>
-           </rect>
-          </property>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string/>
-           </property>
-          </row>
-          <column>
-           <property name="text">
-            <string>Steps</string>
-           </property>
-           <property name="font">
-            <font>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="textAlignment">
-            <set>AlignLeading|AlignVCenter</set>
-           </property>
-          </column>
-         </widget>
         </widget>
        </widget>
        <widget class="QWidget" name="tab_9">
         <attribute name="title">
          <string>Demagnetization Curves</string>
         </attribute>
-        <widget class="QPushButton" name="pb_cicle">
+        <widget class="QPushButton" name="pb_cycle">
          <property name="enabled">
           <bool>false</bool>
          </property>
          <property name="geometry">
           <rect>
-           <x>250</x>
+           <x>380</x>
            <y>380</y>
            <width>91</width>
            <height>31</height>
@@ -4072,7 +3716,7 @@ p, li { white-space: pre-wrap; }
         <widget class="QPushButton" name="pb_send_curve">
          <property name="geometry">
           <rect>
-           <x>140</x>
+           <x>270</x>
            <y>380</y>
            <width>91</width>
            <height>31</height>
@@ -4105,7 +3749,7 @@ p, li { white-space: pre-wrap; }
           </rect>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="tab_13">
           <attribute name="title">
@@ -4195,7 +3839,7 @@ p, li { white-space: pre-wrap; }
             <item row="3" column="0">
              <widget class="QLabel" name="label_117">
               <property name="text">
-               <string># of Cicles</string>
+               <string># of Cycles</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -4203,7 +3847,7 @@ p, li { white-space: pre-wrap; }
              </widget>
             </item>
             <item row="3" column="1">
-             <widget class="QLineEdit" name="le_Sinusoidal_n_cicles"/>
+             <widget class="QLineEdit" name="le_Sinusoidal_n_cycles"/>
             </item>
             <item row="3" column="2">
              <widget class="QLabel" name="label_123">
@@ -4299,7 +3943,7 @@ p, li { white-space: pre-wrap; }
          </widget>
          <widget class="QWidget" name="tab_14">
           <attribute name="title">
-           <string>Cushioned Sinusoidal</string>
+           <string>Damped Sinusoidal</string>
           </attribute>
           <widget class="QLabel" name="label_62">
            <property name="geometry">
@@ -4332,7 +3976,7 @@ p, li { white-space: pre-wrap; }
            <property name="title">
             <string>Settings</string>
            </property>
-           <widget class="QLineEdit" name="le_cush_sin_Ampl">
+           <widget class="QLineEdit" name="le_damp_sin_Ampl">
             <property name="geometry">
              <rect>
               <x>170</x>
@@ -4342,7 +3986,7 @@ p, li { white-space: pre-wrap; }
              </rect>
             </property>
            </widget>
-           <widget class="QLineEdit" name="le_cush_sin_Offset">
+           <widget class="QLineEdit" name="le_damp_sin_Offset">
             <property name="geometry">
              <rect>
               <x>170</x>
@@ -4413,7 +4057,7 @@ p, li { white-space: pre-wrap; }
              <string>A</string>
             </property>
            </widget>
-           <widget class="QLineEdit" name="le_cush_sin_phaseShift">
+           <widget class="QLineEdit" name="le_damp_sin_phaseShift">
             <property name="geometry">
              <rect>
               <x>170</x>
@@ -4468,7 +4112,7 @@ p, li { white-space: pre-wrap; }
              <string>Hz</string>
             </property>
            </widget>
-           <widget class="QLineEdit" name="le_cush_sin_Freq">
+           <widget class="QLineEdit" name="le_damp_sin_Freq">
             <property name="geometry">
              <rect>
               <x>170</x>
@@ -4526,7 +4170,7 @@ p, li { white-space: pre-wrap; }
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
-           <widget class="QLineEdit" name="le_cush_sin_finalPhase">
+           <widget class="QLineEdit" name="le_damp_sin_finalPhase">
             <property name="geometry">
              <rect>
               <x>170</x>
@@ -4559,13 +4203,13 @@ p, li { white-space: pre-wrap; }
              </rect>
             </property>
             <property name="text">
-             <string>#  of Cicles</string>
+             <string>#  of Cycles</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
-           <widget class="QLineEdit" name="le_cush_sin_nCicles">
+           <widget class="QLineEdit" name="le_damp_sin_nCycles">
             <property name="geometry">
              <rect>
               <x>170</x>
@@ -4604,7 +4248,7 @@ p, li { white-space: pre-wrap; }
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
-           <widget class="QLineEdit" name="le_cush_sin_Damping">
+           <widget class="QLineEdit" name="le_damp_sin_Damping">
             <property name="geometry">
              <rect>
               <x>170</x>
@@ -4797,7 +4441,7 @@ p, li { white-space: pre-wrap; }
             </rect>
            </property>
            <property name="currentIndex">
-            <number>1</number>
+            <number>0</number>
            </property>
            <widget class="QWidget" name="tab_3">
             <attribute name="title">
@@ -4813,7 +4457,7 @@ p, li { white-space: pre-wrap; }
               </rect>
              </property>
              <property name="text">
-              <string>#  of Cicles</string>
+              <string>#  of Cycles</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -4994,7 +4638,7 @@ p, li { white-space: pre-wrap; }
               <string>º</string>
              </property>
             </widget>
-            <widget class="QLineEdit" name="le_softened_nCicles">
+            <widget class="QLineEdit" name="le_softened_nCycles">
              <property name="geometry">
               <rect>
                <x>170</x>
@@ -5709,25 +5353,36 @@ p, li { white-space: pre-wrap; }
           </widget>
          </widget>
         </widget>
-        <widget class="QPushButton" name="Analise_Frequencia">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
+       </widget>
+       <widget class="QWidget" name="tab_10">
+        <attribute name="title">
+         <string>Secondary Power Supply</string>
+        </attribute>
+        <widget class="QLineEdit" name="le_PS_Name_2">
          <property name="geometry">
           <rect>
-           <x>540</x>
-           <y>380</y>
-           <width>120</width>
+           <x>50</x>
+           <y>10</y>
+           <width>381</width>
            <height>31</height>
           </rect>
          </property>
-         <property name="font">
-          <font>
-           <pointsize>8</pointsize>
-          </font>
+        </widget>
+        <widget class="QPushButton" name="pb_save_PS_2">
+         <property name="geometry">
+          <rect>
+           <x>600</x>
+           <y>10</y>
+           <width>151</width>
+           <height>31</height>
+          </rect>
          </property>
          <property name="text">
-          <string>Frequency Analysis</string>
+          <string>Save Power Supply</string>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>../../../../Users/james.citadini/.designer/backup/imagens/save.png</normaloff>../../../../Users/james.citadini/.designer/backup/imagens/save.png</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -5735,6 +5390,1168 @@ p, li { white-space: pre-wrap; }
            <height>20</height>
           </size>
          </property>
+        </widget>
+        <widget class="QPushButton" name="pb_load_PS_2">
+         <property name="geometry">
+          <rect>
+           <x>440</x>
+           <y>10</y>
+           <width>161</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Load Power Supply</string>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>../../../../Users/james.citadini/.designer/backup/imagens/1351621523_Download.png</normaloff>../../../../Users/james.citadini/.designer/backup/imagens/1351621523_Download.png</iconset>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_127">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>10</y>
+           <width>50</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Name:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+        <widget class="QTabWidget" name="tabWidget_5">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>50</y>
+           <width>751</width>
+           <height>361</height>
+          </rect>
+         </property>
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
+         <widget class="QWidget" name="tab_17">
+          <attribute name="title">
+           <string>Options</string>
+          </attribute>
+          <widget class="QGroupBox" name="groupBox_9">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>20</y>
+             <width>231</width>
+             <height>251</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="title">
+            <string>General Aspects</string>
+           </property>
+           <widget class="QLabel" name="label_183">
+            <property name="geometry">
+             <rect>
+              <x>-10</x>
+              <y>100</y>
+              <width>111</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Soft Interlock:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_38">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>40</y>
+              <width>121</width>
+              <height>21</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+              <weight>50</weight>
+              <bold>false</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Power Supply Type:</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_141">
+            <property name="geometry">
+             <rect>
+              <x>-10</x>
+              <y>72</y>
+              <width>113</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Hard Interlock:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="pb_Soft_interlock_2">
+            <property name="geometry">
+             <rect>
+              <x>130</x>
+              <y>102</y>
+              <width>21</width>
+              <height>21</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="resource_file.qrc">
+              <normaloff>:/Images/imagens/LEDverde.png</normaloff>
+              <normalon>:/Images/imagens/LEDvermelho.png</normalon>:/Images/imagens/LEDverde.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>20</width>
+              <height>61</height>
+             </size>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+           <widget class="QComboBox" name="cb_ps_type_2">
+            <property name="geometry">
+             <rect>
+              <x>130</x>
+              <y>41</y>
+              <width>81</width>
+              <height>25</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <item>
+             <property name="text">
+              <string>10A[1]</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>10A[2]</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>10A[3]</string>
+             </property>
+            </item>
+           </widget>
+           <widget class="QPushButton" name="pb_Hard_interlock_2">
+            <property name="geometry">
+             <rect>
+              <x>130</x>
+              <y>72</y>
+              <width>21</width>
+              <height>21</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="resource_file.qrc">
+              <normaloff>:/Images/imagens/LEDverde.png</normaloff>
+              <normalon>:/Images/imagens/LEDvermelho.png</normalon>:/Images/imagens/LEDverde.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>20</width>
+              <height>61</height>
+             </size>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="pb_reset_inter_2">
+            <property name="geometry">
+             <rect>
+              <x>50</x>
+              <y>180</y>
+              <width>101</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Reset Interlocks</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_8">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>140</y>
+              <width>91</width>
+              <height>16</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Trim Coil Type:</string>
+            </property>
+           </widget>
+           <widget class="QComboBox" name="cb_trim_coil_type">
+            <property name="geometry">
+             <rect>
+              <x>110</x>
+              <y>140</y>
+              <width>91</width>
+              <height>25</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <item>
+             <property name="text">
+              <string>Trim Coil</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>HC Coil</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>VC Coil</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>SQ Coil</string>
+             </property>
+            </item>
+           </widget>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_12">
+           <property name="geometry">
+            <rect>
+             <x>260</x>
+             <y>20</y>
+             <width>251</width>
+             <height>141</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>Current Limits</string>
+           </property>
+           <widget class="QLabel" name="label_134">
+            <property name="geometry">
+             <rect>
+              <x>220</x>
+              <y>70</y>
+              <width>21</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+              <weight>50</weight>
+              <bold>false</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>A</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_140">
+            <property name="geometry">
+             <rect>
+              <x>220</x>
+              <y>30</y>
+              <width>21</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+              <weight>50</weight>
+              <bold>false</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>A</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_142">
+            <property name="geometry">
+             <rect>
+              <x>-15</x>
+              <y>70</y>
+              <width>131</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+              <weight>50</weight>
+              <bold>false</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Minimum Current</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+           <widget class="QLineEdit" name="le_minimum_current_2">
+            <property name="geometry">
+             <rect>
+              <x>135</x>
+              <y>80</y>
+              <width>81</width>
+              <height>21</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+           <widget class="QLineEdit" name="le_maximum_current_2">
+            <property name="geometry">
+             <rect>
+              <x>135</x>
+              <y>40</y>
+              <width>81</width>
+              <height>21</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_128">
+            <property name="geometry">
+             <rect>
+              <x>-15</x>
+              <y>30</y>
+              <width>131</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+              <weight>50</weight>
+              <bold>false</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Maximum Current</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_18">
+           <property name="geometry">
+            <rect>
+             <x>520</x>
+             <y>20</y>
+             <width>201</width>
+             <height>141</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>Start Secondary PS</string>
+           </property>
+           <widget class="QLineEdit" name="le_status_fonte_2">
+            <property name="geometry">
+             <rect>
+              <x>90</x>
+              <y>100</y>
+              <width>81</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Open</string>
+            </property>
+            <property name="frame">
+             <bool>false</bool>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="pb_PS_button_2">
+            <property name="geometry">
+             <rect>
+              <x>30</x>
+              <y>30</y>
+              <width>141</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+              <weight>50</weight>
+              <bold>false</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string> Power Off</string>
+            </property>
+            <property name="icon">
+             <iconset resource="resource_file.qrc">
+              <normaloff>:/Images/imagens/Power_Off.png</normaloff>
+              <normalon>:/Images/imagens/Power_On.png</normalon>:/Images/imagens/Power_Off.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>20</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_37">
+            <property name="geometry">
+             <rect>
+              <x>30</x>
+              <y>90</y>
+              <width>51</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+              <weight>50</weight>
+              <bold>false</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Status 
+Loop:</string>
+            </property>
+           </widget>
+          </widget>
+          <widget class="QPushButton" name="pb_config_ps_2">
+           <property name="geometry">
+            <rect>
+             <x>410</x>
+             <y>200</y>
+             <width>131</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Configure</string>
+           </property>
+           <property name="icon">
+            <iconset resource="resource_file.qrc">
+             <normaloff>:/Images/imagens/settings.png</normaloff>:/Images/imagens/settings.png</iconset>
+           </property>
+          </widget>
+         </widget>
+         <widget class="QWidget" name="tab_19">
+          <attribute name="title">
+           <string>Current Adjustment</string>
+          </attribute>
+          <widget class="QGroupBox" name="Configuracao_Manual_2">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>20</y>
+             <width>331</width>
+             <height>301</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>Manual Settings</string>
+           </property>
+           <widget class="QLabel" name="label_106">
+            <property name="geometry">
+             <rect>
+              <x>20</x>
+              <y>30</y>
+              <width>141</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Current Setpoint</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_165">
+            <property name="geometry">
+             <rect>
+              <x>20</x>
+              <y>80</y>
+              <width>141</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Amplitude Step</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_166">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>130</y>
+              <width>161</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Delay/Step</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_186">
+            <property name="geometry">
+             <rect>
+              <x>270</x>
+              <y>80</y>
+              <width>21</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>A</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_189">
+            <property name="geometry">
+             <rect>
+              <x>270</x>
+              <y>130</y>
+              <width>21</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>s</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_190">
+            <property name="geometry">
+             <rect>
+              <x>270</x>
+              <y>30</y>
+              <width>21</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>A</string>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="pb_send_2">
+            <property name="geometry">
+             <rect>
+              <x>110</x>
+              <y>230</y>
+              <width>101</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Send</string>
+            </property>
+            <property name="icon">
+             <iconset resource="resource_file.qrc">
+              <normaloff>:/Images/imagens/1351621501_Check.png</normaloff>:/Images/imagens/1351621501_Check.png</iconset>
+            </property>
+           </widget>
+           <widget class="QDoubleSpinBox" name="dsb_current_setpoint_2">
+            <property name="geometry">
+             <rect>
+              <x>190</x>
+              <y>30</y>
+              <width>71</width>
+              <height>31</height>
+             </rect>
+            </property>
+           </widget>
+           <widget class="QDoubleSpinBox" name="dsb_Amplitude_Linear_2">
+            <property name="geometry">
+             <rect>
+              <x>190</x>
+              <y>80</y>
+              <width>71</width>
+              <height>31</height>
+             </rect>
+            </property>
+           </widget>
+           <widget class="QDoubleSpinBox" name="dsb_Time_Linear_2">
+            <property name="geometry">
+             <rect>
+              <x>190</x>
+              <y>130</y>
+              <width>71</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="minimum">
+             <double>0.100000000000000</double>
+            </property>
+           </widget>
+          </widget>
+          <widget class="QGroupBox" name="Configuracao_Auto_2">
+           <property name="geometry">
+            <rect>
+             <x>400</x>
+             <y>20</y>
+             <width>331</width>
+             <height>301</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>Automatic Settings</string>
+           </property>
+           <widget class="QTableWidget" name="tw_auto_set_2">
+            <property name="geometry">
+             <rect>
+              <x>90</x>
+              <y>30</y>
+              <width>151</width>
+              <height>221</height>
+             </rect>
+            </property>
+            <property name="rowCount">
+             <number>6</number>
+            </property>
+            <row>
+             <property name="text">
+              <string/>
+             </property>
+            </row>
+            <row>
+             <property name="text">
+              <string/>
+             </property>
+            </row>
+            <row>
+             <property name="text">
+              <string/>
+             </property>
+            </row>
+            <row>
+             <property name="text">
+              <string/>
+             </property>
+            </row>
+            <row>
+             <property name="text">
+              <string/>
+             </property>
+            </row>
+            <row>
+             <property name="text">
+              <string/>
+             </property>
+            </row>
+            <column>
+             <property name="text">
+              <string>Currents (A)</string>
+             </property>
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <italic>false</italic>
+               <bold>true</bold>
+              </font>
+             </property>
+            </column>
+           </widget>
+           <widget class="QPushButton" name="pb_rows_auto_2">
+            <property name="geometry">
+             <rect>
+              <x>110</x>
+              <y>260</y>
+              <width>101</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Add Rows</string>
+            </property>
+            <property name="icon">
+             <iconset resource="resource_file.qrc">
+              <normaloff>:/Images/imagens/1351619277_plus_64.png</normaloff>:/Images/imagens/1351619277_plus_64.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>14</width>
+              <height>14</height>
+             </size>
+            </property>
+           </widget>
+          </widget>
+         </widget>
+         <widget class="QWidget" name="tab_20">
+          <attribute name="title">
+           <string>Damped Sinusoidal</string>
+          </attribute>
+          <widget class="QPushButton" name="pb_send_curve_2">
+           <property name="geometry">
+            <rect>
+             <x>410</x>
+             <y>110</y>
+             <width>91</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Send</string>
+           </property>
+           <property name="icon">
+            <iconset resource="resource_file.qrc">
+             <normaloff>:/Images/imagens/Send.png</normaloff>:/Images/imagens/Send.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="pb_cycle_2">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="geometry">
+            <rect>
+             <x>520</x>
+             <y>110</y>
+             <width>91</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Cycle</string>
+           </property>
+           <property name="icon">
+            <iconset resource="resource_file.qrc">
+             <normaloff>:/Images/imagens/onda.jpg</normaloff>:/Images/imagens/onda.jpg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_23">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>20</y>
+             <width>291</width>
+             <height>301</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>Settings</string>
+           </property>
+           <widget class="QLineEdit" name="le_damp_sin_Ampl_2">
+            <property name="geometry">
+             <rect>
+              <x>170</x>
+              <y>20</y>
+              <width>71</width>
+              <height>31</height>
+             </rect>
+            </property>
+           </widget>
+           <widget class="QLineEdit" name="le_damp_sin_Offset_2">
+            <property name="geometry">
+             <rect>
+              <x>170</x>
+              <y>60</y>
+              <width>71</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_104">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>20</y>
+              <width>161</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Amplitude (App)</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_169">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>180</y>
+              <width>161</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Phase shift  (ϴ)</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_206">
+            <property name="geometry">
+             <rect>
+              <x>250</x>
+              <y>20</y>
+              <width>41</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>A </string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_207">
+            <property name="geometry">
+             <rect>
+              <x>250</x>
+              <y>60</y>
+              <width>21</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>A</string>
+            </property>
+           </widget>
+           <widget class="QLineEdit" name="le_damp_sin_phaseShift_2">
+            <property name="geometry">
+             <rect>
+              <x>170</x>
+              <y>180</y>
+              <width>71</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_208">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>60</y>
+              <width>161</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Offset</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_209">
+            <property name="geometry">
+             <rect>
+              <x>250</x>
+              <y>180</y>
+              <width>21</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>º</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_210">
+            <property name="geometry">
+             <rect>
+              <x>250</x>
+              <y>100</y>
+              <width>31</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Hz</string>
+            </property>
+           </widget>
+           <widget class="QLineEdit" name="le_damp_sin_Freq_2">
+            <property name="geometry">
+             <rect>
+              <x>170</x>
+              <y>100</y>
+              <width>71</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_211">
+            <property name="geometry">
+             <rect>
+              <x>250</x>
+              <y>220</y>
+              <width>21</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>º</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_212">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>100</y>
+              <width>161</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Frequency (F)</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_213">
+            <property name="geometry">
+             <rect>
+              <x>20</x>
+              <y>220</y>
+              <width>141</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Phase final position</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+           <widget class="QLineEdit" name="le_damp_sin_finalPhase_2">
+            <property name="geometry">
+             <rect>
+              <x>170</x>
+              <y>220</y>
+              <width>71</width>
+              <height>31</height>
+             </rect>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_214">
+            <property name="geometry">
+             <rect>
+              <x>250</x>
+              <y>140</y>
+              <width>41</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>unid</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_215">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>140</y>
+              <width>161</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>#  of Cycles</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+           <widget class="QLineEdit" name="le_damp_sin_nCycles_2">
+            <property name="geometry">
+             <rect>
+              <x>170</x>
+              <y>140</y>
+              <width>71</width>
+              <height>31</height>
+             </rect>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_216">
+            <property name="geometry">
+             <rect>
+              <x>250</x>
+              <y>260</y>
+              <width>21</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>s</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_217">
+            <property name="geometry">
+             <rect>
+              <x>30</x>
+              <y>260</y>
+              <width>111</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Damping</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+           <widget class="QLineEdit" name="le_damp_sin_Damping_2">
+            <property name="geometry">
+             <rect>
+              <x>170</x>
+              <y>260</y>
+              <width>71</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_218">
+            <property name="geometry">
+             <rect>
+              <x>140</x>
+              <y>260</y>
+              <width>21</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <family>Symbol</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>(t)</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </widget>
+         </widget>
         </widget>
        </widget>
       </widget>
@@ -5818,7 +6635,7 @@ p, li { white-space: pre-wrap; }
        </property>
       </widget>
      </widget>
-     <widget class="QPushButton" name="Emergencia_3">
+     <widget class="QPushButton" name="pb_emergency4">
       <property name="geometry">
        <rect>
         <x>890</x>
@@ -6080,129 +6897,7 @@ p, li { white-space: pre-wrap; }
        <string>DCCT Head:</string>
       </property>
      </widget>
-     <widget class="QGroupBox" name="groupBox_40">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>890</x>
-        <y>320</y>
-        <width>101</width>
-        <height>251</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>11</pointsize>
-       </font>
-      </property>
-      <property name="title">
-       <string>Trim Coils</string>
-      </property>
-      <widget class="QCheckBox" name="check_aux">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>30</y>
-         <width>81</width>
-         <height>51</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Marcando esta caixa, o programa registrará a corrente nas bobinas Trim (Auxiliares) do ímã. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Auxiliary 
-Coil</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="check_chCoil">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>130</y>
-         <width>81</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>HC Coil</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="check_TrimCoil">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>100</y>
-         <width>81</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Trim coil</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="check_cvCoil">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>160</y>
-         <width>81</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>VC Coil</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="check_qsCoil">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>190</y>
-         <width>81</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>SQ Coil</string>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QCheckBox" name="check_tensao">
+     <widget class="QCheckBox" name="chb_voltage">
       <property name="geometry">
        <rect>
         <x>900</x>
@@ -6224,7 +6919,7 @@ Coil</string>
 Voltage</string>
       </property>
       <property name="checked">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
      </widget>
      <widget class="QLabel" name="label_163">
@@ -6350,53 +7045,6 @@ Voltage</string>
 Loop:</string>
        </property>
       </widget>
-      <widget class="QSpinBox" name="sb_ps_address">
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>100</y>
-         <width>51</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="maximum">
-        <number>31</number>
-       </property>
-       <property name="value">
-        <number>0</number>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_169">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>90</y>
-         <width>81</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <italic>false</italic>
-         <bold>false</bold>
-         <strikeout>false</strikeout>
-        </font>
-       </property>
-       <property name="text">
-        <string>PS Address:</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-      </widget>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_12">
@@ -6407,7 +7055,7 @@ Loop:</string>
      <attribute name="title">
       <string>Monitor</string>
      </attribute>
-     <widget class="QPushButton" name="Emergencia_4">
+     <widget class="QPushButton" name="pb_emergency5">
       <property name="geometry">
        <rect>
         <x>890</x>
@@ -7571,37 +8219,36 @@ Loop:</string>
   <tabstop>pb_load_coil</tabstop>
   <tabstop>pb_save_coil</tabstop>
   <tabstop>pb_emergency3</tabstop>
-  <tabstop>le_cush_sin_Ampl</tabstop>
+  <tabstop>le_damp_sin_Ampl</tabstop>
   <tabstop>le_Sinusoidal_Amplitude</tabstop>
   <tabstop>le_Sinusoidal_Offset</tabstop>
-  <tabstop>le_Sinusoidal_n_cicles</tabstop>
+  <tabstop>le_Sinusoidal_n_cycles</tabstop>
   <tabstop>le_Final_Phase</tabstop>
-  <tabstop>le_cush_sin_Freq</tabstop>
-  <tabstop>le_cush_sin_Offset</tabstop>
-  <tabstop>le_cush_sin_phaseShift</tabstop>
-  <tabstop>le_cush_sin_finalPhase</tabstop>
-  <tabstop>le_cush_sin_Damping</tabstop>
+  <tabstop>le_damp_sin_Freq</tabstop>
+  <tabstop>le_damp_sin_Offset</tabstop>
+  <tabstop>le_damp_sin_phaseShift</tabstop>
+  <tabstop>le_damp_sin_finalPhase</tabstop>
+  <tabstop>le_damp_sin_Damping</tabstop>
   <tabstop>le_amplitude_arbitrary</tabstop>
   <tabstop>le_frequency_arbitrary</tabstop>
   <tabstop>le_nCicles_arbitrary</tabstop>
   <tabstop>Endereco_Curva_Arbitraria</tabstop>
   <tabstop>Procurar_Arquivo_Curva_Arbitraria</tabstop>
   <tabstop>pb_send_curve</tabstop>
-  <tabstop>pb_cicle</tabstop>
+  <tabstop>pb_cycle</tabstop>
   <tabstop>le_PS_Name</tabstop>
   <tabstop>pb_save_PS</tabstop>
   <tabstop>pb_load_PS</tabstop>
   <tabstop>le_status_fonte</tabstop>
   <tabstop>pb_PS_button</tabstop>
-  <tabstop>Emergencia_3</tabstop>
-  <tabstop>Emergencia_4</tabstop>
+  <tabstop>pb_emergency4</tabstop>
+  <tabstop>pb_emergency5</tabstop>
   <tabstop>pb_send</tabstop>
   <tabstop>pb_emergency6</tabstop>
   <tabstop>pb_stop_meas</tabstop>
   <tabstop>Emergencia_9</tabstop>
   <tabstop>tabWidget_3</tabstop>
   <tabstop>pb_refresh</tabstop>
-  <tabstop>Analise_Frequencia</tabstop>
   <tabstop>pb_start_meas</tabstop>
   <tabstop>pb_save_data_results</tabstop>
   <tabstop>chb_seriesofmeas</tabstop>
@@ -7610,20 +8257,14 @@ Loop:</string>
   <tabstop>le_n_collections</tabstop>
   <tabstop>chb_automatic_ps</tabstop>
   <tabstop>le_Initial_Phase</tabstop>
-  <tabstop>le_cush_sin_nCicles</tabstop>
-  <tabstop>Hab_Selecao</tabstop>
+  <tabstop>le_damp_sin_nCycles</tabstop>
   <tabstop>tabela_config</tabstop>
   <tabstop>le_fre</tabstop>
   <tabstop>Ciclos_Curva_2</tabstop>
   <tabstop>chb_PS_reading</tabstop>
   <tabstop>chb_dcct</tabstop>
   <tabstop>dcct_select</tabstop>
-  <tabstop>check_aux</tabstop>
-  <tabstop>check_chCoil</tabstop>
-  <tabstop>check_TrimCoil</tabstop>
-  <tabstop>check_cvCoil</tabstop>
-  <tabstop>check_qsCoil</tabstop>
-  <tabstop>check_tensao</tabstop>
+  <tabstop>chb_voltage</tabstop>
   <tabstop>tw_multipoles_table</tabstop>
   <tabstop>le_magnetic_center_x</tabstop>
  </tabstops>

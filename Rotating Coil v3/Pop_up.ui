@@ -79,7 +79,7 @@
   <widget class="QLabel" name="label_134">
    <property name="geometry">
     <rect>
-     <x>87</x>
+     <x>86</x>
      <y>70</y>
      <width>71</width>
      <height>41</height>
@@ -194,8 +194,8 @@
   <widget class="QLabel" name="label_49">
    <property name="geometry">
     <rect>
-     <x>77</x>
-     <y>170</y>
+     <x>73</x>
+     <y>167</y>
      <width>81</width>
      <height>25</height>
     </rect>
@@ -241,6 +241,62 @@
      <string>Skew Quadrupole</string>
     </property>
    </item>
+  </widget>
+  <widget class="QComboBox" name="cb_trim_coil_type">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>167</x>
+     <y>200</y>
+     <width>161</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+    </font>
+   </property>
+   <item>
+    <property name="text">
+     <string>Trim Coil</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>HC Coil</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>VC Coil</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>SQ Coil</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="label_8">
+   <property name="geometry">
+    <rect>
+     <x>83</x>
+     <y>200</y>
+     <width>71</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Trim Coil Type:</string>
+   </property>
   </widget>
  </widget>
  <resources>
