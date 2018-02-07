@@ -7,10 +7,8 @@ Created on 17 de nov de 2017
 import os
 import time
 import sqlite3
-import numpy as np
 import pandas as pd
 import traceback, sys
-
 # from io import StringIO
 
 
@@ -206,8 +204,7 @@ class RotatingCoil_Library(object):
                       _qs_coil_current_avg, _qs_coil_current_std,\
                       _trim_coil_current_avg, _trim_coil_current_std,\
                       _main_coil_volt_avg, _main_coil_volt_std,\
-# #                       _magnet_resistance_avg, _magnet_resistance_std,\
-                      0, 0,\
+                      _magnet_resistance_avg, _magnet_resistance_std,\
                       _accelerator_type, _magnet_model,\
                       _coil_name, _coil_type, _measurement_type,\
                       _n_turns_normal, _radius1_normal, _radius2_normal,\

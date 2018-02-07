@@ -26,7 +26,7 @@ class GPIB(object):
             aux = 'GPIB0::'+str(address)+'::INSTR'
             rm = visa.ResourceManager()
             self.inst = rm.open_resource(aux.encode('utf-8'))
-            self.inst.timeout = 1
+            self.inst.timeout = 5
             return True
         except:
             return False
@@ -50,7 +50,6 @@ class GPIB(object):
             reading = self.inst.read()
         except:
             reading = ''
-
         return reading
 
     def config(self):
@@ -65,6 +64,7 @@ class GPIB(object):
     def collect(self):
         try:
             self.send(self.ReadVolt)
+            time.sleep(0.4)
             dado = self.read()
             return dado
         except:

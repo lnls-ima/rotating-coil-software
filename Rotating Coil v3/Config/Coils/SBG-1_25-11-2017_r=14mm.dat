@@ -9,6 +9,6 @@ radius2_normal	0.01296
 n_turns_bucked	0
 radius1_bucked	0
 radius2_bucked	0
-trigger_ref	330356
+trigger_ref	231584
 coil_type	Radial
 comments	Rotating coil for storage ring magnets. Tungsten wire and ceramic body.

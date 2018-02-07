@@ -151,6 +151,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui.pb_reset_inter.clicked.connect(self.reset_interlocks)
         self.ui.pb_cycle.clicked.connect(self.cycling_ps)
         self.ui.pb_config_ps.clicked.connect(self.config_ps)
+        self.ui.pb_clear_table.clicked.connect(self.clear_table)
         #Secondary Power Supply
         self.ui.pb_PS_button_2.clicked.connect(lambda: self.start_powersupply(True))
         self.ui.pb_load_PS_2.clicked.connect(lambda: self.load_PowerSupply(True))
@@ -160,6 +161,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui.pb_send_curve_2.clicked.connect(lambda: self.send_curve(True))
         self.ui.pb_reset_inter_2.clicked.connect(lambda: self.reset_interlocks(True))
         self.ui.pb_cycle_2.clicked.connect(lambda: self.cycling_ps(True))
+        self.ui.pb_clear_table_2.clicked.connect(lambda: self.clear_table(True))
         self.ui.pb_config_ps_2.clicked.connect(self.config_ps_2)
         self.ui.pb_emergency4.clicked.connect(self.emergency)
         
@@ -300,11 +302,13 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 if self.ui.pb_PS_button.isChecked():
                     self.ui.pb_PS_button.setText('Power ON')    
                 else:
+                    self.ui.pb_PS_button.setChecked(False)
                     self.ui.pb_PS_button.setText('Power OFF')
             else:
                 if self.ui.pb_PS_button_2.isChecked():
                     self.ui.pb_PS_button_2.setText('Power ON')    
                 else:
+                    self.ui.pb_PS_button_2.setChecked(False)
                     self.ui.pb_PS_button_2.setText('Power OFF')
 
             _safety_enabled = 1
@@ -319,6 +323,12 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                     Lib.comm.drs.Read_iLoad1()
                 except:
                     QtWidgets.QMessageBox.warning(self,'Warning','Impossible to read the digital current.',QtWidgets.QMessageBox.Ok)
+                    if not secondary:
+                        self.ui.pb_PS_button.setChecked(False)
+                        self.ui.pb_PS_button.setText('Power OFF')
+                    else:
+                        self.ui.pb_PS_button_2.setChecked(False)
+                        self.ui.pb_PS_button_2.setText('Power OFF')
                     return
                 if _safety_enabled == 1:
                     _status_interlocks = Lib.comm.drs.Read_ps_SoftInterlocks()
@@ -355,11 +365,12 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                         time.sleep(0.5)
                         if Lib.comm.drs.Read_ps_OpenLoop() == 1:
                             QtWidgets.QMessageBox.warning(self,'Attention',"Power Supply circuit loop is not closed.",QtWidgets.QMessageBox.Ok)
-                            #return
+                            return
                         if not secondary:
                             self.ui.le_status_fonte.setText('Closed')
     #                         self.ui.sb_ps_dclink.setEnabled(False)
                             self.ui.pb_refresh.setEnabled(True)
+                            self.ui.lb_status_ps.setText('OK')
                         else:
                             self.ui.le_status_fonte_2.setText('Closed')
                         QtWidgets.QApplication.processEvents()
@@ -370,47 +381,86 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                         try:
                             Lib.comm.drs.TurnOn()           # Turn ON the DC Link of the PS
                             time.sleep(.5)
-                            if Lib.comm.drs.Read_ps_OnOff() == 1:
-                                QtWidgets.QMessageBox.information(self,'Information',"Power Supply Capacitor Bank turned on.",QtWidgets.QMessageBox.Ok)
+                            if Lib.comm.drs.Read_ps_OnOff() != 1:
+                                QtWidgets.QMessageBox.information(self,'Information',"Power Supply Capacitor Bank did not initialize.",QtWidgets.QMessageBox.Ok)
+                                return
                         except:
-                            QtWidgets.QMessageBox.critical(self,'Attention',"Power Supply Capacitor Bank did not initialized",QtWidgets.QMessageBox.Ok)
+                            QtWidgets.QMessageBox.critical(self,'Attention',"Power Supply Capacitor Bank did not initialize.",QtWidgets.QMessageBox.Ok)
                             return
                         
-                        # Closing PS Loop
+                        # Closing DC link Loop
                         try:
                             Lib.comm.drs.ClosedLoop()        # Closed Loop
                             time.sleep(.5)
-                            if (Lib.comm.drs.Read_ps_OpenLoop() == 1):
+                            if Lib.comm.drs.Read_ps_OpenLoop() == 1:
                                 QtWidgets.QMessageBox.warning(self,'Attention',"Power Supply circuit loop is not closed.",QtWidgets.QMessageBox.Ok)
                                 return
-                            else:
-                                QtWidgets.QMessageBox.information(self,'Information',"Power Supply circuit loop is closed.",QtWidgets.QMessageBox.Ok)
-                                return
-                            self.ui.le_status_fonte.setText('Power On')
+                            self.ui.le_status_fonte.setText('Closed')
                         except:
                             QtWidgets.QMessageBox.warning(self,'Attention',"Power Supply circuit loop is not closed.",QtWidgets.QMessageBox.Ok)
                             return
                         
                         # Set ISlowRef for DC Link (Capacitor Bank)
-                        time.sleep(.2)
                         _mode = 0
                         Lib.comm.drs.OpMode(_mode)                     # Operation mode selection for Slowref
                         _dclink_value = Lib.get_value(Lib.aux_settings, 'dclink_value', float) #30 
                         Lib.comm.drs.SetISlowRef(_dclink_value)        # Set 30 V for Capacitor Bank (default value according to the ELP Group)
-                        _feedback_DCLink = float(Lib.comm.drs.Read_vDCMod1)
-                        if _feedback_DCLink == 0:
-                            QtWidgets.QMessageBox.warning(self,'Attention',"Setpoint DC link is not set.",QtWidgets.QMessageBox.Ok)
+                        time.sleep(.3)
+                        _feedback_DCLink = round(Lib.comm.drs.Read_vDCMod1()/2 +\
+                                                Lib.comm.drs.Read_vDCMod2()/2,3)
+                        
+                        #Waiting few seconds before starting PS Current
+                        _i = 100
+                        while _feedback_DCLink < _dclink_value or _i > 0:
+                            _feedback_DCLink = round(Lib.comm.drs.Read_vDCMod1()/2 +\
+                                                    Lib.comm.drs.Read_vDCMod2()/2,3)
+                            QtWidgets.QApplication.processEvents()
+                            time.sleep(0.5)
+                            _i = _i-1
+    
+                        if _i == 0:
+                            QtWidgets.QMessageBox.warning(self,'Attention',"Setpoint DC link is not set. \nCheck configurations.",QtWidgets.QMessageBox.Ok)
                             return
+                        
+                        #Turn on PS Current
+                        Lib.comm.drs.SetSlaveAdd(_ps_type)  # Set 1000A supply address
+                        Lib.comm.drs.TurnOn()           
+                        time.sleep(0.5)
+                        if Lib.comm.drs.Read_ps_OnOff() == 1:
+                            Lib.write_value(Lib.aux_settings, 'status_ps', 1)      # Status PS is ON
+                            Lib.write_value(Lib.aux_settings, 'actual_current', 0)
+                            self.ui.tabWidget_2.setEnabled(True)
+                            self.ui.tabWidget_3.setEnabled(True)
+                            QtWidgets.QMessageBox.information(self,'Information','The Power Supply has started successfully.',QtWidgets.QMessageBox.Ok)
+                        else:
+                            QtWidgets.QMessageBox.critical(self,'Attention','The Power Supply did not start.',QtWidgets.QMessageBox.Ok)
+                            return
+                        
+                        # Closed Loop
+                        Lib.comm.drs.ClosedLoop()       
+                        time.sleep(0.5)
+                        if Lib.comm.drs.Read_ps_OpenLoop() == 1:
+                            QtWidgets.QMessageBox.warning(self,'Attention',"Power Supply circuit loop is not closed.",QtWidgets.QMessageBox.Ok)
+                            return
+                        self.ui.pb_PS_button.setText('Power On')
+                        self.ui.le_status_fonte.setText('Closed')
+                        self.ui.pb_refresh.setEnabled(True)
+                        #if everything goes well#:
+                        self.ui.lb_status_ps.setText('OK')
                         QtWidgets.QApplication.processEvents()
             else:
                 if not secondary:
+                    Lib.comm.drs.SetSlaveAdd(_ps_type)
                     if not self.ui.pb_PS_button.isChecked():
                         self.ui.pb_PS_button.setText('Power Off')
+                        self.ui.lb_status_ps.setText('NOK')
                 else:
+                    Lib.comm.drs.SetSlaveAdd(_ps_type)
                     if not self.ui.pb_PS_button_2.isChecked():
                         self.ui.pb_PS_button_2.setText('Power Off')
                 _status = Lib.comm.drs.Read_ps_OnOff()
                 if _status == 1:
+                    Lib.comm.drs.TurnOff()                    # Turn OFF the Power Supply
                     if not secondary:
                         Lib.write_value(Lib.aux_settings, 'status_ps', 0)      # Status PS is OFF
                         Lib.write_value(Lib.aux_settings, 'actual_current', 0)
@@ -420,7 +470,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                         Lib.write_value(Lib.aux_settings, 'status_ps_2', 0)      # Status PS_2 is OFF
                         Lib.write_value(Lib.aux_settings, 'actual_current_2', 0)
                         self.ui.le_status_fonte_2.setText('Open')
-                    Lib.comm.drs.TurnOff()                    # Turn OFF the Power Supply
                 else:
                     Lib.comm.drs.TurnOff()
                     QtWidgets.QMessageBox.critical(self,'Attention','Digital Source did not receive the command.',QtWidgets.QMessageBox.Ok)
@@ -472,7 +521,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 self.read_curr = (float(reading_34401))*32
         return self.read_curr
         
-    def display_current(self):  
+    def display_current(self):
         _ps_type = Lib.get_value(Lib.ps_settings, 'Power Supply Type', int)
         Lib.comm.drs.SetSlaveAdd(_ps_type)
         try:
@@ -497,9 +546,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         Lib.comm.drs.OpMode(_mode)
         try:
             _delta = abs(final - actual)
-            _faixa = np.linspace(actual, final, round(_delta/step)+1)
+            _values = np.linspace(actual, final, round(_delta/step)+1)
             
-            for i in _faixa:
+            for i in _values:
                 if (Lib.flags.stop_all == 0):
                     #time = 0.1
                     time.sleep(timer)
@@ -611,7 +660,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.ui.tabWidget_2.setEnabled(True)
         QtWidgets.QApplication.processEvents()
         
-    def linear_automatic_ramp(self, data_current, data_selection_currents, secondary=False):
+    def linear_automatic_ramp(self, data_current, secondary=False):
         if not secondary:
             _df = Lib.ps_settings
         else:
@@ -630,16 +679,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             QtWidgets.QMessageBox.critical(self,'Attention','Invalid step or time values.',QtWidgets.QMessageBox.Ok)
             return
         for i in range (len(data_current)):
-            if data_selection_currents[i] == 'Y' or data_selection_currents[i] == 'y' or data_selection_currents[i] == 'S' or data_selection_currents[i] == 's':
+            if abs(data_current[i]-data_current[i-1]) > _step:
                 _actual_current = round(float(Lib.comm.drs.Read_iLoad1()),3)
                 self.linear_ramp(data_current[i], _actual_current, _step, _time)
-                time.sleep(.2)
             else:
-                if abs(data_current[i]-data_current[i-1]) > _step:
-                    _actual_current = round(float(Lib.comm.drs.Read_iLoad1()),3)
-                    self.linear_ramp(data_current[i], _actual_current, _step, _time)
-                else:
-                    Lib.comm.drs.SetISlowRef(data_current[i])
+                Lib.comm.drs.SetISlowRef(data_current[i])
                        
         QtWidgets.QMessageBox.information(self,'Information','Automatic collect process done.',QtWidgets.QMessageBox.Ok)    
                             
@@ -1154,9 +1198,12 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             if Lib.load_coil(filename[0]) == True:
                 self.refresh_coiltab()
                 QtWidgets.QMessageBox.information(self,'Information','Coil File loaded.',QtWidgets.QMessageBox.Ok)
-                
+                #If OKAY
+                self.ui.lb_status_coil.setText('OK')                
             else:
-                QtWidgets.QMessageBox.warning(self,'Attention','Fail to load Coil File.',QtWidgets.QMessageBox.Ok) 
+                QtWidgets.QMessageBox.warning(self,'Attention','Fail to load Coil File.',QtWidgets.QMessageBox.Ok)
+                self.ui.lb_status_coil.setText('NOK')
+                 
         except:
             return
     
@@ -1231,11 +1278,18 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.data_array = np.array([])
         self.df_rawcurves = None   
         
+        # configure integrator
+        if self.configure_integrator():
+            self.ui.lb_status_integrator.setText('OK')
+        else:
+            self.ui.lb_status_integrator.setText('NOK')
+            return
+            
         # check components
 #         self.collect_infocomponents()
         
-        # configure integrator
-        self.configure_integrator()
+        # routine Collect
+        self.collect_routine()
         
         # measure and read data
         self.measure_and_read()
@@ -1278,86 +1332,158 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         '''
         Check misalignment before measurement with ND780
         '''
-        #try:
-        Lib.comm.display.readdisplay_ND780()
-        time.sleep(0.3)
-        _disp_pos = Lib.comm.display.DisplayPos
-        print(_disp_pos)
-        Lib.write_value(Lib.aux_settings, 'ref_encoder_A', _disp_pos[0])
-        Lib.write_value(Lib.aux_settings, 'ref_encoder_B', _disp_pos[1])
-        if Lib.get_value(Lib.data_settings, 'disable_alignment_interlock', int):
-            return True
-        else:
-            if (abs(Lib.get_value(Lib.aux_settings, 'ref_encoder_A', float))>0.005) or (abs(Lib.get_value(Lib.aux_settings, 'ref_encoder_B', float))>0.005):
-                QtWidgets.QMessageBox.warning(self, 'Attention', 'Fix the transversal encoders', QtWidgets.QMessageBox.Ok)
-                return False
-            else:
+        try:
+            Lib.comm.display.readdisplay_ND780()
+            time.sleep(0.3)
+            _disp_pos = Lib.comm.display.DisplayPos
+            Lib.write_value(Lib.aux_settings, 'ref_encoder_A', _disp_pos[0])
+            Lib.write_value(Lib.aux_settings, 'ref_encoder_B', _disp_pos[1])
+            if Lib.get_value(Lib.data_settings, 'disable_alignment_interlock', int):
                 return True
-        #=======================================================================
-        # except:
-        #     QtWidgets.QMessageBox.warning(self, 'Attention', 'Impossible to read Display ND 780', QtWidgets.QMessageBox.Ok)
-        #     return False
-        #=======================================================================
+            else:
+                if (abs(Lib.get_value(Lib.aux_settings, 'ref_encoder_A', float))>0.005) or (abs(Lib.get_value(Lib.aux_settings, 'ref_encoder_B', float))>0.005):
+                    QtWidgets.QMessageBox.warning(self, 'Attention', 'Fix the transversal encoders', QtWidgets.QMessageBox.Ok)
+                    return False
+                else:
+                    return True
+        except:
+            QtWidgets.QMessageBox.warning(self, 'Attention', 'Impossible to read Display ND 780', QtWidgets.QMessageBox.Ok)
+            return False
      
     def collect_infocomponents(self):
         '''
         Currents and setup verification routines
         '''
+        _collect_type = 0  #single Collect
         try:
-            _misalignment = self.misalignment()
-            print(_misalignment)
-            if _misalignment == False:
+            if self.misalignment():
+                pass
+            else:
                 return False
+        except:
+            QtWidgets.QMessageBox.warning(self,'Attention','Stages alignment.',QtWidgets.QMessageBox.Ok)
             
             #IMPLEMENT==========================================================
             # _interlocks = self.check_interlocks()
             # if _interlocks == False:
             #     return False       
             #===================================================================
-    #         except:
-    #             QtWidgets.QMessageBox.warning(self,'Attention','Stages alignment or interlocks activated.',QtWidgets.QMessageBox.Ok)
-             
-    #         if (Lib.vars.Status_PS == 1): #and (Lib.vars.PS_ready == 0):
-    #             QtWidgets.QMessageBox.warning(self,'Attention','Power supply is not ready./nVerify PS data.',QtWidgets.QMessageBox.Ok)
-    #             return False
-    #         if self.ui.lb_status_ps.text() == 'NOK':
-    #             QtWidgets.QMessageBox.warning(self,'Attention','Power supply is not ready./nVerify PS data.',QtWidgets.QMessageBox.Ok)
-    #             return False
-            if self.ui.lb_status_coil.text() == 'NOK':
-                QtWidgets.QMessageBox.warning(self,'Attention','Please, load the coil data.',QtWidgets.QMessageBox.Ok)
-                return False
-            if self.ui.lb_status_integrator.text() == 'NOK':
-                QtWidgets.QMessageBox.warning(self,'Attention','Please, configure the Integrator FDI 2056.',QtWidgets.QMessageBox.Ok)
-                return False
-                
-            if (self.ui.tabWidget.isTabEnabled(4) == True) and (self.ui.chb_automatic_ps.isChecked()):
-                _collect_type = 2  #Automatic collect
-            elif self.ui.chb_seriesofmeas.isChecked():
-                _collect_type = 1 #Succesive collect  
-            else:
-                _collect_type = 0
+        
+#             if (Lib.vars.Status_PS != 1): #and (Lib.vars.PS_ready == 0):
+#                 QtWidgets.QMessageBox.warning(self,'Attention','Power supply is not ready.\nVerify PS data.',QtWidgets.QMessageBox.Ok)
+#                 return False
+        if self.ui.lb_status_ps.text() == 'NOK':
+            QtWidgets.QMessageBox.warning(self,'Attention','Power supply is not ready.\nVerify PS data.',QtWidgets.QMessageBox.Ok)
+            return False
+        if self.ui.lb_status_coil.text() == 'NOK':
+            QtWidgets.QMessageBox.warning(self,'Attention','Please, load the coil data.',QtWidgets.QMessageBox.Ok)
+            return False
+        if self.ui.lb_status_integrator.text() == 'NOK':
+            QtWidgets.QMessageBox.warning(self,'Attention','Please, configure the Integrator FDI 2056.',QtWidgets.QMessageBox.Ok)
+            return False
             
-            self.collect_routine(_collect_type)
-        except:
-            traceback.print_exc(file=sys.stdout)
+        if self.ui.chb_automatic_ps.isChecked():
+            _collect_type = 2  #Automatic collect
             
-    def collect_routine(self,collect_type):
+        if self.ui.chb_seriesofmeas.isChecked():
+            _collect_type = 1  #Successive collect  
+        
+        return _collect_type
+            
+    def collect_routine(self):
         """
-        Currents and setup verification routines
+        Currents adjustments and setup verification routines
         """
+        _collect_type = self.collect_infocomponents()
         self.max_gain_check()
         self.ui.lb_meas_counter.setText('0')
         QtWidgets.QApplication.processEvents()
         try:
-            if collect_type == 0:
+            if _collect_type == 0:               #Collect routine of the manual current for single collect
                 self.coil_position_correction()
+#                 _verify = Collect_Data()         #IMPLEMENT!! - Check the maximum standard deviation
+#                 if _verify == False:
+#                     QtWidgets.QMessageBox.warning(self, "Attention","High Standard deviation. Process done. \nCheck parameters and equipments",QtWidgets.QMessageBox.Ok)
+#                     ret = QtWidgets.QMessageBox.question(self,'Standard Deviation','Show data with high Standard Deviation?',QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,QtWidgets.QMessageBox.Yes)
+#                     if ret == QtWidgets.QMessageBox.Yes:
+#                         self.ui.pb_start_meas.setEnabled(True)
+# #                         self.multipoles_table()        # Call multipoles table
+#                         self.ui.lb_meas_counter.setText('1')
+#                         QtWidgets.QApplication.processEvents()
+#                         return
+#                     else:
+#                         self.ui.pb_start_meas.setEnabled(True)
+#                         QtWidgets.QApplication.processEvents()
+#                         return
+                #self.multipoles_calculation()            # Call multipoles calculation
+                self.ui.lb_meas_counter.setText('1')
+                QtWidgets.QApplication.processEvents()
+    
+            if _collect_type == 1: #Collect routine for the manual current with successive collects
+                try:
+                    _number_col = Lib.get_value(Lib.measurement_settings,'n_collections',int)
+                    if _number_col <= 1:
+                        QtWidgets.QMessageBox.warning(self,'Attention',' Number of collects must be greater than 1.\nTry again.',QtWidgets.QMessageBox.Ok)
+                        
+                except:
+                    QtWidgets.QMessageBox.warning(self,'Attention','Not integer number of successive collects.\nTry again.',QtWidgets.QMessageBox.Ok)
+                    return
+                ret = QtWidgets.QMessageBox.question(self,'Automatic collect','Do you want to automatically collect ' + str(_number_col) + ' measurements of the same current?',QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,QtWidgets.QMessageBox.No)
+                if ret == QtWidgets.QMessageBox.No:
+                    return
+                self.ui.pb_start_meas.setEnabled(False)
+                self.ui.le_n_collections.setEnabled(False)
+                for i in range(0,_number_col,1):
+                    self.coil_position_correction()
+#                     _verify = Collect_Data(_number_col)  #IMPLEMENT
+#                     if _verify == False:
+#                         QtWidgets.QMessageBox.warning(self,'Warning','Measurement Process Interrupted. High Standard Deviation.',QtWidgets.QMessageBox.Ok)
+#                         ret = QtWidgets.QMessageBox.question(self,'Standard Deviation','High Standard Deviation. \nDo you want to save this measurement?',QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,QtWidgets.QMessageBox.Yes)
+#                         if ret == QtWidgets.QMessageBox.Yes:
+#                             pass
+#                         else:
+#                             ret = QtWidgets.QMessageBox.question(self,'Standard Deviation','Do you want to continue with the process?',QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,QtWidgets.QMessageBox.Yes)
+#                             if ret == QtWidgets.QMessageBox.Yes:
+#                                 continue
+#                             else:
+#                                 self.ui.pb_start_meas.setEnabled(True)
+#                                 self.ui.le_n_collections.setEnabled(True)
+#                                 QtWidgets.QApplication.processEvents()
+#                                 return
+                    time.sleep(1)
+                    #self.Salvar_Coletas(1,(i+1),dados_corrente)
+                    self.ui.lb_meas_counter.setText(str(i+1))
+                    QtWidgets.QApplication.processEvents()  
+                
+                QtWidgets.QMessageBox.information(self,'Information','Automatic Collect Process Completed.',QtWidgets.QMessageBox.Ok)
+                self.ui.pb_start_meas.setEnabled(True)
+                self.ui.le_n_collections.setEnabled(True)
+                
+            if _collect_type == 2:                              #Collect routine with automatic current
+                try:
+                    _current_data = self.keep_auto_values(1)    #Storage the current values from automatic settings
+                            
+                    for i in range(len(_current_data)):
+                            _current_data[i]=self.verify_current_limits(1,_current_data[i])
+                            if (_current_data[i] == 'False'):
+                                return
+                except:
+                    QtWidgets.QMessageBox.warning(self,'Attention','Verify automatic settings values.\nTry again.',QtWidgets.QMessageBox.Ok)
+                    return
+                ret = QtWidgets.QMessageBox.question(self,'Automatic Settings','Do you want initialize the automatic collect ' + str(len(_current_data)) + ' different measurements?',QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,QtWidgets.QMessageBox.No)
+                if ret == QtWidgets.QMessageBox.No:
+                    return            
+                #lib.FileName = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File - Coleta Automática Corrente Automática', nome,'Data files')
+                self.ui.pb_start_meas.setEnabled(False)
+                self.linear_automatic_ramp(_current_data)
+                self.ui.pb_start_meas.setEnabled(True)
         except:
             QtWidgets.QMessageBox.warning(self,'Attention','collect routine fault',QtWidgets.QMessageBox.Ok)
             return        
             
     def coil_position_correction(self):
         """
-        Befere start meas, keep coil in ref trigger + half turn
+        Before start measurement, keep coil in ref trigger + half turn
         """
         _velocity = Lib.get_value(Lib.data_settings,'rotation_motor_speed',int)
         _acceleration = Lib.get_value(Lib.data_settings,'rotation_motor_acceleration',int)
@@ -1602,7 +1728,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         _n_integration_points = Lib.get_value(Lib.data_settings, 'n_integration_points', int)
         _total_n_of_points = _n_integration_points * _n_of_turns
         
-        Lib.comm.fdi.config_measurement(_n_encoder_pulses, _gain, _direction, _trigger_ref, _n_integration_points, _n_of_turns)       
+        try:
+            Lib.comm.fdi.config_measurement(_n_encoder_pulses, _gain, _direction, _trigger_ref, _n_integration_points, _n_of_turns)
+            return True
+        except:
+            return False       
 
     def measure_and_read(self): # Ok
         """
@@ -1668,7 +1798,46 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         """
         """
         self.refresh_connection_settings_tab()
-
+                
+#     def check_parameters(self,_func):
+#         '''
+#         Check if all data entry in Dataframes are valid
+#         '''
+# #         _df_settings = Lib.data_settings
+# #         _df_PS = Lib.PS_settings
+#         #_var = ''
+#         _flag = 0
+#         #_df_meas = Lib.measurement_settings
+#         
+#         if _func == 1: _df = Lib.data_settings
+#         if _func == 2: _df = Lib.PS_settings
+#         
+#         # Checking if all data entry are valid -> PS Settings
+#         #_len_PS_df = _df_PS.datavalues.__len__()
+#         for i in range (1,_df.datavalues.__len__()):
+#             if not _df.get_values()[14].astype(float).item().is_integer():
+#                 _flag += 1
+ 
+#             
+#             try:
+#                 if _df.get_values()[i].astype(float).item() == float:
+#                     pass
+#             except:
+#                 try:
+#                     _var = _df.get_values()[i][0].split(',')
+#                     _var = np.asarray(_var, dtype=float64)
+#                 except:
+#                     try:
+#                         if _df.get_values()[i].astype(str).item() == str:
+#                         
+#                     _flag += 1
+#             
+#         print('Ok')
+#         print(_flag)
+                    
+                #return False
+            #_df_PS.get_values()[i]    
+    
     def refresh_connection_settings_tab(self): # Ok
         """
         Refresh inteface with defaults settings
@@ -1959,38 +2128,75 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         #Aux settings
 #         Lib.write_value(Lib.aux_settings, 'trim_coil_type', self.ui.cb_trim_coil_type.currentIndex())
 
-    def keep_auto_values(self, secondary=False):
-        try:
-            if not secondary:
-                auto = Lib.get_value(Lib.ps_settings,'Automatic Setpoints')
-            else:
-                auto = Lib.get_value(Lib.ps_settings_2,'Automatic Setpoints')
-            dataset_list=''.join(auto)
-            dataset_array = []
-            for item in dataset_list.split(','):
-                dataset_array.append(item)
-            self.auto_values = np.asarray(dataset_array, dtype='float')
-        except:
-            QtWidgets.QMessageBox.warning(self,'Fail','Impossible to get automatic values.',QtWidgets.QMessageBox.Ok)
-            return
-        try:           
-            for i in range(len(self.auto_values)):
-                self.set_table_item(self.ui.tw_auto_set, i, 0, self.auto_values[i])
-        except:
-            QtWidgets.QMessageBox.warning(self,'Fail','Impossible to set in table the automatic values for Current.',QtWidgets.QMessageBox.Ok)
-            return
-        QtWidgets.QApplication.processEvents()
+    def keep_auto_values(self, mode=0, secondary=False):
+        if mode == 0:
+            try:
+                if not secondary:
+                    _auto = Lib.get_value(Lib.ps_settings,'Automatic Setpoints')
+                    _tw = self.ui.tw_auto_set
+                else:
+                    _auto = Lib.get_value(Lib.ps_settings_2,'Automatic Setpoints')
+                    _tw = self.ui.tw_auto_set_2
+                _dataset_list=''.join(_auto)
+                _dataset_array = []
+                for item in _dataset_list.split(','):
+                    _dataset_array.append(item)
+                _auto_values = np.asarray(_dataset_array, dtype='float')
+            except:
+                QtWidgets.QMessageBox.warning(self,'Fail','Impossible to get automatic values.',QtWidgets.QMessageBox.Ok)
+                return
+            try:           
+                for i in range(len(_auto_values)):
+                    _tw.insertRow(i)   
+                    self.set_table_item(_tw, i, 0, _auto_values[i])
+                QtWidgets.QApplication.processEvents()
+            except:
+                QtWidgets.QMessageBox.warning(self,'Fail','Impossible to set in table the automatic values for Current.',QtWidgets.QMessageBox.Ok)
+                return
+            QtWidgets.QApplication.processEvents()
+        else:               # Return table values in array
+            _ncells = _tw.rowCount()
+            _auto_array = np.array([])
+            for i in range(_ncells):
+                _tw.setCurrentCell(i,0)
+                if _tw.currentItem() != None:
+                    _auto_array = np.append(_auto_array, float(_tw.currentItem().text()))
+                else:
+                    pass
+            return _auto_array
         
     
     def add_rows(self):
-        _rowPosition = self.ui.tw_auto_set.rowCount()-2
+        _rowPosition = self.ui.tw_auto_set.rowCount()
         self.ui.tw_auto_set.insertRow(_rowPosition)
         
     def add_rows_2(self):
-        _rowPosition = self.ui.tw_auto_set_2.rowCount()-2
+        _rowPosition = self.ui.tw_auto_set_2.rowCount()
         self.ui.tw_auto_set_2.insertRow(_rowPosition)
         
-        
+    def clear_table(self, secondary=False):
+        if not secondary:
+            _tw = self.ui.tw_auto_set
+        else:
+            _tw = self.ui.tw_auto_set_2
+        _tw.clearContents()
+        _ncells = _tw.rowCount()
+        while _ncells >= 0:
+            _tw.removeRow(_ncells)
+            _ncells = _ncells - 1
+        QtWidgets.QApplication.processEvents()
+
+    def DataCollect_reading(self):
+        """
+        Receives the data collected by the Integrator
+        """
+        pass
+#         if self.ui.chb_dcct.isChecked():
+#             self.Reading_current = reading_curr_multimeter()
+#             self.Reading_multichannel = reading_curr_multichannel()
+#             self.Reading_Secundary_Curr = reading_secundary_curr()
+            
+            
     def fill_multipole_table(self): # Ok
         """
         """

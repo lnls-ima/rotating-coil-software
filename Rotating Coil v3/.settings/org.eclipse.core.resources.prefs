@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
+<<<<<<< HEAD
 encoding/Agilent_33220A.py=utf-8
 encoding/Agilent_34401A.py=utf-8
 encoding/Agilent_34970A.py=utf-8
@@ -7,5 +8,13 @@ encoding/Display_Heidenhain.py=utf-8
 encoding/FDI2056.py=utf-8
 encoding/Parker_Drivers.py=utf-8
 encoding/Rotating_Coil_Interface_v3.py=utf-8
+=======
+encoding//Discharge/Bobina\ Girante_v6.py=utf-8
+encoding/Agilent_34401A.py=utf-8
+encoding/Display_Heidenhain.py=utf-8
+encoding/FDI2056.py=utf-8
+encoding/Parker_Drivers.py=utf-8
+encoding/Pop_up.py=utf-8
+>>>>>>> refs/heads/checkcomponents
 encoding/Rotating_Coil_v3.py=utf-8
 encoding/SerialDRS.py=utf-8
