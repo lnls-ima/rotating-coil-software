@@ -25,11 +25,11 @@ rotation_motor_resolution	50000.0
 rotation_motor_speed	1.0
 rotation_motor_acceleration	4.0
 rotation_motor_ratio	1.0
-poscoil_assembly	339082.0
-n_encoder_pulses	360000.0
+poscoil_assembly	339082
+n_encoder_pulses	360000
 integrator_gain	100
 n_integration_points	144
-poscoil_vertical_ref	339082.0
+poscoil_vertical_ref	339082
 save_turn_angles	0
 disable_alignment_interlock	0
 disable_ps_interlock	0
