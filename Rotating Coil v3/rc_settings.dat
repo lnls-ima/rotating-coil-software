@@ -3,11 +3,11 @@
 # Commented lines are ignored.
 
 display_type	1
-disp_port	COM10
+disp_port	COM7
 driver_port	COM1
-integrator_port	COM6
+integrator_port	COM4
 ps_type	1.0
-ps_port	COM7
+ps_port	COM5
 enable_Agilent33220A	0
 agilent33220A_address	19
 enable_Agilent34401A	0

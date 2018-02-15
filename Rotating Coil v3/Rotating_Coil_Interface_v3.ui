@@ -3277,7 +3277,7 @@ p, li { white-space: pre-wrap; }
         </attribute>
         <widget class="QTextBrowser" name="textBrowser">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -3287,19 +3287,31 @@ p, li { white-space: pre-wrap; }
            <height>192</height>
           </rect>
          </property>
+         <property name="font">
+          <font>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
          <property name="html">
           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Warning: each power supply has an unique fixed address, one must always remember to configure them after replacing or resetting an power supply in order for this software to work. The addresses are the following:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;1: 1000A capacitor bank&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;2: 1000A Power Supply&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;3: 225A Power Supply&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;4: 10A [1] Power Supply&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;5: 10A [2] Power Supply&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;6: 10A [3] Power Supply&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#505050;&quot;&gt;Warning: each power supply has an unique fixed address, one must always remember to configure them after replacing or resetting an power supply in order for this software to work. The addresses are the following:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt; color:#505050;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#505050;&quot;&gt;1: 1000A Capacitor bank&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#505050;&quot;&gt;2: 1000A Power Supply&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#505050;&quot;&gt;3: 225A Power Supply&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#505050;&quot;&gt;4: 10A [1] Power Supply&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#505050;&quot;&gt;5: 10A [2] Power Supply&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#505050;&quot;&gt;6: 10A [3] Power Supply&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
         </widget>
         <widget class="QGroupBox" name="groupBox_24">
@@ -3329,34 +3341,7 @@ p, li { white-space: pre-wrap; }
            </font>
           </property>
           <property name="text">
-           <string>Reset Interlocks</string>
-          </property>
-         </widget>
-         <widget class="QPushButton" name="pb_Soft_interlock">
-          <property name="geometry">
-           <rect>
-            <x>160</x>
-            <y>90</y>
-            <width>21</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset resource="resource_file.qrc">
-            <normaloff>:/Images/imagens/LEDverde.png</normaloff>
-            <normalon>:/Images/imagens/LEDvermelho.png</normalon>:/Images/imagens/LEDverde.png</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>20</width>
-            <height>61</height>
-           </size>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
+           <string>Reset Interlock</string>
           </property>
          </widget>
          <widget class="QLabel" name="label_35">
@@ -3379,11 +3364,11 @@ p, li { white-space: pre-wrap; }
            <string>Power Supply Type:</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pb_Hard_interlock">
+         <widget class="QPushButton" name="pb_interlock">
           <property name="geometry">
            <rect>
-            <x>160</x>
-            <y>60</y>
+            <x>150</x>
+            <y>70</y>
             <width>21</width>
             <height>21</height>
            </rect>
@@ -3409,31 +3394,10 @@ p, li { white-space: pre-wrap; }
          <widget class="QLabel" name="label_137">
           <property name="geometry">
            <rect>
-            <x>20</x>
-            <y>60</y>
-            <width>113</width>
-            <height>16</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Hard Interlock:</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-         <widget class="QLabel" name="label_180">
-          <property name="geometry">
-           <rect>
-            <x>20</x>
-            <y>88</y>
+            <x>22</x>
+            <y>70</y>
             <width>111</width>
-            <height>16</height>
+            <height>21</height>
            </rect>
           </property>
           <property name="font">
@@ -3442,7 +3406,7 @@ p, li { white-space: pre-wrap; }
            </font>
           </property>
           <property name="text">
-           <string>Soft Interlock:</string>
+           <string>Interlock:</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -3493,6 +3457,19 @@ p, li { white-space: pre-wrap; }
             <string>10A[3]</string>
            </property>
           </item>
+         </widget>
+         <widget class="QLabel" name="label_interlock">
+          <property name="geometry">
+           <rect>
+            <x>140</x>
+            <y>60</y>
+            <width>51</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
          </widget>
         </widget>
         <widget class="QGroupBox" name="groupBox_25">
@@ -3545,6 +3522,9 @@ p, li { white-space: pre-wrap; }
           </property>
           <property name="decimals">
            <number>4</number>
+          </property>
+          <property name="maximum">
+           <double>1000.000000000000000</double>
           </property>
          </widget>
          <widget class="QLabel" name="label_5">
@@ -3603,6 +3583,9 @@ p, li { white-space: pre-wrap; }
           </property>
           <property name="decimals">
            <number>4</number>
+          </property>
+          <property name="maximum">
+           <double>1000.000000000000000</double>
           </property>
          </widget>
         </widget>
@@ -3699,7 +3682,7 @@ p, li { white-space: pre-wrap; }
            </font>
           </property>
           <property name="text">
-           <string/>
+           <string>0.0</string>
           </property>
          </widget>
          <widget class="QLineEdit" name="le_minimum_current">
@@ -3717,7 +3700,7 @@ p, li { white-space: pre-wrap; }
            </font>
           </property>
           <property name="text">
-           <string/>
+           <string>0.0</string>
           </property>
          </widget>
          <widget class="QLabel" name="label_125">
@@ -3779,7 +3762,7 @@ p, li { white-space: pre-wrap; }
           <property name="geometry">
            <rect>
             <x>20</x>
-            <y>30</y>
+            <y>70</y>
             <width>141</width>
             <height>31</height>
            </rect>
@@ -3795,7 +3778,7 @@ p, li { white-space: pre-wrap; }
           <property name="geometry">
            <rect>
             <x>20</x>
-            <y>80</y>
+            <y>120</y>
             <width>141</width>
             <height>31</height>
            </rect>
@@ -3811,7 +3794,7 @@ p, li { white-space: pre-wrap; }
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>130</y>
+            <y>170</y>
             <width>161</width>
             <height>31</height>
            </rect>
@@ -3827,7 +3810,7 @@ p, li { white-space: pre-wrap; }
           <property name="geometry">
            <rect>
             <x>270</x>
-            <y>80</y>
+            <y>120</y>
             <width>21</width>
             <height>31</height>
            </rect>
@@ -3840,7 +3823,7 @@ p, li { white-space: pre-wrap; }
           <property name="geometry">
            <rect>
             <x>270</x>
-            <y>130</y>
+            <y>170</y>
             <width>21</width>
             <height>31</height>
            </rect>
@@ -3853,7 +3836,7 @@ p, li { white-space: pre-wrap; }
           <property name="geometry">
            <rect>
             <x>270</x>
-            <y>30</y>
+            <y>70</y>
             <width>21</width>
             <height>31</height>
            </rect>
@@ -3863,6 +3846,9 @@ p, li { white-space: pre-wrap; }
           </property>
          </widget>
          <widget class="QPushButton" name="pb_send">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="geometry">
            <rect>
             <x>110</x>
@@ -3888,7 +3874,7 @@ p, li { white-space: pre-wrap; }
           <property name="geometry">
            <rect>
             <x>190</x>
-            <y>30</y>
+            <y>70</y>
             <width>71</width>
             <height>31</height>
            </rect>
@@ -3898,7 +3884,7 @@ p, li { white-space: pre-wrap; }
           <property name="geometry">
            <rect>
             <x>190</x>
-            <y>80</y>
+            <y>120</y>
             <width>71</width>
             <height>31</height>
            </rect>
@@ -3908,7 +3894,7 @@ p, li { white-space: pre-wrap; }
           <property name="geometry">
            <rect>
             <x>190</x>
-            <y>130</y>
+            <y>170</y>
             <width>71</width>
             <height>31</height>
            </rect>
@@ -3958,7 +3944,7 @@ p, li { white-space: pre-wrap; }
          <widget class="QPushButton" name="pb_rows_auto">
           <property name="geometry">
            <rect>
-            <x>90</x>
+            <x>70</x>
             <y>300</y>
             <width>101</width>
             <height>31</height>
@@ -3970,7 +3956,7 @@ p, li { white-space: pre-wrap; }
            </font>
           </property>
           <property name="text">
-           <string>Add Rows</string>
+           <string>Add Row</string>
           </property>
           <property name="icon">
            <iconset resource="resource_file.qrc">
@@ -3986,7 +3972,7 @@ p, li { white-space: pre-wrap; }
          <widget class="QPushButton" name="pb_clear_table">
           <property name="geometry">
            <rect>
-            <x>190</x>
+            <x>170</x>
             <y>300</y>
             <width>51</width>
             <height>31</height>
@@ -4034,6 +4020,9 @@ p, li { white-space: pre-wrap; }
          </property>
         </widget>
         <widget class="QPushButton" name="pb_send_curve">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="geometry">
           <rect>
            <x>270</x>
@@ -4058,7 +4047,7 @@ p, li { white-space: pre-wrap; }
         </widget>
         <widget class="QTabWidget" name="tabWidget_3">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="geometry">
           <rect>
@@ -4099,7 +4088,11 @@ p, li { white-space: pre-wrap; }
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QLineEdit" name="le_Sinusoidal_Amplitude"/>
+             <widget class="QLineEdit" name="le_Sinusoidal_Amplitude">
+              <property name="text">
+               <string>0.0</string>
+              </property>
+             </widget>
             </item>
             <item row="0" column="2">
              <widget class="QLabel" name="label_94">
@@ -4121,7 +4114,7 @@ p, li { white-space: pre-wrap; }
             <item row="1" column="1">
              <widget class="QLineEdit" name="le_Sinusoidal_Offset">
               <property name="text">
-               <string/>
+               <string>0.0</string>
               </property>
              </widget>
             </item>
@@ -4145,7 +4138,7 @@ p, li { white-space: pre-wrap; }
             <item row="2" column="1">
              <widget class="QLineEdit" name="le_Sinusoidal_Frequency">
               <property name="text">
-               <string/>
+               <string>0.0</string>
               </property>
              </widget>
             </item>
@@ -4167,7 +4160,11 @@ p, li { white-space: pre-wrap; }
              </widget>
             </item>
             <item row="3" column="1">
-             <widget class="QLineEdit" name="le_Sinusoidal_n_cycles"/>
+             <widget class="QLineEdit" name="le_Sinusoidal_n_cycles">
+              <property name="text">
+               <string>0</string>
+              </property>
+             </widget>
             </item>
             <item row="3" column="2">
              <widget class="QLabel" name="label_123">
@@ -4189,7 +4186,7 @@ p, li { white-space: pre-wrap; }
             <item row="4" column="1">
              <widget class="QLineEdit" name="le_Initial_Phase">
               <property name="text">
-               <string/>
+               <string>0.0</string>
               </property>
              </widget>
             </item>
@@ -4211,7 +4208,11 @@ p, li { white-space: pre-wrap; }
              </widget>
             </item>
             <item row="5" column="1">
-             <widget class="QLineEdit" name="le_Final_Phase"/>
+             <widget class="QLineEdit" name="le_Final_Phase">
+              <property name="text">
+               <string>0.0</string>
+              </property>
+             </widget>
             </item>
             <item row="5" column="2">
              <widget class="QLabel" name="label_118">
@@ -4305,6 +4306,9 @@ p, li { white-space: pre-wrap; }
               <height>31</height>
              </rect>
             </property>
+            <property name="text">
+             <string>0.0</string>
+            </property>
            </widget>
            <widget class="QLineEdit" name="le_damp_sin_Offset">
             <property name="geometry">
@@ -4316,7 +4320,7 @@ p, li { white-space: pre-wrap; }
              </rect>
             </property>
             <property name="text">
-             <string/>
+             <string>0.0</string>
             </property>
            </widget>
            <widget class="QLabel" name="label_92">
@@ -4387,7 +4391,7 @@ p, li { white-space: pre-wrap; }
              </rect>
             </property>
             <property name="text">
-             <string/>
+             <string>0.0</string>
             </property>
            </widget>
            <widget class="QLabel" name="label_122">
@@ -4442,7 +4446,7 @@ p, li { white-space: pre-wrap; }
              </rect>
             </property>
             <property name="text">
-             <string/>
+             <string>0.0</string>
             </property>
            </widget>
            <widget class="QLabel" name="label_145">
@@ -4499,6 +4503,9 @@ p, li { white-space: pre-wrap; }
               <height>31</height>
              </rect>
             </property>
+            <property name="text">
+             <string>0.0</string>
+            </property>
            </widget>
            <widget class="QLabel" name="label_148">
             <property name="geometry">
@@ -4537,6 +4544,9 @@ p, li { white-space: pre-wrap; }
               <width>71</width>
               <height>31</height>
              </rect>
+            </property>
+            <property name="text">
+             <string>0</string>
             </property>
            </widget>
            <widget class="QLabel" name="label_150">
@@ -4578,7 +4588,7 @@ p, li { white-space: pre-wrap; }
              </rect>
             </property>
             <property name="text">
-             <string/>
+             <string>0.0</string>
             </property>
            </widget>
            <widget class="QLabel" name="label_107">
@@ -4623,820 +4633,11 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </widget>
-         <widget class="QWidget" name="tab_16">
-          <attribute name="title">
-           <string>Triangular Softened</string>
-          </attribute>
-          <widget class="QLabel" name="label_124">
-           <property name="geometry">
-            <rect>
-             <x>20</x>
-             <y>10</y>
-             <width>381</width>
-             <height>221</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="pixmap">
-            <pixmap resource="resource_file.qrc">:/Images/imagens/triângulo suavizado.jpg</pixmap>
-           </property>
-           <property name="scaledContents">
-            <bool>true</bool>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_73">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="geometry">
-            <rect>
-             <x>260</x>
-             <y>280</y>
-             <width>51</width>
-             <height>31</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>cicles:</string>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_110">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>240</y>
-             <width>401</width>
-             <height>31</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="pixmap">
-            <pixmap resource="resource_file.qrc">:/Images/imagens/Equação corrente.png</pixmap>
-           </property>
-           <property name="scaledContents">
-            <bool>true</bool>
-           </property>
-          </widget>
-          <widget class="QLineEdit" name="le_fre">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="geometry">
-            <rect>
-             <x>120</x>
-             <y>280</y>
-             <width>71</width>
-             <height>31</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_153">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>280</y>
-             <width>110</width>
-             <height>31</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>Frequency [F]:</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_160">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="geometry">
-            <rect>
-             <x>200</x>
-             <y>280</y>
-             <width>31</width>
-             <height>31</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>Hz</string>
-           </property>
-          </widget>
-          <widget class="QSpinBox" name="Ciclos_Curva_2">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="geometry">
-            <rect>
-             <x>320</x>
-             <y>280</y>
-             <width>91</width>
-             <height>31</height>
-            </rect>
-           </property>
-           <property name="maximum">
-            <number>16</number>
-           </property>
-          </widget>
-          <widget class="QTabWidget" name="tabWidget_4">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="geometry">
-            <rect>
-             <x>420</x>
-             <y>10</y>
-             <width>291</width>
-             <height>311</height>
-            </rect>
-           </property>
-           <property name="currentIndex">
-            <number>0</number>
-           </property>
-           <widget class="QWidget" name="tab_3">
-            <attribute name="title">
-             <string>General settings</string>
-            </attribute>
-            <widget class="QLabel" name="label_151">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>140</y>
-               <width>161</width>
-               <height>31</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>#  of Cycles</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="label_135">
-             <property name="geometry">
-              <rect>
-               <x>250</x>
-               <y>20</y>
-               <width>41</width>
-               <height>31</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>A </string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="label_167">
-             <property name="geometry">
-              <rect>
-               <x>250</x>
-               <y>140</y>
-               <width>41</width>
-               <height>31</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>unid</string>
-             </property>
-            </widget>
-            <widget class="QLineEdit" name="le_softened_finalPhase">
-             <property name="geometry">
-              <rect>
-               <x>170</x>
-               <y>220</y>
-               <width>71</width>
-               <height>31</height>
-              </rect>
-             </property>
-            </widget>
-            <widget class="QLabel" name="label_171">
-             <property name="geometry">
-              <rect>
-               <x>250</x>
-               <y>180</y>
-               <width>21</width>
-               <height>31</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>º</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="label_136">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>20</y>
-               <width>161</width>
-               <height>31</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>Amplitude (App)</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-            <widget class="QLineEdit" name="le_softened_Offset">
-             <property name="geometry">
-              <rect>
-               <x>170</x>
-               <y>60</y>
-               <width>71</width>
-               <height>31</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-            <widget class="QLineEdit" name="le_softened_Ampl">
-             <property name="geometry">
-              <rect>
-               <x>170</x>
-               <y>20</y>
-               <width>71</width>
-               <height>31</height>
-              </rect>
-             </property>
-            </widget>
-            <widget class="QLineEdit" name="le_softened_Freq">
-             <property name="geometry">
-              <rect>
-               <x>170</x>
-               <y>100</y>
-               <width>71</width>
-               <height>31</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-            <widget class="QLabel" name="label_138">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>180</y>
-               <width>161</width>
-               <height>31</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>Phase shift  (ϴ)</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="label_172">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>100</y>
-               <width>161</width>
-               <height>31</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>Frequency (F)</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="label_173">
-             <property name="geometry">
-              <rect>
-               <x>250</x>
-               <y>60</y>
-               <width>21</width>
-               <height>31</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>A</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="label_174">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>60</y>
-               <width>161</width>
-               <height>31</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>Offset</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-            <widget class="QLabel" name="label_179">
-             <property name="geometry">
-              <rect>
-               <x>250</x>
-               <y>220</y>
-               <width>21</width>
-               <height>31</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>º</string>
-             </property>
-            </widget>
-            <widget class="QLineEdit" name="le_softened_nCycles">
-             <property name="geometry">
-              <rect>
-               <x>170</x>
-               <y>140</y>
-               <width>71</width>
-               <height>31</height>
-              </rect>
-             </property>
-            </widget>
-            <widget class="QLabel" name="label_181">
-             <property name="geometry">
-              <rect>
-               <x>250</x>
-               <y>100</y>
-               <width>31</width>
-               <height>31</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>Hz</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="label_182">
-             <property name="geometry">
-              <rect>
-               <x>20</x>
-               <y>220</y>
-               <width>141</width>
-               <height>31</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>Phase final position</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-            <widget class="QLineEdit" name="le_softened_phaseShift">
-             <property name="geometry">
-              <rect>
-               <x>170</x>
-               <y>180</y>
-               <width>71</width>
-               <height>31</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </widget>
-           <widget class="QWidget" name="tab_15">
-            <attribute name="title">
-             <string>Time settings</string>
-            </attribute>
-            <widget class="QTableWidget" name="tabela_config">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>20</y>
-               <width>251</width>
-               <height>221</height>
-              </rect>
-             </property>
-             <property name="rowCount">
-              <number>7</number>
-             </property>
-             <property name="columnCount">
-              <number>3</number>
-             </property>
-             <attribute name="horizontalHeaderVisible">
-              <bool>false</bool>
-             </attribute>
-             <attribute name="horizontalHeaderCascadingSectionResizes">
-              <bool>false</bool>
-             </attribute>
-             <attribute name="horizontalHeaderDefaultSectionSize">
-              <number>80</number>
-             </attribute>
-             <attribute name="horizontalHeaderHighlightSections">
-              <bool>true</bool>
-             </attribute>
-             <attribute name="verticalHeaderVisible">
-              <bool>false</bool>
-             </attribute>
-             <row>
-              <property name="text">
-               <string>0</string>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string>1</string>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string>2</string>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string>3</string>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string>4</string>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string>5</string>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string>6</string>
-              </property>
-             </row>
-             <column>
-              <property name="text">
-               <string>N</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Tn [ms]</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>In [A]</string>
-              </property>
-             </column>
-             <item row="0" column="0">
-              <property name="text">
-               <string>0</string>
-              </property>
-              <property name="textAlignment">
-               <set>AlignCenter</set>
-              </property>
-             </item>
-             <item row="0" column="1">
-              <property name="text">
-               <string>0</string>
-              </property>
-              <property name="textAlignment">
-               <set>AlignCenter</set>
-              </property>
-              <property name="background">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>255</red>
-                 <green>255</green>
-                 <blue>127</blue>
-                </color>
-               </brush>
-              </property>
-             </item>
-             <item row="0" column="2">
-              <property name="text">
-               <string>0</string>
-              </property>
-              <property name="textAlignment">
-               <set>AlignCenter</set>
-              </property>
-              <property name="background">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>255</red>
-                 <green>255</green>
-                 <blue>127</blue>
-                </color>
-               </brush>
-              </property>
-             </item>
-             <item row="1" column="0">
-              <property name="text">
-               <string>1</string>
-              </property>
-              <property name="textAlignment">
-               <set>AlignCenter</set>
-              </property>
-             </item>
-             <item row="1" column="1">
-              <property name="text">
-               <string>20</string>
-              </property>
-              <property name="textAlignment">
-               <set>AlignCenter</set>
-              </property>
-              <property name="background">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>255</red>
-                 <green>255</green>
-                 <blue>127</blue>
-                </color>
-               </brush>
-              </property>
-             </item>
-             <item row="1" column="2">
-              <property name="text">
-               <string>3</string>
-              </property>
-              <property name="textAlignment">
-               <set>AlignCenter</set>
-              </property>
-              <property name="background">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>255</red>
-                 <green>255</green>
-                 <blue>127</blue>
-                </color>
-               </brush>
-              </property>
-             </item>
-             <item row="2" column="0">
-              <property name="text">
-               <string>2</string>
-              </property>
-              <property name="textAlignment">
-               <set>AlignCenter</set>
-              </property>
-             </item>
-             <item row="2" column="1">
-              <property name="text">
-               <string>300</string>
-              </property>
-              <property name="textAlignment">
-               <set>AlignCenter</set>
-              </property>
-              <property name="background">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>255</red>
-                 <green>255</green>
-                 <blue>127</blue>
-                </color>
-               </brush>
-              </property>
-             </item>
-             <item row="2" column="2">
-              <property name="text">
-               <string>125</string>
-              </property>
-              <property name="textAlignment">
-               <set>AlignCenter</set>
-              </property>
-              <property name="background">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>255</red>
-                 <green>255</green>
-                 <blue>127</blue>
-                </color>
-               </brush>
-              </property>
-             </item>
-             <item row="3" column="0">
-              <property name="text">
-               <string>3</string>
-              </property>
-              <property name="textAlignment">
-               <set>AlignCenter</set>
-              </property>
-             </item>
-             <item row="3" column="1">
-              <property name="text">
-               <string>320</string>
-              </property>
-              <property name="textAlignment">
-               <set>AlignCenter</set>
-              </property>
-              <property name="background">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>255</red>
-                 <green>255</green>
-                 <blue>127</blue>
-                </color>
-               </brush>
-              </property>
-             </item>
-             <item row="3" column="2">
-              <property name="text">
-               <string>130</string>
-              </property>
-              <property name="textAlignment">
-               <set>AlignCenter</set>
-              </property>
-              <property name="background">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>255</red>
-                 <green>255</green>
-                 <blue>127</blue>
-                </color>
-               </brush>
-              </property>
-             </item>
-             <item row="4" column="0">
-              <property name="text">
-               <string>4</string>
-              </property>
-              <property name="textAlignment">
-               <set>AlignCenter</set>
-              </property>
-             </item>
-             <item row="4" column="1">
-              <property name="text">
-               <string>340</string>
-              </property>
-              <property name="textAlignment">
-               <set>AlignCenter</set>
-              </property>
-              <property name="background">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>255</red>
-                 <green>255</green>
-                 <blue>127</blue>
-                </color>
-               </brush>
-              </property>
-             </item>
-             <item row="4" column="2">
-              <property name="text">
-               <string>120</string>
-              </property>
-              <property name="textAlignment">
-               <set>AlignCenter</set>
-              </property>
-              <property name="background">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>255</red>
-                 <green>255</green>
-                 <blue>127</blue>
-                </color>
-               </brush>
-              </property>
-             </item>
-             <item row="5" column="0">
-              <property name="text">
-               <string>5</string>
-              </property>
-              <property name="textAlignment">
-               <set>AlignCenter</set>
-              </property>
-             </item>
-             <item row="5" column="1">
-              <property name="text">
-               <string>480</string>
-              </property>
-              <property name="textAlignment">
-               <set>AlignCenter</set>
-              </property>
-              <property name="background">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>255</red>
-                 <green>255</green>
-                 <blue>127</blue>
-                </color>
-               </brush>
-              </property>
-             </item>
-             <item row="5" column="2">
-              <property name="text">
-               <string>7</string>
-              </property>
-              <property name="textAlignment">
-               <set>AlignCenter</set>
-              </property>
-              <property name="background">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>255</red>
-                 <green>255</green>
-                 <blue>127</blue>
-                </color>
-               </brush>
-              </property>
-             </item>
-             <item row="6" column="0">
-              <property name="text">
-               <string>6</string>
-              </property>
-              <property name="textAlignment">
-               <set>AlignCenter</set>
-              </property>
-             </item>
-             <item row="6" column="1">
-              <property name="text">
-               <string>500</string>
-              </property>
-              <property name="textAlignment">
-               <set>AlignCenter</set>
-              </property>
-              <property name="background">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>255</red>
-                 <green>255</green>
-                 <blue>127</blue>
-                </color>
-               </brush>
-              </property>
-             </item>
-             <item row="6" column="2">
-              <property name="text">
-               <string>0</string>
-              </property>
-              <property name="textAlignment">
-               <set>AlignCenter</set>
-              </property>
-              <property name="background">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>255</red>
-                 <green>255</green>
-                 <blue>127</blue>
-                </color>
-               </brush>
-              </property>
-             </item>
-            </widget>
-            <widget class="QLabel" name="label_159">
-             <property name="geometry">
-              <rect>
-               <x>190</x>
-               <y>0</y>
-               <width>51</width>
-               <height>21</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>In [A]</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="label_155">
-             <property name="geometry">
-              <rect>
-               <x>40</x>
-               <y>0</y>
-               <width>41</width>
-               <height>21</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string> N</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="label_157">
-             <property name="geometry">
-              <rect>
-               <x>100</x>
-               <y>0</y>
-               <width>61</width>
-               <height>21</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>Tn [ms]</string>
-             </property>
-            </widget>
-           </widget>
-          </widget>
-         </widget>
          <widget class="QWidget" name="tab_18">
           <attribute name="title">
            <string>Arbitrary</string>
           </attribute>
-          <widget class="QLineEdit" name="Endereco_Curva_Arbitraria">
+          <widget class="QLineEdit" name="le_arbitrary_file">
            <property name="geometry">
             <rect>
              <x>40</x>
@@ -5526,7 +4727,7 @@ p, li { white-space: pre-wrap; }
            <property name="title">
             <string>Settings</string>
            </property>
-           <widget class="QLineEdit" name="le_amplitude_arbitrary">
+           <widget class="QLineEdit" name="le_arbitrary_amplitude">
             <property name="geometry">
              <rect>
               <x>170</x>
@@ -5535,8 +4736,11 @@ p, li { white-space: pre-wrap; }
               <height>31</height>
              </rect>
             </property>
+            <property name="text">
+             <string>0.0</string>
+            </property>
            </widget>
-           <widget class="QLineEdit" name="le_nCicles_arbitrary">
+           <widget class="QLineEdit" name="le_arbitrary_nCycles">
             <property name="geometry">
              <rect>
               <x>170</x>
@@ -5546,7 +4750,7 @@ p, li { white-space: pre-wrap; }
              </rect>
             </property>
             <property name="text">
-             <string/>
+             <string>0</string>
             </property>
            </widget>
            <widget class="QLabel" name="label_109">
@@ -5559,7 +4763,7 @@ p, li { white-space: pre-wrap; }
              </rect>
             </property>
             <property name="text">
-             <string>Amplitude (Ap)</string>
+             <string>Amplitude (App)</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -5607,7 +4811,7 @@ p, li { white-space: pre-wrap; }
              <string>Hz</string>
             </property>
            </widget>
-           <widget class="QLineEdit" name="le_frequency_arbitrary">
+           <widget class="QLineEdit" name="le_arbitrary_frequency">
             <property name="geometry">
              <rect>
               <x>170</x>
@@ -5617,7 +4821,7 @@ p, li { white-space: pre-wrap; }
              </rect>
             </property>
             <property name="text">
-             <string/>
+             <string>0.0</string>
             </property>
            </widget>
            <widget class="QLabel" name="label_156">
@@ -5778,27 +4982,6 @@ p, li { white-space: pre-wrap; }
            <property name="title">
             <string>General Aspects</string>
            </property>
-           <widget class="QLabel" name="label_183">
-            <property name="geometry">
-             <rect>
-              <x>-10</x>
-              <y>100</y>
-              <width>111</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>10</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>Soft Interlock:</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
            <widget class="QLabel" name="label_38">
             <property name="geometry">
              <rect>
@@ -5822,8 +5005,8 @@ p, li { white-space: pre-wrap; }
            <widget class="QLabel" name="label_141">
             <property name="geometry">
              <rect>
-              <x>-10</x>
-              <y>72</y>
+              <x>10</x>
+              <y>100</y>
               <width>113</width>
               <height>16</height>
              </rect>
@@ -5834,37 +5017,10 @@ p, li { white-space: pre-wrap; }
              </font>
             </property>
             <property name="text">
-             <string>Hard Interlock:</string>
+             <string>Interlock:</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-           <widget class="QPushButton" name="pb_Soft_interlock_2">
-            <property name="geometry">
-             <rect>
-              <x>130</x>
-              <y>102</y>
-              <width>21</width>
-              <height>21</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset resource="resource_file.qrc">
-              <normaloff>:/Images/imagens/LEDverde.png</normaloff>
-              <normalon>:/Images/imagens/LEDvermelho.png</normalon>:/Images/imagens/LEDverde.png</iconset>
-            </property>
-            <property name="iconSize">
-             <size>
-              <width>20</width>
-              <height>61</height>
-             </size>
-            </property>
-            <property name="checkable">
-             <bool>true</bool>
             </property>
            </widget>
            <widget class="QComboBox" name="cb_ps_type_2">
@@ -5897,11 +5053,11 @@ p, li { white-space: pre-wrap; }
              </property>
             </item>
            </widget>
-           <widget class="QPushButton" name="pb_Hard_interlock_2">
+           <widget class="QPushButton" name="pb_interlock_2">
             <property name="geometry">
              <rect>
               <x>130</x>
-              <y>72</y>
+              <y>100</y>
               <width>21</width>
               <height>21</height>
              </rect>
@@ -5939,61 +5095,21 @@ p, li { white-space: pre-wrap; }
              </font>
             </property>
             <property name="text">
-             <string>Reset Interlocks</string>
+             <string>Reset Interlock</string>
             </property>
            </widget>
-           <widget class="QLabel" name="label_8">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>140</y>
-              <width>91</width>
-              <height>16</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>10</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>Trim Coil Type:</string>
-            </property>
-           </widget>
-           <widget class="QComboBox" name="cb_trim_coil_type">
+           <widget class="QLabel" name="label_interlock_2">
             <property name="geometry">
              <rect>
               <x>110</x>
-              <y>140</y>
-              <width>91</width>
-              <height>25</height>
+              <y>90</y>
+              <width>61</width>
+              <height>41</height>
              </rect>
             </property>
-            <property name="font">
-             <font>
-              <pointsize>10</pointsize>
-             </font>
+            <property name="text">
+             <string/>
             </property>
-            <item>
-             <property name="text">
-              <string>Trim Coil</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>HC Coil</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>VC Coil</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>SQ Coil</string>
-             </property>
-            </item>
            </widget>
           </widget>
           <widget class="QGroupBox" name="groupBox_12">
@@ -6086,7 +5202,7 @@ p, li { white-space: pre-wrap; }
              </font>
             </property>
             <property name="text">
-             <string/>
+             <string>0.0</string>
             </property>
            </widget>
            <widget class="QLineEdit" name="le_maximum_current_2">
@@ -6104,7 +5220,7 @@ p, li { white-space: pre-wrap; }
              </font>
             </property>
             <property name="text">
-             <string/>
+             <string>0.0</string>
             </property>
            </widget>
            <widget class="QLabel" name="label_128">
@@ -6131,7 +5247,10 @@ p, li { white-space: pre-wrap; }
             </property>
            </widget>
           </widget>
-          <widget class="QGroupBox" name="groupBox_18">
+          <widget class="QGroupBox" name="gb_start_supply_2">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
            <property name="geometry">
             <rect>
              <x>520</x>
@@ -6143,7 +5262,7 @@ p, li { white-space: pre-wrap; }
            <property name="title">
             <string>Start Secondary PS</string>
            </property>
-           <widget class="QLineEdit" name="le_status_fonte_2">
+           <widget class="QLineEdit" name="le_status_loop_2">
             <property name="geometry">
              <rect>
               <x>90</x>
@@ -6170,6 +5289,9 @@ p, li { white-space: pre-wrap; }
             </property>
            </widget>
            <widget class="QPushButton" name="pb_PS_button_2">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
             <property name="geometry">
              <rect>
               <x>30</x>
@@ -6347,6 +5469,9 @@ Loop:</string>
             </property>
            </widget>
            <widget class="QPushButton" name="pb_send_2">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="geometry">
              <rect>
               <x>110</x>
@@ -6442,7 +5567,7 @@ Loop:</string>
            <widget class="QPushButton" name="pb_rows_auto_2">
             <property name="geometry">
              <rect>
-              <x>110</x>
+              <x>80</x>
               <y>260</y>
               <width>101</width>
               <height>31</height>
@@ -6454,7 +5579,7 @@ Loop:</string>
              </font>
             </property>
             <property name="text">
-             <string>Add Rows</string>
+             <string>Add Row</string>
             </property>
             <property name="icon">
              <iconset resource="resource_file.qrc">
@@ -6467,6 +5592,24 @@ Loop:</string>
              </size>
             </property>
            </widget>
+           <widget class="QPushButton" name="pb_clear_table_2">
+            <property name="geometry">
+             <rect>
+              <x>190</x>
+              <y>260</y>
+              <width>61</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Clear</string>
+            </property>
+           </widget>
           </widget>
          </widget>
          <widget class="QWidget" name="tab_20">
@@ -6474,6 +5617,9 @@ Loop:</string>
            <string>Damped Sinusoidal</string>
           </attribute>
           <widget class="QPushButton" name="pb_send_curve_2">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="geometry">
             <rect>
              <x>410</x>
@@ -6543,6 +5689,9 @@ Loop:</string>
               <height>31</height>
              </rect>
             </property>
+            <property name="text">
+             <string>0.0</string>
+            </property>
            </widget>
            <widget class="QLineEdit" name="le_damp_sin_Offset_2">
             <property name="geometry">
@@ -6554,7 +5703,7 @@ Loop:</string>
              </rect>
             </property>
             <property name="text">
-             <string/>
+             <string>0.0</string>
             </property>
            </widget>
            <widget class="QLabel" name="label_104">
@@ -6625,7 +5774,7 @@ Loop:</string>
              </rect>
             </property>
             <property name="text">
-             <string/>
+             <string>0.0</string>
             </property>
            </widget>
            <widget class="QLabel" name="label_208">
@@ -6680,7 +5829,7 @@ Loop:</string>
              </rect>
             </property>
             <property name="text">
-             <string/>
+             <string>0.0</string>
             </property>
            </widget>
            <widget class="QLabel" name="label_211">
@@ -6737,6 +5886,9 @@ Loop:</string>
               <height>31</height>
              </rect>
             </property>
+            <property name="text">
+             <string>0.0</string>
+            </property>
            </widget>
            <widget class="QLabel" name="label_214">
             <property name="geometry">
@@ -6775,6 +5927,9 @@ Loop:</string>
               <width>71</width>
               <height>31</height>
              </rect>
+            </property>
+            <property name="text">
+             <string>0</string>
             </property>
            </widget>
            <widget class="QLabel" name="label_216">
@@ -6816,7 +5971,7 @@ Loop:</string>
              </rect>
             </property>
             <property name="text">
-             <string/>
+             <string>0.0</string>
             </property>
            </widget>
            <widget class="QLabel" name="label_218">
@@ -6924,6 +6079,12 @@ Loop:</string>
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
+      <zorder>line_2</zorder>
+      <zorder>tabWidget_2</zorder>
+      <zorder>label_112</zorder>
+      <zorder>le_PS_Name</zorder>
+      <zorder>pb_save_PS</zorder>
+      <zorder>pb_load_PS</zorder>
      </widget>
      <widget class="QPushButton" name="pb_emergency4">
       <property name="geometry">
@@ -7233,9 +6394,9 @@ Voltage</string>
        <string>A</string>
       </property>
      </widget>
-     <widget class="QGroupBox" name="groupBox_StartFonte">
+     <widget class="QGroupBox" name="gb_start_supply">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -7255,6 +6416,9 @@ Voltage</string>
        <string>Start PS</string>
       </property>
       <widget class="QPushButton" name="pb_PS_button">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>20</x>
@@ -7288,7 +6452,10 @@ Voltage</string>
         <bool>true</bool>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_status_fonte">
+      <widget class="QLineEdit" name="le_status_loop">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>80</x>
@@ -8519,17 +7686,17 @@ Loop:</string>
   <tabstop>le_damp_sin_phaseShift</tabstop>
   <tabstop>le_damp_sin_finalPhase</tabstop>
   <tabstop>le_damp_sin_Damping</tabstop>
-  <tabstop>le_amplitude_arbitrary</tabstop>
-  <tabstop>le_frequency_arbitrary</tabstop>
-  <tabstop>le_nCicles_arbitrary</tabstop>
-  <tabstop>Endereco_Curva_Arbitraria</tabstop>
+  <tabstop>le_arbitrary_amplitude</tabstop>
+  <tabstop>le_arbitrary_frequency</tabstop>
+  <tabstop>le_arbitrary_nCycles</tabstop>
+  <tabstop>le_arbitrary_file</tabstop>
   <tabstop>Procurar_Arquivo_Curva_Arbitraria</tabstop>
   <tabstop>pb_send_curve</tabstop>
   <tabstop>pb_cycle</tabstop>
   <tabstop>le_PS_Name</tabstop>
   <tabstop>pb_save_PS</tabstop>
   <tabstop>pb_load_PS</tabstop>
-  <tabstop>le_status_fonte</tabstop>
+  <tabstop>le_status_loop</tabstop>
   <tabstop>pb_PS_button</tabstop>
   <tabstop>pb_emergency4</tabstop>
   <tabstop>pb_emergency5</tabstop>
@@ -8548,9 +7715,6 @@ Loop:</string>
   <tabstop>chb_automatic_ps</tabstop>
   <tabstop>le_Initial_Phase</tabstop>
   <tabstop>le_damp_sin_nCycles</tabstop>
-  <tabstop>tabela_config</tabstop>
-  <tabstop>le_fre</tabstop>
-  <tabstop>Ciclos_Curva_2</tabstop>
   <tabstop>chb_PS_reading</tabstop>
   <tabstop>chb_dcct</tabstop>
   <tabstop>dcct_select</tabstop>

@@ -24,6 +24,10 @@ class RotatingCoil_Library(object):
         self.flags = flags()
         self.comm = communication()
         self.aux_df()
+        self.coil_settings = None
+        self.ps_settings = None
+        self.ps_settings_2 = None
+        self.measurement_settings = None
 
         self.db_create_table()
         
@@ -505,7 +509,6 @@ class RotatingCoil_Library(object):
 
     def load_coil(self,filename):
         try:
-            self.coil_settings = None
             self.coil_settings = pd.read_csv(filename, comment = '#', delimiter = '\t',names=['datavars','datavalues'], dtype={'datavars':str}, index_col='datavars')
             return True
         except:
@@ -529,11 +532,16 @@ class RotatingCoil_Library(object):
     def load_ps(self,filename,secondary=False):
         try:
             if not secondary:
-                self.ps_settings = None
                 self.ps_settings = pd.read_csv(filename, comment = '#', delimiter = '\t',names=['datavars','datavalues'], dtype={'datavars':str}, index_col='datavars')
+                _df = self.ps_settings
             else:
-                self.ps_settings_2 = None
                 self.ps_settings_2 = pd.read_csv(filename, comment = '#', delimiter = '\t',names=['datavars','datavalues'], dtype={'datavars':str}, index_col='datavars')
+                _df = self.ps_settings_2
+            _ps_type = self.get_value(_df,'Power Supply Type',int)
+            if _ps_type < 2:
+                self.write_value(_df,'Power Supply Type',2)
+            elif _ps_type > 6:
+                self.write_value(_df,'Power Supply Type',6)
             return True
         except:
             return False      
@@ -636,6 +644,68 @@ class RotatingCoil_Library(object):
         _df = pd.DataFrame({'datavars': _datavars,
                             'datavalues': _datavalues}) 
         self.aux_settings = _df.set_index('datavars')
+        
+    def ps_df(self, secondary=False):
+        _datavars = ['Power Supply Name',
+                     'Power Supply Type',
+                     'Current Setpoint',
+                     'Amplitude Step',
+                     'Delay/Step',
+                     'Sinusoidal Amplitude',
+                     'Sinusoidal Offset',
+                     'Sinusoidal Frequency',
+                     'Sinusoidal N Cycles',
+                     'Sinusoidal Initial Phase',
+                     'Sinusoidal Final Phase',
+                     'Damped Sinusoidal Amplitude',
+                     'Damped Sinusoidal Offset',
+                     'Damped Sinusoidal Frequency',
+                     'Damped Sinusoidal N Cycles',
+                     'Damped Sinusoidal Phase Shift',
+                     'Damped Sinusoidal Final Phase',
+                     'Damped Sinusoidal Damping',
+                     'Arbitrary Amplitude',
+                     'Arbitrary Frequency',
+                     'Arbitrary N Cycles',
+                     'Arbitrary File',
+                     'Maximum Current',
+                     'Minimum Current',
+                     'Automatic Setpoints',
+                     'Kp',
+                     'Ki']
+        _datavalues = ['',
+                       3,
+                       0.0,
+                       0.0,
+                       0.0,
+                       0.0,
+                       0.0,
+                       0.0,
+                       0,
+                       0.0,
+                       0.0,
+                       0.0,
+                       0.0,
+                       0.0,
+                       0,
+                       0.0,
+                       0.0,
+                       0.0,
+                       0.0,
+                       0.0,
+                       0.0,
+                       '',
+                       0.0,
+                       0.0,
+                       0.0,
+                       0.0,
+                       0.0]
+        _df = pd.DataFrame({'datavars': _datavars,
+                            'datavalues': _datavalues}) 
+        if not secondary:
+            self.ps_settings = _df.set_index('datavars')
+        if secondary:
+            self.ps_settings_2 = _df.set_index('datavars')
 
     def get_value(self,dataframe,index,value_type=None):
         """
@@ -650,10 +720,15 @@ class RotatingCoil_Library(object):
         else:
             return dataframe.loc[index].get_values()[0]
 
-    def write_value(self,dataframe,index,value):
+    def write_value(self,dataframe,index,value,numeric=False):
         """
         write values in dataframe
         """
+        if numeric:
+            try:
+                float(value)
+            except:
+                raise TypeError("'{0}' value ({1}) must be a number".format(index,value))
         dataframe.loc[index].values[0] = value
 
 class flags(object):
