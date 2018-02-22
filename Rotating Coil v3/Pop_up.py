@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'Pop_up.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.10
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -103,7 +103,12 @@ class Ui_Pop_Up(object):
         self.label.setText(_translate("Pop_Up", "Measurement features"))
         self.label_134.setText(_translate("Pop_Up", "Magnet Name:"))
         self.label_166.setText(_translate("Pop_Up", "Temperature (°C):"))
-        self.groupBox_23.setTitle(_translate("Pop_Up", "Details"))
+        self.groupBox_23.setTitle(_translate("Pop_Up", "Comments"))
+        self.te_meas_details.setHtml(_translate("Pop_Up", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"> </p></body></html>"))
         self.label_167.setText(_translate("Pop_Up", "Operator:"))
         self.cb_operator.setItemText(0, _translate("Pop_Up", "James Citadini"))
         self.cb_operator.setItemText(1, _translate("Pop_Up", "Lucas Balthazar"))

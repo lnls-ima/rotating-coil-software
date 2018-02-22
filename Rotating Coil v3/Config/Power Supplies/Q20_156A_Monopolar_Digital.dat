@@ -5,8 +5,6 @@
 Power Supply Name	Q20_156A_Monopolar_Digital
 Power Supply Type	3
 Current Setpoint	0.0
-Amplitude Step	5.0
-Delay/Step	0.1
 Sinusoidal Amplitude	10.0
 Sinusoidal Offset	0.0
 Sinusoidal Frequency	1.0

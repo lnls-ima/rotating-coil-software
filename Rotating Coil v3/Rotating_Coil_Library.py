@@ -127,7 +127,7 @@ class RotatingCoil_Library(object):
             _accelerator_name = 'BOA'
           
         _main_current = 0 #check later
-        _trim_coil_type = self.get_value(self.measurement_settings, 'trim_coil_trype', int)
+        _trim_coil_type = self.get_value(self.measurement_settings, 'trim_coil_type', int)
           
         _name = self.get_value(self.measurement_settings, 'name', str)
         _filename = _name + '_' + _magnet_type + '_' + _accelerator_name + '_' + str(_main_current).zfill(5) + 'A_' + _date_name + '_' + _hour_name + '.dat'
@@ -180,7 +180,7 @@ class RotatingCoil_Library(object):
             _magnet_resistance_std = self.get_value(self.aux_settings, 'magnet_resistance_std', float)
         _coil_name = self.get_value(self.coil_settings, 'coil_name', str)
         _coil_type = self.get_value(self.coil_settings, 'coil_type', str)
-        _measurement_type = self.get_value(self.measurement_settings, 'measurement_type', str) #'N_Bucked' #Not necessary to implement bucked mode for now
+        _measurement_type = self.get_value(self.measurement_settings, 'measurement_type', str)
         _n_turns_normal = self.get_value(self.coil_settings, 'n_turns_normal', int)
         _radius1_normal = self.get_value(self.coil_settings, 'radius1_normal', float)
         _radius2_normal = self.get_value(self.coil_settings, 'radius2_normal', float)
@@ -190,8 +190,8 @@ class RotatingCoil_Library(object):
         _coil_comments = self.get_value(self.coil_settings, 'comments', str)
         _comments = self.get_value(self.measurement_settings, 'comments', str)
         _norm_radius = self.get_value(self.measurement_settings, 'norm_radius', float)
-        _magnetic_center_x = self.get_value(self.measurement_settings, 'magnetic_center_x', float)
-        _magnetic_center_y = self.get_value(self.measurement_settings, 'magnetic_center_y', float)
+        _magnetic_center_x = self.get_value(self.measurement_settings, 'magnetic_center_x', float) #[um]
+        _magnetic_center_y = self.get_value(self.measurement_settings, 'magnetic_center_y', float) #[um]
         _read_data = self.get_read_data()
         _raw_curve = self.get_raw_curve()
            
@@ -471,13 +471,6 @@ class RotatingCoil_Library(object):
                 f.write('##### Raw Data Stored(V.s) [1e-12] #####')
                 f.write('\n\n')
                 f.write(_raw_curve)
-                
-                #SAVE TURN ANGLES!!!
-    #                         if self.ui.Salvar_Angulo_Volta.isChecked():
-    #                 f.write('\n\n\n')   ### Angulo por Volta.
-    #                 f.write('.........Turn Angle:.........\n\n')
-    #                 for i in range(0,len(lib.pontos),1):
-    #                     f.write(str(lib.AngulosVoltas[TipoIma][i]) + '\n') 
             return True
         except:
             return False
@@ -596,7 +589,7 @@ class RotatingCoil_Library(object):
                      'magnetic_center_x',
                      'magnetic_center_y',
                      'trim_coil_type']
-        _datavalues = [self.App.myapp.dialog.ui.le_magnet_name.text().upper(),
+        _datavalues = [self.App.myapp.dialog.ui.le_magnet_name.text(),
                        self.App.myapp.dialog.ui.cb_operator.currentText(),
                        'v3',
                        float(self.App.myapp.dialog.ui.le_temperature.text()),
@@ -644,6 +637,31 @@ class RotatingCoil_Library(object):
         _df = pd.DataFrame({'datavars': _datavars,
                             'datavalues': _datavalues}) 
         self.aux_settings = _df.set_index('datavars')
+        
+    def coil_df(self):
+        _datavars = ['coil_name',
+                     'n_turns_normal',
+                     'radius1_normal',
+                     'radius2_normal',
+                     'n_turns_bucked',
+                     'radius1_bucked',
+                     'radius2_bucked',
+                     'trigger_ref',
+                     'coil_type',
+                     'comments']
+        _datavalues =[self.App.myapp.ui.le_coil_name.text(),
+                      self.App.myapp.ui.le_n_turns_normal.text(),
+                      self.App.myapp.ui.le_radius1_normal.text(),
+                      self.App.myapp.ui.le_radius2_normal.text(),
+                      self.App.myapp.ui.le_n_turns_bucked.text(),
+                      self.App.myapp.ui.le_radius1_bucked.text(),
+                      self.App.myapp.ui.le_radius2_bucked.text(),
+                      self.App.myapp.ui.le_trigger_ref.text(),
+                      self.App.myapp.ui.cb_coil_type.currentText(),
+                      self.App.myapp.ui.te_comments.toPlainText()]
+        _df = pd.DataFrame({'datavars': _datavars,
+                            'datavalues': _datavalues})
+        self.coil_settings = _df.set_index('datavars')
         
     def ps_df(self, secondary=False):
         _datavars = ['Power Supply Name',
@@ -729,6 +747,7 @@ class RotatingCoil_Library(object):
                 float(value)
             except:
                 raise TypeError("'{0}' value ({1}) must be a number".format(index,value))
+                return
         dataframe.loc[index].values[0] = value
 
 class flags(object):
@@ -748,206 +767,3 @@ class communication(object):
         self.agilent34401a = None
         self.agilent34970a = None
         self.drs = None       
-    
-class interface_vars(object):
-    def __init__(self):
-        # Connection Tab 
-        self.display_type = None
-        self.disp_port = None
-        self.driver_port = None
-        self.integrator_port = None
-        self.ps_type = None
-        self.ps_port = None
-        self.ps_address = None
-        
-        self.enable_Agilent33220A = None
-        self.agilent33220A_address = None
-                
-        self.enable_Agilent34401A = None
-        self.agilent34401A_address = None
-
-        self.enable_Agilent34970A = None
-        self.agilent34970A_address = None
-        
-        # Settings Tab
-        self.total_number_of_turns = None
-        self.remove_initial_turns = None
-        self.remove_final_turns = None
-        
-        self.ref_encoder_A = None
-        self.ref_encoder_B = None
-
-        self.rotation_motor_address = None
-        self.rotation_motor_resolution = None        
-        self.rotation_motor_speed = None
-        self.rotation_motor_acceleration = None
-        self.rotation_motor_ratio = None
-
-        self.poscoil_assembly = None
-        self.n_encoder_pulses = None
-        
-        self.cb_integrator_gain = None
-        self.cb_n_integration_points = None
-               
-        self.save_turn_angles = None
-        self.disable_aligment_interlock = None
-        self.disable_ps_interlock = None
-        
-        # Motors Tab
-        self.driver_address = None
-        self.driver_mode = None
-        self.driver_direction = None
-        self.motor_vel = None
-        self.motor_ace = None
-        self.motor_turns = None
-        
-        # Coil Tab
-        self.coil_name = None
-        self.n_turns_normal = None
-        self.radius1_normal = None
-        self.radius2_normal = None
-        self.n_turns_bucked = None
-        self.radius1_bucked = None
-        self.radius2_bucked = None
-        self.coil_type = None
-        self.te_comments = None
-        
-        # Integrator Tab
-        self.integrator_gain = None
-        self.integration_points = None
-        self.lcd_encoder_reading = None
-        self.encoder_setpoint = None        
-        self.label_status_1 = None
-        self.label_status_2 = None
-        self.label_status_3 = None
-        self.label_status_4 = None
-        self.label_status_5 = None
-        self.label_status_6 = None
-        self.label_status_7 = None
-        
-        self.norm_radius = None
-        self.coil_rotation_direction = None
-        
-        # Power Supply Tab
-        self.status_ps = 0      #0 = OFF ; 1 = ON
-        self.status_ps_2 = 0
-        self.actual_current = 0
-        self.actual_current_2 = 0
-        self.dclink_value = 30 #Capacitor bank voltage
-#         self.ps_cycle = 0
-#         self.ps_cycle_2 = 0
-#         self.ps_ready = 0
-        
-        #General 
-        self.stop_all = 0
-        
-    
-#     def communication(self):
-#         self.display = 0            # Display Heidenhain
-#         self.motor = 0              # Driver do motor
-#         self.integrador = 0         # Integrador
-#         self.controle_fonte = 0     #ACRESCENTADO# Seleciona o controle via PUC ou Digital  
-#         self.StatusIntegrador = []
-#         self.Janela = 0
-#         self.endereco = 2
-#         self.endereco_pararmotor = 0
-#         self.tipo_display = 0
-#         self.stop = 0
-#         self.Ref_Bobina = 0
-#         self.posicao = [0,0]
-#         self.kill = 0
-#         self.pontos = []
-#         self.pontos_recebidos = []
-#         self.parartudo = 0
-#         self.media = 0
-#         self.F = 0
-#         self.ganho = 0
-#         self.pontos_integracao = 0
-#         self.pulsos_encoder = 0
-#         self.pulsos_trigger = 0
-#         self.voltas_offset = 0
-#         self.volta_filtro = 0
-#         
-#         self.SJN = np.zeros(21)
-#         self.SKN = np.zeros(21)
-#         self.SNn = np.zeros(21)
-#         self.SNn2 = np.zeros(21)
-#         self.SSJN2 = np.zeros(21)
-#         self.SSKN2 = np.zeros(21)
-#         self.SdbdXN = np.zeros(21)
-#         self.SdbdXN2 = np.zeros(21)
-#         self.Nn = np.zeros(21)
-#         self.Sn = np.zeros(21)
-#         self.Nnl = np.zeros(21)
-#         self.Snl = np.zeros(21)
-#         self.sDesv = np.zeros(21)
-#         self.sDesvNn = np.zeros(21)
-#         self.sDesvSn = np.zeros(21)
-#         self.sDesvNnl = np.zeros(21)
-#         self.sDesvSnl = np.zeros(21)
-#         self.Angulo = np.zeros(21)
-#         self.Desv_angulo = np.zeros(21)
-#         self.SMod = np.zeros(21)
-#         self.AngulosVoltas = []
-#         self.procura_indice_flag = 1
-#         self.velocidade = 0
-#         self.acaleracao = 0
-#         self.sentido = 0
-#         self.ima_bobina = 0             ## ACRESCENTADO ##
-#         self.raio_referencia = 0        ## ACRESCENTADO ##
-#         self.passos_volta = 500000
-#         self.alpha = 0
-#         self.Tipo_Bobina = 0
-#         self.Bucked = 0
-#         self.PUC = 0
-#         self.PUC_Conectada = 0          ## 0 = Desconectada   1 = Conectada
-#         self.Modelo_PUC = 0
-#         self.Ciclos_Puc = 0
-#         self.Divisor_Puc = 0
-#         self.LeituraCorrente = 0
-#         self.LeituraCorrente_Secundaria = 0     #ACRESCENTADO#
-#         self.Leitura_Tensao = 0                 #ACRESCENTADO#
-#         self.Leitura_tensao_e_corrente = 0      #ACRESCENTADO#
-#         self.Status_Fonte = 0           ## 0 = Desligada   1 = Ligada
-#         self.Fonte_Calibrada = [0,0]    ## [Entrada,Saida] 0 = N Calibrada  1 = Calibrada
-#         self.Fonte_Pronta = 0           ## 0 = N Pronta    1 = Pronta
-#         self.Fonte_Ciclagem = 0         ## 0 = N Ciclando  1 = Ciclando
-#         self.Analise_Freq = 0           ## 0 = Parada      1 = Realizando
-#         self.Corrente_Atual = 0
-#         self.Ponto_Inicial_Curva = 0
-#         self.Dados_Curva = []
-#         self.reta_escrita = []
-#         self.reta_leitura = []
-#         self.FileName = 0
-#         self.Motor_Posicao = 0
-#         self.GPIB = 0
-#         self.Multimetro = 0
-#         self.Digital = 0               #ACRESCENTADO#  Seleciona a fonte digital
-#         self.Digital_Conectada = 0     #ACRESCENTADO#  Retorna se a fonte está conectada: 0 = Desconectada   1 = Conectada  
-#         
-#     def constants(self):
-#         self.numero_de_abas = 10                                # Numero de abas da janela grafica
-#         self.ganhos = [1, 2, 5, 10, 20, 50, 100]                # Ganhos disponiveis para o integrador
-# ##        self.p_integracao = [16, 32, 64, 128, 256, 512]         # Numero de pontos de integracao disponiveis encoder 2**n
-#         self.p_integracao = [90, 100, 120, 144, 250, 500]       # Numero de pontos de integracao disponiveis
-#         self.passos_mmA = 25000                                 # Numero de passos por mm
-#         self.passos_mmB = 25000                                 # Numero de passos por mm
-#         self.passos_mmC = 50000
-#         self.motorA_endereco = 3                                # Endereco do motor A
-#         self.motorB_endereco = 4                                # Endereco do motor B
-#         self.motorC_endereco = 2
-#         self.avancoA = 0
-#         self.avancoB = 0
-#         self.avancoC = 0
-#         self.zeroA = 0
-#         self.zeroB = 0
-#         self.pos_ang = 0
-#         self.pos_long = 0
-#         self.pos_ver = 0
-#         self.pos_trac = 0
-#         self.premont_A = 0
-#         self.premont_B = 0
-#         self.final_A = 0
-#         self.final_B = 0
-#         self.Clock_Puc = 4000                                   #Clock interno da PUC
-#         self.Pontos_Puc = 32768                                 #Número de pontos da Memória PUC

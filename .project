@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>RotatingCoil_v3</name>
+	<name>rotating-coil-software-v3</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -14,4 +14,10 @@
 	<natures>
 		<nature>org.python.pydev.pythonNature</nature>
 	</natures>
+	<variableList>
+		<variable>
+			<name>MODULES_LOC</name>
+			<value>file:/C:/Arq/WorkAtLNLS/eclipse-workspace/rotating-coil-software-v3/Rotating%20Coil%20v3</value>
+		</variable>
+	</variableList>
 </projectDescription>

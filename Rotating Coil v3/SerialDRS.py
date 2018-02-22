@@ -268,6 +268,18 @@ class SerialDRS_FBP(object):
         reply_msg = self.ser.read(9)
         val = struct.unpack('BBHfB',reply_msg)
         return val[3]
+    
+    def Read_vOutMod1(self):
+        self.read_var(self.index_to_hex(ListVar.index('vOutMod1')))
+        reply_msg = self.ser.read(9)
+        val = struct.unpack('BBHfB',reply_msg)
+        return val[3]
+
+    def Read_vOutMod2(self):
+        self.read_var(self.index_to_hex(ListVar.index('vOutMod2')))
+        reply_msg = self.ser.read(9)
+        val = struct.unpack('BBHfB',reply_msg)
+        return val[3]
 
     def Read_temp1(self):
         self.read_var(self.index_to_hex(ListVar.index('temp1')))

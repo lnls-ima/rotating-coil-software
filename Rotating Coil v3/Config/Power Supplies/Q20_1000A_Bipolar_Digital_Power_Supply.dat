@@ -5,8 +5,6 @@
 Power Supply Name	Q20_1000A_Bipolar_Digital_Power_Supply
 Power Supply Type	2
 Current Setpoint	0.0
-Amplitude Step	5.0
-Delay/Step	0.1
 Sinusoidal Amplitude	10.0
 Sinusoidal Offset	0.0
 Sinusoidal Frequency	1.0
@@ -26,6 +24,6 @@ Arbitrary N Cycles	0
 Arbitrary File	 
 Maximum Current	166.0
 Minimum Current	-166.0
-Automatic Setpoints	0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 30.0, 50.0, 70.0, 90.0, 110.0, 130.0, 150.0, 165.0, 150.0, 130.0, 110.0, 90.0, 70.0, 50.0, 30.0, 10.0, 8.0, 6.0, 4.0, 2.0, 0.0
+Automatic Setpoints	0.0, 2.0, 4.0, 6.0, 8.0, 10.0
 Kp	0.117
 Ki	0.4503

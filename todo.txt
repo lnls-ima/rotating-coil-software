@@ -1,25 +1,10 @@
 #Implementar
--> Implementar função disconnect
--> monitor_thread:
-  -> Interlocks:
-    -> Thread lê status das fontes e regua
-    -> Implementar emergencia
-  -> Implementar leituras de corrente/tensão durante coleta (Vitor)
+-> Power on escrito mesmo com problema no inicio do banco de capacitores
 
--> Implementar série de medições(ui le_n_series e chb_seriesofmeas) (lucas)
-  -> Checar status geral ao final de cada medida
--> Implementar descarte de voltas iniciais/finais (lucas)
+-> Quando a checkbox da segurança da fonte está checada, não aparece informação sobre acionamento da fonte.
 
--. Função cria entrada de medida na DB
-  -> De onde pegar versão do software?
-  -> Checar se está gravando dados na ordem correta
-
--. Função salva arquivo texto classico
-  -> Formatar dados(?)
-  -> Implementar Save turn angles
-
--> Aplicar mesmas correcoes feitas em measurements_df para db_save_measurements(?)
-
+-> Measure_and_read:
+  -> fazer tesde de desvio padrão antes das medidas
 
 #Conferir
 -. Conferir configurações do integrador
