@@ -17,11 +17,7 @@ Damped Sinusoidal Frequency	2.0
 Damped Sinusoidal N Cycles	100
 Damped Sinusoidal Phase Shift	0.0
 Damped Sinusoidal Final Phase	0.0
-Damped Sinusoidal Damping	2.0
-Arbitrary Amplitude	0.0
-Arbitrary Frequency	0.0
-Arbitrary N Cycles	0
-Arbitrary File	 
+Damped Sinusoidal Damping	2.0	 
 Maximum Current	166.0
 Minimum Current	-166.0
 Automatic Setpoints	0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 30.0, 50.0, 70.0, 90.0, 110.0, 130.0, 150.0, 165.0, 150.0, 130.0, 110.0, 90.0, 70.0, 50.0, 30.0, 10.0, 8.0, 6.0, 4.0, 2.0, 0.0

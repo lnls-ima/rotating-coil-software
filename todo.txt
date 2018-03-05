@@ -1,17 +1,27 @@
 #Implementar
--> Power on escrito mesmo com problema no inicio do banco de capacitores
+#-> Measure_and_read:
+#  -> checar desvio padrão durante a medida e perguntar se deve continuar caso esteja alto
+#  - no caso de series of measurements ou auto_ps pergunta se quer salvar log em arquivo; salvar ao final de cada medida
+#  -> Filtro voltas
+#    -> Maior desvio padrao dos dados brutos (1 descarte no programa antigo)
+#    -> Maior angulo (4 descartes no programa antigo)
 
--> Quando a checkbox da segurança da fonte está checada, não aparece informação sobre acionamento da fonte.
 
--> Measure_and_read:
-  -> fazer tesde de desvio padrão antes das medidas
+-> testar calculo deslocamento com formula completa
+
+-> Implementar historico de falhas durante medida
+
+-> func. zera angulo e encontra referencia
+
+-> Configura tensão do dclink?
+
+-> DCCT head na ps_settings?
 
 #Conferir
 -. Conferir configurações do integrador
 -> Conferir calculo bobina tangencial (multipoles_calculation)
--> Chegar novamente calculos e propagação de erros Nn e Sn normalizados e angulo, e deslocamento do centro e bobina tangencial
--> measurements_df: _software_version e _analisys_interval
--> Disconnect gpib devices
+-> Checar novamente calculos e propagação de erros Nn e Sn normalizados e angulo, e deslocamento do centro e bobina tangencial
+-> measurements_df: _software_version
 
 #To do after the software is working properly:
 -> Leitura temperatura automatica

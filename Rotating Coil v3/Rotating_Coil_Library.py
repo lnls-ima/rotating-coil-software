@@ -126,7 +126,7 @@ class RotatingCoil_Library(object):
         elif _accelerator_type == 'Storage Ring': #Storage Ring
             _accelerator_name = 'BOA'
           
-        _main_current = 0 #check later
+        _main_current = self.get_value(self.ps_settings, 'Current Setpoint', float)
         _trim_coil_type = self.get_value(self.measurement_settings, 'trim_coil_type', int)
           
         _name = self.get_value(self.measurement_settings, 'name', str)
@@ -146,7 +146,6 @@ class RotatingCoil_Library(object):
         _n_turns = self.get_value(self.data_settings, 'total_number_of_turns', int)
         _n_collections = self.get_value(self.measurement_settings, 'n_collections', int) 
         _analisys_interval = self.get_value(self.measurement_settings, 'analisys_interval', str)
-        _main_current = self.get_value(self.ps_settings, 'Current Setpoint', float)
         _main_coil_current_avg = self.get_value(self.aux_settings, 'main_current_array').mean()[0]
         _main_coil_current_std = self.get_value(self.aux_settings, 'main_current_array').std()[0] 
         _ch_coil_current_avg = 0
@@ -176,8 +175,9 @@ class RotatingCoil_Library(object):
         if self.App.myapp.ui.chb_voltage.isChecked():
             _main_coil_volt_avg = self.get_value(self.aux_settings, 'main_voltage_array').mean()[0]
             _main_coil_volt_std = self.get_value(self.aux_settings, 'main_voltage_array').std()[0]
-            _magnet_resistance_avg = self.get_value(self.aux_settings, 'magnet_resistance_avg', float)
-            _magnet_resistance_std = self.get_value(self.aux_settings, 'magnet_resistance_std', float)
+            #calculates magnet's average resistance and standard deviation
+            _magnet_resistance_avg = _main_coil_volt_avg/_main_coil_current_avg 
+            _magnet_resistance_std = (1/_main_coil_current_avg) * np.sqrt(_main_coil_volt_std**2 + (_main_coil_volt_avg**2/_main_coil_current_avg**2) * _main_coil_current_std**2)
         _coil_name = self.get_value(self.coil_settings, 'coil_name', str)
         _coil_type = self.get_value(self.coil_settings, 'coil_type', str)
         _measurement_type = self.get_value(self.measurement_settings, 'measurement_type', str)
@@ -268,7 +268,6 @@ class RotatingCoil_Library(object):
     
     def get_read_data(self):
         """
-        TEST!!!
         Retrieves read data from current measurement and returns as string (old log file format)
         """
         _n_rows = self.App.myapp.ui.tw_multipoles_table.rowCount()
@@ -299,7 +298,6 @@ class RotatingCoil_Library(object):
 
     def load_read_data(self, idn=None):
         """
-        TEST!!!
         Load read data from database entry idn and returns as string (reads from last entry if idn = None)
         """
         _con = sqlite3.connect(self.dir_path + 'measurements_data.db')
@@ -316,7 +314,6 @@ class RotatingCoil_Library(object):
         
     def get_raw_curve(self):
         """
-        TEST!!!
         Retrieves raw curve from current measurement and returns as string (old log file format)
         """
         _n_of_turns = self.get_value(self.data_settings,'total_number_of_turns',int)
@@ -329,7 +326,6 @@ class RotatingCoil_Library(object):
 
     def load_raw_curve(self, idn=None):
         """
-        TEST!!!
         Load raw curve from database entry and returns as string (reads from last entry if idn = None)
         """
         _con = sqlite3.connect(self.dir_path + 'measurements_data.db')
@@ -346,7 +342,6 @@ class RotatingCoil_Library(object):
     
     def save_log_file(self, idn=None, path=None):
         """
-        TEST!!!
         Saves log file from database entry idn (last entry if idn = None), similar to old log file format
         """
         _measurement_entry = self.db_load_measurement(idn)[0] #loads last measurement
@@ -559,20 +554,25 @@ class RotatingCoil_Library(object):
         
     def measurement_df(self):
         _n_turns = self.get_value(self.data_settings, 'total_number_of_turns', int) #check if n_turns really is the total number of turns
+        _i = self.get_value(self.data_settings, 'remove_initial_turns', int) + 1
+        _f = self.get_value(self.data_settings, 'remove_final_turns', int)
         try:
-            _le_n_collections = int(self.App.myapp.ui.le_n_collections.text())
+            if self.App.myapp.ui.chb_seriesofmeas.isChecked():
+                _le_n_collections = int(self.App.myapp.ui.le_n_collections.text())
+            else:
+                _le_n_collections = 1
         except ValueError:
             _le_n_collections = 1
             
         try:
-            _analisys_interval = self.App.myapp.ui.le_remove_initial_turns.text() + '-' + str(_n_turns - int(self.App.myapp.ui.le_remove_final_turns.text()))
+            _analisys_interval = str(_i) + '-' + str(_n_turns - _f)
         except ValueError:
             _analisys_interval = '0'
         
         _comments = ''
-        if self.App.myapp.ui.chb_disable_alignment_interlock.isChecked():
-            _comments = _comments + 'Warning: Alignment interlock is disabled; Ref_encoder_A = {0:0.6f}, Ref_encoder_B = {1:0.6f} .\n'.format(self.vars.ref_encoder_A, self.vars.ref_encoder_B)
-        if self.App.myapp.ui.chb_disable_ps_interlock.isChecked():
+        if self.get_value(self.data_settings,'disable_alignment_interlock',int):
+            _comments = _comments + 'Warning: Alignment interlock is disabled; Ref_encoder_A = {0:0.6f}, Ref_encoder_B = {1:0.6f} .\n'.format(self.get_value(self.aux_settings, 'ref_encoder_A', float), self.get_value(self.aux_settings, 'ref_encoder_B', float))
+        if self.get_value(self.data_settings,'disable_ps_interlock',int):
             _comments = _comments + 'Warning: Power supply interlock is disabled.\n'
         _datavars = ['name',
                      'operator',
@@ -589,7 +589,7 @@ class RotatingCoil_Library(object):
                      'magnetic_center_x',
                      'magnetic_center_y',
                      'trim_coil_type']
-        _datavalues = [self.App.myapp.dialog.ui.le_magnet_name.text(),
+        _datavalues = [self.App.myapp.dialog.ui.le_magnet_name.text().upper(),
                        self.App.myapp.dialog.ui.cb_operator.currentText(),
                        'v3',
                        float(self.App.myapp.dialog.ui.le_temperature.text()),
@@ -599,7 +599,7 @@ class RotatingCoil_Library(object):
                        self.App.myapp.ui.cb_accelerator_type.currentText(),
                        self.App.myapp.dialog.ui.cb_magnet_model.currentIndex(),
                        'N_bucked',
-                       self.App.myapp.dialog.ui.te_meas_details.toPlainText(),
+                       self.App.myapp.dialog.ui.te_meas_details.toPlainText() + _comments,
                        float(self.App.myapp.ui.le_norm_radius.text())/1000, #convert from mm to meter
                        0.,
                        0.,
@@ -682,10 +682,6 @@ class RotatingCoil_Library(object):
                      'Damped Sinusoidal Phase Shift',
                      'Damped Sinusoidal Final Phase',
                      'Damped Sinusoidal Damping',
-                     'Arbitrary Amplitude',
-                     'Arbitrary Frequency',
-                     'Arbitrary N Cycles',
-                     'Arbitrary File',
                      'Maximum Current',
                      'Minimum Current',
                      'Automatic Setpoints',
@@ -762,8 +758,6 @@ class communication(object):
         # Connection Tab 
         self.display = None
         self.parker = None
-        self.fdi = None    
-        self.agilent33220a = None
-        self.agilent34401a = None
+        self.fdi = None
         self.agilent34970a = None
         self.drs = None       

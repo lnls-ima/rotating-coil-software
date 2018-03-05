@@ -116,13 +116,7 @@ class SerialCom(object):
         self.send(self.PDIStop)
         time.sleep(self.delay)
         
-        # integrator resolution 1e-12 - FDI
-        self.send(self.FDIResolution)
-        time.sleep(self.delay)
-
-        # integrator gain
-        self.send(self.PDIGain + str(gain))
-        time.sleep(self.delay)
+        self.config_encoder(int(encoder_pulses/4))
         
         # configure interval and direction
         interval = int(encoder_pulses / integration_points)
@@ -145,6 +139,14 @@ class SerialCom(object):
  
         # Configure End of Data
         self.send(self.PDIEndofData)
+        time.sleep(self.delay)
+        
+        # Stop all collects and ready integrator
+        self.send(self.PDIGain + str(gain))
+        time.sleep(self.delay)
+        
+         # integrator resolution 1e-12 - FDI
+        self.send(self.FDIResolution)
         time.sleep(self.delay)
 
     def start_measurement(self):
