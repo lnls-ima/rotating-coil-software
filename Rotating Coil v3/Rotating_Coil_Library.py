@@ -41,7 +41,7 @@ class RotatingCoil_Library(object):
         _cur.execute("""SELECT name FROM sqlite_master WHERE type='table' AND name='measurements';""")
         if not len(_cur.fetchall()):
             _create_table = """CREATE TABLE "measurements" ( `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\
-             `name` TEXT NOT NULL,\
+             `magnet_name` TEXT NOT NULL,\
              `filename` TEXT NOT NULL,\
              `date` TEXT NOT NULL,\
              `hour` TEXT NOT NULL,\
@@ -87,144 +87,177 @@ class RotatingCoil_Library(object):
              `coil_comments` TEXT NOT NULL,\
              `comments` TEXT NOT NULL,\
              `normalization_radius` REAL NOT NULL,\
+             `angle` REAL NOT NULL,\
              `magnetic_center_x` REAL NOT NULL,\
              `magnetic_center_y` REAL NOT NULL,\
              `read_data` TEXT NOT NULL,\
              `raw_curve` TEXT NOT NULL )"""
+
+            _create_sets_table = """CREATE TABLE `sets_of_measurements` (
+             `id`    INTEGER NOT NULL,
+             `magnet_name`    TEXT NOT NULL,
+             `date`    TEXT NOT NULL,
+             `hour_0`    TEXT NOT NULL,
+             `hour_f`    TEXT NOT NULL,
+             `collection_type`    TEXT NOT NULL,
+             `n_measurements`    INTEGER NOT NULL,
+             `id_0`    INTEGER NOT NULL,
+             `id_f`    INTEGER NOT NULL,
+             `current_min`    REAL NOT NULL,
+             `current_max`    REAL NOT NULL,
+             `comments`    TEXT NOT NULL,
+             PRIMARY KEY(`id`) )"""
+
+            _create_failures_table = """CREATE TABLE `failures` (
+             `id`    INTEGER NOT NULL,
+             `magnet_name`    TEXT NOT NULL,
+             `date`    TEXT NOT NULL,
+             `hour`    TEXT NOT NULL,
+             `type`    INTEGER NOT NULL,
+             `description`    INTEGER NOT NULL,
+             PRIMARY KEY(`id`) )"""
+            
             _cur.execute(_create_table)
+            _cur.execute(_create_sets_table)
+            _cur.execute(_create_failures_table)
+            
         _con.close()
     
     def db_save_measurement(self):
         """
         Saves measurement log into database; All values are in SI units
         """
-        
-        #pass _arquivo as parameter
-#         _arquivo = QtWidgets.QFileDialog.getSaveFileName(self.App.myapp, 'Save File - Coleta Manual', _nome,'Data files')
-        
-        _con = sqlite3.connect(self.dir_path + 'measurements_data.db')
-        _cur = _con.cursor()
-        
-        _date_name = time.strftime("%y%m%d", time.localtime())
-        _hour_name = time.strftime("%H%M%S", time.localtime())
-           
-        _magnet_model = self.get_value(self.measurement_settings, 'magnet_model', int) #self.App.myapp.ui.cb_magnet_model.currentIndex()
-        if _magnet_model == 0:
-            _magnet_type = 'X'
-        elif _magnet_model == 1:
-            _magnet_type = 'D'
-        elif _magnet_model == 2:
-            _magnet_type = 'Q'
-        elif _magnet_model == 3:
-            _magnet_type = 'S'
-        elif _magnet_model == 4:
-            _magnet_type = 'K'
-              
-        _accelerator_type = self.get_value(self.measurement_settings, 'accelerator_type', str) #self.App.myapp.ui.cb_accelerator_type.currentIndex()
-        if _accelerator_type == 'Booster': #Booster
-            _accelerator_name = 'BOB'
-        elif _accelerator_type == 'Storage Ring': #Storage Ring
-            _accelerator_name = 'BOA'
-          
-        _main_current = self.get_value(self.ps_settings, 'Current Setpoint', float)
-        _trim_coil_type = self.get_value(self.measurement_settings, 'trim_coil_type', int)
-          
-        _name = self.get_value(self.measurement_settings, 'name', str)
-        _filename = _name + '_' + _magnet_type + '_' + _accelerator_name + '_' + str(_main_current).zfill(5) + 'A_' + _date_name + '_' + _hour_name + '.dat'
-        _date = time.strftime("%d/%m/%Y", time.localtime())
-        _hour = time.strftime("%H:%M:%S", time.localtime())
-        _operator = self.get_value(self.measurement_settings, 'operator', str) 
-        _software_version = self.get_value(self.measurement_settings, 'software_version', str) #'v3'
-        _bench = self.get_value(self.data_settings, 'bench', int)
-        _temperature = self.get_value(self.measurement_settings, 'temperature', float)
-        _rotation_motor_speed = self.get_value(self.data_settings, 'rotation_motor_speed', float)
-        _rotation_motor_acceleration = self.get_value(self.data_settings, 'rotation_motor_acceleration', float)
-        _coil_rotation_direction = self.get_value(self.measurement_settings, 'coil_rotation_direction', str)
-        _integrator_gain = self.get_value(self.data_settings, 'integrator_gain', int)
-        _trigger_ref = self.get_value(self.coil_settings, 'trigger_ref', int)
-        _n_integration_points = self.get_value(self.data_settings, 'n_integration_points', int)
-        _n_turns = self.get_value(self.data_settings, 'total_number_of_turns', int)
-        _n_collections = self.get_value(self.measurement_settings, 'n_collections', int) 
-        _analisys_interval = self.get_value(self.measurement_settings, 'analisys_interval', str)
-        _main_coil_current_avg = self.get_value(self.aux_settings, 'main_current_array').mean()[0]
-        _main_coil_current_std = self.get_value(self.aux_settings, 'main_current_array').std()[0] 
-        _ch_coil_current_avg = 0
-        _ch_coil_current_std = 0
-        _cv_coil_current_avg = 0
-        _cv_coil_current_std = 0
-        _qs_coil_current_avg = 0
-        _qs_coil_current_std = 0
-        _trim_coil_current_avg = 0
-        _trim_coil_current_std = 0
-        _main_coil_volt_avg = 0
-        _main_coil_volt_std = 0
-        _magnet_resistance_avg = 0
-        _magnet_resistance_std = 0
-        if _trim_coil_type == 0:
-            _trim_coil_current_avg = self.get_value(self.aux_settings, 'secondary_current_array').mean()[0]
-            _trim_coil_current_std = self.get_value(self.aux_settings, 'secondary_current_array').std()[0]
-        elif _trim_coil_type == 1:
-            _ch_coil_current_avg = self.get_value(self.aux_settings, 'secondary_current_array').mean()[0]
-            _ch_coil_current_std = self.get_value(self.aux_settings, 'secondary_current_array').std()[0]
-        elif _trim_coil_type == 2:
-            _cv_coil_current_avg = self.get_value(self.aux_settings, 'secondary_current_array').mean()[0]
-            _cv_coil_current_std = self.get_value(self.aux_settings, 'secondary_current_array').std()[0]
-        elif _trim_coil_type == 3:
-            _qs_coil_current_avg = self.get_value(self.aux_settings, 'secondary_current_array').mean()[0]
-            _qs_coil_current_std = self.get_value(self.aux_settings, 'secondary_current_array').std()[0]
-        if self.App.myapp.ui.chb_voltage.isChecked():
-            _main_coil_volt_avg = self.get_value(self.aux_settings, 'main_voltage_array').mean()[0]
-            _main_coil_volt_std = self.get_value(self.aux_settings, 'main_voltage_array').std()[0]
-            #calculates magnet's average resistance and standard deviation
-            _magnet_resistance_avg = _main_coil_volt_avg/_main_coil_current_avg 
-            _magnet_resistance_std = (1/_main_coil_current_avg) * np.sqrt(_main_coil_volt_std**2 + (_main_coil_volt_avg**2/_main_coil_current_avg**2) * _main_coil_current_std**2)
-        _coil_name = self.get_value(self.coil_settings, 'coil_name', str)
-        _coil_type = self.get_value(self.coil_settings, 'coil_type', str)
-        _measurement_type = self.get_value(self.measurement_settings, 'measurement_type', str)
-        _n_turns_normal = self.get_value(self.coil_settings, 'n_turns_normal', int)
-        _radius1_normal = self.get_value(self.coil_settings, 'radius1_normal', float)
-        _radius2_normal = self.get_value(self.coil_settings, 'radius2_normal', float)
-        _n_turns_bucked = self.get_value(self.coil_settings, 'n_turns_bucked', int)
-        _radius1_bucked = self.get_value(self.coil_settings, 'radius1_bucked', float)
-        _radius2_bucked = self.get_value(self.coil_settings, 'radius2_bucked', float)
-        _coil_comments = self.get_value(self.coil_settings, 'comments', str)
-        _comments = self.get_value(self.measurement_settings, 'comments', str)
-        _norm_radius = self.get_value(self.measurement_settings, 'norm_radius', float)
-        _magnetic_center_x = self.get_value(self.measurement_settings, 'magnetic_center_x', float) #[um]
-        _magnetic_center_y = self.get_value(self.measurement_settings, 'magnetic_center_y', float) #[um]
-        _read_data = self.get_read_data()
-        _raw_curve = self.get_raw_curve()
-           
-        _db_values = (None, _name, _filename, _date, _hour,\
-                      _operator, _software_version, _bench,\
-                      _temperature, _rotation_motor_speed,\
-                      _rotation_motor_acceleration, _coil_rotation_direction,\
-                      _integrator_gain, _trigger_ref,\
-                      _n_integration_points, _n_turns,\
-                      _n_collections, _analisys_interval,\
-                      _main_current, _main_coil_current_avg, _main_coil_current_std,\
-                      _ch_coil_current_avg, _ch_coil_current_std,\
-                      _cv_coil_current_avg, _cv_coil_current_std,\
-                      _qs_coil_current_avg, _qs_coil_current_std,\
-                      _trim_coil_current_avg, _trim_coil_current_std,\
-                      _main_coil_volt_avg, _main_coil_volt_std,\
-                      _magnet_resistance_avg, _magnet_resistance_std,\
-                      _accelerator_type, _magnet_model,\
-                      _coil_name, _coil_type, _measurement_type,\
-                      _n_turns_normal, _radius1_normal, _radius2_normal,\
-                      _n_turns_bucked, _radius1_bucked, _radius2_bucked,\
-                      _coil_comments, _comments, _norm_radius,\
-                      _magnetic_center_x, _magnetic_center_y,\
-                      _read_data, _raw_curve
-                    )
-                    
-#         _db_test_values = (None,0,0,_date,_hour,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
         try:
-            _cur.execute("INSERT INTO measurements VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", _db_values)
+            _con = sqlite3.connect(self.dir_path + 'measurements_data.db')
+            _cur = _con.cursor()
+            
+            _date_name = time.strftime("%y%m%d", time.localtime())
+            _hour_name = time.strftime("%H%M%S", time.localtime())
+               
+            _magnet_model = self.get_value(self.measurement_settings, 'magnet_model', int) #self.App.myapp.ui.cb_magnet_model.currentIndex()
+            if _magnet_model == 0:
+                _magnet_type = 'X'
+                _angle = 0
+            elif _magnet_model == 1:
+                _magnet_type = 'D'
+                _angle = self.App.myapp.averageAngle[0]
+            elif _magnet_model == 2:
+                _magnet_type = 'Q'
+                _angle = self.App.myapp.averageAngle[1]
+            elif _magnet_model == 3:
+                _magnet_type = 'S'
+                _angle = self.App.myapp.averageAngle[2]
+            elif _magnet_model == 4:
+                _magnet_type = 'K'
+                _angle = self.App.myapp.averageAngle[1]
+                  
+            _accelerator_type = self.get_value(self.measurement_settings, 'accelerator_type', str) #self.App.myapp.ui.cb_accelerator_type.currentIndex()
+            if _accelerator_type == 'Booster': #Booster
+                _accelerator_name = 'BOB'
+            elif _accelerator_type == 'Storage Ring': #Storage Ring
+                _accelerator_name = 'BOA'
+              
+            _main_current = self.get_value(self.ps_settings, 'Current Setpoint', float)
+            _trim_coil_type = self.get_value(self.measurement_settings, 'trim_coil_type', int)
+              
+            _magnet_name = self.get_value(self.measurement_settings, 'name', str)
+            _filename = _magnet_name + '_' + _magnet_type + '_' + _accelerator_name + '_' + str(_main_current).zfill(5) + 'A_' + _date_name + '_' + _hour_name + '.dat'
+            _date = time.strftime("%d/%m/%Y", time.localtime())
+            _hour = time.strftime("%H:%M:%S", time.localtime())
+            _operator = self.get_value(self.measurement_settings, 'operator', str) 
+            _software_version = self.get_value(self.measurement_settings, 'software_version', str) #'v3'
+            _bench = self.get_value(self.data_settings, 'bench', int)
+            _temperature = self.get_value(self.measurement_settings, 'temperature', float)
+            _rotation_motor_speed = self.get_value(self.data_settings, 'rotation_motor_speed', float)
+            _rotation_motor_acceleration = self.get_value(self.data_settings, 'rotation_motor_acceleration', float)
+            _coil_rotation_direction = self.get_value(self.measurement_settings, 'coil_rotation_direction', str)
+            _integrator_gain = self.get_value(self.data_settings, 'integrator_gain', int)
+            _trigger_ref = self.get_value(self.coil_settings, 'trigger_ref', int)
+            _n_integration_points = self.get_value(self.data_settings, 'n_integration_points', int)
+            _n_turns = self.get_value(self.data_settings, 'total_number_of_turns', int)
+            _n_collections = self.get_value(self.measurement_settings, 'n_collections', int) 
+            _analisys_interval = self.get_value(self.measurement_settings, 'analisys_interval', str)
+            _main_coil_current_avg = self.get_value(self.aux_settings, 'main_current_array').mean()[0]
+            _main_coil_current_std = self.get_value(self.aux_settings, 'main_current_array').std()[0] 
+            _ch_coil_current_avg = 0
+            _ch_coil_current_std = 0
+            _cv_coil_current_avg = 0
+            _cv_coil_current_std = 0
+            _qs_coil_current_avg = 0
+            _qs_coil_current_std = 0
+            _trim_coil_current_avg = 0
+            _trim_coil_current_std = 0
+            _main_coil_volt_avg = 0
+            _main_coil_volt_std = 0
+            _magnet_resistance_avg = 0
+            _magnet_resistance_std = 0
+            if _trim_coil_type == 0:
+                _trim_coil_current_avg = self.get_value(self.aux_settings, 'secondary_current_array').mean()[0]
+                _trim_coil_current_std = self.get_value(self.aux_settings, 'secondary_current_array').std()[0]
+            elif _trim_coil_type == 1:
+                _ch_coil_current_avg = self.get_value(self.aux_settings, 'secondary_current_array').mean()[0]
+                _ch_coil_current_std = self.get_value(self.aux_settings, 'secondary_current_array').std()[0]
+            elif _trim_coil_type == 2:
+                _cv_coil_current_avg = self.get_value(self.aux_settings, 'secondary_current_array').mean()[0]
+                _cv_coil_current_std = self.get_value(self.aux_settings, 'secondary_current_array').std()[0]
+            elif _trim_coil_type == 3:
+                _qs_coil_current_avg = self.get_value(self.aux_settings, 'secondary_current_array').mean()[0]
+                _qs_coil_current_std = self.get_value(self.aux_settings, 'secondary_current_array').std()[0]
+            if self.App.myapp.ui.chb_voltage.isChecked():
+                _main_coil_volt_avg = self.get_value(self.aux_settings, 'main_voltage_array').mean()[0]
+                _main_coil_volt_std = self.get_value(self.aux_settings, 'main_voltage_array').std()[0]
+                #calculates magnet's average resistance and standard deviation
+                _magnet_resistance_avg = _main_coil_volt_avg/_main_coil_current_avg 
+                _magnet_resistance_std = (1/_main_coil_current_avg) * (_main_coil_volt_std**2 + (_main_coil_volt_avg**2/_main_coil_current_avg**2) * _main_coil_current_std**2)**0.5
+            _coil_name = self.get_value(self.coil_settings, 'coil_name', str)
+            _coil_type = self.get_value(self.coil_settings, 'coil_type', str)
+            _measurement_type = self.get_value(self.measurement_settings, 'measurement_type', str)
+            _n_turns_normal = self.get_value(self.coil_settings, 'n_turns_normal', int)
+            _radius1_normal = self.get_value(self.coil_settings, 'radius1_normal', float)
+            _radius2_normal = self.get_value(self.coil_settings, 'radius2_normal', float)
+            _n_turns_bucked = self.get_value(self.coil_settings, 'n_turns_bucked', int)
+            _radius1_bucked = self.get_value(self.coil_settings, 'radius1_bucked', float)
+            _radius2_bucked = self.get_value(self.coil_settings, 'radius2_bucked', float)
+            _coil_comments = self.get_value(self.coil_settings, 'comments', str)
+            _comments = self.get_value(self.measurement_settings, 'comments', str)
+            _norm_radius = self.get_value(self.measurement_settings, 'norm_radius', float)
+            _angle = round(_angle, 9)
+            _magnetic_center_x = self.get_value(self.measurement_settings, 'magnetic_center_x', float) #[um]
+            _magnetic_center_y = self.get_value(self.measurement_settings, 'magnetic_center_y', float) #[um]
+            _read_data = self.get_read_data()
+            _raw_curve = self.get_raw_curve()
+               
+            _db_values = (None, _magnet_name, _filename, _date, _hour,\
+                          _operator, _software_version, _bench,\
+                          _temperature, _rotation_motor_speed,\
+                          _rotation_motor_acceleration, _coil_rotation_direction,\
+                          _integrator_gain, _trigger_ref,\
+                          _n_integration_points, _n_turns,\
+                          _n_collections, _analisys_interval,\
+                          _main_current, _main_coil_current_avg, _main_coil_current_std,\
+                          _ch_coil_current_avg, _ch_coil_current_std,\
+                          _cv_coil_current_avg, _cv_coil_current_std,\
+                          _qs_coil_current_avg, _qs_coil_current_std,\
+                          _trim_coil_current_avg, _trim_coil_current_std,\
+                          _main_coil_volt_avg, _main_coil_volt_std,\
+                          _magnet_resistance_avg, _magnet_resistance_std,\
+                          _accelerator_type, _magnet_model,\
+                          _coil_name, _coil_type, _measurement_type,\
+                          _n_turns_normal, _radius1_normal, _radius2_normal,\
+                          _n_turns_bucked, _radius1_bucked, _radius2_bucked,\
+                          _coil_comments, _comments, _norm_radius, _angle,\
+                          _magnetic_center_x, _magnetic_center_y,\
+                          _read_data, _raw_curve
+                        )
+                        
+    #         _db_test_values = (None,0,0,_date,_hour,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+            _cur.execute("INSERT INTO measurements VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", _db_values)
+            _con.commit()
+            _con.close()
+            return True
         except:
             traceback.print_exc(file=sys.stdout)
-        _con.commit()
-        _con.close()
+            return False
         
     def db_load_measurement(self, idn=None):
         """
@@ -239,8 +272,8 @@ class RotatingCoil_Library(object):
         else:
             _cur.execute('SELECT * FROM measurements WHERE id = ?', (idn,))
         #loads measurement from name:
-#         _name = ''
-#         _cur.execute('SELECT * FROM measurements WHERE name=?)', (_name,))
+#         _magnet_name = ''
+#         _cur.execute('SELECT * FROM measurements WHERE name=?)', (_magnet_name,))
         #loads measurement from filename:
 #         _filename = ''
 #         _cur.execute('SELECT * FROM measurements WHERE filename=?)', (_filename,))
@@ -265,7 +298,85 @@ class RotatingCoil_Library(object):
         _db_entry = _cur.fetchall()
         _con.close()
         return _db_entry
-    
+
+    def db_save_set(self, n_measurements, collection_type, current_min, current_max):
+        """
+        Save data to sets_of_measurements table
+        """
+        try:
+            _con = sqlite3.connect(self.dir_path + 'measurements_data.db')
+            _cur = _con.cursor()
+            
+            _magnet_name = self.get_value(self.measurement_settings, 'name', str)
+            _date = time.strftime("%d/%m/%Y", time.localtime())
+            _n_measurements = n_measurements
+            _cur.execute('SELECT id, hour FROM measurements WHERE id = (SELECT MAX(id) FROM measurements)')
+            _ans = _cur.fetchall()[0]
+            _id_f = _ans[0]
+            _hour_f = _ans[1]
+            _id_0 = _id_f - (_n_measurements - 1)
+            _cur.execute('SELECT hour FROM measurements WHERE id = ?', (_id_0,))
+            _hour_0 = _cur.fetchall()[0][0]
+            _current_min = current_min
+            _current_max = current_max
+            _comments = self.get_value(self.measurement_settings, 'comments', str)
+            
+            if collection_type == 0:
+                _collection_type = "Series of measurements"
+            elif collection_type == 1:
+                _collection_type = "Automatic power supply"
+            elif collection_type == 2:
+                _collection_type = "Automatic secondary power supply"   
+
+            _db_values = (None, _magnet_name, _date, _hour_0, _hour_f, _collection_type, _n_measurements, _id_0, _id_f, _current_min, _current_max, _comments)
+
+            _cur.execute("INSERT INTO sets_of_measurements VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", _db_values)
+            _con.commit()
+            _con.close()
+            return True
+        except:
+            traceback.print_exc(file=sys.stdout)
+            return False
+
+    def db_save_failure(self, error_type):
+        """
+        Save data to failures table
+        """
+        try:
+            _con = sqlite3.connect(self.dir_path + 'measurements_data.db')
+            _cur = _con.cursor()
+            
+            _magnet_name = self.get_value(self.measurement_settings, 'name', str)
+            _date = time.strftime("%d/%m/%Y", time.localtime())
+            _hour = time.strftime("%H:%M:%S", time.localtime())
+            
+            _type = error_type
+            
+            if _type == 0:
+                _description = "Data not received from integrator"
+            elif _type == 1:
+                _description = "Main multipole standard deviation too high"
+            elif _type == 2:
+                _description = "Integrator tension over-range"
+            elif _type == 3:
+                _description = "Emergency during measurement"
+            elif _type == 4:
+                _description = "Could not save measurement to database"
+            elif _type == 5:
+                _description = "Could not save log file"
+            elif _type == 6:
+                _description = "Could not set the power supply current"
+            
+            _db_values = (None, _magnet_name, _date, _hour, _type, _description)    
+             
+            _cur.execute("INSERT INTO failures VALUES (?,?,?,?,?,?)", _db_values)
+            _con.commit()
+            _con.close()
+            return True
+        except:
+            traceback.print_exc(file=sys.stdout)
+            return False
+
     def get_read_data(self):
         """
         Retrieves read data from current measurement and returns as string (old log file format)
@@ -273,17 +384,21 @@ class RotatingCoil_Library(object):
         _n_rows = self.App.myapp.ui.tw_multipoles_table.rowCount()
         _magnet_type = self.get_value(self.measurement_settings, 'magnet_model', int)
         _norm_radius = self.get_value(self.measurement_settings, 'norm_radius', float)*1000 #convert to mm
-        _str = "n\tavg_L.Nn(T/m^n-2)\tstd_L.Nn(T/m^n-2)\tavg_L.Sn(T/m^n-2)\tstd_L.Sn(T/m^n-2)\tavg_L.Bn(T/m^n-2)\tstd_L.Bn(T/m^n-2)\tavg_angle(rad)  \tstd_angle(rad)  \tavg_Nn/NnMagnet@"+ str(_norm_radius) +"mm\tstd_Nn/NnMagnet@"+ str(_norm_radius) + "mm\tavg_Sn/NnMagnet@" + str(_norm_radius) + "mm\tstd_Sn/NnMagnet@" + str(_norm_radius) + "mm\n"
+        if _magnet_type == 4:
+            _norm = 'Sn'
+        else:
+            _norm = 'Nn'
+        _str = "n\tavg_L.Nn(T/m^n-2)\tstd_L.Nn(T/m^n-2)\tavg_L.Sn(T/m^n-2)\tstd_L.Sn(T/m^n-2)\tavg_L.Bn(T/m^n-2)\tstd_L.Bn(T/m^n-2)\tavg_angle(rad)  \tstd_angle(rad)  \tavg_Nn/"+_norm+"Magnet@"+ str(_norm_radius) +"mm\tstd_Nn/"+_norm+"Magnet@"+ str(_norm_radius) + "mm\tavg_Sn/"+_norm+"Magnet@" + str(_norm_radius) + "mm\tstd_Sn/"+_norm+"Magnet@" + str(_norm_radius) + "mm\n"
 
         for i in range(_n_rows):
-            _str = _str + str('{0:<4d}'.format(i)) + '\t'
+            _str = _str + str('{0:<4d}'.format(i+1)) + '\t'
             _str = _str + str('{0:^+18.6e}'.format(self.App.myapp.averageN.values[i])) + '\t'
             _str = _str + str('{0:^+18.6e}'.format(self.App.myapp.stdN.values[i])) + '\t'      
             _str = _str + str('{0:^+18.6e}'.format(self.App.myapp.averageS.values[i])) + '\t'
             _str = _str + str('{0:^+18.6e}'.format(self.App.myapp.stdS.values[i])) + '\t'
             _str = _str + str('{0:^+18.6e}'.format(self.App.myapp.averageMod.values[i])) + '\t'
             _str = _str + str('{0:^+18.6e}'.format(self.App.myapp.stdMod.values[i])) + '\t'
-            if i == _magnet_type or _magnet_type == 0:
+            if i+1 == _magnet_type or _magnet_type == 0:
                 _str = _str + str('{0:^+18.6e}'.format(self.App.myapp.averageAngle.values[i])) + '\t'
                 _str = _str + str('{0:^+18.6e}'.format(self.App.myapp.stdAngle.values[i])) + '\t'
             else:
@@ -321,7 +436,7 @@ class RotatingCoil_Library(object):
         _str = ''
         for i in range(_n_of_turns):
             _str = _str + '{:#^18}'.format(' Turn_' + str(i+1) + '')
-        _str = _str + '\n' + self.App.myapp.df_rawcurves.to_csv(sep='\t')
+        _str = _str + '\n' + self.App.myapp.df_rawcurves.to_csv(sep='\t', header=False, index=False)
         return _str
 
     def load_raw_curve(self, idn=None):
@@ -347,7 +462,7 @@ class RotatingCoil_Library(object):
         _measurement_entry = self.db_load_measurement(idn)[0] #loads last measurement
         #Configuration Data
         _id = _measurement_entry[0]
-        _name = _measurement_entry[1]
+        _magnet_name = _measurement_entry[1]
         _filename = _measurement_entry[2]
         _date = _measurement_entry[3]
         _hour = _measurement_entry[4]
@@ -391,11 +506,11 @@ class RotatingCoil_Library(object):
         #Comments
         _comments = _measurement_entry[45]         
         #Reading data
-        _read_data = _measurement_entry[49]
-        _magnetic_center_x = _measurement_entry[47]
-        _magnetic_center_y = _measurement_entry[48]         
+        _read_data = _measurement_entry[50]
+        _magnetic_center_x = _measurement_entry[48]
+        _magnetic_center_y = _measurement_entry[49]         
         #Raw data
-        _raw_curve = _measurement_entry[50]
+        _raw_curve = _measurement_entry[51]
         
         if path == None or path == False:
             _dir = self.dir_path
@@ -686,7 +801,8 @@ class RotatingCoil_Library(object):
                      'Minimum Current',
                      'Automatic Setpoints',
                      'Kp',
-                     'Ki']
+                     'Ki',
+                     'DCCT Head']
         _datavalues = ['',
                        3,
                        0.0,
@@ -713,7 +829,8 @@ class RotatingCoil_Library(object):
                        0.0,
                        0.0,
                        0.0,
-                       0.0]
+                       0.0,
+                       2]
         _df = pd.DataFrame({'datavars': _datavars,
                             'datavalues': _datavalues}) 
         if not secondary:
@@ -750,8 +867,8 @@ class flags(object):
     def __init__(self):
         self.coil_ref_flag = False
         self.devices_connected = False
+        self.emergency = False
         self.stop_all = False
-        self.monitor = False
 
 class communication(object):
     def __init__(self):

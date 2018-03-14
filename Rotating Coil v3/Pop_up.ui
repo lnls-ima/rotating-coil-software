@@ -306,6 +306,14 @@ p, li { white-space: pre-wrap; }
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>le_magnet_name</tabstop>
+  <tabstop>le_temperature</tabstop>
+  <tabstop>cb_operator</tabstop>
+  <tabstop>cb_magnet_model</tabstop>
+  <tabstop>cb_trim_coil_type</tabstop>
+  <tabstop>te_meas_details</tabstop>
+ </tabstops>
  <resources>
   <include location="resource_file.qrc"/>
  </resources>

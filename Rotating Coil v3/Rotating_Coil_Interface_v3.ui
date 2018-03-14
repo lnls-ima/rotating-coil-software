@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1046</width>
-    <height>730</height>
+    <width>1235</width>
+    <height>789</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -24,8 +24,8 @@
   </property>
   <property name="maximumSize">
    <size>
-    <width>1046</width>
-    <height>730</height>
+    <width>1235</width>
+    <height>800</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -47,8 +47,8 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>2128</width>
-      <height>690</height>
+      <width>1231</width>
+      <height>761</height>
      </rect>
     </property>
     <property name="font">
@@ -76,7 +76,7 @@
      <widget class="QLabel" name="label_23">
       <property name="geometry">
        <rect>
-        <x>0</x>
+        <x>110</x>
         <y>20</y>
         <width>1026</width>
         <height>80</height>
@@ -100,7 +100,7 @@
      <widget class="QGroupBox" name="groupBox">
       <property name="geometry">
        <rect>
-        <x>100</x>
+        <x>210</x>
         <y>110</y>
         <width>380</width>
         <height>150</height>
@@ -112,7 +112,7 @@
        </font>
       </property>
       <property name="title">
-       <string>Rs-232 Communication</string>
+       <string>RS-232 Communication</string>
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="1">
@@ -417,7 +417,7 @@
      <widget class="QLabel" name="label_18">
       <property name="geometry">
        <rect>
-        <x>550</x>
+        <x>660</x>
         <y>230</y>
         <width>300</width>
         <height>180</height>
@@ -436,7 +436,7 @@
      <widget class="QPushButton" name="pb_connect_devices">
       <property name="geometry">
        <rect>
-        <x>610</x>
+        <x>720</x>
         <y>540</y>
         <width>201</width>
         <height>41</height>
@@ -464,7 +464,7 @@
      <widget class="QGroupBox" name="groupBox_26">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>200</x>
         <y>440</y>
         <width>390</width>
         <height>200</height>
@@ -522,7 +522,7 @@
      <widget class="QGroupBox" name="groupBox_48">
       <property name="geometry">
        <rect>
-        <x>100</x>
+        <x>210</x>
         <y>270</y>
         <width>380</width>
         <height>161</height>
@@ -681,157 +681,22 @@
      <widget class="QGroupBox" name="groupBox_8">
       <property name="geometry">
        <rect>
-        <x>20</x>
+        <x>79</x>
         <y>20</y>
-        <width>650</width>
-        <height>551</height>
+        <width>1001</width>
+        <height>601</height>
        </rect>
       </property>
       <property name="title">
        <string>Configuration</string>
       </property>
-      <widget class="QCheckBox" name="chb_disable_alignment_interlock">
-       <property name="geometry">
-        <rect>
-         <x>396</x>
-         <y>293</y>
-         <width>176</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Disable alignment interlock</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="le_remove_initial_turns">
-       <property name="geometry">
-        <rect>
-         <x>210</x>
-         <y>90</y>
-         <width>100</width>
-         <height>22</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="le_remove_final_turns">
-       <property name="geometry">
-        <rect>
-         <x>210</x>
-         <y>118</y>
-         <width>100</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="le_poscoil_assembly">
-       <property name="geometry">
-        <rect>
-         <x>210</x>
-         <y>463</y>
-         <width>100</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_60">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>118</y>
-         <width>107</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Remove final turns</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_54">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>90</y>
-         <width>113</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Remove initial turns</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_43">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>463</y>
-         <width>144</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Position for coil assembly</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-      </widget>
       <widget class="Line" name="line">
        <property name="geometry">
         <rect>
-         <x>310</x>
+         <x>475</x>
          <y>29</y>
          <width>16</width>
-         <height>501</height>
+         <height>441</height>
         </rect>
        </property>
        <property name="frameShadow">
@@ -847,246 +712,11 @@
         <enum>Qt::Vertical</enum>
        </property>
       </widget>
-      <widget class="QLabel" name="label_44">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>213</y>
-         <width>134</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Rotation Motor Address</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="le_rotation_motor_address">
-       <property name="geometry">
-        <rect>
-         <x>210</x>
-         <y>213</y>
-         <width>100</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_45">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>294</y>
-         <width>124</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Rotation Motor Speed</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="le_rotation_motor_speed">
-       <property name="geometry">
-        <rect>
-         <x>210</x>
-         <y>294</y>
-         <width>100</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_46">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>331</y>
-         <width>158</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Rotation Motor Acceleration</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="le_rotation_motor_acceleration">
-       <property name="geometry">
-        <rect>
-         <x>210</x>
-         <y>331</y>
-         <width>100</width>
-         <height>22</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_47">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>370</y>
-         <width>148</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Rotation Motor Gear Ratio</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="le_rotation_motor_ratio">
-       <property name="geometry">
-        <rect>
-         <x>210</x>
-         <y>370</y>
-         <width>100</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-      <widget class="Line" name="line_4">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>140</y>
-         <width>300</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-       <property name="lineWidth">
-        <number>1</number>
-       </property>
-       <property name="midLineWidth">
-        <number>0</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_48">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>253</y>
-         <width>147</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Rotation Motor Resolution</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="le_rotation_motor_resolution">
-       <property name="geometry">
-        <rect>
-         <x>210</x>
-         <y>253</y>
-         <width>100</width>
-         <height>22</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="chb_disable_ps_interlock">
-       <property name="geometry">
-        <rect>
-         <x>396</x>
-         <y>320</y>
-         <width>196</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Disable power supply interlock</string>
-       </property>
-      </widget>
       <widget class="QPushButton" name="pb_save_config">
        <property name="geometry">
         <rect>
-         <x>390</x>
-         <y>490</y>
+         <x>510</x>
+         <y>520</y>
          <width>190</width>
          <height>50</height>
         </rect>
@@ -1108,8 +738,8 @@
       <widget class="QPushButton" name="pb_config">
        <property name="geometry">
         <rect>
-         <x>390</x>
-         <y>430</y>
+         <x>270</x>
+         <y>520</y>
          <width>190</width>
          <height>50</height>
         </rect>
@@ -1128,448 +758,504 @@
         </size>
        </property>
       </widget>
-      <widget class="Line" name="line_5">
-       <property name="geometry">
-        <rect>
-         <x>8</x>
-         <y>413</y>
-         <width>300</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-       <property name="lineWidth">
-        <number>1</number>
-       </property>
-       <property name="midLineWidth">
-        <number>0</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_50">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>493</y>
-         <width>120</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string># of Encoder Pulses</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="le_n_encoder_pulses">
-       <property name="geometry">
-        <rect>
-         <x>210</x>
-         <y>493</y>
-         <width>100</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_51">
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>30</y>
-         <width>110</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Measurements</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_64">
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>170</y>
-         <width>110</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Rotation Motor</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_65">
-       <property name="geometry">
-        <rect>
-         <x>90</x>
-         <y>433</y>
-         <width>120</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Rotation Encoder</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_67">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>60</y>
-         <width>125</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Total number of turns</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="le_total_number_of_turns">
-       <property name="geometry">
-        <rect>
-         <x>210</x>
-         <y>60</y>
-         <width>100</width>
-         <height>22</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_68">
-       <property name="geometry">
-        <rect>
-         <x>430</x>
-         <y>30</y>
-         <width>110</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Integrator</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QComboBox" name="cb_n_integration_points">
+      <widget class="QGroupBox" name="groupBox_18">
        <property name="geometry">
         <rect>
          <x>530</x>
-         <y>90</y>
-         <width>100</width>
-         <height>20</height>
+         <y>190</y>
+         <width>391</width>
+         <height>91</height>
         </rect>
        </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <item>
-        <property name="text">
-         <string>90</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>100</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>120</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>144</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>250</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>500</string>
-        </property>
-       </item>
-      </widget>
-      <widget class="QComboBox" name="cb_integrator_gain">
-       <property name="geometry">
-        <rect>
-         <x>530</x>
-         <y>59</y>
-         <width>100</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <item>
-        <property name="text">
-         <string>1</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>2</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>5</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>10</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>20</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>50</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>100</string>
-        </property>
-       </item>
-      </widget>
-      <widget class="QLabel" name="label_69">
-       <property name="geometry">
-        <rect>
-         <x>340</x>
-         <y>60</y>
-         <width>90</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Integrator Gain</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_97">
-       <property name="geometry">
-        <rect>
-         <x>340</x>
-         <y>90</y>
-         <width>133</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string># Points for Integration</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-      <widget class="Line" name="line_6">
-       <property name="geometry">
-        <rect>
-         <x>325</x>
-         <y>140</y>
-         <width>317</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-       <property name="lineWidth">
-        <number>1</number>
-       </property>
-       <property name="midLineWidth">
-        <number>0</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="Line" name="line_7">
-       <property name="geometry">
-        <rect>
-         <x>327</x>
-         <y>410</y>
-         <width>321</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-       <property name="lineWidth">
-        <number>1</number>
-       </property>
-       <property name="midLineWidth">
-        <number>0</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_102">
-       <property name="geometry">
-        <rect>
-         <x>430</x>
-         <y>160</y>
-         <width>110</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
+       <property name="title">
         <string>Bench</string>
        </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
+       <widget class="QComboBox" name="cb_bench">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>40</y>
+          <width>101</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <item>
+         <property name="text">
+          <string>RC Bench 1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>RC Bench 2</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QLabel" name="label_7">
+        <property name="geometry">
+         <rect>
+          <x>40</x>
+          <y>43</y>
+          <width>47</width>
+          <height>13</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Bench:</string>
+        </property>
+       </widget>
       </widget>
-      <widget class="QComboBox" name="cb_bench">
+      <widget class="QGroupBox" name="groupBox_28">
        <property name="geometry">
         <rect>
          <x>530</x>
-         <y>197</y>
-         <width>101</width>
-         <height>21</height>
+         <y>320</y>
+         <width>391</width>
+         <height>121</height>
         </rect>
        </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
+       <property name="title">
+        <string>Interlock</string>
        </property>
-       <item>
-        <property name="text">
-         <string>RC Bench 1</string>
+       <widget class="QCheckBox" name="chb_disable_ps_interlock">
+        <property name="geometry">
+         <rect>
+          <x>40</x>
+          <y>70</y>
+          <width>196</width>
+          <height>20</height>
+         </rect>
         </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>RC Bench 2</string>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
         </property>
-       </item>
+        <property name="text">
+         <string>Disable power supply interlock</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="chb_disable_alignment_interlock">
+        <property name="geometry">
+         <rect>
+          <x>40</x>
+          <y>43</y>
+          <width>176</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Disable alignment interlock</string>
+        </property>
+       </widget>
       </widget>
-      <widget class="QLabel" name="label_7">
+      <widget class="QGroupBox" name="groupBox_31">
        <property name="geometry">
         <rect>
-         <x>350</x>
-         <y>200</y>
-         <width>47</width>
-         <height>13</height>
+         <x>30</x>
+         <y>50</y>
+         <width>411</width>
+         <height>121</height>
         </rect>
        </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
+       <property name="title">
+        <string>Measurements</string>
        </property>
-       <property name="text">
-        <string>Bench:</string>
+       <widget class="QLineEdit" name="le_remove_final_turns">
+        <property name="geometry">
+         <rect>
+          <x>250</x>
+          <y>90</y>
+          <width>100</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="le_remove_initial_turns">
+        <property name="geometry">
+         <rect>
+          <x>250</x>
+          <y>62</y>
+          <width>100</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_67">
+        <property name="geometry">
+         <rect>
+          <x>60</x>
+          <y>32</y>
+          <width>125</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Total number of turns</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="le_total_number_of_turns">
+        <property name="geometry">
+         <rect>
+          <x>250</x>
+          <y>32</y>
+          <width>100</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_60">
+        <property name="geometry">
+         <rect>
+          <x>60</x>
+          <y>90</y>
+          <width>107</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Remove final turns</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_54">
+        <property name="geometry">
+         <rect>
+          <x>60</x>
+          <y>62</y>
+          <width>113</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Remove initial turns</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_32">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>210</y>
+         <width>411</width>
+         <height>231</height>
+        </rect>
        </property>
+       <property name="title">
+        <string>Rotation Motor</string>
+       </property>
+       <widget class="QLineEdit" name="le_rotation_motor_address">
+        <property name="geometry">
+         <rect>
+          <x>250</x>
+          <y>30</y>
+          <width>100</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_46">
+        <property name="geometry">
+         <rect>
+          <x>60</x>
+          <y>148</y>
+          <width>158</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Rotation Motor Acceleration</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="le_rotation_motor_ratio">
+        <property name="geometry">
+         <rect>
+          <x>250</x>
+          <y>187</y>
+          <width>100</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_44">
+        <property name="geometry">
+         <rect>
+          <x>60</x>
+          <y>30</y>
+          <width>134</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Rotation Motor Address</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_48">
+        <property name="geometry">
+         <rect>
+          <x>60</x>
+          <y>70</y>
+          <width>147</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Rotation Motor Resolution</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="le_rotation_motor_speed">
+        <property name="geometry">
+         <rect>
+          <x>250</x>
+          <y>111</y>
+          <width>100</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="le_rotation_motor_resolution">
+        <property name="geometry">
+         <rect>
+          <x>250</x>
+          <y>70</y>
+          <width>100</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_45">
+        <property name="geometry">
+         <rect>
+          <x>60</x>
+          <y>111</y>
+          <width>124</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Rotation Motor Speed</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="le_rotation_motor_acceleration">
+        <property name="geometry">
+         <rect>
+          <x>250</x>
+          <y>148</y>
+          <width>100</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_47">
+        <property name="geometry">
+         <rect>
+          <x>60</x>
+          <y>187</y>
+          <width>148</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Rotation Motor Gear Ratio</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_33">
+       <property name="geometry">
+        <rect>
+         <x>530</x>
+         <y>50</y>
+         <width>391</width>
+         <height>81</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Rotation Encoder</string>
+       </property>
+       <widget class="QLineEdit" name="le_n_encoder_pulses">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>40</y>
+          <width>100</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_50">
+        <property name="geometry">
+         <rect>
+          <x>40</x>
+          <y>40</y>
+          <width>120</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string># of Encoder Pulses</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
       </widget>
      </widget>
      <widget class="QPushButton" name="pb_emergency1">
       <property name="geometry">
        <rect>
-        <x>860</x>
-        <y>600</y>
+        <x>1050</x>
+        <y>650</y>
         <width>150</width>
         <height>41</height>
        </rect>
@@ -1643,10 +1329,10 @@
      <widget class="QGroupBox" name="groupBox_7">
       <property name="geometry">
        <rect>
-        <x>20</x>
+        <x>80</x>
         <y>20</y>
         <width>410</width>
-        <height>270</height>
+        <height>421</height>
        </rect>
       </property>
       <property name="title">
@@ -1656,7 +1342,7 @@
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>200</y>
+         <y>340</y>
          <width>160</width>
          <height>50</height>
         </rect>
@@ -1679,7 +1365,7 @@
        <property name="geometry">
         <rect>
          <x>220</x>
-         <y>200</y>
+         <y>340</y>
          <width>160</width>
          <height>50</height>
         </rect>
@@ -1704,7 +1390,7 @@
          <x>20</x>
          <y>30</y>
          <width>363</width>
-         <height>151</height>
+         <height>251</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_3" columnminimumwidth="120,0,0,0">
@@ -1825,8 +1511,8 @@
      <widget class="QPushButton" name="pb_emergency2">
       <property name="geometry">
        <rect>
-        <x>860</x>
-        <y>600</y>
+        <x>1050</x>
+        <y>650</y>
         <width>150</width>
         <height>41</height>
        </rect>
@@ -1891,10 +1577,10 @@
      <widget class="QGroupBox" name="groupBox_30">
       <property name="geometry">
        <rect>
-        <x>810</x>
+        <x>880</x>
         <y>20</y>
         <width>210</width>
-        <height>270</height>
+        <height>421</height>
        </rect>
       </property>
       <property name="title">
@@ -2137,10 +1823,10 @@
      <widget class="QGroupBox" name="groupBox_3">
       <property name="geometry">
        <rect>
-        <x>460</x>
+        <x>520</x>
         <y>20</y>
         <width>341</width>
-        <height>421</height>
+        <height>521</height>
        </rect>
       </property>
       <property name="title">
@@ -2169,7 +1855,7 @@
        <property name="geometry">
         <rect>
          <x>144</x>
-         <y>156</y>
+         <y>140</y>
          <width>150</width>
          <height>31</height>
         </rect>
@@ -2182,7 +1868,7 @@
        <property name="geometry">
         <rect>
          <x>24</x>
-         <y>156</y>
+         <y>140</y>
          <width>110</width>
          <height>31</height>
         </rect>
@@ -2206,17 +1892,27 @@
         <string>* encoder value x 4</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="pb_adjust_offset">
+      <widget class="QPushButton" name="pb_set_gain">
        <property name="geometry">
         <rect>
-         <x>64</x>
-         <y>210</y>
+         <x>70</x>
+         <y>300</y>
          <width>190</width>
          <height>40</height>
         </rect>
        </property>
        <property name="text">
-        <string>Adjust Integrator Offset</string>
+        <string>Set Gain</string>
+       </property>
+       <property name="icon">
+        <iconset resource="resource_file.qrc">
+         <normaloff>:/Images/imagens/OpAmp.png</normaloff>:/Images/imagens/OpAmp.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>30</width>
+         <height>30</height>
+        </size>
        </property>
       </widget>
       <widget class="QLineEdit" name="le_encoder_reading">
@@ -2244,7 +1940,7 @@
        <property name="geometry">
         <rect>
          <x>160</x>
-         <y>369</y>
+         <y>469</y>
          <width>100</width>
          <height>25</height>
         </rect>
@@ -2257,7 +1953,7 @@
        <property name="geometry">
         <rect>
          <x>60</x>
-         <y>370</y>
+         <y>470</y>
          <width>80</width>
          <height>20</height>
         </rect>
@@ -2519,7 +2215,7 @@
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>300</y>
+         <y>410</y>
          <width>311</width>
          <height>20</height>
         </rect>
@@ -2532,7 +2228,7 @@
        <property name="geometry">
         <rect>
          <x>60</x>
-         <y>330</y>
+         <y>440</y>
          <width>211</width>
          <height>21</height>
         </rect>
@@ -2545,14 +2241,14 @@
         </font>
        </property>
        <property name="text">
-        <string>Referecing Coil and Integrator</string>
+        <string>Referencing Coil and Integrator</string>
        </property>
       </widget>
       <widget class="QPushButton" name="pb_get_coil_index_2">
        <property name="geometry">
         <rect>
-         <x>64</x>
-         <y>260</y>
+         <x>70</x>
+         <y>350</y>
          <width>190</width>
          <height>41</height>
         </rect>
@@ -2571,6 +2267,143 @@
         </size>
        </property>
       </widget>
+      <widget class="QLabel" name="label_97">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>245</y>
+         <width>151</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string># Points for Integration</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="cb_integrator_gain">
+       <property name="geometry">
+        <rect>
+         <x>220</x>
+         <y>204</y>
+         <width>100</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <item>
+        <property name="text">
+         <string>1</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>2</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>5</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>10</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>20</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>50</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>100</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QLabel" name="label_69">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>205</y>
+         <width>111</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Integrator Gain</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="cb_n_integration_points">
+       <property name="geometry">
+        <rect>
+         <x>220</x>
+         <y>245</y>
+         <width>100</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <item>
+        <property name="text">
+         <string>90</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>100</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>120</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>144</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>250</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>500</string>
+        </property>
+       </item>
+      </widget>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_6">
@@ -2584,9 +2417,9 @@
      <widget class="QGroupBox" name="groupBox_15">
       <property name="geometry">
        <rect>
-        <x>140</x>
+        <x>99</x>
         <y>30</y>
-        <width>730</width>
+        <width>961</width>
         <height>511</height>
        </rect>
       </property>
@@ -2596,7 +2429,7 @@
       <widget class="QGroupBox" name="groupBox_14">
        <property name="geometry">
         <rect>
-         <x>370</x>
+         <x>490</x>
          <y>80</y>
          <width>300</width>
          <height>160</height>
@@ -2676,7 +2509,7 @@
       <widget class="QGroupBox" name="groupBox_13">
        <property name="geometry">
         <rect>
-         <x>50</x>
+         <x>170</x>
          <y>80</y>
          <width>300</width>
          <height>160</height>
@@ -2748,7 +2581,7 @@
       <widget class="QPushButton" name="pb_save_coil">
        <property name="geometry">
         <rect>
-         <x>540</x>
+         <x>660</x>
          <y>450</y>
          <width>130</width>
          <height>41</height>
@@ -2765,7 +2598,7 @@
       <widget class="QPushButton" name="pb_load_coil">
        <property name="geometry">
         <rect>
-         <x>540</x>
+         <x>660</x>
          <y>390</y>
          <width>130</width>
          <height>41</height>
@@ -2782,7 +2615,7 @@
       <widget class="QLineEdit" name="le_coil_name">
        <property name="geometry">
         <rect>
-         <x>140</x>
+         <x>260</x>
          <y>30</y>
          <width>531</width>
          <height>31</height>
@@ -2792,7 +2625,7 @@
       <widget class="QLabel" name="label_85">
        <property name="geometry">
         <rect>
-         <x>50</x>
+         <x>170</x>
          <y>30</y>
          <width>80</width>
          <height>31</height>
@@ -2808,7 +2641,7 @@
       <widget class="QComboBox" name="cb_coil_type">
        <property name="geometry">
         <rect>
-         <x>160</x>
+         <x>280</x>
          <y>400</y>
          <width>100</width>
          <height>31</height>
@@ -2828,7 +2661,7 @@
       <widget class="QLabel" name="label_53">
        <property name="geometry">
         <rect>
-         <x>60</x>
+         <x>180</x>
          <y>403</y>
          <width>70</width>
          <height>20</height>
@@ -2844,7 +2677,7 @@
       <widget class="QGroupBox" name="groupBox_29">
        <property name="geometry">
         <rect>
-         <x>50</x>
+         <x>170</x>
          <y>250</y>
          <width>620</width>
          <height>121</height>
@@ -2874,7 +2707,7 @@ p, li { white-space: pre-wrap; }
       <widget class="QPushButton" name="pb_get_coil_index">
        <property name="geometry">
         <rect>
-         <x>310</x>
+         <x>430</x>
          <y>450</y>
          <width>190</width>
          <height>41</height>
@@ -2897,7 +2730,7 @@ p, li { white-space: pre-wrap; }
       <widget class="QLabel" name="label_63">
        <property name="geometry">
         <rect>
-         <x>60</x>
+         <x>180</x>
          <y>460</y>
          <width>80</width>
          <height>20</height>
@@ -2913,7 +2746,7 @@ p, li { white-space: pre-wrap; }
       <widget class="QLineEdit" name="le_trigger_ref">
        <property name="geometry">
         <rect>
-         <x>160</x>
+         <x>280</x>
          <y>459</y>
          <width>100</width>
          <height>25</height>
@@ -2923,7 +2756,7 @@ p, li { white-space: pre-wrap; }
       <widget class="QPushButton" name="pb_config_coil">
        <property name="geometry">
         <rect>
-         <x>310</x>
+         <x>430</x>
          <y>390</y>
          <width>190</width>
          <height>41</height>
@@ -2947,8 +2780,8 @@ p, li { white-space: pre-wrap; }
      <widget class="QPushButton" name="pb_emergency3">
       <property name="geometry">
        <rect>
-        <x>860</x>
-        <y>600</y>
+        <x>1050</x>
+        <y>650</y>
         <width>150</width>
         <height>41</height>
        </rect>
@@ -3025,8 +2858,8 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="geometry">
        <rect>
-        <x>690</x>
-        <y>40</y>
+        <x>760</x>
+        <y>50</y>
         <width>141</width>
         <height>31</height>
        </rect>
@@ -3045,10 +2878,10 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>116</y>
+        <x>80</x>
+        <y>126</y>
         <width>821</width>
-        <height>531</height>
+        <height>561</height>
        </rect>
       </property>
       <property name="title">
@@ -3061,7 +2894,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>70</y>
+         <y>90</y>
          <width>771</width>
          <height>451</height>
         </rect>
@@ -3634,7 +3467,7 @@ p, li { white-space: pre-wrap; }
            <rect>
             <x>100</x>
             <y>30</y>
-            <width>107</width>
+            <width>113</width>
             <height>251</height>
            </rect>
           </property>
@@ -4246,7 +4079,7 @@ p, li { white-space: pre-wrap; }
              </rect>
             </property>
             <property name="text">
-             <string>#  of Cycles</string>
+             <string># of Cycles</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -5421,7 +5254,7 @@ Loop:</string>
       <widget class="QPushButton" name="pb_save_PS">
        <property name="geometry">
         <rect>
-         <x>620</x>
+         <x>630</x>
          <y>30</y>
          <width>151</width>
          <height>31</height>
@@ -5462,8 +5295,8 @@ Loop:</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>50</y>
-         <width>761</width>
+         <y>60</y>
+         <width>781</width>
          <height>31</height>
         </rect>
        </property>
@@ -5481,8 +5314,8 @@ Loop:</string>
      <widget class="QPushButton" name="pb_emergency4">
       <property name="geometry">
        <rect>
-        <x>890</x>
-        <y>610</y>
+        <x>980</x>
+        <y>650</y>
         <width>150</width>
         <height>41</height>
        </rect>
@@ -5550,9 +5383,9 @@ Loop:</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>415</x>
-        <y>30</y>
-        <width>21</width>
+        <x>487</x>
+        <y>40</y>
+        <width>20</width>
         <height>41</height>
        </rect>
       </property>
@@ -5571,8 +5404,8 @@ Loop:</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>223</x>
-        <y>24</y>
+        <x>285</x>
+        <y>34</y>
         <width>190</width>
         <height>51</height>
        </rect>
@@ -5584,10 +5417,10 @@ Loop:</string>
      <widget class="QGroupBox" name="groupBox_34">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>9</y>
+        <x>90</x>
+        <y>24</y>
         <width>121</width>
-        <height>81</height>
+        <height>71</height>
        </rect>
       </property>
       <property name="font">
@@ -5628,8 +5461,8 @@ Loop:</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>256</x>
-        <y>80</y>
+        <x>324</x>
+        <y>90</y>
         <width>130</width>
         <height>20</height>
        </rect>
@@ -5647,8 +5480,8 @@ Loop:</string>
      <widget class="QLCDNumber" name="lcd_PS_reading">
       <property name="geometry">
        <rect>
-        <x>460</x>
-        <y>24</y>
+        <x>529</x>
+        <y>34</y>
         <width>190</width>
         <height>51</height>
        </rect>
@@ -5660,8 +5493,8 @@ Loop:</string>
      <widget class="QLabel" name="label_170">
       <property name="geometry">
        <rect>
-        <x>460</x>
-        <y>80</y>
+        <x>531</x>
+        <y>90</y>
         <width>191</width>
         <height>21</height>
        </rect>
@@ -5676,85 +5509,14 @@ Loop:</string>
        <string>Power Supply Reading</string>
       </property>
      </widget>
-     <widget class="QComboBox" name="dcct_select">
-      <property name="geometry">
-       <rect>
-        <x>900</x>
-        <y>220</y>
-        <width>81</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="currentIndex">
-       <number>2</number>
-      </property>
-      <item>
-       <property name="text">
-        <string>40 A</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>160 A</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>320 A</string>
-       </property>
-      </item>
-     </widget>
-     <widget class="QLabel" name="label_178">
-      <property name="geometry">
-       <rect>
-        <x>900</x>
-        <y>200</y>
-        <width>80</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>DCCT Head:</string>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="chb_voltage">
-      <property name="geometry">
-       <rect>
-        <x>900</x>
-        <y>260</y>
-        <width>70</width>
-        <height>40</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string>Read
-Voltage</string>
-      </property>
-      <property name="checked">
-       <bool>false</bool>
-      </property>
-     </widget>
      <widget class="QLabel" name="label_163">
       <property name="enabled">
        <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>651</x>
-        <y>30</y>
+        <x>730</x>
+        <y>40</y>
         <width>20</width>
         <height>41</height>
        </rect>
@@ -5774,8 +5536,8 @@ Voltage</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>850</x>
-        <y>0</y>
+        <x>950</x>
+        <y>20</y>
         <width>181</width>
         <height>181</height>
        </rect>
@@ -5796,7 +5558,7 @@ Voltage</string>
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>30</y>
+         <y>50</y>
          <width>141</width>
          <height>41</height>
         </rect>
@@ -5833,7 +5595,7 @@ Voltage</string>
        <property name="geometry">
         <rect>
          <x>80</x>
-         <y>140</y>
+         <y>130</y>
          <width>81</width>
          <height>31</height>
         </rect>
@@ -5859,7 +5621,7 @@ Voltage</string>
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>130</y>
+         <y>120</y>
          <width>51</width>
          <height>41</height>
         </rect>
@@ -5877,6 +5639,106 @@ Loop:</string>
        </property>
       </widget>
      </widget>
+     <widget class="QGroupBox" name="groupBox_6">
+      <property name="geometry">
+       <rect>
+        <x>950</x>
+        <y>230</y>
+        <width>181</width>
+        <height>151</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="title">
+       <string>DCCT</string>
+      </property>
+      <widget class="QCheckBox" name="chb_voltage">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>94</y>
+         <width>70</width>
+         <height>40</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Read
+Voltage</string>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_178">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>30</y>
+         <width>80</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>DCCT Head:</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="dcct_select">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>50</y>
+         <width>81</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="currentIndex">
+        <number>2</number>
+       </property>
+       <item>
+        <property name="text">
+         <string>40 A</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>160 A</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>320 A</string>
+        </property>
+       </item>
+      </widget>
+     </widget>
     </widget>
     <widget class="QWidget" name="tab_12">
      <attribute name="icon">
@@ -5889,8 +5751,8 @@ Loop:</string>
      <widget class="QPushButton" name="pb_emergency5">
       <property name="geometry">
        <rect>
-        <x>890</x>
-        <y>610</y>
+        <x>1050</x>
+        <y>650</y>
         <width>150</width>
         <height>41</height>
        </rect>
@@ -5955,7 +5817,7 @@ Loop:</string>
      <widget class="QGroupBox" name="groupBox_4">
       <property name="geometry">
        <rect>
-        <x>30</x>
+        <x>230</x>
         <y>30</y>
         <width>691</width>
         <height>461</height>
@@ -6055,9 +5917,9 @@ DCCT Voltage [V]</string>
      <widget class="QGroupBox" name="groupBox_16">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>1023</width>
+        <x>32</x>
+        <y>0</y>
+        <width>1141</width>
         <height>380</height>
        </rect>
       </property>
@@ -6067,8 +5929,8 @@ DCCT Voltage [V]</string>
       <widget class="QGroupBox" name="groupBox_10">
        <property name="geometry">
         <rect>
-         <x>30</x>
-         <y>200</y>
+         <x>55</x>
+         <y>230</y>
          <width>200</width>
          <height>120</height>
         </rect>
@@ -6172,8 +6034,8 @@ DCCT Voltage [V]</string>
       <widget class="QGroupBox" name="groupBox_22">
        <property name="geometry">
         <rect>
-         <x>240</x>
-         <y>200</y>
+         <x>265</x>
+         <y>230</y>
          <width>261</width>
          <height>121</height>
         </rect>
@@ -6217,10 +6079,10 @@ DCCT Voltage [V]</string>
       <widget class="QGroupBox" name="groupBox_11">
        <property name="geometry">
         <rect>
-         <x>30</x>
-         <y>28</y>
+         <x>55</x>
+         <y>38</y>
          <width>641</width>
-         <height>150</height>
+         <height>181</height>
         </rect>
        </property>
        <property name="title">
@@ -6229,8 +6091,8 @@ DCCT Voltage [V]</string>
        <widget class="QGroupBox" name="groupBox_21">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>20</y>
+          <x>16</x>
+          <y>21</y>
           <width>281</width>
           <height>110</height>
          </rect>
@@ -6291,7 +6153,7 @@ DCCT Voltage [V]</string>
         <property name="geometry">
          <rect>
           <x>330</x>
-          <y>20</y>
+          <y>21</y>
           <width>281</width>
           <height>110</height>
          </rect>
@@ -6361,25 +6223,44 @@ DCCT Voltage [V]</string>
          </property>
         </widget>
        </widget>
+       <widget class="QCheckBox" name="chb_clear_current">
+        <property name="geometry">
+         <rect>
+          <x>180</x>
+          <y>141</y>
+          <width>261</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Clear current after measurement</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
       </widget>
       <widget class="QGroupBox" name="groupBox_2">
        <property name="geometry">
         <rect>
-         <x>699</x>
-         <y>38</y>
-         <width>301</width>
-         <height>281</height>
+         <x>749</x>
+         <y>48</y>
+         <width>341</width>
+         <height>241</height>
         </rect>
        </property>
        <property name="title">
         <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
        <layout class="QGridLayout" name="gridLayout_11">
         <item row="0" column="0">
          <widget class="QLabel" name="label_175">
           <property name="font">
            <font>
-            <pointsize>10</pointsize>
+            <pointsize>12</pointsize>
            </font>
           </property>
           <property name="text">
@@ -6396,6 +6277,21 @@ DCCT Voltage [V]</string>
           </property>
           <property name="text">
            <string>12.0</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_36">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Accelarator Type:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
          </widget>
         </item>
@@ -6426,26 +6322,6 @@ DCCT Voltage [V]</string>
             <string>CounterClockwise</string>
            </property>
           </item>
-          <item>
-           <property name="text">
-            <string>Both</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_36">
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Accelarator Type:</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
          </widget>
         </item>
         <item row="2" column="1">
@@ -6473,9 +6349,9 @@ DCCT Voltage [V]</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>520</x>
-         <y>200</y>
-         <width>151</width>
+         <x>545</x>
+         <y>239</y>
+         <width>150</width>
          <height>51</height>
         </rect>
        </property>
@@ -6504,8 +6380,8 @@ DCCT Voltage [V]</string>
       <widget class="QPushButton" name="pb_emergency6">
        <property name="geometry">
         <rect>
-         <x>520</x>
-         <y>270</y>
+         <x>840</x>
+         <y>300</y>
          <width>150</width>
          <height>51</height>
         </rect>
@@ -6567,14 +6443,43 @@ DCCT Voltage [V]</string>
         </size>
        </property>
       </widget>
+      <widget class="QPushButton" name="pb_stop">
+       <property name="geometry">
+        <rect>
+         <x>545</x>
+         <y>300</y>
+         <width>150</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Stop</string>
+       </property>
+       <property name="icon">
+        <iconset resource="resource_file.qrc">
+         <normaloff>:/Images/imagens/stop.png</normaloff>:/Images/imagens/stop.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>35</width>
+         <height>35</height>
+        </size>
+       </property>
+      </widget>
      </widget>
      <widget class="PlotWidget" name="gv_rawcurves">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>400</y>
-        <width>1020</width>
-        <height>250</height>
+        <x>31</x>
+        <y>390</y>
+        <width>1141</width>
+        <height>321</height>
        </rect>
       </property>
       <property name="backgroundBrush">
@@ -6599,8 +6504,8 @@ DCCT Voltage [V]</string>
      <widget class="QPushButton" name="pb_save_data_results">
       <property name="geometry">
        <rect>
-        <x>450</x>
-        <y>600</y>
+        <x>530</x>
+        <y>660</y>
         <width>200</width>
         <height>50</height>
        </rect>
@@ -6624,17 +6529,23 @@ DCCT Voltage [V]</string>
        <rect>
         <x>10</x>
         <y>240</y>
-        <width>1020</width>
-        <height>340</height>
+        <width>1201</width>
+        <height>411</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>8</pointsize>
+        <pointsize>10</pointsize>
        </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
       </property>
       <property name="verticalScrollBarPolicy">
        <enum>Qt::ScrollBarAsNeeded</enum>
+      </property>
+      <property name="sizeAdjustPolicy">
+       <enum>QAbstractScrollArea::AdjustIgnored</enum>
       </property>
       <property name="autoScrollMargin">
        <number>10</number>
@@ -6649,7 +6560,7 @@ DCCT Voltage [V]</string>
        <number>97</number>
       </attribute>
       <attribute name="verticalHeaderDefaultSectionSize">
-       <number>20</number>
+       <number>25</number>
       </attribute>
       <attribute name="verticalHeaderMinimumSectionSize">
        <number>15</number>
@@ -6658,143 +6569,302 @@ DCCT Voltage [V]</string>
        <property name="text">
         <string>1</string>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
       </row>
       <row>
        <property name="text">
         <string>2</string>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
        </property>
       </row>
       <row>
        <property name="text">
         <string>3</string>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
       </row>
       <row>
        <property name="text">
         <string>4</string>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
        </property>
       </row>
       <row>
        <property name="text">
         <string>5</string>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
       </row>
       <row>
        <property name="text">
         <string>6</string>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
        </property>
       </row>
       <row>
        <property name="text">
         <string>7</string>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
       </row>
       <row>
        <property name="text">
         <string>8</string>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
        </property>
       </row>
       <row>
        <property name="text">
         <string>9</string>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
       </row>
       <row>
        <property name="text">
         <string>10</string>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
        </property>
       </row>
       <row>
        <property name="text">
         <string>11</string>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
       </row>
       <row>
        <property name="text">
         <string>12</string>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
        </property>
       </row>
       <row>
        <property name="text">
         <string>13</string>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
       </row>
       <row>
        <property name="text">
         <string>14</string>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
        </property>
       </row>
       <row>
        <property name="text">
         <string>15</string>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
       </row>
       <column>
        <property name="text">
         <string>L.Nn</string>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
        </property>
       </column>
       <column>
        <property name="text">
         <string>Er Nn</string>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
       </column>
       <column>
        <property name="text">
         <string>L.Sn</string>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
        </property>
       </column>
       <column>
        <property name="text">
         <string>Er Sn</string>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
       </column>
       <column>
        <property name="text">
         <string>L.Bn</string>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
        </property>
       </column>
       <column>
        <property name="text">
         <string>Er Bn</string>
        </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Angulo</string>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>Er Angulo</string>
+        <string>Angle</string>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Er Angle</string>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
        </property>
       </column>
       <column>
        <property name="text">
         <string>N_Nn@r_ref</string>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
       </column>
       <column>
        <property name="text">
         <string>Er N_Nn@r_ref</string>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
        </property>
       </column>
       <column>
        <property name="text">
         <string>N_Sn@r_ref</string>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
       </column>
       <column>
        <property name="text">
         <string>Er N_Sn@r_ref</string>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
        </property>
       </column>
      </widget>
      <widget class="QPushButton" name="Emergencia_9">
       <property name="geometry">
        <rect>
-        <x>860</x>
-        <y>600</y>
+        <x>990</x>
+        <y>660</y>
         <width>150</width>
         <height>41</height>
        </rect>
@@ -6859,10 +6929,10 @@ DCCT Voltage [V]</string>
      <widget class="QGroupBox" name="groupBox_38">
       <property name="geometry">
        <rect>
-        <x>50</x>
-        <y>590</y>
+        <x>10</x>
+        <y>660</y>
         <width>331</width>
-        <height>60</height>
+        <height>61</height>
        </rect>
       </property>
       <property name="font">
@@ -6902,6 +6972,7 @@ DCCT Voltage [V]</string>
         <widget class="QLineEdit" name="le_magnetic_center_x">
          <property name="font">
           <font>
+           <family>Segoe UI</family>
            <pointsize>10</pointsize>
           </font>
          </property>
@@ -6932,7 +7003,7 @@ DCCT Voltage [V]</string>
        <rect>
         <x>10</x>
         <y>10</y>
-        <width>1020</width>
+        <width>1201</width>
         <height>230</height>
        </rect>
       </property>
@@ -6954,7 +7025,7 @@ DCCT Voltage [V]</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1046</width>
+     <width>1235</width>
      <height>21</height>
     </rect>
    </property>
@@ -6969,6 +7040,7 @@ DCCT Voltage [V]</string>
   </customwidget>
  </customwidgets>
  <tabstops>
+  <tabstop>tabWidget</tabstop>
   <tabstop>cb_disp_port</tabstop>
   <tabstop>cb_driver_port</tabstop>
   <tabstop>cb_integrator_port</tabstop>
@@ -6976,19 +7048,38 @@ DCCT Voltage [V]</string>
   <tabstop>chb_enable_Agilent34970A</tabstop>
   <tabstop>sb_agilent34970A_address</tabstop>
   <tabstop>pb_connect_devices</tabstop>
-  <tabstop>tabWidget</tabstop>
+  <tabstop>le_total_number_of_turns</tabstop>
   <tabstop>le_remove_initial_turns</tabstop>
   <tabstop>le_remove_final_turns</tabstop>
-  <tabstop>le_poscoil_assembly</tabstop>
+  <tabstop>le_rotation_motor_address</tabstop>
+  <tabstop>le_rotation_motor_resolution</tabstop>
+  <tabstop>le_rotation_motor_speed</tabstop>
+  <tabstop>le_rotation_motor_acceleration</tabstop>
+  <tabstop>le_rotation_motor_ratio</tabstop>
+  <tabstop>le_n_encoder_pulses</tabstop>
+  <tabstop>cb_bench</tabstop>
   <tabstop>chb_disable_alignment_interlock</tabstop>
-  <tabstop>pb_save_config</tabstop>
+  <tabstop>chb_disable_ps_interlock</tabstop>
   <tabstop>pb_config</tabstop>
+  <tabstop>pb_save_config</tabstop>
   <tabstop>pb_emergency1</tabstop>
+  <tabstop>cb_driver_mode</tabstop>
+  <tabstop>cb_driver_direction</tabstop>
   <tabstop>le_motor_vel</tabstop>
   <tabstop>le_motor_ace</tabstop>
   <tabstop>le_motor_turns</tabstop>
   <tabstop>pb_move_motor</tabstop>
   <tabstop>pb_stop_motor</tabstop>
+  <tabstop>le_encoder_reading</tabstop>
+  <tabstop>pb_encoder_reading</tabstop>
+  <tabstop>le_encoder_setpoint</tabstop>
+  <tabstop>pb_move_to_encoder_position</tabstop>
+  <tabstop>cb_integrator_gain</tabstop>
+  <tabstop>cb_n_integration_points</tabstop>
+  <tabstop>pb_set_gain</tabstop>
+  <tabstop>pb_get_coil_index_2</tabstop>
+  <tabstop>le_trigger_ref_dsp</tabstop>
+  <tabstop>pb_status_update</tabstop>
   <tabstop>pb_emergency2</tabstop>
   <tabstop>le_coil_name</tabstop>
   <tabstop>le_n_turns_normal</tabstop>
@@ -6997,49 +7088,103 @@ DCCT Voltage [V]</string>
   <tabstop>le_n_turns_bucked</tabstop>
   <tabstop>le_radius1_bucked</tabstop>
   <tabstop>le_radius2_bucked</tabstop>
-  <tabstop>cb_coil_type</tabstop>
   <tabstop>te_comments</tabstop>
+  <tabstop>cb_coil_type</tabstop>
+  <tabstop>le_trigger_ref</tabstop>
+  <tabstop>pb_config_coil</tabstop>
+  <tabstop>pb_get_coil_index</tabstop>
   <tabstop>pb_load_coil</tabstop>
   <tabstop>pb_save_coil</tabstop>
   <tabstop>pb_emergency3</tabstop>
-  <tabstop>le_damp_sin_Ampl</tabstop>
+  <tabstop>chb_dcct</tabstop>
+  <tabstop>pb_refresh</tabstop>
+  <tabstop>le_PS_Name</tabstop>
+  <tabstop>pb_load_PS</tabstop>
+  <tabstop>pb_save_PS</tabstop>
+  <tabstop>tabWidget_2</tabstop>
+  <tabstop>cb_ps_type</tabstop>
+  <tabstop>pb_interlock</tabstop>
+  <tabstop>pb_reset_inter</tabstop>
+  <tabstop>le_maximum_current</tabstop>
+  <tabstop>le_minimum_current</tabstop>
+  <tabstop>pb_config_ps</tabstop>
+  <tabstop>sb_kp</tabstop>
+  <tabstop>sb_ki</tabstop>
+  <tabstop>pb_config_pid</tabstop>
+  <tabstop>textBrowser</tabstop>
+  <tabstop>pb_PS_button</tabstop>
+  <tabstop>le_status_loop</tabstop>
+  <tabstop>dcct_select</tabstop>
+  <tabstop>chb_voltage</tabstop>
+  <tabstop>pb_emergency4</tabstop>
+  <tabstop>dsb_current_setpoint</tabstop>
+  <tabstop>pb_send</tabstop>
+  <tabstop>tw_auto_set</tabstop>
+  <tabstop>pb_rows_auto</tabstop>
+  <tabstop>pb_clear_table</tabstop>
+  <tabstop>tabWidget_3</tabstop>
   <tabstop>le_Sinusoidal_Amplitude</tabstop>
   <tabstop>le_Sinusoidal_Offset</tabstop>
+  <tabstop>le_Sinusoidal_Frequency</tabstop>
   <tabstop>le_Sinusoidal_n_cycles</tabstop>
+  <tabstop>le_Initial_Phase</tabstop>
   <tabstop>le_Final_Phase</tabstop>
-  <tabstop>le_damp_sin_Freq</tabstop>
+  <tabstop>pb_emergency5</tabstop>
+  <tabstop>le_damp_sin_Ampl</tabstop>
   <tabstop>le_damp_sin_Offset</tabstop>
+  <tabstop>le_damp_sin_Freq</tabstop>
+  <tabstop>le_damp_sin_nCycles</tabstop>
   <tabstop>le_damp_sin_phaseShift</tabstop>
   <tabstop>le_damp_sin_finalPhase</tabstop>
   <tabstop>le_damp_sin_Damping</tabstop>
   <tabstop>pb_send_curve</tabstop>
   <tabstop>pb_cycle</tabstop>
-  <tabstop>le_PS_Name</tabstop>
-  <tabstop>pb_save_PS</tabstop>
-  <tabstop>pb_load_PS</tabstop>
-  <tabstop>le_status_loop</tabstop>
-  <tabstop>pb_PS_button</tabstop>
-  <tabstop>pb_emergency4</tabstop>
-  <tabstop>pb_emergency5</tabstop>
-  <tabstop>pb_send</tabstop>
-  <tabstop>pb_emergency6</tabstop>
-  <tabstop>Emergencia_9</tabstop>
-  <tabstop>tabWidget_3</tabstop>
-  <tabstop>pb_refresh</tabstop>
-  <tabstop>pb_start_meas</tabstop>
-  <tabstop>pb_save_data_results</tabstop>
+  <tabstop>le_PS_Name_2</tabstop>
+  <tabstop>pb_load_PS_2</tabstop>
+  <tabstop>pb_save_PS_2</tabstop>
+  <tabstop>tabWidget_5</tabstop>
+  <tabstop>cb_ps_type_2</tabstop>
+  <tabstop>pb_interlock_2</tabstop>
+  <tabstop>pb_reset_inter_2</tabstop>
+  <tabstop>le_maximum_current_2</tabstop>
+  <tabstop>le_minimum_current_2</tabstop>
+  <tabstop>pb_config_ps_2</tabstop>
+  <tabstop>pb_PS_button_2</tabstop>
+  <tabstop>le_status_loop_2</tabstop>
+  <tabstop>dsb_current_setpoint_2</tabstop>
+  <tabstop>pb_send_2</tabstop>
+  <tabstop>tw_auto_set_2</tabstop>
+  <tabstop>pb_rows_auto_2</tabstop>
+  <tabstop>pb_clear_table_2</tabstop>
+  <tabstop>le_damp_sin_Ampl_2</tabstop>
+  <tabstop>le_damp_sin_Offset_2</tabstop>
+  <tabstop>le_damp_sin_Freq_2</tabstop>
+  <tabstop>le_damp_sin_nCycles_2</tabstop>
+  <tabstop>le_damp_sin_phaseShift_2</tabstop>
+  <tabstop>le_damp_sin_finalPhase_2</tabstop>
+  <tabstop>le_damp_sin_Damping_2</tabstop>
+  <tabstop>pb_send_curve_2</tabstop>
+  <tabstop>pb_cycle_2</tabstop>
   <tabstop>chb_seriesofmeas</tabstop>
-  <tabstop>tabWidget_2</tabstop>
-  <tabstop>le_Sinusoidal_Frequency</tabstop>
   <tabstop>le_n_collections</tabstop>
   <tabstop>chb_automatic_ps</tabstop>
-  <tabstop>le_Initial_Phase</tabstop>
-  <tabstop>le_damp_sin_nCycles</tabstop>
-  <tabstop>chb_dcct</tabstop>
-  <tabstop>dcct_select</tabstop>
-  <tabstop>chb_voltage</tabstop>
+  <tabstop>rb_main_ps</tabstop>
+  <tabstop>rb_secondary_ps</tabstop>
+  <tabstop>chb_clear_current</tabstop>
+  <tabstop>le_norm_radius</tabstop>
+  <tabstop>cb_coil_rotation_direction</tabstop>
+  <tabstop>cb_accelerator_type</tabstop>
+  <tabstop>pb_start_meas</tabstop>
+  <tabstop>pb_stop</tabstop>
+  <tabstop>pb_emergency6</tabstop>
+  <tabstop>gv_rawcurves</tabstop>
+  <tabstop>gv_multipoles</tabstop>
   <tabstop>tw_multipoles_table</tabstop>
   <tabstop>le_magnetic_center_x</tabstop>
+  <tabstop>le_magnetic_center_y</tabstop>
+  <tabstop>pb_save_data_results</tabstop>
+  <tabstop>Emergencia_9</tabstop>
+  <tabstop>pb_status_update</tabstop>
  </tabstops>
  <resources>
   <include location="resource_file.qrc"/>

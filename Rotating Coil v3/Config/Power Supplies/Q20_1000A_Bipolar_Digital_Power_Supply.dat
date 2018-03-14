@@ -23,3 +23,4 @@ Minimum Current	-166.0
 Automatic Setpoints	0.0, 2.0, 4.0, 6.0, 8.0, 10.0
 Kp	0.117
 Ki	0.4503
+DCCT Head	2

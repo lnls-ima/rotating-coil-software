@@ -96,6 +96,11 @@ class Ui_Pop_Up(object):
 
         self.retranslateUi(Pop_Up)
         QtCore.QMetaObject.connectSlotsByName(Pop_Up)
+        Pop_Up.setTabOrder(self.le_magnet_name, self.le_temperature)
+        Pop_Up.setTabOrder(self.le_temperature, self.cb_operator)
+        Pop_Up.setTabOrder(self.cb_operator, self.cb_magnet_model)
+        Pop_Up.setTabOrder(self.cb_magnet_model, self.cb_trim_coil_type)
+        Pop_Up.setTabOrder(self.cb_trim_coil_type, self.te_meas_details)
 
     def retranslateUi(self, Pop_Up):
         _translate = QtCore.QCoreApplication.translate

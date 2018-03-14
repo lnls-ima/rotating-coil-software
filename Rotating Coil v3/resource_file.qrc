@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="Images">
+    <file>imagens/OpAmp.png</file>
     <file>imagens/LEDverde.png</file>
     <file>imagens/LEDvermelho.png</file>
     <file>imagens/1351619277_plus_64.png</file>
