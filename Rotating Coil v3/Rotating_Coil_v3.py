@@ -575,11 +575,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 self.ui.dsb_current_setpoint.setValue(float(_current_min))
                 _current = _current_min
         elif index == 2:
-            if ((_current/2)+offset) > _current_max:
+            if ((_current)+offset) > _current_max:
                 QtWidgets.QMessageBox.warning(self,'Warning','Check Peak to Peak Current and Offset values.\nValues out of source limit.',QtWidgets.QMessageBox.Ok)
                 return 'False'
             
-            if ((-_current/2)+offset) < _current_min:
+            if ((-_current)+offset) < _current_min:
                 QtWidgets.QMessageBox.warning(self,'Warning','Check Peak to Peak Current and Offset values.\nValues out of source limit.',QtWidgets.QMessageBox.Ok)
                 return 'False'
             
@@ -1338,7 +1338,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             QtWidgets.QMessageBox.warning(self,'Warning','Please, load the coil data.',QtWidgets.QMessageBox.Ok)
             raise 
         if self.ui.lb_status_integrator.text() == 'NOK':
-            QtWidgets.QMessageBox.warning(self,'Warning','Please, configure the Integrator FDI 2056. \nClick "Adjust Integrator Offset" button.',QtWidgets.QMessageBox.Ok)
+            QtWidgets.QMessageBox.warning(self,'Warning','Please, configure the Integrator FDI 2056. \nClick "Set Gain" button.',QtWidgets.QMessageBox.Ok)
             raise
 
         _i = Lib.get_value(Lib.data_settings, 'remove_initial_turns', int)
@@ -1439,6 +1439,13 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.dialog.ui = Ui_Pop_Up()
             self.dialog.ui.setupUi(self.dialog)
             self.dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+            
+            try:
+                Lib.measurement_settings != None
+            except TypeError:
+                self.dialog.ui.le_magnet_name.setText(Lib.get_value(Lib.measurement_settings, 'name', str))
+                self.dialog.ui.cb_operator.setCurrentText(Lib.get_value(Lib.measurement_settings, 'operator', str))
+                self.dialog.ui.cb_magnet_model.setCurrentIndex(Lib.get_value(Lib.measurement_settings, 'magnet_model', int))
 
             if Lib.get_value(Lib.aux_settings, 'status_ps_2', int):
                 self.dialog.cb_trim_coil_type.setEnabled(True)
@@ -1479,7 +1486,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         _magnet_model = Lib.get_value(Lib.measurement_settings, 'magnet_model', int)
 
         self.df_norm_multipoles = pd.DataFrame(index=range(1,_nmax+1), columns=range(_n_of_turns))
-        self.df_skew_multipoles = pd.DataFrame(index=range(1,_nmax+1), columns=range(_n_of_turns))        
+        self.df_skew_multipoles = pd.DataFrame(index=range(1,_nmax+1), columns=range(_n_of_turns))
         
         dtheta = 2*np.pi/_n_integration_points
 

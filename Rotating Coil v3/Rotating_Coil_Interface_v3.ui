@@ -3629,7 +3629,7 @@ p, li { white-space: pre-wrap; }
             <item row="0" column="0">
              <widget class="QLabel" name="label_91">
               <property name="text">
-               <string>Amplitude (App)</string>
+               <string>Amplitude</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -3882,7 +3882,7 @@ p, li { white-space: pre-wrap; }
              </rect>
             </property>
             <property name="text">
-             <string>Amplitude (App)</string>
+             <string>Amplitude</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -4941,7 +4941,7 @@ Loop:</string>
              </rect>
             </property>
             <property name="text">
-             <string>Amplitude (App)</string>
+             <string>Amplitude</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

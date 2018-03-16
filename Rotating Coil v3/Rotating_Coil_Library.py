@@ -259,45 +259,307 @@ class RotatingCoil_Library(object):
             traceback.print_exc(file=sys.stdout)
             return False
         
-    def db_load_measurement(self, idn=None):
+    def db_load_measurement(self, _id=None):
         """
         Load measurement from database, returns selected measurements
         """
         _con = sqlite3.connect(self.dir_path + 'measurements_data.db')
         _cur = _con.cursor()
         #loads last measurement:
-        if idn == None or idn == False:
+        if _id == None or _id == False:
             _cur.execute('SELECT * FROM measurements WHERE id = (SELECT MAX(id) FROM measurements)')
         #loads measurement from id:
         else:
-            _cur.execute('SELECT * FROM measurements WHERE id = ?', (idn,))
-        #loads measurement from name:
-#         _magnet_name = ''
-#         _cur.execute('SELECT * FROM measurements WHERE name=?)', (_magnet_name,))
-        #loads measurement from filename:
-#         _filename = ''
-#         _cur.execute('SELECT * FROM measurements WHERE filename=?)', (_filename,))
-        #loads measurement from date:
-#         _date = ''
-#         _cur.execute('SELECT * FROM measurements WHERE date=?', (_date,))
-        #loads measurement from operator:
-#         _operator = ''
-#         _cur.execute('SELECT * FROM measurements WHERE operator=?', (_operator,))
-        #loads measurement from magnet_model:
-#         _magnet_model = ''
-#         _cur.execute('SELECT * FROM measurements WHERE magnet_model=?', (_magnet_model))
-        #loads measurement from coil_name:
-#         _coil_name = ''
-#         _cur.execute('SELECT * FROM measurements WHERE coil_name=?', (_coil_name,))
-        #loads measurement from bench:
-#         _bench = ''
-#         _cur.execute('SELECT * FROM measurements WHERE bench=?', (_bench,))
-        #loads measurement from software_version:
-#         _software_version = ''
-#         _cur.execute('SELECT * FROM measurements WHERE software_version=?', (_bench,))
+            _cur.execute('SELECT * FROM measurements WHERE id = ?', (_id,))
         _db_entry = _cur.fetchall()
         _con.close()
         return _db_entry
+    
+    def db_load_measurements(self, _id=None, magnet_name=None, filename=None, date=None, hour=None,\
+                      operator=None, magnet_model=None, coil_name=None, bench=None, software_version=None,\
+                      temperature=None, integrator_gain=None, main_current=None, accelerator_type=None,\
+                      comments=None, trigger_ref=None, angle=None, magnetic_center_x=None, magnetic_center_y=None):
+        _con = sqlite3.connect(self.dir_path + 'measurements_data.db')
+        _cur = _con.cursor()
+        
+        _and_flag = False        
+        _command = 'SELECT * FROM measurements WHERE '
+        
+        if _id != None and _id != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            if type(_id) == int or type(_id) == float:
+                _command = _command + 'id = ' + str(_id) + ' '
+            elif type(_id) == str:
+                _command = _command + 'id ' + _id + ' '
+        
+        if magnet_name != None and magnet_name != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            _command = _command + 'magnet_name = "' + magnet_name + '" '
+            
+        if filename != None and filename != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            _command = _command + 'filename = "' + filename + '" '
+            
+        if date != None and date != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            _command = _command + 'date = "' + date + '" '
+            
+        if hour != None and hour != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            _command = _command + 'hour = "' + hour + '" '
+            
+        if operator != None and operator != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            _command = _command + 'operator = "' + operator + '" '
+            
+        if magnet_model != None and magnet_model != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            _command = _command + 'magnet_model = ' + str(magnet_model) + ' '
+            
+        if coil_name != None and coil_name != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            _command = _command + 'coil_name = "' + coil_name + '" '
+            
+        if bench != None and bench != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            _command = _command + 'bench = ' + str(bench) + ' '
+            
+        if software_version != None and software_version != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            _command = _command + 'software_version = "' + software_version + '" '
+            
+        if accelerator_type != None and accelerator_type != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            _command = _command + 'accelerator_type = "' + accelerator_type + '" '
+            
+        if comments != None and comments != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            _command = _command + 'comments = "' + comments + '" '
+            
+        if temperature != None and temperature != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            if type(temperature) == int or type(temperature) == float:
+                _command = _command + 'temperature = ' + str(temperature) + ' '
+            elif type(temperature) == str:
+                _command = _command + 'temperature ' + temperature + ' '
+                
+        if integrator_gain != None and integrator_gain != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            if type(integrator_gain) == int or type(integrator_gain) == float:
+                _command = _command + 'integrator_gain = ' + str(integrator_gain) + ' '
+            elif type(integrator_gain) == str:
+                _command = _command + 'integrator_gain ' + integrator_gain + ' '
+                
+        if main_current != None and main_current != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            if type(main_current) == int or type(main_current) == float:
+                _command = _command + 'main_current = ' + str(main_current) + ' '
+            elif type(main_current) == str:
+                _command = _command + 'main_current ' + main_current + ' '
+                
+        if trigger_ref != None and trigger_ref != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            if type(trigger_ref) == int or type(trigger_ref) == float:
+                _command = _command + 'trigger_ref = ' + str(trigger_ref) + ' '
+            elif type(trigger_ref) == str:
+                _command = _command + 'trigger_ref ' + angle + ' '
+                
+        if angle != None and angle != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            if type(angle) == int or type(angle) == float:
+                _command = _command + 'angle = ' + str(angle) + ' '
+            elif type(angle) == str:
+                _command = _command + 'angle ' + angle + ' '
+                
+        if magnetic_center_x != None and magnetic_center_x != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            if type(magnetic_center_x) == int or type(magnetic_center_x) == float:
+                _command = _command + 'magnetic_center_x = ' + str(magnetic_center_x) + ' '
+            elif type(magnetic_center_x) == str:
+                _command = _command + 'magnetic_center_x ' + magnetic_center_x + ' '
+                
+        if magnetic_center_y != None and magnetic_center_y != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            if type(magnetic_center_y) == int or type(magnetic_center_y) == float:
+                _command = _command + 'magnetic_center_y = ' + str(magnetic_center_y) + ' '
+            elif type(magnetic_center_y) == str:
+                _command = _command + 'magnetic_center_y ' + magnetic_center_y + ' '
+            
+        _cur.execute(_command)
+        _db_entry = _cur.fetchall()
+        _con.close()
+        return _db_entry
+    
+    def db_load_sets_of_measurements(self, _id=None, magnet_name=None, date=None, hour_0=None,\
+                                     hour_f=None, collection_type=None, id_0=None, id_f=None,\
+                                     current_min=None, current_max=None, comments=None):
+        _con = sqlite3.connect(self.dir_path + 'measurements_data.db')
+        _cur = _con.cursor()
+        
+        _and_flag = False        
+        _command = 'SELECT * FROM sets_of_measurements WHERE '
+        
+        if _id != None and _id != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            if type(_id) == int or type(_id) == float:
+                _command = _command + 'id = ' + str(_id) + ' '
+            elif type(_id) == str:
+                _command = _command + 'id ' + _id + ' '
+                
+        if magnet_name != None and magnet_name != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            _command = _command + 'magnet_name = "' + magnet_name + '" '
+            
+        if date != None and date != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            _command = _command + 'date = "' + date + '" '
+            
+        if hour_0 != None and hour_0 != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            _command = _command + 'hour_0 = "' + hour_0 + '" '
+
+        if hour_f != None and hour_f != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            _command = _command + 'hour_f = "' + hour_f + '" '
+            
+        if collection_type != None and collection_type != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            _command = _command + 'collection_type = "' + collection_type + '" '
+        
+        if id_0 != None and id_0 != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            if type(id_0) == int or type(id_0) == float:
+                _command = _command + 'id_0 = ' + str(id_0) + ' '
+            elif type(id_0) == str:
+                _command = _command + 'id_0 ' + id_0 + ' '
+                
+        if id_f != None and id_f != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            if type(id_f) == int or type(id_f) == float:
+                _command = _command + 'id_f = ' + str(id_f) + ' '
+            elif type(id_f) == str:
+                _command = _command + 'id_f ' + id_f + ' '
+
+        if current_min != None and current_min != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            if type(current_min) == int or type(current_min) == float:
+                _command = _command + 'current_min = ' + str(current_min) + ' '
+            elif type(current_min) == str:
+                _command = _command + 'current_min ' + current_min + ' '
+
+        if current_max != None and current_max != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            if type(current_max) == int or type(current_max) == float:
+                _command = _command + 'current_max = ' + str(current_max) + ' '
+            elif type(current_max) == str:
+                _command = _command + 'current_max ' + current_max + ' '
+                
+        if comments != None and comments != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            _command = _command + 'comments = "' + comments + '" '
+            
+    def db_load_failures(self, _id=None, magnet_name=None, date=None, hour=None, _type=None):
+        _con = sqlite3.connect(self.dir_path + 'measurements_data.db')
+        _cur = _con.cursor()
+        
+        _and_flag = False        
+        _command = 'SELECT * FROM sets_of_measurements WHERE '
+        
+        if _id != None and _id != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            if type(_id) == int or type(_id) == float:
+                _command = _command + 'id = ' + str(_id) + ' '
+            elif type(_id) == str:
+                _command = _command + 'id ' + _id + ' '
+                
+        if magnet_name != None and magnet_name != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            _command = _command + 'magnet_name = "' + magnet_name + '" '
+            
+        if date != None and date != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            _command = _command + 'date = "' + date + '" '
+            
+        if hour != None and hour != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            _command = _command + 'hour = "' + hour + '" '
+            
+        if _type != None and _type != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            if type(_type) == int or type(_type) == float:
+                _command = _command + 'type = ' + str(_type) + ' '
+            elif type(_type) == str:
+                _command = _command + 'type ' + _type + ' '
 
     def db_save_set(self, n_measurements, collection_type, current_min, current_max):
         """
@@ -411,16 +673,16 @@ class RotatingCoil_Library(object):
             
         return _str
 
-    def load_read_data(self, idn=None):
+    def load_read_data(self, _id=None):
         """
-        Load read data from database entry idn and returns as string (reads from last entry if idn = None)
+        Load read data from database entry id and returns as string (reads from last entry if id = None)
         """
         _con = sqlite3.connect(self.dir_path + 'measurements_data.db')
         _cur = _con.cursor()
-        if idn == None or idn == False:
+        if _id == None or _id == False:
             _cur.execute('SELECT read_data FROM measurements WHERE id = (SELECT MAX(id) FROM measurements)')
         else:
-            _cur.execute('SELECT read_data FROM measurements WHERE id = ?', (idn,))
+            _cur.execute('SELECT read_data FROM measurements WHERE id = ?', (_id,))
         _read_data = _cur.fetchall()[0][0]
 #         _read_data = StringIO(_read_data)
 #         return pd.read_csv(_read_data, sep='\t')
@@ -439,27 +701,27 @@ class RotatingCoil_Library(object):
         _str = _str + '\n' + self.App.myapp.df_rawcurves.to_csv(sep='\t', header=False, index=False)
         return _str
 
-    def load_raw_curve(self, idn=None):
+    def load_raw_curve(self, _id=None):
         """
-        Load raw curve from database entry and returns as string (reads from last entry if idn = None)
+        Load raw curve from database entry and returns as string (reads from last entry if id = None)
         """
         _con = sqlite3.connect(self.dir_path + 'measurements_data.db')
         _cur = _con.cursor()
-        if idn == None or idn == False:
+        if _id == None or _id == False:
             _cur.execute('SELECT raw_curve FROM measurements WHERE id = (SELECT MAX(id) FROM measurements)')
         else:
-            _cur.execute('SELECT raw_curve FROM measurements WHERE id = ?', (idn,))
+            _cur.execute('SELECT raw_curve FROM measurements WHERE id = ?', (_id,))
         _raw_curve = _cur.fetchall()[0][0]
 #         _raw_curve = StringIO(_raw_curve)
 #         return pd.read_csv(_raw_curve,  comment = '#', delimiter = '\t')
         _con.close()
         return _raw_curve
     
-    def save_log_file(self, idn=None, path=None):
+    def save_log_file(self, _id=None, path=None):
         """
-        Saves log file from database entry idn (last entry if idn = None), similar to old log file format
+        Saves log file from database entry id (last entry if id = None), similar to old log file format
         """
-        _measurement_entry = self.db_load_measurement(idn)[0] #loads last measurement
+        _measurement_entry = self.db_load_measurement(_id)[0] #loads last measurement
         #Configuration Data
         _id = _measurement_entry[0]
         _magnet_name = _measurement_entry[1]
@@ -706,7 +968,7 @@ class RotatingCoil_Library(object):
                      'trim_coil_type']
         _datavalues = [self.App.myapp.dialog.ui.le_magnet_name.text().upper(),
                        self.App.myapp.dialog.ui.cb_operator.currentText(),
-                       'v3',
+                       'v3.1',
                        float(self.App.myapp.dialog.ui.le_temperature.text()),
                        self.App.myapp.ui.cb_coil_rotation_direction.currentText(),
                        _le_n_collections,
