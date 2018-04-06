@@ -57,7 +57,7 @@
      </font>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>4</number>
     </property>
     <property name="iconSize">
      <size>
@@ -1902,7 +1902,7 @@
         </rect>
        </property>
        <property name="text">
-        <string>Set Gain</string>
+        <string>Configure Integrator</string>
        </property>
        <property name="icon">
         <iconset resource="resource_file.qrc">
@@ -2242,29 +2242,6 @@
        </property>
        <property name="text">
         <string>Referencing Coil and Integrator</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="pb_get_coil_index_2">
-       <property name="geometry">
-        <rect>
-         <x>70</x>
-         <y>350</y>
-         <width>190</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Get Coil Index</string>
-       </property>
-       <property name="icon">
-        <iconset resource="resource_file.qrc">
-         <normaloff>:/Images/imagens/Referenciar.png</normaloff>:/Images/imagens/Referenciar.png</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>25</width>
-         <height>25</height>
-        </size>
        </property>
       </widget>
       <widget class="QLabel" name="label_97">
@@ -2704,29 +2681,6 @@ p, li { white-space: pre-wrap; }
         </property>
        </widget>
       </widget>
-      <widget class="QPushButton" name="pb_get_coil_index">
-       <property name="geometry">
-        <rect>
-         <x>430</x>
-         <y>450</y>
-         <width>190</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Get Coil Index</string>
-       </property>
-       <property name="icon">
-        <iconset resource="resource_file.qrc">
-         <normaloff>:/Images/imagens/Referenciar.png</normaloff>:/Images/imagens/Referenciar.png</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-      </widget>
       <widget class="QLabel" name="label_63">
        <property name="geometry">
         <rect>
@@ -2881,7 +2835,7 @@ p, li { white-space: pre-wrap; }
         <x>80</x>
         <y>126</y>
         <width>821</width>
-        <height>561</height>
+        <height>571</height>
        </rect>
       </property>
       <property name="title">
@@ -2896,7 +2850,7 @@ p, li { white-space: pre-wrap; }
          <x>20</x>
          <y>90</y>
          <width>771</width>
-         <height>451</height>
+         <height>471</height>
         </rect>
        </property>
        <property name="currentIndex">
@@ -2920,8 +2874,8 @@ p, li { white-space: pre-wrap; }
           <rect>
            <x>340</x>
            <y>200</y>
-           <width>361</width>
-           <height>192</height>
+           <width>381</width>
+           <height>81</height>
           </rect>
          </property>
          <property name="font">
@@ -2941,14 +2895,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#505050;&quot;&gt;Warning: each power supply has an unique fixed address, one must always remember to configure them after replacing or resetting an power supply in order for this software to work. The addresses are the following:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt; color:#505050;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#505050;&quot;&gt;1: 1000A Capacitor bank&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#505050;&quot;&gt;2: 1000A Power Supply&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#505050;&quot;&gt;3: 225A Power Supply&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#505050;&quot;&gt;4: 10A [1] Power Supply Corrector&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#505050;&quot;&gt;5: 10A [2] Power Supply Corrector&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#505050;&quot;&gt;6: 10A [3] Power Supply Corrector&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#505050;&quot;&gt;Warning: each power supply has an unique fixed address, one must always remember to configure them after replacing or resetting an power supply in order for this software to work. The addresses are the following:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
         </widget>
         <widget class="QGroupBox" name="groupBox_24">
@@ -3378,6 +3325,22 @@ p, li { white-space: pre-wrap; }
            <normaloff>:/Images/imagens/settings.png</normaloff>:/Images/imagens/settings.png</iconset>
          </property>
         </widget>
+        <widget class="QLabel" name="label_19">
+         <property name="geometry">
+          <rect>
+           <x>380</x>
+           <y>280</y>
+           <width>291</width>
+           <height>151</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="pixmap">
+          <pixmap resource="resource_file.qrc">:/Images/PS_table.png</pixmap>
+         </property>
+        </widget>
        </widget>
        <widget class="QWidget" name="tab_8">
         <attribute name="title">
@@ -3386,7 +3349,7 @@ p, li { white-space: pre-wrap; }
         <widget class="QGroupBox" name="Configuracao_Manual">
          <property name="geometry">
           <rect>
-           <x>10</x>
+           <x>20</x>
            <y>20</y>
            <width>331</width>
            <height>361</height>
@@ -3453,7 +3416,7 @@ p, li { white-space: pre-wrap; }
         <widget class="QGroupBox" name="Configuracao_Auto">
          <property name="geometry">
           <rect>
-           <x>390</x>
+           <x>400</x>
            <y>20</y>
            <width>331</width>
            <height>361</height>
@@ -5493,7 +5456,7 @@ Loop:</string>
      <widget class="QLabel" name="label_170">
       <property name="geometry">
        <rect>
-        <x>531</x>
+        <x>530</x>
         <y>90</y>
         <width>191</width>
         <height>21</height>
@@ -7077,7 +7040,6 @@ DCCT Voltage [V]</string>
   <tabstop>cb_integrator_gain</tabstop>
   <tabstop>cb_n_integration_points</tabstop>
   <tabstop>pb_set_gain</tabstop>
-  <tabstop>pb_get_coil_index_2</tabstop>
   <tabstop>le_trigger_ref_dsp</tabstop>
   <tabstop>pb_status_update</tabstop>
   <tabstop>pb_emergency2</tabstop>
@@ -7092,7 +7054,6 @@ DCCT Voltage [V]</string>
   <tabstop>cb_coil_type</tabstop>
   <tabstop>le_trigger_ref</tabstop>
   <tabstop>pb_config_coil</tabstop>
-  <tabstop>pb_get_coil_index</tabstop>
   <tabstop>pb_load_coil</tabstop>
   <tabstop>pb_save_coil</tabstop>
   <tabstop>pb_emergency3</tabstop>

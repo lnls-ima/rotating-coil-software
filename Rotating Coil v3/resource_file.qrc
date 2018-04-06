@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="Images">
+    <file>PS_table.png</file>
     <file>imagens/OpAmp.png</file>
     <file>imagens/LEDverde.png</file>
     <file>imagens/LEDvermelho.png</file>
