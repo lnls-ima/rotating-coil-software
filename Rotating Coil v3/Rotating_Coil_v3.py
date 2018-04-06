@@ -2087,7 +2087,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         #stops motor
         self.stop_motor()
         #stops integrator
-        Lib.comm.fdi.send(Lib.comm.fdi.PDIStop)
+        Lib.comm.fdi.send(Lib.comm.fdi.FDIStop)
 
         self.ui.pb_start_meas.setEnabled(True)
         self.ui.le_n_collections.setEnabled(True)
