@@ -130,10 +130,12 @@ class RotatingCoil_Library(object):
         try:
             _con = sqlite3.connect(self.dir_path + 'measurements_data.db')
             _cur = _con.cursor()
-            
+
             _date_name = time.strftime("%y%m%d", time.localtime())
             _hour_name = time.strftime("%H%M%S", time.localtime())
-               
+            
+            _disable_ps_interlock = self.get_value(self.data_settings,'disable_ps_interlock',int)
+
             _magnet_model = self.get_value(self.measurement_settings, 'magnet_model', int) #self.App.myapp.ui.cb_magnet_model.currentIndex()
             if _magnet_model == 0:
                 _magnet_type = 'X'
@@ -150,16 +152,19 @@ class RotatingCoil_Library(object):
             elif _magnet_model == 4:
                 _magnet_type = 'K'
                 _angle = self.App.myapp.averageAngle[1]
-                  
+
             _accelerator_type = self.get_value(self.measurement_settings, 'accelerator_type', str) #self.App.myapp.ui.cb_accelerator_type.currentIndex()
             if _accelerator_type == 'Booster': #Booster
                 _accelerator_name = 'BOB'
             elif _accelerator_type == 'Storage Ring': #Storage Ring
                 _accelerator_name = 'BOA'
-              
-            _main_current = self.get_value(self.ps_settings, 'Current Setpoint', float)
+            
+            if _disable_ps_interlock:
+                _main_current = 0
+            else:
+                _main_current = self.get_value(self.ps_settings, 'Current Setpoint', float)
             _trim_coil_type = self.get_value(self.measurement_settings, 'trim_coil_type', int)
-              
+
             _magnet_name = self.get_value(self.measurement_settings, 'name', str)
             _filename = _magnet_name + '_' + _magnet_type + '_' + _accelerator_name + '_' + str(_main_current).zfill(5) + 'A_' + _date_name + '_' + _hour_name + '.dat'
             _date = time.strftime("%d/%m/%Y", time.localtime())
@@ -177,8 +182,8 @@ class RotatingCoil_Library(object):
             _n_turns = self.get_value(self.data_settings, 'total_number_of_turns', int)
             _n_collections = self.get_value(self.measurement_settings, 'n_collections', int) 
             _analisys_interval = self.get_value(self.measurement_settings, 'analisys_interval', str)
-            _main_coil_current_avg = self.get_value(self.aux_settings, 'main_current_array').mean()[0]
-            _main_coil_current_std = self.get_value(self.aux_settings, 'main_current_array').std()[0] 
+            _main_coil_current_avg = 0
+            _main_coil_current_std = 0
             _ch_coil_current_avg = 0
             _ch_coil_current_std = 0
             _cv_coil_current_avg = 0
@@ -191,24 +196,27 @@ class RotatingCoil_Library(object):
             _main_coil_volt_std = 0
             _magnet_resistance_avg = 0
             _magnet_resistance_std = 0
-            if _trim_coil_type == 0:
-                _trim_coil_current_avg = self.get_value(self.aux_settings, 'secondary_current_array').mean()[0]
-                _trim_coil_current_std = self.get_value(self.aux_settings, 'secondary_current_array').std()[0]
-            elif _trim_coil_type == 1:
-                _ch_coil_current_avg = self.get_value(self.aux_settings, 'secondary_current_array').mean()[0]
-                _ch_coil_current_std = self.get_value(self.aux_settings, 'secondary_current_array').std()[0]
-            elif _trim_coil_type == 2:
-                _cv_coil_current_avg = self.get_value(self.aux_settings, 'secondary_current_array').mean()[0]
-                _cv_coil_current_std = self.get_value(self.aux_settings, 'secondary_current_array').std()[0]
-            elif _trim_coil_type == 3:
-                _qs_coil_current_avg = self.get_value(self.aux_settings, 'secondary_current_array').mean()[0]
-                _qs_coil_current_std = self.get_value(self.aux_settings, 'secondary_current_array').std()[0]
-            if self.App.myapp.ui.chb_voltage.isChecked():
-                _main_coil_volt_avg = self.get_value(self.aux_settings, 'main_voltage_array').mean()[0]
-                _main_coil_volt_std = self.get_value(self.aux_settings, 'main_voltage_array').std()[0]
-                #calculates magnet's average resistance and standard deviation
-                _magnet_resistance_avg = _main_coil_volt_avg/_main_coil_current_avg 
-                _magnet_resistance_std = (1/_main_coil_current_avg) * (_main_coil_volt_std**2 + (_main_coil_volt_avg**2/_main_coil_current_avg**2) * _main_coil_current_std**2)**0.5
+            if not _disable_ps_interlock:
+                _main_coil_current_avg = self.get_value(self.aux_settings, 'main_current_array').mean()[0]
+                _main_coil_current_std = self.get_value(self.aux_settings, 'main_current_array').std()[0]
+                if _trim_coil_type == 0:
+                    _trim_coil_current_avg = self.get_value(self.aux_settings, 'secondary_current_array').mean()[0]
+                    _trim_coil_current_std = self.get_value(self.aux_settings, 'secondary_current_array').std()[0]
+                elif _trim_coil_type == 1:
+                    _ch_coil_current_avg = self.get_value(self.aux_settings, 'secondary_current_array').mean()[0]
+                    _ch_coil_current_std = self.get_value(self.aux_settings, 'secondary_current_array').std()[0]
+                elif _trim_coil_type == 2:
+                    _cv_coil_current_avg = self.get_value(self.aux_settings, 'secondary_current_array').mean()[0]
+                    _cv_coil_current_std = self.get_value(self.aux_settings, 'secondary_current_array').std()[0]
+                elif _trim_coil_type == 3:
+                    _qs_coil_current_avg = self.get_value(self.aux_settings, 'secondary_current_array').mean()[0]
+                    _qs_coil_current_std = self.get_value(self.aux_settings, 'secondary_current_array').std()[0]
+                if self.App.myapp.ui.chb_voltage.isChecked():
+                    _main_coil_volt_avg = self.get_value(self.aux_settings, 'main_voltage_array').mean()[0]
+                    _main_coil_volt_std = self.get_value(self.aux_settings, 'main_voltage_array').std()[0]
+                    #calculates magnet's average resistance and standard deviation
+                    _magnet_resistance_avg = _main_coil_volt_avg/_main_coil_current_avg 
+                    _magnet_resistance_std = (1/_main_coil_current_avg) * (_main_coil_volt_std**2 + (_main_coil_volt_avg**2/_main_coil_current_avg**2) * _main_coil_current_std**2)**0.5
             _coil_name = self.get_value(self.coil_settings, 'coil_name', str)
             _coil_type = self.get_value(self.coil_settings, 'coil_type', str)
             _measurement_type = self.get_value(self.measurement_settings, 'measurement_type', str)
@@ -226,7 +234,7 @@ class RotatingCoil_Library(object):
             _magnetic_center_y = self.get_value(self.measurement_settings, 'magnetic_center_y', float) #[um]
             _read_data = self.get_read_data()
             _raw_curve = self.get_raw_curve()
-               
+
             _db_values = (None, _magnet_name, _filename, _date, _hour,\
                           _operator, _software_version, _bench,\
                           _temperature, _rotation_motor_speed,\
@@ -249,7 +257,7 @@ class RotatingCoil_Library(object):
                           _magnetic_center_x, _magnetic_center_y,\
                           _read_data, _raw_curve
                         )
-                        
+
     #         _db_test_values = (None,0,0,_date,_hour,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
             _cur.execute("INSERT INTO measurements VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", _db_values)
             _con.commit()
@@ -258,7 +266,7 @@ class RotatingCoil_Library(object):
         except:
             traceback.print_exc(file=sys.stdout)
             return False
-        
+
     def db_load_measurement(self, _id=None):
         """
         Load measurement from database, returns selected measurements
@@ -274,17 +282,17 @@ class RotatingCoil_Library(object):
         _db_entry = _cur.fetchall()
         _con.close()
         return _db_entry
-    
+
     def db_load_measurements(self, _id=None, magnet_name=None, filename=None, date=None, hour=None,\
                       operator=None, magnet_model=None, coil_name=None, bench=None, software_version=None,\
                       temperature=None, integrator_gain=None, main_current=None, accelerator_type=None,\
                       comments=None, trigger_ref=None, angle=None, magnetic_center_x=None, magnetic_center_y=None):
         _con = sqlite3.connect(self.dir_path + 'measurements_data.db')
         _cur = _con.cursor()
-        
+
         _and_flag = False        
         _command = 'SELECT * FROM measurements WHERE '
-        
+
         if _id != None and _id != False:
             if _and_flag:
                 _command = _command + 'AND '
@@ -293,73 +301,73 @@ class RotatingCoil_Library(object):
                 _command = _command + 'id = ' + str(_id) + ' '
             elif type(_id) == str:
                 _command = _command + 'id ' + _id + ' '
-        
+
         if magnet_name != None and magnet_name != False:
             if _and_flag:
                 _command = _command + 'AND '
             _and_flag = True
             _command = _command + 'magnet_name = "' + magnet_name + '" '
-            
+
         if filename != None and filename != False:
             if _and_flag:
                 _command = _command + 'AND '
             _and_flag = True
             _command = _command + 'filename = "' + filename + '" '
-            
+
         if date != None and date != False:
             if _and_flag:
                 _command = _command + 'AND '
             _and_flag = True
             _command = _command + 'date = "' + date + '" '
-            
+
         if hour != None and hour != False:
             if _and_flag:
                 _command = _command + 'AND '
             _and_flag = True
             _command = _command + 'hour = "' + hour + '" '
-            
+
         if operator != None and operator != False:
             if _and_flag:
                 _command = _command + 'AND '
             _and_flag = True
             _command = _command + 'operator = "' + operator + '" '
-            
+
         if magnet_model != None and magnet_model != False:
             if _and_flag:
                 _command = _command + 'AND '
             _and_flag = True
             _command = _command + 'magnet_model = ' + str(magnet_model) + ' '
-            
+
         if coil_name != None and coil_name != False:
             if _and_flag:
                 _command = _command + 'AND '
             _and_flag = True
             _command = _command + 'coil_name = "' + coil_name + '" '
-            
+
         if bench != None and bench != False:
             if _and_flag:
                 _command = _command + 'AND '
             _and_flag = True
             _command = _command + 'bench = ' + str(bench) + ' '
-            
+
         if software_version != None and software_version != False:
             if _and_flag:
                 _command = _command + 'AND '
             _and_flag = True
             _command = _command + 'software_version = "' + software_version + '" '
-            
+
         if accelerator_type != None and accelerator_type != False:
             if _and_flag:
                 _command = _command + 'AND '
             _and_flag = True
             _command = _command + 'accelerator_type = "' + accelerator_type + '" '
-            
+
         if comments != None and comments != False:
             if _and_flag:
                 _command = _command + 'AND '
             _and_flag = True
             _command = _command + 'comments = "' + comments + '" '
-            
+
         if temperature != None and temperature != False:
             if _and_flag:
                 _command = _command + 'AND '
@@ -368,7 +376,7 @@ class RotatingCoil_Library(object):
                 _command = _command + 'temperature = ' + str(temperature) + ' '
             elif type(temperature) == str:
                 _command = _command + 'temperature ' + temperature + ' '
-                
+
         if integrator_gain != None and integrator_gain != False:
             if _and_flag:
                 _command = _command + 'AND '
@@ -377,7 +385,7 @@ class RotatingCoil_Library(object):
                 _command = _command + 'integrator_gain = ' + str(integrator_gain) + ' '
             elif type(integrator_gain) == str:
                 _command = _command + 'integrator_gain ' + integrator_gain + ' '
-                
+
         if main_current != None and main_current != False:
             if _and_flag:
                 _command = _command + 'AND '
@@ -386,7 +394,7 @@ class RotatingCoil_Library(object):
                 _command = _command + 'main_current = ' + str(main_current) + ' '
             elif type(main_current) == str:
                 _command = _command + 'main_current ' + main_current + ' '
-                
+
         if trigger_ref != None and trigger_ref != False:
             if _and_flag:
                 _command = _command + 'AND '
@@ -395,7 +403,7 @@ class RotatingCoil_Library(object):
                 _command = _command + 'trigger_ref = ' + str(trigger_ref) + ' '
             elif type(trigger_ref) == str:
                 _command = _command + 'trigger_ref ' + angle + ' '
-                
+
         if angle != None and angle != False:
             if _and_flag:
                 _command = _command + 'AND '
@@ -404,7 +412,7 @@ class RotatingCoil_Library(object):
                 _command = _command + 'angle = ' + str(angle) + ' '
             elif type(angle) == str:
                 _command = _command + 'angle ' + angle + ' '
-                
+
         if magnetic_center_x != None and magnetic_center_x != False:
             if _and_flag:
                 _command = _command + 'AND '
@@ -413,7 +421,7 @@ class RotatingCoil_Library(object):
                 _command = _command + 'magnetic_center_x = ' + str(magnetic_center_x) + ' '
             elif type(magnetic_center_x) == str:
                 _command = _command + 'magnetic_center_x ' + magnetic_center_x + ' '
-                
+
         if magnetic_center_y != None and magnetic_center_y != False:
             if _and_flag:
                 _command = _command + 'AND '
@@ -422,21 +430,21 @@ class RotatingCoil_Library(object):
                 _command = _command + 'magnetic_center_y = ' + str(magnetic_center_y) + ' '
             elif type(magnetic_center_y) == str:
                 _command = _command + 'magnetic_center_y ' + magnetic_center_y + ' '
-            
+
         _cur.execute(_command)
         _db_entry = _cur.fetchall()
         _con.close()
         return _db_entry
-    
+
     def db_load_sets_of_measurements(self, _id=None, magnet_name=None, date=None, hour_0=None,\
                                      hour_f=None, collection_type=None, id_0=None, id_f=None,\
                                      current_min=None, current_max=None, comments=None):
         _con = sqlite3.connect(self.dir_path + 'measurements_data.db')
         _cur = _con.cursor()
-        
+
         _and_flag = False        
         _command = 'SELECT * FROM sets_of_measurements WHERE '
-        
+
         if _id != None and _id != False:
             if _and_flag:
                 _command = _command + 'AND '
@@ -445,19 +453,19 @@ class RotatingCoil_Library(object):
                 _command = _command + 'id = ' + str(_id) + ' '
             elif type(_id) == str:
                 _command = _command + 'id ' + _id + ' '
-                
+
         if magnet_name != None and magnet_name != False:
             if _and_flag:
                 _command = _command + 'AND '
             _and_flag = True
             _command = _command + 'magnet_name = "' + magnet_name + '" '
-            
+
         if date != None and date != False:
             if _and_flag:
                 _command = _command + 'AND '
             _and_flag = True
             _command = _command + 'date = "' + date + '" '
-            
+
         if hour_0 != None and hour_0 != False:
             if _and_flag:
                 _command = _command + 'AND '
@@ -469,13 +477,13 @@ class RotatingCoil_Library(object):
                 _command = _command + 'AND '
             _and_flag = True
             _command = _command + 'hour_f = "' + hour_f + '" '
-            
+
         if collection_type != None and collection_type != False:
             if _and_flag:
                 _command = _command + 'AND '
             _and_flag = True
             _command = _command + 'collection_type = "' + collection_type + '" '
-        
+
         if id_0 != None and id_0 != False:
             if _and_flag:
                 _command = _command + 'AND '
@@ -484,7 +492,7 @@ class RotatingCoil_Library(object):
                 _command = _command + 'id_0 = ' + str(id_0) + ' '
             elif type(id_0) == str:
                 _command = _command + 'id_0 ' + id_0 + ' '
-                
+
         if id_f != None and id_f != False:
             if _and_flag:
                 _command = _command + 'AND '
@@ -940,12 +948,12 @@ class RotatingCoil_Library(object):
                 _le_n_collections = 1
         except ValueError:
             _le_n_collections = 1
-            
+
         try:
             _analisys_interval = str(_i) + '-' + str(_n_turns - _f)
         except ValueError:
             _analisys_interval = '0'
-        
+
         _comments = ''
         if self.get_value(self.data_settings,'disable_alignment_interlock',int):
             _comments = _comments + 'Warning: Alignment interlock is disabled; Ref_encoder_A = {0:0.6f}, Ref_encoder_B = {1:0.6f} .\n'.format(self.get_value(self.aux_settings, 'ref_encoder_A', float), self.get_value(self.aux_settings, 'ref_encoder_B', float))

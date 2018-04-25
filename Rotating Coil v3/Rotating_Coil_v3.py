@@ -326,8 +326,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                         self.change_ps_button(secondary, True)
                         return
                     # Set ISlowRef for DC Link (Capacitor Bank)
-                    _mode = 0
-                    Lib.comm.drs.OpMode(_mode)                     # Operation mode selection for Slowref
+                    Lib.comm.drs.OpMode(0)                     # Operation mode selection for Slowref
                     _dclink_value = Lib.get_value(Lib.aux_settings, 'dclink_value', float) #30 V
                     Lib.comm.drs.SetISlowRef(_dclink_value)        # Set 30 V for Capacitor Bank (default value according to the ELP Group)
                     time.sleep(1)
@@ -622,7 +621,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 self.ui.tabWidget_2.setEnabled(True)
             QtWidgets.QApplication.processEvents()
             return False
-    
+
     def curve_gen(self, secondary=False):
         if not secondary:
             self.config_ps()
@@ -632,7 +631,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.config_ps_2()
             _curve_type = 1 #Only curve available on secondary ps is damped sinusoidal
             _df = Lib.ps_settings_2
-            
+
         _ps_type = Lib.get_value(_df, 'Power Supply Type', int)
         Lib.comm.drs.SetSlaveAdd(_ps_type)
                                       
@@ -681,7 +680,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 _final_phase = Lib.get_value(_df, 'Sinusoidal Final Phase', float)
             except:
                 QtWidgets.QMessageBox.warning(self,'Warning','Please, verify the Final phase parameter of the curve.',QtWidgets.QMessageBox.Ok)
-            
+
         if _curve_type == 1:    # Damped Sinusoidal (can be primary or secondary ps)
             #For Offset
             try:
@@ -744,20 +743,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 _damping = Lib.get_value(_df, 'Damped Sinusoidal Damping', float)
             except:
                 QtWidgets.QMessageBox.warning(self,'Warning','Please, verify the Damping time parameter of the curve.',QtWidgets.QMessageBox.Ok)
-                
-                
+
         #Generating curves
-        try:
-            try:
-                _mode=3          #Operating mode
-                Lib.comm.drs.OpMode(_mode)
-                if Lib.comm.drs.Read_ps_OpMode()!=3:
-                    QtWidgets.QMessageBox.warning(self,'Warning','Signal generator not configured correctly.',QtWidgets.QMessageBox.Ok)
-                    return False
-            except:
-                QtWidgets.QMessageBox.warning(self,'Warning','Signal generator not configured correctly. Verify PS settings.',QtWidgets.QMessageBox.Ok)
-                return
-                            
+        try:                            
             if _curve_type == 0:        # Sinusoidal
                 try:
                     _sigType=0
@@ -770,7 +758,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                     traceback.print_exc(file=sys.stdout)
                     QtWidgets.QMessageBox.warning(self,'Warning','Failed to send configuration to the controller.\nPlease, verify the parameters of the Power Supply.',QtWidgets.QMessageBox.Ok)
                     return
-                
+
             if _curve_type == 1:        # Damped Sinusoidal                
                 try:
                     _sigType=4
@@ -780,7 +768,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 except:
                     QtWidgets.QMessageBox.warning(self,'Warning','Failed to send configuration to the controller.\nPlease, verify the parameters of the Power Supply.',QtWidgets.QMessageBox.Ok)
                     return
-    
+
                 #Sending sigGenDamped
                 try:
                     Lib.comm.drs.Write_sigGen_Aux(float(self.ui.le_damp_sin_Damping.text()))
@@ -832,6 +820,14 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         Lib.comm.drs.SetSlaveAdd(_ps_type)
 
         try:
+            Lib.comm.drs.OpMode(3)
+            if Lib.comm.drs.Read_ps_OpMode()!=3:
+                QtWidgets.QMessageBox.warning(self,'Warning','Power supply is not on signal generator mode.',QtWidgets.QMessageBox.Ok)
+                return False
+        except:
+            QtWidgets.QMessageBox.warning(self,'Warning','Power supply is not on signal generator mode.',QtWidgets.QMessageBox.Ok)
+            return
+        try:
             if _curve_type == 0:
                 Lib.comm.drs.EnableSigGen()
                 _freq = Lib.get_value(_df, 'Sinusoidal Frequency', float)
@@ -853,6 +849,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
             QtWidgets.QMessageBox.information(self,'Information','Cycle process completed successfully.',QtWidgets.QMessageBox.Ok)
             Lib.comm.drs.DisableSigGen()
+            self.display_current()
             if not secondary:
                 self.ui.tabWidget_2.setEnabled(True)
                 self.ui.pb_load_PS.setEnabled(True)
@@ -864,8 +861,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
             if _curve_type == 2:
                 pass
-            _mode = 0
-            Lib.comm.drs.OpMode(_mode)  #returns to mode ISlowRef
+            Lib.comm.drs.OpMode(0)  #returns to mode ISlowRef
         except:
             QtWidgets.QMessageBox.warning(self,'Warning','Cycling process not realized.',QtWidgets.QMessageBox.Ok)
             return
@@ -943,10 +939,20 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         _pulses = self.pulses_to_go()
         _steps =  abs(int( _pulses * Lib.get_value(Lib.data_settings,'rotation_motor_resolution',int) / Lib.get_value(Lib.data_settings,'n_encoder_pulses',int) * _ratio))
 
-        if _pulses >= 0:
-            _direction = 0
-        else:
-            _direction = 1
+        #Direction
+        try:
+            if Lib.get_value(Lib.measurement_settings, 'coil_rotation_direction', str) == 'Clockwise':
+                _direction = 0
+            else:
+                _direction = 1
+        except:
+            _direction = self.ui.cb_coil_rotation_direction.currentIndex()
+        
+        _encoder_pulse = Lib.get_value(Lib.data_settings,'n_encoder_pulses',int) #360000
+        if _pulses > 0 and _direction == 0:
+            _pulses = _encoder_pulse - _pulses
+        elif _pulses < 0 and _direction == 1:
+            _pulses = _encoder_pulse - _pulses
 
         Lib.comm.parker.conf_motor(_address, _resolution, _vel, _acce, _steps, _direction, 0)
         self.move_motor_until_stops(_address)
@@ -1295,7 +1301,13 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 raise
             if self.ui.lb_status_ps.text() == 'NOK':
                 QtWidgets.QMessageBox.warning(self,'Warning','Power supply is not ready.\nVerify power supply data.',QtWidgets.QMessageBox.Ok)
-                raise 
+                raise
+        else:
+            _ans = QtWidgets.QMessageBox.question(self,'Attention','Do you want start measurement with power supply interlock disabled?',QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,QtWidgets.QMessageBox.No)
+            if _ans == QtWidgets.QMessageBox.No:
+                self.ui.chb_disable_ps_interlock.setChecked(False)
+                self.config_variables()
+                raise
         if self.ui.lb_status_coil.text() == 'NOK':
             QtWidgets.QMessageBox.warning(self,'Warning','Please, load the coil data.',QtWidgets.QMessageBox.Ok)
             raise 
@@ -1344,8 +1356,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
         _steps = int(_rotation_motor_resolution*abs(_shift)/_encoder_pulse)  #/10000
         Lib.comm.parker.conf_motor(_address_motor,_rotation_motor_resolution,_velocity,_acceleration,_steps,_direction,mode=0)
-        Lib.comm.parker.movemotor(_address_motor)
-        time.sleep(1)
+        self.move_motor_until_stops(_address_motor)
 
     def multipoles_normalization(self):
         """
@@ -1403,7 +1414,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.dialog.ui.bB_ok_cancel.rejected.connect(self.cancel_popup)
             if Lib.get_value(Lib.data_settings, 'enable_Agilent34970A', int):
                 _temp = Lib.comm.agilent34970a.read_temp_volt()[0]
-                self.dialog.ui.le_temperature.setText(str(round(float(_temp),1)))
+                self.dialog.ui.le_temperature.setText(str(round(float(_temp),2)))
             self.dialog.exec_()
         except:
             traceback.print_exc(file=sys.stdout)
@@ -1586,11 +1597,13 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         _n_of_turns = Lib.get_value(Lib.data_settings, 'total_number_of_turns', int)
         _n_integration_points = Lib.get_value(Lib.data_settings, 'n_integration_points', int)
         _total_n_of_points = _n_integration_points * _n_of_turns
+        _ps_interlock = Lib.get_value(Lib.data_settings,'disable_ps_interlock',int)
 
-        #starts monitor thread
-        self.sync.clear()
-        _thread = threading.Thread(target=self.monitor_thread, name='Monitor Thread')
-        _thread.start()
+        if not _ps_interlock:
+            #starts monitor thread
+            self.sync.clear()
+            _thread = threading.Thread(target=self.monitor_thread, name='Monitor Thread')
+            _thread.start()
 
         if Lib.flags.stop_all == False:
             #corrects coil position
@@ -1599,8 +1612,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             # start measurement
             Lib.comm.fdi.start_measurement()
 
-        #Enables monitor thread
-        self.sync.set()
+        if not _ps_interlock:
+            #Enables monitor thread
+            self.sync.set()
 
         if Lib.flags.stop_all == False:
             # move motor     

@@ -1,32 +1,40 @@
-#Implementar
-#-> Measure_and_read:
-#  -> checar desvio padrão durante a medida e perguntar se deve continuar caso esteja alto
-#  - no caso de series of measurements ou auto_ps pergunta se quer salvar log em arquivo; salvar ao final de cada medida
-#  -> Filtro voltas
-#    -> Maior desvio padrao dos dados brutos (1 descarte no programa antigo)
-#    -> Maior angulo (4 descartes no programa antigo)
+#####Arrumado
+# - disble_ps_interlock makes it possible to measure without power supply
+# - enables power supply mode 3 (signal generator) on "cycling_ps" instead of "curve_gen", thus enabling to cycle as many times as one wishes after sending the curve once.
+# - Temperature precision set to 2 digits
+# - Coil positioning after measurement now rotates on same direction as the measurement
+# - Coil_position_correction now waits for motor to stop moving
 
 
--> testar calculo deslocamento com formula completa
+-> Angulo está mudando muito se as medidas são feitas em direções opostas
 
--> Implementar historico de falhas durante medida
+-> Checar se disable ps interlock permite medir sem fonte
 
--> func. zera angulo e encontra referencia
+-> Quando ganho menor que 100, o programa não pergunta se realmente deseja medir com ganho menor (Lucas)
 
--> Configura tensão do dclink?
+-> failures
+  -> 6 falhou, vide abaixo
+  -> crash caso perca comunicação com a fonte executando current_setpoint
 
--> DCCT head na ps_settings?
+-> Monitor_thread falha se não houver fonte carregada
+
+-> Protocolo FDI
+  - le status
+  -> le array de saida
+
+-> Legenda grafico multipolos
+
 
 #Conferir
--. Conferir configurações do integrador
--> Conferir calculo bobina tangencial (multipoles_calculation)
--> Checar novamente calculos e propagação de erros Nn e Sn normalizados e angulo, e deslocamento do centro e bobina tangencial
--> measurements_df: _software_version
+-> Conferir calculo bobina tangencial outra vez
 
-#To do after the software is working properly:
--> Leitura temperatura automatica
-  -> 2 pt100/bancada no multicanal
--> Função backup DB em repositorio
--. Função carrega entrada da DB
-  -. Le por data, nome, operator, magnet model e coil name, bench, software version
-  -> Combinar mais de um campo de busca
+
+#Remendo PDI
+-> connect
+-> configure
+-> start_mes
+-> measure_and_read
+
+-> find index
+-> set gain
+-> calibrate
