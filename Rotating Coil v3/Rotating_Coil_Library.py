@@ -848,7 +848,7 @@ class RotatingCoil_Library(object):
                 f.write('magnetic_center_x(um) \t' + str(_magnetic_center_x) + '\n')
                 f.write('magnetic_center_y(um) \t' + str(_magnetic_center_y) + '\n')
                 f.write('\n\n')
-                f.write('##### Raw Data Stored(V.s) [1e-12] #####')
+                f.write('##### Raw Data Stored(V.s) #####')
                 f.write('\n\n')
                 f.write(_raw_curve)
             return True
@@ -976,7 +976,7 @@ class RotatingCoil_Library(object):
                      'trim_coil_type']
         _datavalues = [self.App.myapp.dialog.ui.le_magnet_name.text().upper(),
                        self.App.myapp.dialog.ui.cb_operator.currentText(),
-                       'v3.1',
+                       'v3.2',
                        float(self.App.myapp.dialog.ui.le_temperature.text()),
                        self.App.myapp.ui.cb_coil_rotation_direction.currentText(),
                        _le_n_collections,
