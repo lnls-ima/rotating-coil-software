@@ -636,6 +636,8 @@ class RotatingCoil_Library(object):
                 _description = "Could not save log file"
             elif _type == 6:
                 _description = "Could not set the power supply current"
+            elif _type == 7:
+                _description = "No compressed air flux"
             
             _db_values = (None, _magnet_name, _date, _hour, _type, _description)    
              

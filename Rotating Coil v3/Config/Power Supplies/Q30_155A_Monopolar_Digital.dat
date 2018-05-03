@@ -2,8 +2,8 @@
 # Insert the variable name and value separated by tab.
 # Commented lines are ignored.
 
-Power Supply Name	S15_1000A_Bipolar_Digital_Power_Supply
-Power Supply Type	2
+Power Supply Name	Q30_155A_Monopolar_Digital
+Power Supply Type	3
 Current Setpoint	0.0
 Sinusoidal Amplitude	10.0
 Sinusoidal Offset	0.0
@@ -11,16 +11,16 @@ Sinusoidal Frequency	1.0
 Sinusoidal N Cycles	16
 Sinusoidal Initial Phase	0.0
 Sinusoidal Final Phase	0.0
-Damped Sinusoidal Amplitude	166.0
+Damped Sinusoidal Amplitude	155.0
 Damped Sinusoidal Offset	0.0
 Damped Sinusoidal Frequency	2.0
 Damped Sinusoidal N Cycles	100
 Damped Sinusoidal Phase Shift	0.0
 Damped Sinusoidal Final Phase	0.0
-Damped Sinusoidal Damping	2.0 
-Maximum Current	166.0
-Minimum Current	-166.0
-Automatic Setpoints	0.0, 2.0, 4.0, 6.0, 8.0, 10.0
-Kp	0.041
-Ki	0.4689
+Damped Sinusoidal Damping	2.0
+Maximum Current	156.0
+Minimum Current	-156.0
+Automatic Setpoints	0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 30.0, 50.0, 70.0, 90.0, 110.0, 130.0, 155.0, 130.0, 110.0, 90.0, 70.0, 50.0, 30.0, 10.0, 8.0, 6.0, 4.0, 2.0, 0.0
+Kp	0.194
+Ki	1.0116
 DCCT Head	2

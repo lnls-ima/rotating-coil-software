@@ -30,6 +30,7 @@ class SerialCom(object):
         self.EOC_On = 'LD0' # {enable end of course}
         self.kill = 'K' # {emergency stop}
         self.setresolution = 'MR' # {set motor resolution}
+        self.istatus = 'IS' # {read input status}
         
     def connect(self,baudrate=9600,timeout=0.01):
         self.ser.baudrate = baudrate
@@ -119,6 +120,17 @@ class SerialCom(object):
         time.sleep(0.01)
         result = str(self.ser.read(100).decode('utf-8'))
         if (result.find('\r\r') >= 0):
+            return True
+        else:
+            return False
+        
+    def limits(self,driver_add):
+        self.flushTxRx()
+        _adjust = str(driver_add) + self.istatus + '\r'
+        self.ser.write(_adjust.encode('utf-8'))
+        time.sleep(0.25)
+        _result = self.ser.read_until('\r').decode('utf-8')
+        if _result[10] == '1' or _result[11] == '1':
             return True
         else:
             return False

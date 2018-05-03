@@ -1140,7 +1140,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.df_rawcurves = None   
             
             # configure integrator
-            self.configure_integrator()
+            if not self.configure_integrator():
+                QtWidgets.QMessageBox.warning(self,'Warning','Could not configure the integrator.',QtWidgets.QMessageBox.Ok)
+                raise
             
             # check system components
             self.collect_infocomponents()
@@ -1322,6 +1324,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             _ans = QtWidgets.QMessageBox.question(self, 'Discard turns error', 'Number of discarded turns is greater than the total number of turns.\nWould you like to continue the measurement discarding zero turns?', QtWidgets.QMessageBox.No | QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
             if _ans == QtWidgets.QMessageBox.No:
                 raise
+
+        if Lib.comm.parker.limits(1):
+            QtWidgets.QMessageBox.warning(self,'Warning','No compressed air flux.',QtWidgets.QMessageBox.Ok)
+            Lib.db_save_failure(7)
+            raise 
 
     def coil_position_correction(self):
         """
@@ -1598,6 +1605,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         _n_integration_points = Lib.get_value(Lib.data_settings, 'n_integration_points', int)
         _total_n_of_points = _n_integration_points * _n_of_turns
         _ps_interlock = Lib.get_value(Lib.data_settings,'disable_ps_interlock',int)
+        _ratio = Lib.get_value(Lib.data_settings,'rotation_motor_ratio',float)
+        _vel = Lib.get_value(Lib.data_settings,'rotation_motor_speed',float) * _ratio
+        _time_limit = 2*(_n_of_turns+1)*_vel #time limit is ~twice the time the measurement should take
 
         if not _ps_interlock:
             #starts monitor thread
@@ -1619,35 +1629,46 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         if Lib.flags.stop_all == False:
             # move motor     
             self.move_motor_measurement(_n_of_turns+1)
+            
+        _time0 = time.time()
         # start collecting data
         _count = Lib.comm.fdi.get_data_count()
         while (_count != _total_n_of_points) and (Lib.flags.stop_all == False):
             _count = Lib.comm.fdi.get_data_count()
+            if (time.time() - _time0) > _time_limit:
+                if Lib.comm.parker.limits():
+                    Lib.db_save_failure(7)
+                    QtWidgets.QMessageBox.warning(self,'Warning',"Air flux stopped during measurement.",QtWidgets.QMessageBox.Ok)
+                    raise
+                else:
+                    Lib.db_save_failure(0)
+                    QtWidgets.QMessageBox.warning(self,'Warning',"Timeout while waiting for integrator data.",QtWidgets.QMessageBox.Ok)
+                    raise
             QtWidgets.QApplication.processEvents()
         if Lib.flags.stop_all == False:
             _results = Lib.comm.fdi.get_data()
             _results = _results.strip('\n').split(',')
             for i in range(len(_results)):
-                _results[i] = float(_results[i].split(';')[1].strip(' WB'))
+                try:
+                    _results[i] = float(_results[i].split(';')[1].strip(' WB'))
+                except:
+                    if 'NAN' in _results[i]:
+                        Lib.db_save_failure(2)
+                        QtWidgets.QMessageBox.warning(self,'Warning',"Integrator tension over-range.\nPlease configure a lower gain.",QtWidgets.QMessageBox.Ok)
+                    raise
             self.data_array = np.array(_results, dtype=np.float64)
             try:
                 _tmp = self.data_array.reshape(_n_of_turns,_n_integration_points).transpose()
-            except:
-#                 if int(Lib.comm.fdi.status('4')[-1]):
-#                     Lib.db_save_failure(2)
-#                     QtWidgets.QMessageBox.warning(self,'Warning',"Integrator tension over-range.\nPlease configure a lower gain.",QtWidgets.QMessageBox.Ok)
-#                 else:
-#                     Lib.db_save_failure(0)
+            except :
                 raise
-            #discart initial and final turns
+            #discard initial and final turns
             _i = Lib.get_value(Lib.data_settings, 'remove_initial_turns', int)
             _f = -Lib.get_value(Lib.data_settings, 'remove_final_turns', int)
             if not _f: #avoids error if _f == 0
                 _f = None
             if _i + _f < _n_of_turns:
                 _tmp = _tmp[:,_i:_f]
-#             self.df_rawcurves = pd.DataFrame(_tmp)
-            
+            #correction depending on rotation direction
             _direction = Lib.get_value(Lib.measurement_settings,'coil_rotation_direction', str) == 'CounterClockwise'
             if not _direction:
                 self.df_rawcurves = pd.DataFrame(_tmp)

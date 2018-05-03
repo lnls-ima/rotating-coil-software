@@ -57,7 +57,7 @@
      </font>
     </property>
     <property name="currentIndex">
-     <number>4</number>
+     <number>0</number>
     </property>
     <property name="iconSize">
      <size>
@@ -100,10 +100,10 @@
      <widget class="QGroupBox" name="groupBox">
       <property name="geometry">
        <rect>
-        <x>210</x>
-        <y>110</y>
-        <width>380</width>
-        <height>150</height>
+        <x>199</x>
+        <y>241</y>
+        <width>391</width>
+        <height>121</height>
        </rect>
       </property>
       <property name="font">
@@ -115,191 +115,7 @@
        <string>RS-232 Communication</string>
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
-       <item row="0" column="1">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Display Port</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QComboBox" name="cb_disp_port">
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="currentIndex">
-          <number>-1</number>
-         </property>
-         <item>
-          <property name="text">
-           <string>COM 1</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 2</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 3</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 4</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 5</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 6</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 7</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 8</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 9</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 10</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 11</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 12</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 13</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 14</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 15</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <widget class="QComboBox" name="cb_driver_port">
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="currentIndex">
-          <number>-1</number>
-         </property>
-         <item>
-          <property name="text">
-           <string>COM 1</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 2</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 3</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 4</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 5</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 6</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 7</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 8</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 9</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 10</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 11</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 12</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 13</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 14</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 15</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="1" column="1">
+       <item row="1" column="0">
         <widget class="QLabel" name="label_6">
          <property name="text">
           <string>Driver Port</string>
@@ -309,24 +125,8 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0" colspan="2">
-        <widget class="QLabel" name="label_13">
-         <property name="font">
-          <font>
-           <italic>false</italic>
-           <strikeout>false</strikeout>
-          </font>
-         </property>
-         <property name="text">
-          <string>Integrator Port</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QComboBox" name="cb_integrator_port">
+       <item row="0" column="1">
+        <widget class="QComboBox" name="cb_disp_port">
          <property name="font">
           <font>
            <pointsize>10</pointsize>
@@ -335,81 +135,28 @@
          <property name="currentIndex">
           <number>-1</number>
          </property>
-         <item>
-          <property name="text">
-           <string>COM 1</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 2</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 3</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 4</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 5</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 6</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 7</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 8</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 9</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 10</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 11</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 12</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 13</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 14</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>COM 15</string>
-          </property>
-         </item>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="cb_driver_port">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="currentIndex">
+          <number>-1</number>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Display Port</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
         </widget>
        </item>
       </layout>
@@ -465,9 +212,9 @@
       <property name="geometry">
        <rect>
         <x>200</x>
-        <y>440</y>
+        <y>490</y>
         <width>390</width>
-        <height>200</height>
+        <height>121</height>
        </rect>
       </property>
       <property name="font">
@@ -522,10 +269,10 @@
      <widget class="QGroupBox" name="groupBox_48">
       <property name="geometry">
        <rect>
-        <x>210</x>
-        <y>270</y>
-        <width>380</width>
-        <height>161</height>
+        <x>199</x>
+        <y>371</y>
+        <width>391</width>
+        <height>111</height>
        </rect>
       </property>
       <property name="title">
@@ -535,9 +282,9 @@
        <property name="geometry">
         <rect>
          <x>200</x>
-         <y>60</y>
+         <y>56</y>
          <width>91</width>
-         <height>31</height>
+         <height>22</height>
         </rect>
        </property>
        <property name="font">
@@ -545,112 +292,12 @@
          <pointsize>10</pointsize>
         </font>
        </property>
-       <item>
-        <property name="text">
-         <string>COM 1</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>COM 2</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>COM 3</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>COM 4</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>COM 5</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>COM 6</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>COM 7</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>COM 8</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>COM 9</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>COM 10</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>COM 11</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>COM 12</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>COM 13</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>COM 14</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>COM 15</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>COM 16</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>COM 17</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>COM 18</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>COM 19</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>COM 20</string>
-        </property>
-       </item>
       </widget>
       <widget class="QLabel" name="label_168">
        <property name="geometry">
         <rect>
          <x>30</x>
-         <y>60</y>
+         <y>50</y>
          <width>161</width>
          <height>31</height>
         </rect>
@@ -666,6 +313,62 @@
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_18">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>151</y>
+        <width>391</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Bench</string>
+      </property>
+      <widget class="QComboBox" name="cb_bench">
+       <property name="geometry">
+        <rect>
+         <x>200</x>
+         <y>35</y>
+         <width>101</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <item>
+        <property name="text">
+         <string>RC Bench 1</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>RC Bench 2</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QLabel" name="label_7">
+       <property name="geometry">
+        <rect>
+         <x>152</x>
+         <y>38</y>
+         <width>47</width>
+         <height>13</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Bench</string>
        </property>
       </widget>
      </widget>
@@ -758,67 +461,11 @@
         </size>
        </property>
       </widget>
-      <widget class="QGroupBox" name="groupBox_18">
-       <property name="geometry">
-        <rect>
-         <x>530</x>
-         <y>190</y>
-         <width>391</width>
-         <height>91</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Bench</string>
-       </property>
-       <widget class="QComboBox" name="cb_bench">
-        <property name="geometry">
-         <rect>
-          <x>240</x>
-          <y>40</y>
-          <width>101</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <item>
-         <property name="text">
-          <string>RC Bench 1</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>RC Bench 2</string>
-         </property>
-        </item>
-       </widget>
-       <widget class="QLabel" name="label_7">
-        <property name="geometry">
-         <rect>
-          <x>40</x>
-          <y>43</y>
-          <width>47</width>
-          <height>13</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Bench:</string>
-        </property>
-       </widget>
-      </widget>
       <widget class="QGroupBox" name="groupBox_28">
        <property name="geometry">
         <rect>
          <x>530</x>
-         <y>320</y>
+         <y>260</y>
          <width>391</width>
          <height>121</height>
         </rect>
@@ -1202,7 +849,7 @@
        <property name="geometry">
         <rect>
          <x>530</x>
-         <y>50</y>
+         <y>70</y>
          <width>391</width>
          <height>81</height>
         </rect>
@@ -1944,6 +1591,9 @@
          <width>100</width>
          <height>25</height>
         </rect>
+       </property>
+       <property name="maxLength">
+        <number>6</number>
        </property>
        <property name="readOnly">
         <bool>true</bool>
@@ -2706,6 +2356,9 @@ p, li { white-space: pre-wrap; }
          <height>25</height>
         </rect>
        </property>
+       <property name="maxLength">
+        <number>6</number>
+       </property>
       </widget>
       <widget class="QPushButton" name="pb_config_coil">
        <property name="geometry">
@@ -3338,7 +2991,7 @@ p, li { white-space: pre-wrap; }
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap resource="resource_file.qrc">:/Images/PS_table.png</pixmap>
+          <pixmap resource="resource_file.qrc">:/Images/imagens/PS_table.png</pixmap>
          </property>
         </widget>
        </widget>
@@ -7006,7 +6659,6 @@ DCCT Voltage [V]</string>
   <tabstop>tabWidget</tabstop>
   <tabstop>cb_disp_port</tabstop>
   <tabstop>cb_driver_port</tabstop>
-  <tabstop>cb_integrator_port</tabstop>
   <tabstop>cb_ps_port</tabstop>
   <tabstop>chb_enable_Agilent34970A</tabstop>
   <tabstop>sb_agilent34970A_address</tabstop>
@@ -7020,7 +6672,6 @@ DCCT Voltage [V]</string>
   <tabstop>le_rotation_motor_acceleration</tabstop>
   <tabstop>le_rotation_motor_ratio</tabstop>
   <tabstop>le_n_encoder_pulses</tabstop>
-  <tabstop>cb_bench</tabstop>
   <tabstop>chb_disable_alignment_interlock</tabstop>
   <tabstop>chb_disable_ps_interlock</tabstop>
   <tabstop>pb_config</tabstop>
