@@ -1328,7 +1328,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         if Lib.comm.parker.limits(1):
             QtWidgets.QMessageBox.warning(self,'Warning','No compressed air flux.',QtWidgets.QMessageBox.Ok)
             Lib.db_save_failure(7)
-            raise 
+            raise
 
     def coil_position_correction(self):
         """
@@ -1408,17 +1408,23 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.dialog.ui.setupUi(self.dialog)
             self.dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
 
-            try:
-                Lib.measurement_settings != None
-            except TypeError:
+            if type(Lib.measurement_settings) != type(None):
                 self.dialog.ui.le_magnet_name.setText(Lib.get_value(Lib.measurement_settings, 'name', str))
                 self.dialog.ui.cb_operator.setCurrentText(Lib.get_value(Lib.measurement_settings, 'operator', str))
                 self.dialog.ui.cb_magnet_model.setCurrentIndex(Lib.get_value(Lib.measurement_settings, 'magnet_model', int))
+                _magnet_family = Lib.get_value(Lib.measurement_settings, 'magnet_family', str)
+                if 'Q20' in Lib.get_value(Lib.measurement_settings, 'name', str):
+                    self.dialog.ui.cb_magnet_family.setEnabled(True)
+                if type(_magnet_family) == type(None):
+                    self.dialog.ui.cb_magnet_family.setCurrentText('None')
+                else:
+                    self.dialog.ui.cb_magnet_family.setCurrentText(_magnet_family)
 
             if Lib.get_value(Lib.aux_settings, 'status_ps_2', int):
                 self.dialog.cb_trim_coil_type.setEnabled(True)
             self.dialog.ui.bB_ok_cancel.accepted.connect(self.ok_popup)
             self.dialog.ui.bB_ok_cancel.rejected.connect(self.cancel_popup)
+            self.dialog.ui.le_magnet_name.textChanged.connect(self.family_enable)
             if Lib.get_value(Lib.data_settings, 'enable_Agilent34970A', int):
                 _temp = Lib.comm.agilent34970a.read_temp_volt()[0]
                 self.dialog.ui.le_temperature.setText(str(round(float(_temp),2)))
@@ -1435,6 +1441,13 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
     def cancel_popup(self):
         self.dialog.deleteLater()
+
+    def family_enable(self):
+        if 'Q20' in self.dialog.ui.le_magnet_name.text().upper():
+            self.dialog.ui.cb_magnet_family.setEnabled(True)
+        else:
+            self.dialog.ui.cb_magnet_family.setEnabled(False)
+            self.dialog.ui.cb_magnet_family.setCurrentText('None')
 
     def multipoles_calculation(self):
         """
@@ -1559,7 +1572,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         else:
             self.ui.le_magnetic_center_x.setText("")
             self.ui.le_magnetic_center_y.setText("")
-            
+
     def configure_integrator(self, adj_offset=False):
         """
         """
@@ -1636,7 +1649,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         while (_count != _total_n_of_points) and (Lib.flags.stop_all == False):
             _count = Lib.comm.fdi.get_data_count()
             if (time.time() - _time0) > _time_limit:
-                if Lib.comm.parker.limits():
+                if Lib.comm.parker.limits(1):
                     Lib.db_save_failure(7)
                     QtWidgets.QMessageBox.warning(self,'Warning',"Air flux stopped during measurement.",QtWidgets.QMessageBox.Ok)
                     raise
@@ -1849,11 +1862,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             return False
 
     def configure_coil(self):
-        try:
-            if Lib.coil_settings == None:
-                Lib.coil_df()
-        except TypeError:
-            pass
+        if type(Lib.coil_settings) == type(None):
+            Lib.coil_df()
         _ans = self.config_coil()
         if _ans:
             QtWidgets.QMessageBox.information(self,'Information',"Coil configurations completed successfully.",QtWidgets.QMessageBox.Ok)
@@ -1915,19 +1925,13 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
     def configure_ps(self, secondary=False):
         if not secondary:
-            try:
-                if Lib.ps_settings == None:
-                    Lib.ps_df(False)
-            except TypeError:
-                pass
+            if type(Lib.ps_settings) == type(None):
+                Lib.ps_df(False)
             self.ui.gb_start_supply.setEnabled(True)
             _ans = self.config_ps()
         else:
-            try:
-                if Lib.ps_settings_2 == None:
-                    Lib.ps_df(True)
-            except TypeError:
-                pass
+            if type(Lib.ps_settings_2) == type(None):
+                Lib.ps_df(True)
             self.ui.gb_start_supply_2.setEnabled(True)
             _ans = self.config_ps_2()
         if _ans:
@@ -2137,11 +2141,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
         if emergency:
             Lib.flags.emergency = emergency
-            
-            try:
-                if Lib.ps_settings_2 == None:
-                    _secondary_flag = 0
-            except TypeError:
+
+            if type(Lib.ps_settings_2) == type(None):
+                _secondary_flag = 0
+            else:
                 _secondary_flag = Lib.get_value(Lib.ps_settings_2, 'ps_status_2', int)            
             _ps_type = Lib.get_value(Lib.ps_settings, 'Power Supply Type', int)
             if _secondary_flag:
@@ -2208,11 +2211,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         Lib.write_value(Lib.aux_settings, 'main_current_array', pd.DataFrame([]))
         Lib.write_value(Lib.aux_settings, 'secondary_current_array', pd.DataFrame([]))
         Lib.write_value(Lib.aux_settings, 'main_voltage_array', pd.DataFrame([]))
-        
-        try:
-            if Lib.ps_settings_2 == None:
-                _secondary_flag = 0
-        except TypeError:
+
+        if type(Lib.ps_settings_2) == type(None):
+            _secondary_flag = 0
+        else:
             _secondary_flag = Lib.get_value(Lib.ps_settings_2, 'ps_status_2', int)
         _voltage_flag = self.ui.chb_voltage.isChecked()
         _ps_type = Lib.get_value(Lib.ps_settings, 'Power Supply Type', int)
@@ -2292,18 +2294,18 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 #     Lib = Library.RotatingCoil_Library()
 #     Lib.App = main()
 #===============================================================================
-     
+
 class main(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.start()
-      
+
     def run(self):
         self.app = QtWidgets.QApplication(sys.argv)
         self.myapp = ApplicationWindow()
         self.myapp.show()
         sys.exit(self.app.exec_())
-    
+
 if __name__ == '__main__':
 #if __name__ == 'builtins':
     print(__name__ + ' ok' )

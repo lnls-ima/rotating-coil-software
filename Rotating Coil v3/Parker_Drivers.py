@@ -130,7 +130,7 @@ class SerialCom(object):
         self.ser.write(_adjust.encode('utf-8'))
         time.sleep(0.25)
         _result = self.ser.read_until('\r').decode('utf-8')
-        if _result[10] == '1' or _result[11] == '1':
+        if _result[10:12] == '11':
             return True
         else:
             return False

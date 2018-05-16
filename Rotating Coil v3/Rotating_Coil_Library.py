@@ -75,6 +75,7 @@ class RotatingCoil_Library(object):
              `magnet_resistance_std` REAL NOT NULL,\
              `accelerator_type` TEXT NOT NULL,\
              `magnet_model` INTEGER NOT NULL,\
+             `magnet_family`    TEXT,\
              `coil_name` TEXT NOT NULL,\
              `coil_type` TEXT NOT NULL,\
              `measurement_type` TEXT NOT NULL,\
@@ -96,6 +97,7 @@ class RotatingCoil_Library(object):
             _create_sets_table = """CREATE TABLE `sets_of_measurements` (
              `id`    INTEGER NOT NULL,
              `magnet_name`    TEXT NOT NULL,
+             `magnet_family`    TEXT,
              `date`    TEXT NOT NULL,
              `hour_0`    TEXT NOT NULL,
              `hour_f`    TEXT NOT NULL,
@@ -166,6 +168,7 @@ class RotatingCoil_Library(object):
             _trim_coil_type = self.get_value(self.measurement_settings, 'trim_coil_type', int)
 
             _magnet_name = self.get_value(self.measurement_settings, 'name', str)
+            _magnet_family = self.get_value(self.measurement_settings, 'magnet_family')
             _filename = _magnet_name + '_' + _magnet_type + '_' + _accelerator_name + '_' + str(_main_current).zfill(5) + 'A_' + _date_name + '_' + _hour_name + '.dat'
             _date = time.strftime("%d/%m/%Y", time.localtime())
             _hour = time.strftime("%H:%M:%S", time.localtime())
@@ -249,7 +252,7 @@ class RotatingCoil_Library(object):
                           _trim_coil_current_avg, _trim_coil_current_std,\
                           _main_coil_volt_avg, _main_coil_volt_std,\
                           _magnet_resistance_avg, _magnet_resistance_std,\
-                          _accelerator_type, _magnet_model,\
+                          _accelerator_type, _magnet_model, _magnet_family,\
                           _coil_name, _coil_type, _measurement_type,\
                           _n_turns_normal, _radius1_normal, _radius2_normal,\
                           _n_turns_bucked, _radius1_bucked, _radius2_bucked,\
@@ -259,7 +262,7 @@ class RotatingCoil_Library(object):
                         )
 
     #         _db_test_values = (None,0,0,_date,_hour,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
-            _cur.execute("INSERT INTO measurements VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", _db_values)
+            _cur.execute("INSERT INTO measurements VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", _db_values)
             _con.commit()
             _con.close()
             return True
@@ -284,8 +287,8 @@ class RotatingCoil_Library(object):
         return _db_entry
 
     def db_load_measurements(self, _id=None, magnet_name=None, filename=None, date=None, hour=None,\
-                      operator=None, magnet_model=None, coil_name=None, bench=None, software_version=None,\
-                      temperature=None, integrator_gain=None, main_current=None, accelerator_type=None,\
+                      operator=None, magnet_model=None, magnet_family=None, coil_name=None, bench=None,\
+                      software_version=None,temperature=None, integrator_gain=None, main_current=None, accelerator_type=None,\
                       comments=None, trigger_ref=None, angle=None, magnetic_center_x=None, magnetic_center_y=None):
         _con = sqlite3.connect(self.dir_path + 'measurements_data.db')
         _cur = _con.cursor()
@@ -307,6 +310,12 @@ class RotatingCoil_Library(object):
                 _command = _command + 'AND '
             _and_flag = True
             _command = _command + 'magnet_name = "' + magnet_name + '" '
+        
+        if magnet_family != None and magnet_name != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            _command = _command + 'magnet_family = "' + magnet_family + '" '
 
         if filename != None and filename != False:
             if _and_flag:
@@ -436,8 +445,8 @@ class RotatingCoil_Library(object):
         _con.close()
         return _db_entry
 
-    def db_load_sets_of_measurements(self, _id=None, magnet_name=None, date=None, hour_0=None,\
-                                     hour_f=None, collection_type=None, id_0=None, id_f=None,\
+    def db_load_sets_of_measurements(self, _id=None, magnet_name=None, magnet_family=None, date=None,
+                                     hour_0=None, hour_f=None, collection_type=None, id_0=None, id_f=None,\
                                      current_min=None, current_max=None, comments=None):
         _con = sqlite3.connect(self.dir_path + 'measurements_data.db')
         _cur = _con.cursor()
@@ -459,6 +468,12 @@ class RotatingCoil_Library(object):
                 _command = _command + 'AND '
             _and_flag = True
             _command = _command + 'magnet_name = "' + magnet_name + '" '
+
+        if magnet_family != None and magnet_name != False:
+            if _and_flag:
+                _command = _command + 'AND '
+            _and_flag = True
+            _command = _command + 'magnet_family = "' + magnet_family + '" '
 
         if date != None and date != False:
             if _and_flag:
@@ -578,6 +593,7 @@ class RotatingCoil_Library(object):
             _cur = _con.cursor()
             
             _magnet_name = self.get_value(self.measurement_settings, 'name', str)
+            _magnet_family = self.get_value(self.measurement_settings, 'magnet_family')
             _date = time.strftime("%d/%m/%Y", time.localtime())
             _n_measurements = n_measurements
             _cur.execute('SELECT id, hour FROM measurements WHERE id = (SELECT MAX(id) FROM measurements)')
@@ -598,9 +614,10 @@ class RotatingCoil_Library(object):
             elif collection_type == 2:
                 _collection_type = "Automatic secondary power supply"   
 
-            _db_values = (None, _magnet_name, _date, _hour_0, _hour_f, _collection_type, _n_measurements, _id_0, _id_f, _current_min, _current_max, _comments)
+            _db_values = (None, _magnet_name, _magnet_family, _date, _hour_0, _hour_f, _collection_type,\
+                           _n_measurements, _id_0, _id_f, _current_min, _current_max, _comments)
 
-            _cur.execute("INSERT INTO sets_of_measurements VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", _db_values)
+            _cur.execute("INSERT INTO sets_of_measurements VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)", _db_values)
             _con.commit()
             _con.close()
             return True
@@ -765,30 +782,30 @@ class RotatingCoil_Library(object):
         _magnet_resistance_avg = _measurement_entry[31]
         _magnet_resistance_std = _measurement_entry[32]         
         #Rotating Coil Data
-        _coil_name = _measurement_entry[35]
-        _coil_type = _measurement_entry[36]
-        _measurement_type = _measurement_entry[37]
+        _coil_name = _measurement_entry[36]
+        _coil_type = _measurement_entry[37]
+        _measurement_type = _measurement_entry[38]
         _trigger_ref = _measurement_entry[13]
-        _n_turns_normal = _measurement_entry[38]
-        _radius1_normal = _measurement_entry[39]
-        _radius2_normal = _measurement_entry[40]
-        _n_turns_bucked = _measurement_entry[41]
-        _radius1_bucked = _measurement_entry[42]
-        _radius2_bucked = _measurement_entry[43]         
+        _n_turns_normal = _measurement_entry[39]
+        _radius1_normal = _measurement_entry[40]
+        _radius2_normal = _measurement_entry[41]
+        _n_turns_bucked = _measurement_entry[42]
+        _radius1_bucked = _measurement_entry[43]
+        _radius2_bucked = _measurement_entry[44]         
         #Comments
-        _comments = _measurement_entry[45]         
+        _comments = _measurement_entry[46]         
         #Reading data
-        _read_data = _measurement_entry[50]
-        _magnetic_center_x = _measurement_entry[48]
-        _magnetic_center_y = _measurement_entry[49]         
+        _read_data = _measurement_entry[51]
+        _magnetic_center_x = _measurement_entry[49]
+        _magnetic_center_y = _measurement_entry[50]         
         #Raw data
-        _raw_curve = _measurement_entry[51]
-        
+        _raw_curve = _measurement_entry[52]
+
         if path == None or path == False:
             _dir = self.dir_path
         else:
             _dir = path
-            
+
         try:
             with open((_dir+_filename), 'w') as f:
                 f.write('########## EXCITATION CURVE - ROTATING COIL ##########')
@@ -961,6 +978,10 @@ class RotatingCoil_Library(object):
             _comments = _comments + 'Warning: Alignment interlock is disabled; Ref_encoder_A = {0:0.6f}, Ref_encoder_B = {1:0.6f} .\n'.format(self.get_value(self.aux_settings, 'ref_encoder_A', float), self.get_value(self.aux_settings, 'ref_encoder_B', float))
         if self.get_value(self.data_settings,'disable_ps_interlock',int):
             _comments = _comments + 'Warning: Power supply interlock is disabled.\n'
+            
+        _magnet_family = self.App.myapp.dialog.ui.cb_magnet_family.currentText()
+        if _magnet_family == 'None':
+            _magnet_family = None
         _datavars = ['name',
                      'operator',
                      'software_version',
@@ -970,6 +991,7 @@ class RotatingCoil_Library(object):
                      'analisys_interval',
                      'accelerator_type',
                      'magnet_model',
+                     'magnet_family',
                      'measurement_type',
                      'comments',
                      'norm_radius',
@@ -978,13 +1000,14 @@ class RotatingCoil_Library(object):
                      'trim_coil_type']
         _datavalues = [self.App.myapp.dialog.ui.le_magnet_name.text().upper(),
                        self.App.myapp.dialog.ui.cb_operator.currentText(),
-                       'v3.2',
+                       'v3.3',
                        float(self.App.myapp.dialog.ui.le_temperature.text()),
                        self.App.myapp.ui.cb_coil_rotation_direction.currentText(),
                        _le_n_collections,
                        _analisys_interval,
                        self.App.myapp.ui.cb_accelerator_type.currentText(),
                        self.App.myapp.dialog.ui.cb_magnet_model.currentIndex(),
+                       _magnet_family,
                        'N_bucked',
                        self.App.myapp.dialog.ui.te_meas_details.toPlainText() + _comments,
                        float(self.App.myapp.ui.le_norm_radius.text())/1000, #convert from mm to meter

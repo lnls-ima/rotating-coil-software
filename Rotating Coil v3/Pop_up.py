@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Pop_Up(object):
     def setupUi(self, Pop_Up):
         Pop_Up.setObjectName("Pop_Up")
-        Pop_Up.resize(441, 407)
+        Pop_Up.resize(441, 447)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/Images/imagens/magnetic.PNG"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Pop_Up.setWindowIcon(icon)
@@ -29,7 +29,7 @@ class Ui_Pop_Up(object):
         self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line.setObjectName("line")
         self.bB_ok_cancel = QtWidgets.QDialogButtonBox(Pop_Up)
-        self.bB_ok_cancel.setGeometry(QtCore.QRect(150, 380, 156, 23))
+        self.bB_ok_cancel.setGeometry(QtCore.QRect(150, 410, 156, 23))
         self.bB_ok_cancel.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.bB_ok_cancel.setObjectName("bB_ok_cancel")
         self.le_magnet_name = QtWidgets.QLineEdit(Pop_Up)
@@ -47,7 +47,7 @@ class Ui_Pop_Up(object):
         self.le_temperature.setGeometry(QtCore.QRect(167, 110, 161, 21))
         self.le_temperature.setObjectName("le_temperature")
         self.groupBox_23 = QtWidgets.QGroupBox(Pop_Up)
-        self.groupBox_23.setGeometry(QtCore.QRect(20, 250, 400, 120))
+        self.groupBox_23.setGeometry(QtCore.QRect(20, 280, 400, 120))
         self.groupBox_23.setObjectName("groupBox_23")
         self.te_meas_details = QtWidgets.QTextEdit(self.groupBox_23)
         self.te_meas_details.setGeometry(QtCore.QRect(15, 20, 370, 90))
@@ -78,7 +78,7 @@ class Ui_Pop_Up(object):
         self.cb_magnet_model.addItem("")
         self.cb_trim_coil_type = QtWidgets.QComboBox(Pop_Up)
         self.cb_trim_coil_type.setEnabled(False)
-        self.cb_trim_coil_type.setGeometry(QtCore.QRect(167, 200, 161, 21))
+        self.cb_trim_coil_type.setGeometry(QtCore.QRect(167, 230, 161, 21))
         font = QtGui.QFont()
         font.setPointSize(8)
         self.cb_trim_coil_type.setFont(font)
@@ -88,11 +88,24 @@ class Ui_Pop_Up(object):
         self.cb_trim_coil_type.addItem("")
         self.cb_trim_coil_type.addItem("")
         self.label_8 = QtWidgets.QLabel(Pop_Up)
-        self.label_8.setGeometry(QtCore.QRect(83, 200, 71, 20))
+        self.label_8.setGeometry(QtCore.QRect(83, 230, 71, 20))
         font = QtGui.QFont()
         font.setPointSize(8)
         self.label_8.setFont(font)
         self.label_8.setObjectName("label_8")
+        self.cb_magnet_family = QtWidgets.QComboBox(Pop_Up)
+        self.cb_magnet_family.setEnabled(False)
+        self.cb_magnet_family.setGeometry(QtCore.QRect(167, 200, 161, 21))
+        self.cb_magnet_family.setObjectName("cb_magnet_family")
+        self.cb_magnet_family.addItem("")
+        self.cb_magnet_family.addItem("")
+        self.cb_magnet_family.addItem("")
+        self.cb_magnet_family.addItem("")
+        self.cb_magnet_family.addItem("")
+        self.label_50 = QtWidgets.QLabel(Pop_Up)
+        self.label_50.setGeometry(QtCore.QRect(73, 197, 81, 25))
+        self.label_50.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_50.setObjectName("label_50")
 
         self.retranslateUi(Pop_Up)
         QtCore.QMetaObject.connectSlotsByName(Pop_Up)
@@ -112,8 +125,8 @@ class Ui_Pop_Up(object):
         self.te_meas_details.setHtml(_translate("Pop_Up", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"> </p></body></html>"))
+"</style></head><body style=\" font-family:\'Noto Sans\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\"> </span></p></body></html>"))
         self.label_167.setText(_translate("Pop_Up", "Operator:"))
         self.cb_operator.setItemText(0, _translate("Pop_Up", "James Citadini"))
         self.cb_operator.setItemText(1, _translate("Pop_Up", "Lucas Balthazar"))
@@ -132,5 +145,11 @@ class Ui_Pop_Up(object):
         self.cb_trim_coil_type.setItemText(2, _translate("Pop_Up", "VC Coil"))
         self.cb_trim_coil_type.setItemText(3, _translate("Pop_Up", "SQ Coil"))
         self.label_8.setText(_translate("Pop_Up", "Trim Coil Type:"))
+        self.cb_magnet_family.setItemText(0, _translate("Pop_Up", "None"))
+        self.cb_magnet_family.setItemText(1, _translate("Pop_Up", "1"))
+        self.cb_magnet_family.setItemText(2, _translate("Pop_Up", "2/3"))
+        self.cb_magnet_family.setItemText(3, _translate("Pop_Up", "4"))
+        self.cb_magnet_family.setItemText(4, _translate("Pop_Up", "5"))
+        self.label_50.setText(_translate("Pop_Up", "Magnet Family:"))
 
 import resource_file_rc
