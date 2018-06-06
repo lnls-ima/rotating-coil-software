@@ -920,11 +920,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.encoder_reading()
         _encoder_current = int(self.ui.le_encoder_reading.text())
         _encoder_setpoint = int(self.ui.le_encoder_setpoint.text())
-        _pulses_to_go = _encoder_current - _encoder_setpoint 
+        _pulses_to_go = _encoder_setpoint - _encoder_current
 
         return _pulses_to_go
 
-    def move_to_encoder_position(self): # Ok / implement automatic search in closed loop
+    def move_to_encoder_position(self):
         """
         """
         Lib.flags.stop_all = False
@@ -936,9 +936,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         _vel = float(self.ui.le_motor_vel.text()) * _ratio
         _acce = float(self.ui.le_motor_ace.text()) * _ratio
 
-        _pulses = self.pulses_to_go()
-        _steps =  abs(int( _pulses * Lib.get_value(Lib.data_settings,'rotation_motor_resolution',int) / Lib.get_value(Lib.data_settings,'n_encoder_pulses',int) * _ratio))
-
         #Direction
         try:
             if Lib.get_value(Lib.measurement_settings, 'coil_rotation_direction', str) == 'Clockwise':
@@ -947,17 +944,20 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 _direction = 1
         except:
             _direction = self.ui.cb_coil_rotation_direction.currentIndex()
-        
+
         _encoder_pulse = Lib.get_value(Lib.data_settings,'n_encoder_pulses',int) #360000
+
+        _pulses = self.pulses_to_go()
         if _pulses > 0 and _direction == 0:
             _pulses = _encoder_pulse - _pulses
         elif _pulses < 0 and _direction == 1:
             _pulses = _encoder_pulse - _pulses
+        _steps =  abs(int( _pulses * Lib.get_value(Lib.data_settings,'rotation_motor_resolution',int) / Lib.get_value(Lib.data_settings,'n_encoder_pulses',int) * _ratio))
 
         Lib.comm.parker.conf_motor(_address, _resolution, _vel, _acce, _steps, _direction, 0)
         self.move_motor_until_stops(_address)
 
-        self.encoder_reading()  
+        self.encoder_reading()
 
     def set_gain(self):
         """
