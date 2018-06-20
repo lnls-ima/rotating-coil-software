@@ -1443,8 +1443,31 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.dialog.deleteLater()
 
     def family_enable(self):
-        if 'Q20' in self.dialog.ui.le_magnet_name.text().upper():
+        _magnet_name = self.dialog.ui.le_magnet_name.text().upper()
+        if 'Q20' in _magnet_name:
+            _family_list = ['1', '2/3', '4', '5']
             self.dialog.ui.cb_magnet_family.setEnabled(True)
+            _count = self.dialog.ui.cb_magnet_family.count()
+            if _count == 5:
+                pass
+            elif _count > 1:
+                while _count > 1:
+                    self.dialog.ui.cb_magnet_family.removeItem(1)
+                    _count = _count - 1
+                for _item in _family_list:
+                    self.dialog.ui.cb_magnet_family.addItem(_item)
+        elif 'S15' in _magnet_name:
+            _family_list = ['1', '2']
+            self.dialog.ui.cb_magnet_family.setEnabled(True)
+            _count = self.dialog.ui.cb_magnet_family.count()
+            if _count == 3:
+                pass
+            elif _count > 1:
+                while _count > 1:
+                    self.dialog.ui.cb_magnet_family.removeItem(1)
+                    _count = _count - 1
+                for _item in _family_list:
+                    self.dialog.ui.cb_magnet_family.addItem(_item)
         else:
             self.dialog.ui.cb_magnet_family.setEnabled(False)
             self.dialog.ui.cb_magnet_family.setCurrentText('None')
