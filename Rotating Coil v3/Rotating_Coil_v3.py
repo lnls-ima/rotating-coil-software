@@ -1412,9 +1412,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 self.dialog.ui.le_magnet_name.setText(Lib.get_value(Lib.measurement_settings, 'name', str))
                 self.dialog.ui.cb_operator.setCurrentText(Lib.get_value(Lib.measurement_settings, 'operator', str))
                 self.dialog.ui.cb_magnet_model.setCurrentIndex(Lib.get_value(Lib.measurement_settings, 'magnet_model', int))
+                _magnet_name = Lib.get_value(Lib.measurement_settings, 'name', str)
                 _magnet_family = Lib.get_value(Lib.measurement_settings, 'magnet_family', str)
-                if 'Q20' in Lib.get_value(Lib.measurement_settings, 'name', str):
-                    self.dialog.ui.cb_magnet_family.setEnabled(True)
+                if 'Q20' in _magnet_name or 'S15' in _magnet_name:
+                    self.family_enable()
                 if type(_magnet_family) == type(None):
                     self.dialog.ui.cb_magnet_family.setCurrentText('None')
                 else:
