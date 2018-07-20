@@ -87,12 +87,15 @@ class RotatingCoil_Library(object):
              `radius2_bucked` REAL NOT NULL,\
              `coil_comments` TEXT NOT NULL,\
              `comments` TEXT NOT NULL,\
+             `main_harmonic`    REAL,\
              `normalization_radius` REAL NOT NULL,\
              `angle` REAL NOT NULL,\
              `magnetic_center_x` REAL NOT NULL,\
              `magnetic_center_y` REAL NOT NULL,\
+             `temperature_magnet`    REAL,\
+             `temperature_water`    REAL,\ 
              `read_data` TEXT NOT NULL,\
-             `raw_curve` TEXT NOT NULL )"""
+             `raw_curve` TEXT NOT NULL)"""
 
             _create_sets_table = """CREATE TABLE `sets_of_measurements` (
              `id`    INTEGER NOT NULL,
@@ -231,10 +234,13 @@ class RotatingCoil_Library(object):
             _radius2_bucked = self.get_value(self.coil_settings, 'radius2_bucked', float)
             _coil_comments = self.get_value(self.coil_settings, 'comments', str)
             _comments = self.get_value(self.measurement_settings, 'comments', str)
+            _main_harmonic = self.App.myapp.main_harmonic()
             _norm_radius = self.get_value(self.measurement_settings, 'norm_radius', float)
             _angle = round(_angle, 9)
             _magnetic_center_x = self.get_value(self.measurement_settings, 'magnetic_center_x', float) #[um]
             _magnetic_center_y = self.get_value(self.measurement_settings, 'magnetic_center_y', float) #[um]
+            _temperature_magnet = getattr(self.App.myapp, 'temperature_magnet')
+            _temperature_water = getattr(self.App.myapp, 'temperature_water')
             _read_data = self.get_read_data()
             _raw_curve = self.get_raw_curve()
 
@@ -256,13 +262,15 @@ class RotatingCoil_Library(object):
                           _coil_name, _coil_type, _measurement_type,\
                           _n_turns_normal, _radius1_normal, _radius2_normal,\
                           _n_turns_bucked, _radius1_bucked, _radius2_bucked,\
-                          _coil_comments, _comments, _norm_radius, _angle,\
+                          _coil_comments, _comments, _main_harmonic,\
+                           _norm_radius, _angle,\
                           _magnetic_center_x, _magnetic_center_y,\
+                          _temperature_magnet, _temperature_water,\
                           _read_data, _raw_curve
                         )
 
     #         _db_test_values = (None,0,0,_date,_hour,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
-            _cur.execute("INSERT INTO measurements VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", _db_values)
+            _cur.execute("INSERT INTO measurements VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", _db_values)
             _con.commit()
             _con.close()
             return True
@@ -795,11 +803,11 @@ class RotatingCoil_Library(object):
         #Comments
         _comments = _measurement_entry[46]         
         #Reading data
-        _read_data = _measurement_entry[51]
-        _magnetic_center_x = _measurement_entry[49]
-        _magnetic_center_y = _measurement_entry[50]         
+        _read_data = _measurement_entry[54]
+        _magnetic_center_x = _measurement_entry[50]
+        _magnetic_center_y = _measurement_entry[51]         
         #Raw data
-        _raw_curve = _measurement_entry[52]
+        _raw_curve = _measurement_entry[55]
 
         if path == None or path == False:
             _dir = self.dir_path

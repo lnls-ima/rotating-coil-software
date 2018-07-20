@@ -40,7 +40,7 @@ class GPIB(object):
             aux = 'GPIB0::'+str(address)+'::INSTR'
             rm = visa.ResourceManager()
             self.inst = rm.open_resource(aux.encode('utf-8'))
-            self.inst.timeout = 3
+            self.inst.timeout = 5
             return True
         except:
             return False
@@ -80,16 +80,16 @@ class GPIB(object):
         try:
             self.send(self.Clear)
             self.send(self.Reset)
-            _cmd = ':CONF:TEMP FRTD,85, (@101); VOLT:DC (@104:105);'
+            _cmd = ':CONF:TEMP FRTD,85, (@101:103); VOLT:DC (@104:105);'
             self.send(_cmd)
             time.sleep(0.3)
-            _cmd = ':ROUT:SCAN (@101, 104:105)'
+            _cmd = ':ROUT:SCAN (@101:105)'
             self.send(_cmd)
             return True
         except:
             return False
         
-    def read_temp_volt(self, wait=0.4):
+    def read_temp_volt(self, wait=0.5):
         self.send(':READ?')
         time.sleep(wait)
         _ans = self.inst.read('\n').split(',')

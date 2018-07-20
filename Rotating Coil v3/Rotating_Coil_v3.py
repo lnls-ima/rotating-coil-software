@@ -107,8 +107,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             try:
                 _ans = Lib.comm.agilent34970a.read_temp_volt()
                 self.ui.lcdNumber.display(_ans[0])
-                self.ui.lcdNumber_4.display(_ans[1])
-                self.ui.lcdNumber_5.display(_ans[2])
+                self.ui.lcdNumber_2.display(_ans[1])
+                self.ui.lcdNumber_3.display(_ans[2])
+                self.ui.lcdNumber_4.display(_ans[3])
+                self.ui.lcdNumber_5.display(_ans[4])
                 QtWidgets.QApplication.processEvents()
             except:
                 traceback.print_exc(file=sys.stdout)
@@ -1427,7 +1429,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.dialog.ui.bB_ok_cancel.rejected.connect(self.cancel_popup)
             self.dialog.ui.le_magnet_name.textChanged.connect(self.family_enable)
             if Lib.get_value(Lib.data_settings, 'enable_Agilent34970A', int):
-                _temp = Lib.comm.agilent34970a.read_temp_volt()[0]
+                _agilent_reading = Lib.comm.agilent34970a.read_temp_volt()
+                _temp = _agilent_reading[0]
+                setattr(self, 'temperature_magnet', _agilent_reading[1])
+                setattr(self, 'temperature_water', _agilent_reading[2])
                 self.dialog.ui.le_temperature.setText(str(round(float(_temp),2)))
             self.dialog.exec_()
         except:
@@ -1445,23 +1450,18 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
     def family_enable(self):
         _magnet_name = self.dialog.ui.le_magnet_name.text().upper()
-        if 'Q20' in _magnet_name:
-            _family_list = ['1', '2/3', '4', '5']
+        _count = self.dialog.ui.cb_magnet_family.count()
+        _l = ['Q20', 'S15']
+        _ans = [item in _magnet_name for item in _l]
+        if any(_ans):
+            if _ans[0]:
+                _family_list = ['1', '2/3', '4', '5']
+                _c = 5
+            elif _ans[1]:
+                _family_list = ['1', '2']
+                _c = 3
             self.dialog.ui.cb_magnet_family.setEnabled(True)
-            _count = self.dialog.ui.cb_magnet_family.count()
-            if _count == 5:
-                pass
-            elif _count > 1:
-                while _count > 1:
-                    self.dialog.ui.cb_magnet_family.removeItem(1)
-                    _count = _count - 1
-                for _item in _family_list:
-                    self.dialog.ui.cb_magnet_family.addItem(_item)
-        elif 'S15' in _magnet_name:
-            _family_list = ['1', '2']
-            self.dialog.ui.cb_magnet_family.setEnabled(True)
-            _count = self.dialog.ui.cb_magnet_family.count()
-            if _count == 3:
+            if _count == _c:
                 pass
             elif _count > 1:
                 while _count > 1:
@@ -1534,6 +1534,13 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.averageAngle = (1/self.averageN.index) * np.arctan(self.averageS/self.averageN)
         self.stdAngle = (1/self.averageN.index) * 1/(self.averageN**2 + self.averageS**2) * np.sqrt(self.averageS**2 * self.stdN**2 + self.averageN**2 * self.stdS**2) #error propagation is equal for normal and skew magnets
 
+    def main_harmonic(self):
+        _n_ref = Lib.get_value(Lib.measurement_settings, 'magnet_model', int)
+        if _n_ref < 4:
+            return self.averageN[_n_ref]
+        elif _n_ref == 4:
+            return self.averageS[2]
+
     def check_std(self):
         """
         Checks standard deviation magnitode and returns false if greater than maximum error
@@ -1582,8 +1589,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 _prev_perp_multipole = self.averageS[_main_harmonic-1]
                 _dy_sign = 1
 
-            _dx = (1/(_main_harmonic-1))*(_prev_multipole/_main_multipole)
-            _dy = (_dy_sign)*(1/(_main_harmonic-1))*(_prev_perp_multipole/_main_multipole)
+            _dx = -1*(1/(_main_harmonic-1))*(_prev_multipole/_main_multipole)
+            _dy = -1*(_dy_sign)*(1/(_main_harmonic-1))*(_prev_perp_multipole/_main_multipole)
             _dx_um = round(_dx*1e06, 3)
             _dy_um = round(_dy*1e06, 3)
 
@@ -2212,7 +2219,12 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             QtWidgets.QMessageBox.information(self,'Information','The measurement was stopped.',QtWidgets.QMessageBox.Ok)
 
     def dcct_convert(self):
-        _voltage = Lib.comm.agilent34970a.read_temp_volt()[2]
+        _agilent_reading = Lib.comm.agilent34970a.read_temp_volt()
+        if isinstance(Lib.measurement_settings, pd.DataFrame):
+            Lib.write_value(Lib.measurement_settings, 'temperature', _agilent_reading[0])
+            setattr(self, 'temperature_magnet', _agilent_reading[1])
+            setattr(self, 'temperature_water', _agilent_reading[2])
+        _voltage = _agilent_reading[4]
         if _voltage =='':
             _current = 0
         else:
