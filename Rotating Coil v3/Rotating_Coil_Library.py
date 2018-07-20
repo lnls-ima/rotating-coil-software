@@ -1008,7 +1008,7 @@ class RotatingCoil_Library(object):
                      'trim_coil_type']
         _datavalues = [self.App.myapp.dialog.ui.le_magnet_name.text().upper(),
                        self.App.myapp.dialog.ui.cb_operator.currentText(),
-                       'v3.3',
+                       'v3.4',
                        float(self.App.myapp.dialog.ui.le_temperature.text()),
                        self.App.myapp.ui.cb_coil_rotation_direction.currentText(),
                        _le_n_collections,
