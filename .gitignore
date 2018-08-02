@@ -1,4 +1,25 @@
+*.db
+todo.txt
+
+# --------------- Default lnls-ima ---------------
 *~
+
+# Magnet files with solutions
+*_solved.mn
+
+# CAD files
+*.stp
+*.step
+
+# Igor Pro Experiments
+*.pxp
+
+# Previous model versions
+#model-previous/*.gz
+#model-previous/*.zip
+
+# Reports
+*_Report.pdf
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -84,9 +105,3 @@ local.properties
 
 # Locally stored "Eclipse launch configurations"
 *.launch
-
-# Project
-*.db
-__pycache__/*
-.settings/*
-todo.txt
