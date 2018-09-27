@@ -1271,7 +1271,7 @@ class RotatingCoil_Library(object):
                      'magnet_resistance_std',
                      'ref_encoder_A',
                      'ref_encoder_B']
-        _datavalues = [30,
+        _datavalues = [90,
                        0,
                        0,
                        0.,
