@@ -1,7 +1,7 @@
 <RCC>
   <qresource prefix="Images">
-    <file>PS_table.png</file>
-    <file>imagens/OpAmp.png</file>
+    <file>imagens/minus.png</file>
+    <file>imagens/OpAmp.jpg</file>
     <file>imagens/LEDverde.png</file>
     <file>imagens/LEDvermelho.png</file>
     <file>imagens/1351619277_plus_64.png</file>
@@ -43,18 +43,16 @@
     <file>imagens/Emergency_Stop_Icon_by_mrd2345.png</file>
     <file>imagens/emergency-button.jpg</file>
     <file>imagens/engine.png</file>
-    <file>imagens/Eq_seno.jpg</file>
-    <file>imagens/Eq_seno_amortecido.jpg</file>
-    <file>imagens/Equação corrente.png</file>
     <file>imagens/face-smile.png</file>
     <file>imagens/FDI2056_front.jpg</file>
     <file>imagens/FDI2056_front_2.png</file>
     <file>imagens/FerramentaAjuste.jpg</file>
     <file>imagens/file_add.png</file>
     <file>imagens/find.png</file>
-    <file>imagens/grafAmortecido.jpg</file>
     <file>imagens/Helmholtz.jpg</file>
     <file>imagens/Helmholtz_vs2.jpg</file>
+    <file>imagens/dsinusoidal.png</file>
+    <file>imagens/sinusoidal.png</file>
     <file>imagens/Helmholtz2.jpg</file>
     <file>imagens/HelmholtzConfig.png</file>
     <file>imagens/ima.ico</file>
@@ -70,9 +68,11 @@
     <file>imagens/move.png</file>
     <file>imagens/off.png</file>
     <file>imagens/on.png</file>
+    <file>imagens/OpAmp.png</file>
     <file>imagens/onda.jpg</file>
     <file>imagens/panic-button.png</file>
     <file>imagens/play1.png</file>
+    <file>imagens/PS_table.png</file>
     <file>imagens/Plot.png</file>
     <file>imagens/plug.PNG</file>
     <file>imagens/Power_Off.png</file>
@@ -88,12 +88,7 @@
     <file>imagens/resource.qrc</file>
     <file>imagens/save.png</file>
     <file>imagens/Send.png</file>
-    <file>imagens/Senoide.jpg</file>
-    <file>imagens/senoide_2.jpg</file>
-    <file>imagens/Senoide_Amortecida_2.jpg</file>
-    <file>imagens/senoide_tempo.JPG</file>
     <file>imagens/settings.png</file>
-    <file>imagens/slide_20.jpg</file>
     <file>imagens/stepper motor.jpg</file>
     <file>imagens/Stepper_motor_4.png</file>
     <file>imagens/stop.png</file>

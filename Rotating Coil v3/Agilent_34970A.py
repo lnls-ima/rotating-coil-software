@@ -9,33 +9,38 @@ Versão 2.0
 import time
 import visa
 
+
 # ******************************************
 # Comunicacao GPIB
 class GPIB(object):
     def __init__(self):
         self.commands()
-        
+
     def commands(self):
-        self.Read_Val =             ':READ?'
-        self.Remote =               ':SYST:REM'
-        self.Local =                ':SYST:LOC'
-        self.Reset =                '*RST'
-        self.Clear =                '*CLS'
-        self.SCAN =                 ':ROUT:SCAN'        # acrescentar no final o channel que deseja scanear, exemplo: 'ROUT:SCAN (@101)'
-        self.MON =                  ':ROUT:MON:CHAN '    # acrescentar no final o channel que deseja APENAS monitorar no display, exemplo: 'ROUT:MON:CHAN (@102)'
-        self.MON_STATE =            ':ROUT:MON:STATE ON'
-        self.ConfgVolt =            ':CONF:VOLT:DC'
-        self.CON =                  ':CONF'
-        self.Volt =                 ':VOLT'
-        self.DC =                   ':DC'
-        self.Conf_Temp =            ':CONF:TEMP FRTD,85,'
-        self.Conf_Volt =            ':CONF:VOLT:DC'
-        self.ConfiguraVolt = [':ROUT:SCAN ',\
-                              ':CONF:VOLT:DC',\
-                              ':CONF:TEMP FRTD,85,',\
+        self.Read_Val = ':READ?'
+        self.Remote = ':SYST:REM'
+        self.Local = ':SYST:LOC'
+        self.Reset = '*RST'
+        self.Clear = '*CLS'
+        # acrescentar no final o channel que deseja scanear
+        # exemplo: 'ROUT:SCAN (@101)'
+        self.SCAN = ':ROUT:SCAN'
+        # acrescentar no final o channel que deseja APENAS monitorar no
+        # display, exemplo: 'ROUT:MON:CHAN (@102)'
+        self.MON = ':ROUT:MON:CHAN '
+        self.MON_STATE = ':ROUT:MON:STATE ON'
+        self.ConfgVolt = ':CONF:VOLT:DC'
+        self.CON = ':CONF'
+        self.Volt = ':VOLT'
+        self.DC = ':DC'
+        self.Conf_Temp = ':CONF:TEMP FRTD,85,'
+        self.Conf_Volt = ':CONF:VOLT:DC'
+        self.ConfiguraVolt = [':ROUT:SCAN ',
+                              ':CONF:VOLT:DC',
+                              ':CONF:TEMP FRTD,85,',
                               ':ROUT:MON:STATE ON']
-        
-    def connect(self,address):
+
+    def connect(self, address):
         try:
             aux = 'GPIB0::'+str(address)+'::INSTR'
             rm = visa.ResourceManager()
@@ -44,7 +49,7 @@ class GPIB(object):
             return True
         except:
             return False
-    
+
     def disconnect(self):
         try:
             self.inst.close()
@@ -52,7 +57,7 @@ class GPIB(object):
         except:
             return False
 
-    def send(self,command):
+    def send(self, command):
         try:
             self.inst.write(command)
             return True
@@ -75,7 +80,7 @@ class GPIB(object):
             return True
         except:
             return False
-    
+
     def config_temp_volt(self):
         try:
             self.send(self.Clear)
@@ -88,7 +93,7 @@ class GPIB(object):
             return True
         except:
             return False
-        
+
     def read_temp_volt(self, wait=0.5):
         self.send(':READ?')
         time.sleep(wait)
@@ -96,13 +101,13 @@ class GPIB(object):
         for i in range(len(_ans)):
             _ans[i] = float(_ans[i])
         return _ans
-        
+
     def config_temp(self, channel=101):
         try:
             self.send(self.Clear)
             self.send(self.Reset)
-            _cmd = self.Conf_Temp + ' (@' + str(channel) + '); ' +\
-                   self.SCAN + ' (@' + str(channel) + ')'
+            _cmd = (self.Conf_Temp + ' (@' + str(channel) + '); ' +
+                    self.SCAN + ' (@' + str(channel) + ')')
             self.send(_cmd)
             return True
         except:
@@ -126,8 +131,8 @@ class GPIB(object):
         try:
             self.send(self.Clear)
             self.send(self.Reset)
-            _cmd = self.Conf_Volt + ' (@' + str(channel) + '); ' +\
-                   self.SCAN + ' (@' + str(channel) + ')'
+            _cmd = (self.Conf_Volt + ' (@' + str(channel) + '); ' +
+                    self.SCAN + ' (@' + str(channel) + ')')
             self.send(_cmd)
             return True
         except:
@@ -147,8 +152,8 @@ class GPIB(object):
         time.sleep(0.85)
         _ans = self.read()
         return _ans
-       
-    def scan(self,channel):               
+
+    def scan(self, channel):
         try:
             string = str(channel)
             value = self.SCAN + '(@10'+string+')'
@@ -165,5 +170,3 @@ class GPIB(object):
             return True
         except:
             return False
-
-    

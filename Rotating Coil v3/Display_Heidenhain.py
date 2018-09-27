@@ -10,66 +10,106 @@ import time
 import serial
 # ******************************************
 
+
 class SerialCom(object):
-    def __init__(self,port,model='ND-760'):
+    def __init__(self, port, model='ND-760'):
         self.model = model
         self.ser = serial.Serial(port)
         self.commands()
 
     def commands(self):
-        self.Converte_metros_mm   = 1000 #
+        self.Converte_metros_mm = 1000
 
-        self.Zero0      = '\x1bT0000\r' # {Tecla 0}
-        self.One1       = '\x1bT0001\r' # {Tecla 1}
-        self.Two2       = '\x1bT0002\r' # {Tecla 2}
-        self.Three3     = '\x1bT0003\r' # {Tecla 3}
-        self.Four4      = '\x1bT0004\r' # {Tecla 4}
-        self.Five5      = '\x1bT0005\r' # {Tecla 5}
-        self.Six6       = '\x1bT0006\r' # {Tecla 6}
-        self.Seven7     = '\x1bT0007\r' # {Tecla 7}
-        self.Eight8     = '\x1bT0008\r' # {Tecla 8}
-        self.Nine9      = '\x1bT0009\r' # {Tecla 9}
-        self.CL         = '\x1bT0100\r' # {Tecla CL}
-        self.Minus      = '\x1bT0101\r' # {Tecla -}
-        self.Point      = '\x1bT0102\r' # {Tecla .}
-        self.Ent        = '\x1bT0104\r' # {Tecla Ent}
-        self.Axis12     = '\x1bT0107\r' # {Tecla 1/2}
-        self.AxisX      = '\x1bT0109\r' # {Tecla X}
-        self.AxisY      = '\x1bT0110\r' # {Tecla Y}
-        self.AxisZ      = '\x1bT0111\r' # {Tecla Z}
-        self.Spec       = '\x1bT0129\r' # {Tecla Spec Fct}
-        self.Rpn        = '\x1bT0142\r' # {Tecla R+/-}
+        # {Tecla 0}
+        self.Zero0 = '\x1bT0000\r'
+        # {Tecla 1}
+        self.One1 = '\x1bT0001\r'
+        # {Tecla 2}
+        self.Two2 = '\x1bT0002\r'
+        # {Tecla 3}
+        self.Three3 = '\x1bT0003\r'
+        # {Tecla 4}
+        self.Four4 = '\x1bT0004\r'
+        # {Tecla 5}
+        self.Five5 = '\x1bT0005\r'
+        # {Tecla 6}
+        self.Six6 = '\x1bT0006\r'
+        # {Tecla 7}
+        self.Seven7 = '\x1bT0007\r'
+        # {Tecla 8}
+        self.Eight8 = '\x1bT0008\r'
+        # {Tecla 9}
+        self.Nine9 = '\x1bT0009\r'
+        # {Tecla CL}
+        self.CL = '\x1bT0100\r'
+        # {Tecla -}
+        self.Minus = '\x1bT0101\r'
+        # {Tecla .}
+        self.Point = '\x1bT0102\r'
+        # {Tecla Ent}
+        self.Ent = '\x1bT0104\r'
+        # {Tecla 1/2}
+        self.Axis12 = '\x1bT0107\r'
+        # {Tecla X}
+        self.AxisX = '\x1bT0109\r'
+        # {Tecla Y}
+        self.AxisY = '\x1bT0110\r'
+        # {Tecla Z}
+        self.AxisZ = '\x1bT0111\r'
+        # {Tecla Spec Fct}
+        self.Spec = '\x1bT0129\r'
+        # {Tecla R+/-}
+        self.Rpn = '\x1bT0142\r'
 
-        self.CEZero0    = '\x1bT1000\r' # {Tecla CE+0}
-        self.CEOne1     = '\x1bT1001\r' # {Tecla CE+1}
-        self.CETwo2     = '\x1bT1002\r' # {Tecla CE+2}
-        self.CEThree3   = '\x1bT1003\r' # {Tecla CE+3}
-        self.CEFour4    = '\x1bT1004\r' # {Tecla CE+4}
-        self.CEFive5    = '\x1bT1005\r' # {Tecla CE+5}
-        self.CESix6     = '\x1bT1006\r' # {Tecla CE+6}
-        self.CESeven7   = '\x1bT1007\r' # {Tecla CE+7}
-        self.CEEight8   = '\x1bT1008\r' # {Tecla CE+8}
-        self.CENine9    = '\x1bT1009\r' # {Tecla CE+9}
+        # {Tecla CE+0}
+        self.CEZero0 = '\x1bT1000\r'
+        # {Tecla CE+1}
+        self.CEOne1 = '\x1bT1001\r'
+        # {Tecla CE+2}
+        self.CETwo2 = '\x1bT1002\r'
+        # {Tecla CE+3}
+        self.CEThree3 = '\x1bT1003\r'
+        # {Tecla CE+4}
+        self.CEFour4 = '\x1bT1004\r'
+        # {Tecla CE+5}
+        self.CEFive5 = '\x1bT1005\r'
+        # {Tecla CE+6}
+        self.CESix6 = '\x1bT1006\r'
+        # {Tecla CE+7}
+        self.CESeven7 = '\x1bT1007\r'
+        # {Tecla CE+8}
+        self.CEEight8 = '\x1bT1008\r'
+        # {Tecla CE+9}
+        self.CENine9 = '\x1bT1009\r'
 
-        self.Out_Model  = '\x1bA0000\r' # {Output of model designation}
-        self.Segm       = '\x1bA0100\r' # {Output of 14-segment display}
-        self.Value      = '\x1bA0200\r' # {Output of current value}
-        self.Error      = '\x1bA0301\r' # {Output of error text}
-        self.Soft       = '\x1bA0400\r' # {Output of software number}
-        self.Ind        = '\x1bA0900\r' # {Output of indicators}
+        # {Output of model designation}
+        self.Out_Model = '\x1bA0000\r'
+        # {Output of 14-segment display}
+        self.Segm = '\x1bA0100\r'
+        # {Output of current value}
+        self.Value = '\x1bA0200\r'
+        # {Output of error text}
+        self.Error = '\x1bA0301\r'
+        # {Output of software number}
+        self.Soft = '\x1bA0400\r'
+        # {Output of indicators}
+        self.Ind = '\x1bA0900\r'
 
-        self.Resetcounter = '\x1bS0000\r' # {Counter RESET}
-        self.Lock       = '\x1bS0001\r' # {Lock keyboard}
-        self.Unlock     = '\x1bS0002\r' # {Unlock keyboard}
+        # {Counter RESET}
+        self.Resetcounter = '\x1bS0000\r'
+        # {Lock keyboard}
+        self.Lock = '\x1bS0001\r'
+        # {Unlock keyboard}
+        self.Unlock = '\x1bS0002\r'
 
         # Variável de reading
-        self.DisplayPos = (0,0,0)
+        self.DisplayPos = (0, 0, 0)
 #         self.X = 0
 #         self.Y = 0
 #         self.Z = 0
 #         self.Volume = 0
 
-    def connect(self,baudrate=9600,timeout=0.5):
+    def connect(self, baudrate=9600, timeout=0.5):
         self.ser.baudrate = baudrate
         self.ser.bytesize = serial.SEVENBITS
         self.ser.stopbits = serial.STOPBITS_TWO
@@ -85,7 +125,7 @@ class SerialCom(object):
         self.ser.flushInput()
         self.ser.flushOutput()
 
-    def write_display_value(self,axis,value):
+    def write_display_value(self, axis, value):
         # Converte para string
         aux = str(abs(value))
         nchar = len(aux)
@@ -140,7 +180,7 @@ class SerialCom(object):
         # Enter
         self.ser.write(self.Ent.encode('utf-8'))
 
-    def send_key(self,key):
+    def send_key(self, key):
         try:
             self.ser.write(key.encode('utf-8'))
             time.sleep(0.1)
@@ -153,8 +193,8 @@ class SerialCom(object):
         if self.model == 'ND-760':
             self.readdisplay_ND760()
         else:
-            self.readdisplay_ND780()            
-            
+            self.readdisplay_ND780()
+
     def readdisplay_ND760(self):
         try:
             adjust = self.Value
@@ -182,8 +222,8 @@ class SerialCom(object):
             reading2 = 0
             reading3 = 0
 
-        self.DisplayPos = (reading1,reading2,reading3)
-        
+        self.DisplayPos = (reading1, reading2, reading3)
+
     def readdisplay_ND780(self):
         try:
             adjust = self.Value
@@ -191,32 +231,32 @@ class SerialCom(object):
             self.ser.write(adjust.encode('utf-8'))
             time.sleep(0.3)
             reading = self.ser.read(60)
-            
+
             reading = reading.decode('utf-8')
             aux1 = reading[reading.find('A=')+2:reading.find(' R\r\n')]
-            aux1 = aux1.replace(' ','')
+            aux1 = aux1.replace(' ', '')
 
             reading = reading[reading.find('R\r\n')+3:]
             aux2 = reading[reading.find('B=')+2:reading.find(' R\r\n')]
-            aux2 = aux2.replace(' ','')
+            aux2 = aux2.replace(' ', '')
 
             self.X = float(aux1)
             self.Y = float(aux2)
-                    
+
             #Converte para float
-            self.DisplayPos = [self.X,self.Y]
+            self.DisplayPos = [self.X, self.Y]
 
             return True
         except:
             return False
 
-    def cleanstring(self,reading):
-        reading = reading.replace('\'','')
-        reading = reading.replace('\\x82','')
-        reading = reading.replace('\\x8d','')
-        reading = reading.replace('\\','')
-        reading = reading.replace('xb','')
-        reading = reading.replace('b','')
+    def cleanstring(self, reading):
+        reading = reading.replace('\'', '')
+        reading = reading.replace('\\x82', '')
+        reading = reading.replace('\\x8d', '')
+        reading = reading.replace('\\', '')
+        reading = reading.replace('xb', '')
+        reading = reading.replace('b', '')
         return reading
 
     def reset_setref(self):

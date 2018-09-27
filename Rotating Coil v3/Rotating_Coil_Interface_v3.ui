@@ -1036,7 +1036,7 @@
         <rect>
          <x>20</x>
          <y>30</y>
-         <width>363</width>
+         <width>388</width>
          <height>251</height>
         </rect>
        </property>
@@ -2517,7 +2517,7 @@ p, li { white-space: pre-wrap; }
        </property>
        <widget class="QWidget" name="tab_2">
         <attribute name="title">
-         <string>Options</string>
+         <string>Settings</string>
         </attribute>
         <widget class="QTextBrowser" name="textBrowser">
          <property name="enabled">
@@ -3084,7 +3084,7 @@ p, li { white-space: pre-wrap; }
             <x>100</x>
             <y>30</y>
             <width>113</width>
-            <height>251</height>
+            <height>281</height>
            </rect>
           </property>
           <property name="rowCount">
@@ -3106,51 +3106,89 @@ p, li { white-space: pre-wrap; }
            </property>
           </column>
          </widget>
-         <widget class="QPushButton" name="pb_rows_auto">
+         <widget class="QWidget" name="layoutWidget">
           <property name="geometry">
            <rect>
-            <x>70</x>
-            <y>290</y>
-            <width>101</width>
-            <height>31</height>
+            <x>20</x>
+            <y>320</y>
+            <width>292</width>
+            <height>33</height>
            </rect>
           </property>
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Add Row</string>
-          </property>
-          <property name="icon">
-           <iconset resource="resource_file.qrc">
-            <normaloff>:/Images/imagens/1351619277_plus_64.png</normaloff>:/Images/imagens/1351619277_plus_64.png</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>14</width>
-            <height>14</height>
-           </size>
-          </property>
-         </widget>
-         <widget class="QPushButton" name="pb_clear_table">
-          <property name="geometry">
-           <rect>
-            <x>180</x>
-            <y>290</y>
-            <width>51</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Clear</string>
-          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QPushButton" name="pb_add_row">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>31</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Add Row</string>
+             </property>
+             <property name="icon">
+              <iconset resource="resource_file.qrc">
+               <normaloff>:/Images/imagens/1351619277_plus_64.png</normaloff>:/Images/imagens/1351619277_plus_64.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>14</width>
+               <height>14</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pb_remove_row">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>31</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Remove Row</string>
+             </property>
+             <property name="icon">
+              <iconset resource="resource_file.qrc">
+               <normaloff>:/Images/imagens/minus.png</normaloff>:/Images/imagens/minus.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pb_clear_table">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>31</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Clear</string>
+             </property>
+             <property name="icon">
+              <iconset resource="resource_file.qrc">
+               <normaloff>:/Images/imagens/botao_limpar.png</normaloff>:/Images/imagens/botao_limpar.png</iconset>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </widget>
        </widget>
@@ -3158,7 +3196,7 @@ p, li { white-space: pre-wrap; }
         <attribute name="title">
          <string>Demagnetization Curves</string>
         </attribute>
-        <widget class="QPushButton" name="pb_cycle">
+        <widget class="QPushButton" name="pb_cicle">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -3171,7 +3209,7 @@ p, li { white-space: pre-wrap; }
           </rect>
          </property>
          <property name="text">
-          <string>Cycle</string>
+          <string>Cicle</string>
          </property>
          <property name="icon">
           <iconset resource="resource_file.qrc">
@@ -3223,7 +3261,7 @@ p, li { white-space: pre-wrap; }
           </rect>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="tab_13">
           <attribute name="title">
@@ -3232,9 +3270,9 @@ p, li { white-space: pre-wrap; }
           <widget class="QGroupBox" name="groupBox_17">
            <property name="geometry">
             <rect>
-             <x>410</x>
+             <x>469</x>
              <y>50</y>
-             <width>290</width>
+             <width>231</width>
              <height>219</height>
             </rect>
            </property>
@@ -3245,7 +3283,7 @@ p, li { white-space: pre-wrap; }
             <item row="0" column="0">
              <widget class="QLabel" name="label_91">
               <property name="text">
-               <string>Amplitude</string>
+               <string>Amplitude (A)</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -3262,14 +3300,14 @@ p, li { white-space: pre-wrap; }
             <item row="0" column="2">
              <widget class="QLabel" name="label_94">
               <property name="text">
-               <string>A </string>
+               <string>I</string>
               </property>
              </widget>
             </item>
             <item row="1" column="0">
              <widget class="QLabel" name="label_114">
               <property name="text">
-               <string>Offset</string>
+               <string>Offset (B)</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -3286,7 +3324,7 @@ p, li { white-space: pre-wrap; }
             <item row="1" column="2">
              <widget class="QLabel" name="label_113">
               <property name="text">
-               <string>A</string>
+               <string>I</string>
               </property>
              </widget>
             </item>
@@ -3317,7 +3355,7 @@ p, li { white-space: pre-wrap; }
             <item row="3" column="0">
              <widget class="QLabel" name="label_117">
               <property name="text">
-               <string># of Cycles</string>
+               <string># of Cicles</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -3325,7 +3363,7 @@ p, li { white-space: pre-wrap; }
              </widget>
             </item>
             <item row="3" column="1">
-             <widget class="QLineEdit" name="le_Sinusoidal_n_cycles">
+             <widget class="QLineEdit" name="le_Sinusoidal_n_cicles">
               <property name="text">
                <string>0</string>
               </property>
@@ -3334,7 +3372,7 @@ p, li { white-space: pre-wrap; }
             <item row="3" column="2">
              <widget class="QLabel" name="label_123">
               <property name="text">
-               <string>unid</string>
+               <string/>
               </property>
              </widget>
             </item>
@@ -3392,35 +3430,16 @@ p, li { white-space: pre-wrap; }
            <property name="geometry">
             <rect>
              <x>10</x>
-             <y>30</y>
-             <width>381</width>
-             <height>231</height>
+             <y>10</y>
+             <width>451</width>
+             <height>311</height>
             </rect>
            </property>
            <property name="text">
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="resource_file.qrc">:/Images/imagens/senoide_tempo.JPG</pixmap>
-           </property>
-           <property name="scaledContents">
-            <bool>true</bool>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_70">
-           <property name="geometry">
-            <rect>
-             <x>50</x>
-             <y>260</y>
-             <width>301</width>
-             <height>61</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="pixmap">
-            <pixmap resource="resource_file.qrc">:/Images/imagens/Eq_seno.jpg</pixmap>
+            <pixmap resource="resource_file.qrc">:/Images/imagens/sinusoidal.png</pixmap>
            </property>
            <property name="scaledContents">
             <bool>true</bool>
@@ -3435,16 +3454,16 @@ p, li { white-space: pre-wrap; }
            <property name="geometry">
             <rect>
              <x>10</x>
-             <y>30</y>
-             <width>401</width>
-             <height>231</height>
+             <y>10</y>
+             <width>461</width>
+             <height>311</height>
             </rect>
            </property>
            <property name="text">
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="resource_file.qrc">:/Images/imagens/Senoide_Amortecida_2.jpg</pixmap>
+            <pixmap resource="resource_file.qrc">:/Images/imagens/dsinusoidal.png</pixmap>
            </property>
            <property name="scaledContents">
             <bool>true</bool>
@@ -3453,349 +3472,279 @@ p, li { white-space: pre-wrap; }
           <widget class="QGroupBox" name="groupBox_19">
            <property name="geometry">
             <rect>
-             <x>420</x>
+             <x>480</x>
              <y>10</y>
-             <width>291</width>
+             <width>231</width>
              <height>301</height>
             </rect>
            </property>
            <property name="title">
             <string>Settings</string>
            </property>
-           <widget class="QLineEdit" name="le_damp_sin_Ampl">
-            <property name="geometry">
-             <rect>
-              <x>170</x>
-              <y>20</y>
-              <width>71</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>0.0</string>
-            </property>
-           </widget>
-           <widget class="QLineEdit" name="le_damp_sin_Offset">
-            <property name="geometry">
-             <rect>
-              <x>170</x>
-              <y>60</y>
-              <width>71</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>0.0</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_92">
+           <widget class="QWidget" name="layoutWidget">
             <property name="geometry">
              <rect>
               <x>0</x>
               <y>20</y>
-              <width>161</width>
-              <height>31</height>
+              <width>231</width>
+              <height>281</height>
              </rect>
             </property>
-            <property name="text">
-             <string>Amplitude</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
+            <layout class="QGridLayout" name="gridLayout_15">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_92">
+               <property name="text">
+                <string>Amplitude (A)</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="le_damp_sin_Ampl">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0.0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QLabel" name="label_100">
+               <property name="text">
+                <string>I</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_122">
+               <property name="text">
+                <string>Offset (B)</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="le_damp_sin_Offset">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0.0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QLabel" name="label_120">
+               <property name="text">
+                <string>I</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_146">
+               <property name="text">
+                <string>Frequency (F)</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLineEdit" name="le_damp_sin_Freq">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0.0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="2">
+              <widget class="QLabel" name="label_144">
+               <property name="text">
+                <string>Hz</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_149">
+               <property name="text">
+                <string># of Cicles</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLineEdit" name="le_damp_sin_nCicles">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="2">
+              <widget class="QLabel" name="label_148">
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="label_95">
+               <property name="text">
+                <string>Phase  (ϴ)</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QLineEdit" name="le_damp_sin_phaseShift">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0.0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="2">
+              <widget class="QLabel" name="label_143">
+               <property name="text">
+                <string>º</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="0">
+              <widget class="QLabel" name="label_147">
+               <property name="text">
+                <string>Final Phase</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="1">
+              <widget class="QLineEdit" name="le_damp_sin_finalPhase">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0.0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="2">
+              <widget class="QLabel" name="label_145">
+               <property name="text">
+                <string>º</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="0">
+              <widget class="QLabel" name="label_105">
+               <property name="text">
+                <string>Damping (τ)</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="1">
+              <widget class="QLineEdit" name="le_damp_sin_Damping">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0.0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="2">
+              <widget class="QLabel" name="label_150">
+               <property name="text">
+                <string>s</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
-           <widget class="QLabel" name="label_95">
-            <property name="geometry">
-             <rect>
-              <x>0</x>
-              <y>180</y>
-              <width>161</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Phase shift  (ϴ)</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_100">
-            <property name="geometry">
-             <rect>
-              <x>250</x>
-              <y>20</y>
-              <width>41</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>A </string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_120">
-            <property name="geometry">
-             <rect>
-              <x>250</x>
-              <y>60</y>
-              <width>21</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>A</string>
-            </property>
-           </widget>
-           <widget class="QLineEdit" name="le_damp_sin_phaseShift">
-            <property name="geometry">
-             <rect>
-              <x>170</x>
-              <y>180</y>
-              <width>71</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>0.0</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_122">
-            <property name="geometry">
-             <rect>
-              <x>0</x>
-              <y>60</y>
-              <width>161</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Offset</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_143">
-            <property name="geometry">
-             <rect>
-              <x>250</x>
-              <y>180</y>
-              <width>21</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>º</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_144">
-            <property name="geometry">
-             <rect>
-              <x>250</x>
-              <y>100</y>
-              <width>31</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Hz</string>
-            </property>
-           </widget>
-           <widget class="QLineEdit" name="le_damp_sin_Freq">
-            <property name="geometry">
-             <rect>
-              <x>170</x>
-              <y>100</y>
-              <width>71</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>0.0</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_145">
-            <property name="geometry">
-             <rect>
-              <x>250</x>
-              <y>220</y>
-              <width>21</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>º</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_146">
-            <property name="geometry">
-             <rect>
-              <x>0</x>
-              <y>100</y>
-              <width>161</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Frequency (F)</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_147">
-            <property name="geometry">
-             <rect>
-              <x>20</x>
-              <y>220</y>
-              <width>141</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Phase final position</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-           <widget class="QLineEdit" name="le_damp_sin_finalPhase">
-            <property name="geometry">
-             <rect>
-              <x>170</x>
-              <y>220</y>
-              <width>71</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>0.0</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_148">
-            <property name="geometry">
-             <rect>
-              <x>250</x>
-              <y>140</y>
-              <width>41</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>unid</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_149">
-            <property name="geometry">
-             <rect>
-              <x>0</x>
-              <y>140</y>
-              <width>161</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string># of Cycles</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-           <widget class="QLineEdit" name="le_damp_sin_nCycles">
-            <property name="geometry">
-             <rect>
-              <x>170</x>
-              <y>140</y>
-              <width>71</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>0</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_150">
-            <property name="geometry">
-             <rect>
-              <x>250</x>
-              <y>260</y>
-              <width>21</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>s</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_105">
-            <property name="geometry">
-             <rect>
-              <x>30</x>
-              <y>260</y>
-              <width>111</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Damping</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-           <widget class="QLineEdit" name="le_damp_sin_Damping">
-            <property name="geometry">
-             <rect>
-              <x>170</x>
-              <y>260</y>
-              <width>71</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>0.0</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_107">
-            <property name="geometry">
-             <rect>
-              <x>140</x>
-              <y>260</y>
-              <width>21</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font>
-              <family>Symbol</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>(t)</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </widget>
-          <widget class="QLabel" name="label_71">
-           <property name="geometry">
-            <rect>
-             <x>60</x>
-             <y>260</y>
-             <width>321</width>
-             <height>61</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="pixmap">
-            <pixmap resource="resource_file.qrc">:/Images/imagens/Eq_seno_amortecido.jpg</pixmap>
-           </property>
-           <property name="scaledContents">
-            <bool>true</bool>
-           </property>
           </widget>
          </widget>
         </widget>
@@ -3804,7 +3753,7 @@ p, li { white-space: pre-wrap; }
         <attribute name="title">
          <string>Secondary Power Supply</string>
         </attribute>
-        <widget class="QLineEdit" name="le_PS_Name_2">
+        <widget class="QLineEdit" name="le_ps_name_2">
          <property name="geometry">
           <rect>
            <x>50</x>
@@ -3814,7 +3763,7 @@ p, li { white-space: pre-wrap; }
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_save_PS_2">
+        <widget class="QPushButton" name="pb_save_ps_2">
          <property name="geometry">
           <rect>
            <x>600</x>
@@ -3837,7 +3786,7 @@ p, li { white-space: pre-wrap; }
           </size>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_load_PS_2">
+        <widget class="QPushButton" name="pb_load_ps_2">
          <property name="geometry">
           <rect>
            <x>440</x>
@@ -3884,7 +3833,7 @@ p, li { white-space: pre-wrap; }
          </property>
          <widget class="QWidget" name="tab_17">
           <attribute name="title">
-           <string>Options</string>
+           <string>Settings</string>
           </attribute>
           <widget class="QGroupBox" name="groupBox_9">
            <property name="geometry">
@@ -3902,14 +3851,14 @@ p, li { white-space: pre-wrap; }
             </font>
            </property>
            <property name="title">
-            <string>General Aspects</string>
+            <string>General Settings</string>
            </property>
            <widget class="QLabel" name="label_38">
             <property name="geometry">
              <rect>
-              <x>10</x>
-              <y>40</y>
-              <width>121</width>
+              <x>2</x>
+              <y>41</y>
+              <width>131</width>
               <height>21</height>
              </rect>
             </property>
@@ -3928,7 +3877,7 @@ p, li { white-space: pre-wrap; }
             <property name="geometry">
              <rect>
               <x>10</x>
-              <y>100</y>
+              <y>160</y>
               <width>113</width>
               <height>16</height>
              </rect>
@@ -3948,7 +3897,7 @@ p, li { white-space: pre-wrap; }
            <widget class="QComboBox" name="cb_ps_type_2">
             <property name="geometry">
              <rect>
-              <x>130</x>
+              <x>133</x>
               <y>41</y>
               <width>81</width>
               <height>25</height>
@@ -3979,7 +3928,7 @@ p, li { white-space: pre-wrap; }
             <property name="geometry">
              <rect>
               <x>130</x>
-              <y>100</y>
+              <y>160</y>
               <width>21</width>
               <height>21</height>
              </rect>
@@ -4005,8 +3954,8 @@ p, li { white-space: pre-wrap; }
            <widget class="QPushButton" name="pb_reset_inter_2">
             <property name="geometry">
              <rect>
-              <x>50</x>
-              <y>180</y>
+              <x>60</x>
+              <y>200</y>
               <width>101</width>
               <height>31</height>
              </rect>
@@ -4024,7 +3973,7 @@ p, li { white-space: pre-wrap; }
             <property name="geometry">
              <rect>
               <x>110</x>
-              <y>90</y>
+              <y>150</y>
               <width>61</width>
               <height>41</height>
              </rect>
@@ -4033,24 +3982,105 @@ p, li { white-space: pre-wrap; }
              <string/>
             </property>
            </widget>
-          </widget>
-          <widget class="QGroupBox" name="groupBox_12">
-           <property name="geometry">
-            <rect>
-             <x>260</x>
-             <y>20</y>
-             <width>251</width>
-             <height>141</height>
-            </rect>
-           </property>
-           <property name="title">
-            <string>Current Limits</string>
-           </property>
+           <widget class="QLabel" name="label_142">
+            <property name="geometry">
+             <rect>
+              <x>-8</x>
+              <y>110</y>
+              <width>131</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+              <weight>50</weight>
+              <bold>false</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Minimum Current:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+           <widget class="QLineEdit" name="le_maximum_current_2">
+            <property name="geometry">
+             <rect>
+              <x>132</x>
+              <y>80</y>
+              <width>71</width>
+              <height>21</height>
+             </rect>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>0.0</string>
+            </property>
+           </widget>
+           <widget class="QLineEdit" name="le_minimum_current_2">
+            <property name="geometry">
+             <rect>
+              <x>130</x>
+              <y>120</y>
+              <width>71</width>
+              <height>21</height>
+             </rect>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>0.0</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_128">
+            <property name="geometry">
+             <rect>
+              <x>-5</x>
+              <y>70</y>
+              <width>131</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+              <weight>50</weight>
+              <bold>false</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Maximum Current:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
            <widget class="QLabel" name="label_134">
             <property name="geometry">
              <rect>
-              <x>220</x>
-              <y>70</y>
+              <x>210</x>
+              <y>110</y>
               <width>21</width>
               <height>41</height>
              </rect>
@@ -4069,8 +4099,8 @@ p, li { white-space: pre-wrap; }
            <widget class="QLabel" name="label_140">
             <property name="geometry">
              <rect>
-              <x>220</x>
-              <y>30</y>
+              <x>210</x>
+              <y>70</y>
               <width>21</width>
               <height>41</height>
              </rect>
@@ -4086,96 +4116,14 @@ p, li { white-space: pre-wrap; }
              <string>A</string>
             </property>
            </widget>
-           <widget class="QLabel" name="label_142">
-            <property name="geometry">
-             <rect>
-              <x>-15</x>
-              <y>70</y>
-              <width>131</width>
-              <height>41</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>10</pointsize>
-              <weight>50</weight>
-              <bold>false</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Minimum Current</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-           <widget class="QLineEdit" name="le_minimum_current_2">
-            <property name="geometry">
-             <rect>
-              <x>135</x>
-              <y>80</y>
-              <width>81</width>
-              <height>21</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>10</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>0.0</string>
-            </property>
-           </widget>
-           <widget class="QLineEdit" name="le_maximum_current_2">
-            <property name="geometry">
-             <rect>
-              <x>135</x>
-              <y>40</y>
-              <width>81</width>
-              <height>21</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>10</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>0.0</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_128">
-            <property name="geometry">
-             <rect>
-              <x>-15</x>
-              <y>30</y>
-              <width>131</width>
-              <height>41</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>10</pointsize>
-              <weight>50</weight>
-              <bold>false</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Maximum Current</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
           </widget>
           <widget class="QGroupBox" name="gb_start_supply_2">
            <property name="enabled">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
            <property name="geometry">
             <rect>
-             <x>520</x>
+             <x>270</x>
              <y>20</y>
              <width>201</width>
              <height>141</height>
@@ -4185,6 +4133,9 @@ p, li { white-space: pre-wrap; }
             <string>Start Secondary PS</string>
            </property>
            <widget class="QLineEdit" name="le_status_loop_2">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="geometry">
              <rect>
               <x>90</x>
@@ -4210,14 +4161,14 @@ p, li { white-space: pre-wrap; }
              <bool>true</bool>
             </property>
            </widget>
-           <widget class="QPushButton" name="pb_PS_button_2">
+           <widget class="QPushButton" name="pb_ps_button_2">
             <property name="enabled">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
             <property name="geometry">
              <rect>
               <x>30</x>
-              <y>30</y>
+              <y>34</y>
               <width>141</width>
               <height>41</height>
              </rect>
@@ -4248,6 +4199,9 @@ p, li { white-space: pre-wrap; }
             </property>
            </widget>
            <widget class="QLabel" name="label_37">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="geometry">
              <rect>
               <x>30</x>
@@ -4272,8 +4226,8 @@ Loop:</string>
           <widget class="QPushButton" name="pb_config_ps_2">
            <property name="geometry">
             <rect>
-             <x>410</x>
-             <y>200</y>
+             <x>80</x>
+             <y>280</y>
              <width>131</width>
              <height>41</height>
             </rect>
@@ -4285,6 +4239,122 @@ Loop:</string>
             <iconset resource="resource_file.qrc">
              <normaloff>:/Images/imagens/settings.png</normaloff>:/Images/imagens/settings.png</iconset>
            </property>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_12">
+           <property name="geometry">
+            <rect>
+             <x>480</x>
+             <y>20</y>
+             <width>251</width>
+             <height>271</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>Monitor</string>
+           </property>
+           <widget class="QGroupBox" name="groupBox_35">
+            <property name="geometry">
+             <rect>
+              <x>60</x>
+              <y>30</y>
+              <width>121</width>
+              <height>71</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="title">
+             <string>PS Type</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_17">
+             <item row="0" column="0">
+              <widget class="QLineEdit" name="le_ps_type_cfg_2">
+               <property name="readOnly">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QLabel" name="label_165">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="geometry">
+             <rect>
+              <x>220</x>
+              <y>130</y>
+              <width>20</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>18</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>A</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_172">
+            <property name="geometry">
+             <rect>
+              <x>20</x>
+              <y>180</y>
+              <width>201</width>
+              <height>21</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Power Supply Reading</string>
+            </property>
+           </widget>
+           <widget class="QLCDNumber" name="lcd_ps_reading_2">
+            <property name="geometry">
+             <rect>
+              <x>19</x>
+              <y>124</y>
+              <width>190</width>
+              <height>51</height>
+             </rect>
+            </property>
+            <property name="digitCount">
+             <number>10</number>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="pb_refresh_2">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="geometry">
+             <rect>
+              <x>60</x>
+              <y>224</y>
+              <width>141</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Refresh</string>
+            </property>
+            <property name="icon">
+             <iconset resource="resource_file.qrc">
+              <normaloff>:/Images/imagens/1351621535_Refresh.png</normaloff>:/Images/imagens/1351621535_Refresh.png</iconset>
+            </property>
+           </widget>
           </widget>
          </widget>
          <widget class="QWidget" name="tab_19">
@@ -4405,51 +4475,89 @@ Loop:</string>
              </property>
             </column>
            </widget>
-           <widget class="QPushButton" name="pb_rows_auto_2">
+           <widget class="QWidget" name="layoutWidget">
             <property name="geometry">
              <rect>
-              <x>70</x>
+              <x>20</x>
               <y>260</y>
-              <width>101</width>
-              <height>31</height>
+              <width>292</width>
+              <height>33</height>
              </rect>
             </property>
-            <property name="font">
-             <font>
-              <pointsize>10</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>Add Row</string>
-            </property>
-            <property name="icon">
-             <iconset resource="resource_file.qrc">
-              <normaloff>:/Images/imagens/1351619277_plus_64.png</normaloff>:/Images/imagens/1351619277_plus_64.png</iconset>
-            </property>
-            <property name="iconSize">
-             <size>
-              <width>14</width>
-              <height>14</height>
-             </size>
-            </property>
-           </widget>
-           <widget class="QPushButton" name="pb_clear_table_2">
-            <property name="geometry">
-             <rect>
-              <x>180</x>
-              <y>260</y>
-              <width>61</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>10</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>Clear</string>
-            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
+              <widget class="QPushButton" name="pb_add_row_2">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>31</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Add Row</string>
+               </property>
+               <property name="icon">
+                <iconset resource="resource_file.qrc">
+                 <normaloff>:/Images/imagens/1351619277_plus_64.png</normaloff>:/Images/imagens/1351619277_plus_64.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>14</width>
+                 <height>14</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pb_remove_row_2">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>31</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Remove Row</string>
+               </property>
+               <property name="icon">
+                <iconset resource="resource_file.qrc">
+                 <normaloff>:/Images/imagens/minus.png</normaloff>:/Images/imagens/minus.png</iconset>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pb_clear_table_2">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>31</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Clear</string>
+               </property>
+               <property name="icon">
+                <iconset resource="resource_file.qrc">
+                 <normaloff>:/Images/imagens/botao_limpar.png</normaloff>:/Images/imagens/botao_limpar.png</iconset>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
           </widget>
          </widget>
@@ -4463,8 +4571,8 @@ Loop:</string>
            </property>
            <property name="geometry">
             <rect>
-             <x>410</x>
-             <y>110</y>
+             <x>90</x>
+             <y>290</y>
              <width>91</width>
              <height>31</height>
             </rect>
@@ -4483,20 +4591,20 @@ Loop:</string>
             </size>
            </property>
           </widget>
-          <widget class="QPushButton" name="pb_cycle_2">
+          <widget class="QPushButton" name="pb_cicle_2">
            <property name="enabled">
             <bool>false</bool>
            </property>
            <property name="geometry">
             <rect>
-             <x>520</x>
-             <y>110</y>
+             <x>200</x>
+             <y>290</y>
              <width>91</width>
              <height>31</height>
             </rect>
            </property>
            <property name="text">
-            <string>Cycle</string>
+            <string>Cicle</string>
            </property>
            <property name="icon">
             <iconset resource="resource_file.qrc">
@@ -4512,330 +4620,424 @@ Loop:</string>
           <widget class="QGroupBox" name="groupBox_23">
            <property name="geometry">
             <rect>
-             <x>10</x>
-             <y>20</y>
-             <width>291</width>
+             <x>470</x>
+             <y>10</y>
+             <width>261</width>
              <height>301</height>
             </rect>
            </property>
            <property name="title">
             <string>Settings</string>
            </property>
-           <widget class="QLineEdit" name="le_damp_sin_Ampl_2">
-            <property name="geometry">
-             <rect>
-              <x>170</x>
-              <y>20</y>
-              <width>71</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>0.0</string>
-            </property>
-           </widget>
-           <widget class="QLineEdit" name="le_damp_sin_Offset_2">
-            <property name="geometry">
-             <rect>
-              <x>170</x>
-              <y>60</y>
-              <width>71</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>0.0</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_104">
+           <widget class="QWidget" name="layoutWidget">
             <property name="geometry">
              <rect>
               <x>0</x>
               <y>20</y>
-              <width>161</width>
-              <height>31</height>
+              <width>261</width>
+              <height>271</height>
              </rect>
             </property>
-            <property name="text">
-             <string>Amplitude</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
+            <layout class="QGridLayout" name="gridLayout_16">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_104">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Amplitude</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="le_damp_sin_Ampl_2">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0.0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QLabel" name="label_206">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>I</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_208">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Offset</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="le_damp_sin_Offset_2">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0.0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QLabel" name="label_207">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>I</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_212">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Frequency (F)</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLineEdit" name="le_damp_sin_Freq_2">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0.0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="2">
+              <widget class="QLabel" name="label_210">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Hz</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_215">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>#  of Cicles</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLineEdit" name="le_damp_sin_nCicles_2">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="2">
+              <widget class="QLabel" name="label_214">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="label_169">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Phase (ϴ)</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QLineEdit" name="le_damp_sin_phaseShift_2">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0.0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="2">
+              <widget class="QLabel" name="label_209">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>º</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="0">
+              <widget class="QLabel" name="label_213">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Final Phase</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="1">
+              <widget class="QLineEdit" name="le_damp_sin_finalPhase_2">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0.0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="2">
+              <widget class="QLabel" name="label_211">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>º</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="0">
+              <widget class="QLabel" name="label_217">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Damping (τ)</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="1">
+              <widget class="QLineEdit" name="le_damp_sin_Damping_2">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0.0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="2">
+              <widget class="QLabel" name="label_216">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>s</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
-           <widget class="QLabel" name="label_169">
-            <property name="geometry">
-             <rect>
-              <x>0</x>
-              <y>180</y>
-              <width>161</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Phase shift  (ϴ)</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_206">
-            <property name="geometry">
-             <rect>
-              <x>250</x>
-              <y>20</y>
-              <width>41</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>A </string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_207">
-            <property name="geometry">
-             <rect>
-              <x>250</x>
-              <y>60</y>
-              <width>21</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>A</string>
-            </property>
-           </widget>
-           <widget class="QLineEdit" name="le_damp_sin_phaseShift_2">
-            <property name="geometry">
-             <rect>
-              <x>170</x>
-              <y>180</y>
-              <width>71</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>0.0</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_208">
-            <property name="geometry">
-             <rect>
-              <x>0</x>
-              <y>60</y>
-              <width>161</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Offset</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_209">
-            <property name="geometry">
-             <rect>
-              <x>250</x>
-              <y>180</y>
-              <width>21</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>º</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_210">
-            <property name="geometry">
-             <rect>
-              <x>250</x>
-              <y>100</y>
-              <width>31</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Hz</string>
-            </property>
-           </widget>
-           <widget class="QLineEdit" name="le_damp_sin_Freq_2">
-            <property name="geometry">
-             <rect>
-              <x>170</x>
-              <y>100</y>
-              <width>71</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>0.0</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_211">
-            <property name="geometry">
-             <rect>
-              <x>250</x>
-              <y>220</y>
-              <width>21</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>º</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_212">
-            <property name="geometry">
-             <rect>
-              <x>0</x>
-              <y>100</y>
-              <width>161</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Frequency (F)</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_213">
-            <property name="geometry">
-             <rect>
-              <x>20</x>
-              <y>220</y>
-              <width>141</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Phase final position</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-           <widget class="QLineEdit" name="le_damp_sin_finalPhase_2">
-            <property name="geometry">
-             <rect>
-              <x>170</x>
-              <y>220</y>
-              <width>71</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>0.0</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_214">
-            <property name="geometry">
-             <rect>
-              <x>250</x>
-              <y>140</y>
-              <width>41</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>unid</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_215">
-            <property name="geometry">
-             <rect>
-              <x>0</x>
-              <y>140</y>
-              <width>161</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>#  of Cycles</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-           <widget class="QLineEdit" name="le_damp_sin_nCycles_2">
-            <property name="geometry">
-             <rect>
-              <x>170</x>
-              <y>140</y>
-              <width>71</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>0</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_216">
-            <property name="geometry">
-             <rect>
-              <x>250</x>
-              <y>260</y>
-              <width>21</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>s</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_217">
-            <property name="geometry">
-             <rect>
-              <x>30</x>
-              <y>260</y>
-              <width>111</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Damping</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-           <widget class="QLineEdit" name="le_damp_sin_Damping_2">
-            <property name="geometry">
-             <rect>
-              <x>170</x>
-              <y>260</y>
-              <width>71</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>0.0</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_218">
-            <property name="geometry">
-             <rect>
-              <x>140</x>
-              <y>260</y>
-              <width>21</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font>
-              <family>Symbol</family>
-             </font>
-            </property>
-            <property name="text">
-             <string>(t)</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
+          </widget>
+          <widget class="QLabel" name="label_13">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>10</y>
+             <width>431</width>
+             <height>271</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="resource_file.qrc">:/Images/imagens/dsinusoidal.png</pixmap>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
           </widget>
          </widget>
         </widget>
@@ -4857,7 +5059,7 @@ Loop:</string>
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_PS_Name">
+      <widget class="QLineEdit" name="le_ps_name">
        <property name="geometry">
         <rect>
          <x>60</x>
@@ -4867,7 +5069,7 @@ Loop:</string>
         </rect>
        </property>
       </widget>
-      <widget class="QPushButton" name="pb_save_PS">
+      <widget class="QPushButton" name="pb_save_ps">
        <property name="geometry">
         <rect>
          <x>630</x>
@@ -4890,7 +5092,7 @@ Loop:</string>
         </size>
        </property>
       </widget>
-      <widget class="QPushButton" name="pb_load_PS">
+      <widget class="QPushButton" name="pb_load_ps">
        <property name="geometry">
         <rect>
          <x>460</x>
@@ -4923,9 +5125,9 @@ Loop:</string>
       <zorder>line_2</zorder>
       <zorder>tabWidget_2</zorder>
       <zorder>label_112</zorder>
-      <zorder>le_PS_Name</zorder>
-      <zorder>pb_save_PS</zorder>
-      <zorder>pb_load_PS</zorder>
+      <zorder>le_ps_name</zorder>
+      <zorder>pb_save_ps</zorder>
+      <zorder>pb_load_ps</zorder>
      </widget>
      <widget class="QPushButton" name="pb_emergency4">
       <property name="geometry">
@@ -5045,26 +5247,15 @@ Loop:</string>
        </font>
       </property>
       <property name="title">
-       <string>Current Reading</string>
+       <string>PS Type</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignCenter</set>
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
       </property>
       <layout class="QGridLayout" name="gridLayout_8">
        <item row="0" column="0">
-        <widget class="QCheckBox" name="chb_dcct">
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="text">
-          <string>DCCT</string>
-         </property>
-         <property name="checked">
+        <widget class="QLineEdit" name="le_ps_type_cfg">
+         <property name="readOnly">
           <bool>true</bool>
          </property>
         </widget>
@@ -5093,7 +5284,7 @@ Loop:</string>
        <string>DCCT Reading</string>
       </property>
      </widget>
-     <widget class="QLCDNumber" name="lcd_PS_reading">
+     <widget class="QLCDNumber" name="lcd_ps_reading">
       <property name="geometry">
        <rect>
         <x>529</x>
@@ -5148,7 +5339,7 @@ Loop:</string>
      </widget>
      <widget class="QGroupBox" name="gb_start_supply">
       <property name="enabled">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -5167,9 +5358,9 @@ Loop:</string>
       <property name="title">
        <string>Start PS</string>
       </property>
-      <widget class="QPushButton" name="pb_PS_button">
+      <widget class="QPushButton" name="pb_ps_button">
        <property name="enabled">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="geometry">
         <rect>
@@ -5206,7 +5397,7 @@ Loop:</string>
       </widget>
       <widget class="QLineEdit" name="le_status_loop">
        <property name="enabled">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="geometry">
         <rect>
@@ -5234,6 +5425,9 @@ Loop:</string>
        </property>
       </widget>
       <widget class="QLabel" name="label_32">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>20</x>
@@ -5261,7 +5455,7 @@ Loop:</string>
         <x>950</x>
         <y>230</y>
         <width>181</width>
-        <height>151</height>
+        <height>181</height>
        </rect>
       </property>
       <property name="font">
@@ -5277,7 +5471,7 @@ Loop:</string>
        <property name="geometry">
         <rect>
          <x>50</x>
-         <y>94</y>
+         <y>124</y>
          <width>70</width>
          <height>40</height>
         </rect>
@@ -5304,7 +5498,7 @@ Voltage</string>
        <property name="geometry">
         <rect>
          <x>50</x>
-         <y>30</y>
+         <y>70</y>
          <width>80</width>
          <height>20</height>
         </rect>
@@ -5324,7 +5518,7 @@ Voltage</string>
        <property name="geometry">
         <rect>
          <x>50</x>
-         <y>50</y>
+         <y>90</y>
          <width>81</width>
          <height>31</height>
         </rect>
@@ -5353,6 +5547,32 @@ Voltage</string>
          <string>320 A</string>
         </property>
        </item>
+      </widget>
+      <widget class="QCheckBox" name="chb_dcct">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>40</y>
+         <width>97</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>DCCT</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
       </widget>
      </widget>
     </widget>
@@ -6214,6 +6434,9 @@ DCCT Voltage [V]</string>
       <property name="autoScrollMargin">
        <number>10</number>
       </property>
+      <property name="editTriggers">
+       <set>QAbstractItemView::NoEditTriggers</set>
+      </property>
       <property name="verticalScrollMode">
        <enum>QAbstractItemView::ScrollPerItem</enum>
       </property>
@@ -6760,11 +6983,10 @@ DCCT Voltage [V]</string>
   <tabstop>pb_load_coil</tabstop>
   <tabstop>pb_save_coil</tabstop>
   <tabstop>pb_emergency3</tabstop>
-  <tabstop>chb_dcct</tabstop>
   <tabstop>pb_refresh</tabstop>
-  <tabstop>le_PS_Name</tabstop>
-  <tabstop>pb_load_PS</tabstop>
-  <tabstop>pb_save_PS</tabstop>
+  <tabstop>le_ps_name</tabstop>
+  <tabstop>pb_load_ps</tabstop>
+  <tabstop>pb_save_ps</tabstop>
   <tabstop>tabWidget_2</tabstop>
   <tabstop>cb_ps_type</tabstop>
   <tabstop>pb_interlock</tabstop>
@@ -6776,7 +6998,7 @@ DCCT Voltage [V]</string>
   <tabstop>sb_ki</tabstop>
   <tabstop>pb_config_pid</tabstop>
   <tabstop>textBrowser</tabstop>
-  <tabstop>pb_PS_button</tabstop>
+  <tabstop>pb_ps_button</tabstop>
   <tabstop>le_status_loop</tabstop>
   <tabstop>dcct_select</tabstop>
   <tabstop>chb_voltage</tabstop>
@@ -6784,28 +7006,28 @@ DCCT Voltage [V]</string>
   <tabstop>dsb_current_setpoint</tabstop>
   <tabstop>pb_send</tabstop>
   <tabstop>tw_auto_set</tabstop>
-  <tabstop>pb_rows_auto</tabstop>
+  <tabstop>pb_add_row</tabstop>
   <tabstop>pb_clear_table</tabstop>
   <tabstop>tabWidget_3</tabstop>
   <tabstop>le_Sinusoidal_Amplitude</tabstop>
   <tabstop>le_Sinusoidal_Offset</tabstop>
   <tabstop>le_Sinusoidal_Frequency</tabstop>
-  <tabstop>le_Sinusoidal_n_cycles</tabstop>
+  <tabstop>le_Sinusoidal_n_cicles</tabstop>
   <tabstop>le_Initial_Phase</tabstop>
   <tabstop>le_Final_Phase</tabstop>
   <tabstop>pb_emergency5</tabstop>
   <tabstop>le_damp_sin_Ampl</tabstop>
   <tabstop>le_damp_sin_Offset</tabstop>
   <tabstop>le_damp_sin_Freq</tabstop>
-  <tabstop>le_damp_sin_nCycles</tabstop>
+  <tabstop>le_damp_sin_nCicles</tabstop>
   <tabstop>le_damp_sin_phaseShift</tabstop>
   <tabstop>le_damp_sin_finalPhase</tabstop>
   <tabstop>le_damp_sin_Damping</tabstop>
   <tabstop>pb_send_curve</tabstop>
-  <tabstop>pb_cycle</tabstop>
-  <tabstop>le_PS_Name_2</tabstop>
-  <tabstop>pb_load_PS_2</tabstop>
-  <tabstop>pb_save_PS_2</tabstop>
+  <tabstop>pb_cicle</tabstop>
+  <tabstop>le_ps_name_2</tabstop>
+  <tabstop>pb_load_ps_2</tabstop>
+  <tabstop>pb_save_ps_2</tabstop>
   <tabstop>tabWidget_5</tabstop>
   <tabstop>cb_ps_type_2</tabstop>
   <tabstop>pb_interlock_2</tabstop>
@@ -6813,22 +7035,22 @@ DCCT Voltage [V]</string>
   <tabstop>le_maximum_current_2</tabstop>
   <tabstop>le_minimum_current_2</tabstop>
   <tabstop>pb_config_ps_2</tabstop>
-  <tabstop>pb_PS_button_2</tabstop>
+  <tabstop>pb_ps_button_2</tabstop>
   <tabstop>le_status_loop_2</tabstop>
   <tabstop>dsb_current_setpoint_2</tabstop>
   <tabstop>pb_send_2</tabstop>
   <tabstop>tw_auto_set_2</tabstop>
-  <tabstop>pb_rows_auto_2</tabstop>
+  <tabstop>pb_add_row_2</tabstop>
   <tabstop>pb_clear_table_2</tabstop>
   <tabstop>le_damp_sin_Ampl_2</tabstop>
   <tabstop>le_damp_sin_Offset_2</tabstop>
   <tabstop>le_damp_sin_Freq_2</tabstop>
-  <tabstop>le_damp_sin_nCycles_2</tabstop>
+  <tabstop>le_damp_sin_nCicles_2</tabstop>
   <tabstop>le_damp_sin_phaseShift_2</tabstop>
   <tabstop>le_damp_sin_finalPhase_2</tabstop>
   <tabstop>le_damp_sin_Damping_2</tabstop>
   <tabstop>pb_send_curve_2</tabstop>
-  <tabstop>pb_cycle_2</tabstop>
+  <tabstop>pb_cicle_2</tabstop>
   <tabstop>chb_seriesofmeas</tabstop>
   <tabstop>le_n_collections</tabstop>
   <tabstop>chb_automatic_ps</tabstop>

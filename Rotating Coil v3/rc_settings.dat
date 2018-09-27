@@ -2,8 +2,8 @@
 # Insert the variable name and value separated by tab.
 # Commented lines are ignored.
 
-disp_port	COM2
-driver_port	COM5
+disp_port	COM12
+driver_port	COM11
 integrator_port	COM6
 ps_type	1.0
 ps_port	COM9

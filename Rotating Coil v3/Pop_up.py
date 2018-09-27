@@ -76,6 +76,8 @@ class Ui_Pop_Up(object):
         self.cb_magnet_model.addItem("")
         self.cb_magnet_model.addItem("")
         self.cb_magnet_model.addItem("")
+        self.cb_magnet_model.addItem("")
+        self.cb_magnet_model.addItem("")
         self.cb_trim_coil_type = QtWidgets.QComboBox(Pop_Up)
         self.cb_trim_coil_type.setEnabled(False)
         self.cb_trim_coil_type.setGeometry(QtCore.QRect(167, 230, 161, 21))
@@ -112,7 +114,8 @@ class Ui_Pop_Up(object):
         Pop_Up.setTabOrder(self.le_magnet_name, self.le_temperature)
         Pop_Up.setTabOrder(self.le_temperature, self.cb_operator)
         Pop_Up.setTabOrder(self.cb_operator, self.cb_magnet_model)
-        Pop_Up.setTabOrder(self.cb_magnet_model, self.cb_trim_coil_type)
+        Pop_Up.setTabOrder(self.cb_magnet_model, self.cb_magnet_family)
+        Pop_Up.setTabOrder(self.cb_magnet_family, self.cb_trim_coil_type)
         Pop_Up.setTabOrder(self.cb_trim_coil_type, self.te_meas_details)
 
     def retranslateUi(self, Pop_Up):
@@ -125,8 +128,8 @@ class Ui_Pop_Up(object):
         self.te_meas_details.setHtml(_translate("Pop_Up", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Noto Sans\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\"> </span></p></body></html>"))
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"> </p></body></html>"))
         self.label_167.setText(_translate("Pop_Up", "Operator:"))
         self.cb_operator.setItemText(0, _translate("Pop_Up", "James Citadini"))
         self.cb_operator.setItemText(1, _translate("Pop_Up", "Lucas Balthazar"))
@@ -140,10 +143,12 @@ class Ui_Pop_Up(object):
         self.cb_magnet_model.setItemText(2, _translate("Pop_Up", "Quadrupole"))
         self.cb_magnet_model.setItemText(3, _translate("Pop_Up", "Sextupole"))
         self.cb_magnet_model.setItemText(4, _translate("Pop_Up", "Skew Quadrupole"))
+        self.cb_magnet_model.setItemText(5, _translate("Pop_Up", "CV (Skew Dipole)"))
+        self.cb_magnet_model.setItemText(6, _translate("Pop_Up", "CH (Dipole)"))
         self.cb_trim_coil_type.setItemText(0, _translate("Pop_Up", "Trim Coil"))
-        self.cb_trim_coil_type.setItemText(1, _translate("Pop_Up", "HC Coil"))
-        self.cb_trim_coil_type.setItemText(2, _translate("Pop_Up", "VC Coil"))
-        self.cb_trim_coil_type.setItemText(3, _translate("Pop_Up", "SQ Coil"))
+        self.cb_trim_coil_type.setItemText(1, _translate("Pop_Up", "CH Coil"))
+        self.cb_trim_coil_type.setItemText(2, _translate("Pop_Up", "CV Coil"))
+        self.cb_trim_coil_type.setItemText(3, _translate("Pop_Up", "QS Coil"))
         self.label_8.setText(_translate("Pop_Up", "Trim Coil Type:"))
         self.cb_magnet_family.setItemText(0, _translate("Pop_Up", "None"))
         self.cb_magnet_family.setItemText(1, _translate("Pop_Up", "1"))
