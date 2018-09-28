@@ -306,8 +306,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                                  _QMessageBox.Ok)
 
     def set_address(self, address):
-        if self.drs.ser.is_open:
-            self.drs.SetSlaveAdd(address)
+        if Lib.comm.drs.ser.is_open:
+            Lib.comm.drs.SetSlaveAdd(address)
             return True
         else:
             _QMessageBox.warning(self, 'Warning',
@@ -575,7 +575,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         """Changes UI widgets state when turning power supply on/off."""
         if not secondary:
             self.ui.pb_ps_button.setEnabled(True)
-            if on:
+            if is_off:
                 self.ui.pb_ps_button.setChecked(False)
                 self.ui.pb_ps_button.setText('Turn ON')
             else:
@@ -583,7 +583,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 self.ui.pb_ps_button.setText('Turn OFF')
         else:
             self.ui.pb_ps_button_2.setEnabled(True)
-            if on:
+            if is_off:
                 self.ui.pb_ps_button_2.setChecked(False)
                 self.ui.pb_ps_button_2.setText('Turn ON')
             else:
@@ -1057,16 +1057,16 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             Lib.comm.drs.SetSlaveAdd(_ps_type-1)
             Lib.comm.drs.ResetInterlocks()
             time.sleep(0.1)
-            _interlock = _interlock + (self.drs.Read_ps_HardInterlocks() +
-                         self.drs.Read_ps_SoftInterlocks())
+            _interlock = _interlock + (Lib.comm.drs.Read_ps_HardInterlocks() +
+                         Lib.comm.drs.Read_ps_SoftInterlocks())
 
         Lib.comm.drs.SetSlaveAdd(_ps_type)
 
         try:
             Lib.comm.drs.ResetInterlocks()
             time.sleep(0.1)
-            _interlock = _interlock + (self.drs.Read_ps_HardInterlocks() +
-                         self.drs.Read_ps_SoftInterlocks())
+            _interlock = _interlock + (Lib.comm.Read_ps_HardInterlocks() +
+                         Lib.comm.drs.Read_ps_SoftInterlocks())
             if not secondary:
                 if self.ui.pb_interlock.isChecked() and not _interlock:
                     self.ui.pb_interlock.setChecked(False)
