@@ -1,4 +1,6 @@
 *.db
+*.project
+*.pydevproject
 todo.txt
 
 # --------------- Default lnls-ima ---------------
