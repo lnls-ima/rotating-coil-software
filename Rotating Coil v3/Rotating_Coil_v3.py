@@ -1932,6 +1932,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 else:
                     self.dialog.ui.cb_magnet_family.setCurrentText(
                         _magnet_family)
+                _trim_type= Lib.get_value(Lib.measurement_settings,
+                                           'trim_coil_type', int)
+                if _trim_type >= 0:
+                    self.dialog.ui.cb_trim_coil_type.setCurrentIndex(
+                        _trim_type)
 
             if Lib.get_value(Lib.aux_settings, 'status_ps_2', int):
                 self.dialog.ui.cb_trim_coil_type.setEnabled(True)
