@@ -60,7 +60,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui.pb_encoder_reading.clicked.connect(self.encoder_reading)
         self.ui.pb_move_to_encoder_position.clicked.connect(
             self.move_to_encoder_position)
-        self.ui.pb_set_gain.clicked.connect(self.config_integrator)
+        self.ui.pb_config_integrator.clicked.connect(self.config_integrator)
         self.ui.pb_status_update.clicked.connect(self.status_update)
         self.ui.pb_emergency2.clicked.connect(lambda: self.stop(True))
 
@@ -85,7 +85,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui.pb_config_pid.clicked.connect(self.config_pid)
         self.ui.pb_reset_inter.clicked.connect(
             lambda: self.reset_interlocks(False))
-        self.ui.pb_cicle.clicked.connect(lambda: self.cicling_ps(False))
+        self.ui.pb_cycle.clicked.connect(lambda: self.cycling_ps(False))
         self.ui.pb_config_ps.clicked.connect(lambda: self.configure_ps(False))
         self.ui.pb_clear_table.clicked.connect(lambda: self.clear_table(False))
         #Secondary Power Supply
@@ -103,7 +103,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui.pb_send_curve_2.clicked.connect(lambda: self.send_curve(True))
         self.ui.pb_reset_inter_2.clicked.connect(
             lambda: self.reset_interlocks(True))
-        self.ui.pb_cicle_2.clicked.connect(lambda: self.cicling_ps(True))
+        self.ui.pb_cycle_2.clicked.connect(lambda: self.cycling_ps(True))
         self.ui.pb_clear_table_2.clicked.connect(
             lambda: self.clear_table(True))
         self.ui.pb_config_ps_2.clicked.connect(lambda: self.configure_ps(True))
@@ -549,7 +549,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                     self.ui.lb_status_ps.setText('NOK')
                     self.ui.le_status_loop.setText('Open')
                     self.ui.pb_send.setEnabled(False)
-                    self.ui.pb_cicle.setEnabled(False)
+                    self.ui.pb_cycle.setEnabled(False)
                     self.ui.pb_send_curve.setEnabled(False)
                 else:
                     # Status PS_2 is OFF
@@ -557,7 +557,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                     Lib.write_value(Lib.aux_settings, 'actual_current_2', 0)
                     self.ui.le_status_loop_2.setText('Open')
                     self.ui.pb_send_2.setEnabled(False)
-                    self.ui.pb_cicle_2.setEnabled(False)
+                    self.ui.pb_cycle_2.setEnabled(False)
                     self.ui.pb_send_curve_2.setEnabled(False)
                 self.change_ps_button(secondary, True)
                 _QMessageBox.information(self, 'Information',
@@ -815,9 +815,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                                      _QMessageBox.Ok)
             if not secondary:
                 self.ui.tabWidget_2.setEnabled(True)
-                self.ui.pb_cicle.setEnabled(True)
+                self.ui.pb_cycle.setEnabled(True)
             else:
-                self.ui.pb_cicle_2.setEnabled(True)
+                self.ui.pb_cycle_2.setEnabled(True)
             QtWidgets.QApplication.processEvents()
         else:
             _QMessageBox.warning(self, 'Warning', 'Failed to send curve.',
@@ -878,12 +878,12 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 _QMessageBox.warning(self, 'Warning', 'Please, verify the '
                                      'Frequency parameter of the curve.',
                                      _QMessageBox.Ok)
-            #For N-cicles
+            #For N-cycles
             try:
-                _n_cicles = Lib.get_value(_df, 'Sinusoidal N Cicles', int)
+                _n_cycles = Lib.get_value(_df, 'Sinusoidal N Cycles', int)
             except Exception:
                 _QMessageBox.warning(self, 'Warning', 'Please, verify the '
-                                     '#cicles parameter of the curve.',
+                                     '#cycles parameter of the curve.',
                                      _QMessageBox.Ok)
             #For Phase shift
             try:
@@ -952,13 +952,13 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 _QMessageBox.warning(self, 'Warning', 'Please, verify the '
                                      'Frequency parameter of the curve.',
                                      _QMessageBox.Ok)
-            #For N-cicles
+            #For N-cycles
             try:
-                _n_cicles = Lib.get_value(_df, 'Damped Sinusoidal N Cicles',
+                _n_cycles = Lib.get_value(_df, 'Damped Sinusoidal N Cycles',
                                           int)
             except Exception:
                 _QMessageBox.warning(self, 'Warning', 'Please, verify the '
-                                     '#cicles parameter of the curve.',
+                                     '#cycles parameter of the curve.',
                                      _QMessageBox.Ok)
             #For Phase shift
             try:
@@ -998,7 +998,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                     # send Offset
                     Lib.comm.drs.Write_sigGen_Offset(float(_offset))
                     # Sending curves to PS Controller
-                    Lib.comm.drs.ConfigSigGen(_sigType, _n_cicles,
+                    Lib.comm.drs.ConfigSigGen(_sigType, _n_cycles,
                                               _phase_shift, _final_phase)
                 except Exception:
                     traceback.print_exc(file=sys.stdout)
@@ -1028,7 +1028,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 try:
                     Lib.comm.drs.Write_sigGen_Aux(float(
                         self.ui.le_damp_sin_Damping.text()))
-                    Lib.comm.drs.ConfigSigGen(_sigType, _n_cicles,
+                    Lib.comm.drs.ConfigSigGen(_sigType, _n_cycles,
                                               _phase_shift, _final_phase)
                 except Exception:
                     _QMessageBox.warning(self, 'Warning.',
@@ -1087,8 +1087,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                                  _QMessageBox.Ok)
             return
 
-    def cicling_ps(self, secondary=False):
-        """Cicles power supply curve generator."""
+    def cycling_ps(self, secondary=False):
+        """Cycles power supply curve generator."""
         if not secondary:
             _curve_type = int(self.ui.tabWidget_3.currentIndex())
             _df = Lib.ps_settings
@@ -1117,32 +1117,32 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             if _curve_type == 0:
                 Lib.comm.drs.EnableSigGen()
                 _freq = Lib.get_value(_df, 'Sinusoidal Frequency', float)
-                _n_cicles = Lib.get_value(_df, 'Sinusoidal N Cicles', float)
+                _n_cycles = Lib.get_value(_df, 'Sinusoidal N Cycles', float)
                 _offset = Lib.get_value(_df, 'Sinusoidal Offset', float)
             if _curve_type == 1:
                 Lib.comm.drs.EnableSigGen()
                 _freq = Lib.get_value(_df, 'Damped Sinusoidal Frequency',
                                       float)
-                _n_cicles = Lib.get_value(_df, 'Damped Sinusoidal N Cicles',
+                _n_cycles = Lib.get_value(_df, 'Damped Sinusoidal N Cycles',
                                           float)
                 _offset = Lib.get_value(_df, 'Damped Sinusoidal Offset', float)
-            _deadline = time.monotonic() + (1/_freq*_n_cicles)
+            _deadline = time.monotonic() + (1/_freq*_n_cycles)
             while time.monotonic() < _deadline:
                 self.ui.tabWidget_2.setEnabled(False)
                 if not secondary:
                     self.ui.pb_load_ps.setEnabled(False)
                     self.ui.pb_refresh.setEnabled(False)
-                    self.ui.pb_cicle.setText('Wait...')
+                    self.ui.pb_cycle.setText('Wait...')
                 else:
                     self.ui.pb_load_ps_2.setEnabled(False)
                     self.ui.pb_refresh_2.setEnabled(False)
-                    self.ui.pb_cicle_2.setText('Wait...')
+                    self.ui.pb_cycle_2.setText('Wait...')
                 self.ui.pb_start_meas.setEnabled(False)
                 QtWidgets.QApplication.processEvents()
 
             Lib.write_value(_df, 'Current Setpoint', _offset, True)
 
-            _QMessageBox.information(self, 'Information', 'Cicle process '
+            _QMessageBox.information(self, 'Information', 'Cycle process '
                                      'completed successfully.',
                                      _QMessageBox.Ok)
             Lib.comm.drs.DisableSigGen()
@@ -1151,11 +1151,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             if not secondary:
                 self.ui.pb_load_ps.setEnabled(True)
                 self.ui.pb_refresh.setEnabled(True)
-                self.ui.pb_cicle.setText('Cicle')
+                self.ui.pb_cycle.setText('Cycle')
             else:
                 self.ui.pb_load_ps_2.setEnabled(True)
                 self.ui.pb_refresh_2.setEnabled(True)
-                self.ui.pb_cicle_2.setText('Cicle')
+                self.ui.pb_cycle_2.setText('Cycle')
             self.ui.pb_start_meas.setEnabled(True)
             QtWidgets.QApplication.processEvents()
 
@@ -1168,15 +1168,15 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             if not secondary:
                 self.ui.pb_load_ps.setEnabled(True)
                 self.ui.pb_refresh.setEnabled(True)
-                self.ui.pb_cicle.setText('Cicle')
+                self.ui.pb_cycle.setText('Cycle')
             else:
                 self.ui.pb_load_ps_2.setEnabled(True)
                 self.ui.pb_refresh_2.setEnabled(True)
-                self.ui.pb_cicle_2.setText('Cicle')
+                self.ui.pb_cycle_2.setText('Cycle')
             self.ui.pb_start_meas.setEnabled(True)
             QtWidgets.QApplication.processEvents()
             _QMessageBox.warning(self, 'Warning',
-                                 'Cicling process was not performed.',
+                                 'Cycling process was not performed.',
                                  _QMessageBox.Ok)
             return
 
@@ -2604,8 +2604,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             str(Lib.get_value(Lib.ps_settings, 'Sinusoidal Offset', float)))
         self.ui.le_Sinusoidal_Frequency.setText(
             str(Lib.get_value(Lib.ps_settings, 'Sinusoidal Frequency', float)))
-        self.ui.le_Sinusoidal_n_cicles.setText(
-            str(Lib.get_value(Lib.ps_settings, 'Sinusoidal N Cicles', int)))
+        self.ui.le_Sinusoidal_n_cycles.setText(
+            str(Lib.get_value(Lib.ps_settings, 'Sinusoidal N Cycles', int)))
         self.ui.le_Initial_Phase.setText(
             str(Lib.get_value(Lib.ps_settings, 'Sinusoidal Initial Phase',
                               float)))
@@ -2622,8 +2622,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui.le_damp_sin_Freq.setText(
             str(Lib.get_value(Lib.ps_settings, 'Damped Sinusoidal Frequency',
                               float)))
-        self.ui.le_damp_sin_nCicles.setText(
-            str(Lib.get_value(Lib.ps_settings, 'Damped Sinusoidal N Cicles',
+        self.ui.le_damp_sin_nCycles.setText(
+            str(Lib.get_value(Lib.ps_settings, 'Damped Sinusoidal N Cycles',
                               int)))
         self.ui.le_damp_sin_phaseShift.setText(
             str(Lib.get_value(Lib.ps_settings, 'Damped Sinusoidal Phase Shift',
@@ -2698,8 +2698,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                             self.ui.le_Sinusoidal_Offset.text(), True)
             Lib.write_value(Lib.ps_settings, 'Sinusoidal Frequency',
                             self.ui.le_Sinusoidal_Frequency.text(), True)
-            Lib.write_value(Lib.ps_settings, 'Sinusoidal N Cicles',
-                            self.ui.le_Sinusoidal_n_cicles.text(), True)
+            Lib.write_value(Lib.ps_settings, 'Sinusoidal N Cycles',
+                            self.ui.le_Sinusoidal_n_cycles.text(), True)
             Lib.write_value(Lib.ps_settings, 'Sinusoidal Initial Phase',
                             self.ui.le_Initial_Phase.text(), True)
             Lib.write_value(Lib.ps_settings, 'Sinusoidal Final Phase',
@@ -2711,8 +2711,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                             self.ui.le_damp_sin_Offset.text(), True)
             Lib.write_value(Lib.ps_settings, 'Damped Sinusoidal Frequency',
                             self.ui.le_damp_sin_Freq.text(), True)
-            Lib.write_value(Lib.ps_settings, 'Damped Sinusoidal N Cicles',
-                            self.ui.le_damp_sin_nCicles.text(), True)
+            Lib.write_value(Lib.ps_settings, 'Damped Sinusoidal N Cycles',
+                            self.ui.le_damp_sin_nCycles.text(), True)
             Lib.write_value(Lib.ps_settings, 'Damped Sinusoidal Phase Shift',
                             self.ui.le_damp_sin_phaseShift.text(), True)
             Lib.write_value(Lib.ps_settings, 'Damped Sinusoidal Final Phase',
@@ -2764,8 +2764,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui.le_damp_sin_Freq_2.setText(
             str(Lib.get_value(Lib.ps_settings_2, 'Damped Sinusoidal Frequency',
                               float)))
-        self.ui.le_damp_sin_nCicles_2.setText(
-            str(Lib.get_value(Lib.ps_settings_2, 'Damped Sinusoidal N Cicles',
+        self.ui.le_damp_sin_nCycles_2.setText(
+            str(Lib.get_value(Lib.ps_settings_2, 'Damped Sinusoidal N Cycles',
                               int)))
         self.ui.le_damp_sin_phaseShift_2.setText(
             str(Lib.get_value(Lib.ps_settings_2,
@@ -2799,8 +2799,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                             self.ui.le_damp_sin_Offset_2.text(), True)
             Lib.write_value(Lib.ps_settings_2, 'Damped Sinusoidal Frequency',
                             self.ui.le_damp_sin_Freq_2.text(), True)
-            Lib.write_value(Lib.ps_settings_2, 'Damped Sinusoidal N Cicles',
-                            self.ui.le_damp_sin_nCicles_2.text(), True)
+            Lib.write_value(Lib.ps_settings_2, 'Damped Sinusoidal N Cycles',
+                            self.ui.le_damp_sin_nCycles_2.text(), True)
             Lib.write_value(Lib.ps_settings_2, 'Damped Sinusoidal Phase Shift',
                             self.ui.le_damp_sin_phaseShift_2.text(), True)
             Lib.write_value(Lib.ps_settings_2, 'Damped Sinusoidal Final Phase',

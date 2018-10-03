@@ -8,13 +8,13 @@ Current Setpoint	0.0
 Sinusoidal Amplitude	10.0
 Sinusoidal Offset	0.0
 Sinusoidal Frequency	1.0
-Sinusoidal N Cicles	16
+Sinusoidal N Cycles	16
 Sinusoidal Initial Phase	0.0
 Sinusoidal Final Phase	0.0
 Damped Sinusoidal Amplitude	148.0
 Damped Sinusoidal Offset	0.0
 Damped Sinusoidal Frequency	2.0
-Damped Sinusoidal N Cicles	100
+Damped Sinusoidal N Cycles	100
 Damped Sinusoidal Phase Shift	0.0
 Damped Sinusoidal Final Phase	0.0
 Damped Sinusoidal Damping	2.0 

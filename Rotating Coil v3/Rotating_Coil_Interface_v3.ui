@@ -1539,7 +1539,7 @@
         <string>* encoder value x 4</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="pb_set_gain">
+      <widget class="QPushButton" name="pb_config_integrator">
        <property name="geometry">
         <rect>
          <x>70</x>
@@ -2326,8 +2326,8 @@
          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2';&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </widget>
@@ -2547,8 +2547,8 @@ p, li { white-space: pre-wrap; }
           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#505050;&quot;&gt;Warning: each power supply has an unique fixed address, one must always remember to configure them after replacing or resetting an power supply in order for this software to work. The addresses are the following:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:10pt; color:#505050;&quot;&gt;Warning: each power supply has an unique fixed address, one must always remember to configure them after replacing or resetting an power supply in order for this software to work. The addresses are the following:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
         </widget>
         <widget class="QGroupBox" name="groupBox_24">
@@ -3196,7 +3196,7 @@ p, li { white-space: pre-wrap; }
         <attribute name="title">
          <string>Demagnetization Curves</string>
         </attribute>
-        <widget class="QPushButton" name="pb_cicle">
+        <widget class="QPushButton" name="pb_cycle">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -3209,7 +3209,7 @@ p, li { white-space: pre-wrap; }
           </rect>
          </property>
          <property name="text">
-          <string>Cicle</string>
+          <string>Cycle</string>
          </property>
          <property name="icon">
           <iconset resource="resource_file.qrc">
@@ -3355,7 +3355,7 @@ p, li { white-space: pre-wrap; }
             <item row="3" column="0">
              <widget class="QLabel" name="label_117">
               <property name="text">
-               <string># of Cicles</string>
+               <string># of Cycles</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -3363,7 +3363,7 @@ p, li { white-space: pre-wrap; }
              </widget>
             </item>
             <item row="3" column="1">
-             <widget class="QLineEdit" name="le_Sinusoidal_n_cicles">
+             <widget class="QLineEdit" name="le_Sinusoidal_n_cycles">
               <property name="text">
                <string>0</string>
               </property>
@@ -3602,7 +3602,7 @@ p, li { white-space: pre-wrap; }
              <item row="3" column="0">
               <widget class="QLabel" name="label_149">
                <property name="text">
-                <string># of Cicles</string>
+                <string># of Cycles</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -3610,7 +3610,7 @@ p, li { white-space: pre-wrap; }
               </widget>
              </item>
              <item row="3" column="1">
-              <widget class="QLineEdit" name="le_damp_sin_nCicles">
+              <widget class="QLineEdit" name="le_damp_sin_nCycles">
                <property name="minimumSize">
                 <size>
                  <width>71</width>
@@ -4591,7 +4591,7 @@ Loop:</string>
             </size>
            </property>
           </widget>
-          <widget class="QPushButton" name="pb_cicle_2">
+          <widget class="QPushButton" name="pb_cycle_2">
            <property name="enabled">
             <bool>false</bool>
            </property>
@@ -4604,7 +4604,7 @@ Loop:</string>
             </rect>
            </property>
            <property name="text">
-            <string>Cicle</string>
+            <string>Cycle</string>
            </property>
            <property name="icon">
             <iconset resource="resource_file.qrc">
@@ -4810,7 +4810,7 @@ Loop:</string>
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>#  of Cicles</string>
+                <string>#  of Cycles</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -4818,7 +4818,7 @@ Loop:</string>
               </widget>
              </item>
              <item row="3" column="1">
-              <widget class="QLineEdit" name="le_damp_sin_nCicles_2">
+              <widget class="QLineEdit" name="le_damp_sin_nCycles_2">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -6913,7 +6913,7 @@ DCCT Voltage [V]</string>
      <x>0</x>
      <y>0</y>
      <width>1235</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>
@@ -6965,7 +6965,7 @@ DCCT Voltage [V]</string>
   <tabstop>pb_move_to_encoder_position</tabstop>
   <tabstop>cb_integrator_gain</tabstop>
   <tabstop>cb_n_integration_points</tabstop>
-  <tabstop>pb_set_gain</tabstop>
+  <tabstop>pb_config_integrator</tabstop>
   <tabstop>le_trigger_ref_dsp</tabstop>
   <tabstop>pb_status_update</tabstop>
   <tabstop>pb_emergency2</tabstop>
@@ -7012,19 +7012,19 @@ DCCT Voltage [V]</string>
   <tabstop>le_Sinusoidal_Amplitude</tabstop>
   <tabstop>le_Sinusoidal_Offset</tabstop>
   <tabstop>le_Sinusoidal_Frequency</tabstop>
-  <tabstop>le_Sinusoidal_n_cicles</tabstop>
+  <tabstop>le_Sinusoidal_n_cycles</tabstop>
   <tabstop>le_Initial_Phase</tabstop>
   <tabstop>le_Final_Phase</tabstop>
   <tabstop>pb_emergency5</tabstop>
   <tabstop>le_damp_sin_Ampl</tabstop>
   <tabstop>le_damp_sin_Offset</tabstop>
   <tabstop>le_damp_sin_Freq</tabstop>
-  <tabstop>le_damp_sin_nCicles</tabstop>
+  <tabstop>le_damp_sin_nCycles</tabstop>
   <tabstop>le_damp_sin_phaseShift</tabstop>
   <tabstop>le_damp_sin_finalPhase</tabstop>
   <tabstop>le_damp_sin_Damping</tabstop>
   <tabstop>pb_send_curve</tabstop>
-  <tabstop>pb_cicle</tabstop>
+  <tabstop>pb_cycle</tabstop>
   <tabstop>le_ps_name_2</tabstop>
   <tabstop>pb_load_ps_2</tabstop>
   <tabstop>pb_save_ps_2</tabstop>
@@ -7045,12 +7045,12 @@ DCCT Voltage [V]</string>
   <tabstop>le_damp_sin_Ampl_2</tabstop>
   <tabstop>le_damp_sin_Offset_2</tabstop>
   <tabstop>le_damp_sin_Freq_2</tabstop>
-  <tabstop>le_damp_sin_nCicles_2</tabstop>
+  <tabstop>le_damp_sin_nCycles_2</tabstop>
   <tabstop>le_damp_sin_phaseShift_2</tabstop>
   <tabstop>le_damp_sin_finalPhase_2</tabstop>
   <tabstop>le_damp_sin_Damping_2</tabstop>
   <tabstop>pb_send_curve_2</tabstop>
-  <tabstop>pb_cicle_2</tabstop>
+  <tabstop>pb_cycle_2</tabstop>
   <tabstop>chb_seriesofmeas</tabstop>
   <tabstop>le_n_collections</tabstop>
   <tabstop>chb_automatic_ps</tabstop>

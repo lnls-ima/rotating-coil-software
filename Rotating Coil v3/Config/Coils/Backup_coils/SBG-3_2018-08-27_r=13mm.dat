@@ -1,0 +1,14 @@
+# Coil Parameters
+# Insert the variable name and value separated by tab.
+# Commented lines are ignored.
+
+coil_name	SBG-3_27-08-2018_r=13mm
+n_turns_normal	9
+radius1_normal	0
+radius2_normal	0.013038
+n_turns_bucked	0
+radius1_bucked	0
+radius2_bucked	0
+trigger_ref	250839
+coil_type	Radial
+comments	Rotating coil for storage ring magnets. Tungsten wire and ceramic body.
