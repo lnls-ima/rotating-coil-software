@@ -1291,6 +1291,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
     def config_integrator(self):
         """Configures integrator."""
         self.config_variables()
+        _n_encoder_pulses = int(Lib.get_value(Lib.data_settings,
+                                              'n_encoder_pulses', float))
+        Lib.comm.fdi.config_encoder(int(_n_encoder_pulses/4))
         # finds encoder index
         self.move_motor_measurement(1)
         self.ui.lb_status_integrator.setText('OK')
