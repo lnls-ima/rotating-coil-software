@@ -1485,12 +1485,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             QtWidgets.QApplication.processEvents()
             _save_flag = False
 
-            if not Lib.get_value(Lib.data_settings, 'disable_ps_interlock',
-                                 int):
-                _ans = self.config_ps()
-                if not _ans:
-                    raise Exception
-
             self.ui.lb_meas_counter.setText('{0:04}'.format(0))
             QtWidgets.QApplication.processEvents()
 
