@@ -705,7 +705,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         if not self.verify_current_limits(setpoint, 0, False, secondary):
             self.ui.tabWidget_2.setEnabled(True)
             return False
-        Lib.write_value(_df, 'Current Setpoint', _setpoint, True)
 
         #send setpoint and wait until current is set
         Lib.comm.drs.SetISlowRef(_setpoint)
@@ -714,6 +713,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             _compare = round(float(Lib.comm.drs.Read_iLoad1()), 3)
             self.display_current(secondary)
             if abs(_compare - _setpoint) <= 0.5:
+                Lib.write_value(_df, 'Current Setpoint', _setpoint, True)
                 self.ui.tabWidget_2.setEnabled(True)
                 return True
             QtWidgets.QApplication.processEvents()
@@ -725,13 +725,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         """Changes power supply current setpoint from UI."""
         try:
             if not secondary:
-                _df = Lib.ps_settings
-                self.config_ps()
+                _setpoint = self.ui.dsb_current_setpoint.value()
             else:
-                _df = Lib.ps_settings_2
-                self.config_ps_2()
+                _setpoint = self.ui.dsb_current_setpoint_2.value()
 
-            _setpoint = Lib.get_value(_df, 'Current Setpoint', float)
             _ans = self.current_setpoint(_setpoint, secondary)
             if _ans:
                 _QMessageBox.information(self, 'Information',
@@ -1936,7 +1933,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                     self.dialog.ui.cb_magnet_family.setCurrentText(
                         _magnet_family)
                 _trim_type= Lib.get_value(Lib.measurement_settings,
-                                           'trim_coil_type', int)
+                                          'trim_coil_type', int)
                 if _trim_type >= 0:
                     self.dialog.ui.cb_trim_coil_type.setCurrentIndex(
                         _trim_type)
@@ -1968,8 +1965,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                                  _QMessageBox.Ok)
             return
         if Lib.get_value(Lib.aux_settings, 'status_ps_2', int):
-            Lib.write_value(Lib.measurement_settings, 'trim_coil_type',
-                            self.dialog.ui.cb_trim_coil_type.currentIndex())
+            _trim_type = self.dialog.ui.cb_trim_coil_type.currentIndex()
+        else:
+            _trim_type = -1
+        Lib.write_value(Lib.measurement_settings, 'trim_coil_type', _trim_type)
         self.dialog.done(1)
         self.start_meas()
 
