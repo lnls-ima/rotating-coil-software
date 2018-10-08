@@ -315,6 +315,13 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                                  _QMessageBox.Ok)
             return False
 
+    def set_op_mode(self, mode=0):
+        Lib.comm.drs.OpMode(mode)
+        time.sleep(0.1)
+        if Lib.comm.drs.Read_ps_OpMode() == mode:
+            return True
+        return False
+
     def start_powersupply(self, secondary=False):
         """Turns power supply on and off."""
         try:
@@ -429,7 +436,12 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                         return
                     # Set ISlowRef for DC Link (Capacitor Bank)
                     # Operation mode selection for Slowref
-                    Lib.comm.drs.OpMode(0)
+                    if not self.set_op_mode(0):
+                        _QMessageBox.warning(self, 'Warning', 'Could not set '
+                                             'the slowRef operation mode.',
+                                             _QMessageBox.Ok)
+                        self.change_ps_button(secondary, True)
+                        return
                     # 90 V
                     _dclink_value = Lib.get_value(Lib.aux_settings,
                                                   'dclink_value', float)
@@ -1099,12 +1111,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             return
 
         try:
-            Lib.comm.drs.OpMode(3)
-            if Lib.comm.drs.Read_ps_OpMode() != 3:
-                _QMessageBox.warning(self, 'Warning', 'Power supply is not on '
-                                     'signal generator mode.',
+            if not self.set_op_mode(3):
+                _QMessageBox.warning(self, 'Warning', 'Could not set '
+                                     'the sigGen operation mode.',
                                      _QMessageBox.Ok)
-                return False
+                return
         except Exception:
             _QMessageBox.warning(self, 'Warning', 'Power supply is not on '
                                  'signal generator mode.',
@@ -1143,7 +1154,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                                      'completed successfully.',
                                      _QMessageBox.Ok)
             Lib.comm.drs.DisableSigGen()
-            self.display_current()
+            self.display_current(secondary)
             self.ui.tabWidget_2.setEnabled(True)
             if not secondary:
                 self.ui.pb_load_ps.setEnabled(True)
@@ -1159,7 +1170,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             if _curve_type == 2:
                 pass
             # returns to mode ISlowRef
-            Lib.comm.drs.OpMode(0)
+            if not self.set_op_mode(0):
+                _QMessageBox.warning(self, 'Warning', 'Could not set '
+                                     'the slowRef operation mode.',
+                                     _QMessageBox.Ok)
+                return
         except Exception:
             self.ui.tabWidget_2.setEnabled(True)
             if not secondary:
@@ -2090,7 +2105,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         elif _n_ref in [1, 5, 6]:
             _n_ref = 1
             _max_error = 8e-6
-        elif _n_ref == 2 or _n_ref == 4:
+        elif _n_ref in [2, 4]:
+            _n_ref = 2
             _max_error = 8e-4
         elif _n_ref == 3:
             _max_error = 3.6e-2
@@ -2974,7 +2990,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             #Turn off main power supply
             if not self.set_address(_ps_type):
                 return
-            Lib.comm.drs.OpMode(0)
+            if not self.set_op_mode(0):
+                _QMessageBox.warning(self, 'Warning', 'Could not set '
+                                     'the slowRef operation mode.',
+                                     _QMessageBox.Ok)
+                return
             Lib.comm.drs.SetISlowRef(0)
             time.sleep(0.1)
             Lib.comm.drs.TurnOff()
@@ -2992,7 +3012,13 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             #Turn off secondary power supply
             if _secondary_flag:
                 Lib.comm.drs.SetSlaveAdd(_ps_type_2)
-                Lib.comm.drs.OpMode(0)
+                if not self.set_address(_ps_type_2):
+                    return
+                if not self.set_op_mode(0):
+                    _QMessageBox.warning(self, 'Warning', 'Could not set '
+                                         'the slowRef operation mode.',
+                                         _QMessageBox.Ok)
+                    return
                 Lib.comm.drs.SetISlowRef(0)
                 time.sleep(0.1)
                 Lib.comm.drs.TurnOff()
