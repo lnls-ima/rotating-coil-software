@@ -3061,6 +3061,9 @@ p, li { white-space: pre-wrap; }
             <height>31</height>
            </rect>
           </property>
+          <property name="minimum">
+           <double>-1100.000000000000000</double>
+          </property>
           <property name="maximum">
            <double>1100.000000000000000</double>
           </property>
@@ -3202,7 +3205,7 @@ p, li { white-space: pre-wrap; }
          </property>
          <property name="geometry">
           <rect>
-           <x>380</x>
+           <x>330</x>
            <y>380</y>
            <width>91</width>
            <height>31</height>
@@ -3228,7 +3231,7 @@ p, li { white-space: pre-wrap; }
          </property>
          <property name="geometry">
           <rect>
-           <x>270</x>
+           <x>220</x>
            <y>380</y>
            <width>91</width>
            <height>31</height>
@@ -3748,6 +3751,32 @@ p, li { white-space: pre-wrap; }
           </widget>
          </widget>
         </widget>
+        <widget class="QPushButton" name="pb_plot">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="geometry">
+          <rect>
+           <x>440</x>
+           <y>380</y>
+           <width>91</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Plot</string>
+         </property>
+         <property name="icon">
+          <iconset resource="resource_file.qrc">
+           <normaloff>:/Images/imagens/chart_xy_graph_statistics-512.png</normaloff>:/Images/imagens/chart_xy_graph_statistics-512.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </widget>
        </widget>
        <widget class="QWidget" name="tab_10">
         <attribute name="title">
@@ -3829,7 +3858,7 @@ p, li { white-space: pre-wrap; }
           </rect>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>2</number>
          </property>
          <widget class="QWidget" name="tab_17">
           <attribute name="title">
@@ -4436,6 +4465,12 @@ Loop:</string>
               <height>31</height>
              </rect>
             </property>
+            <property name="minimum">
+             <double>-200.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>200.000000000000000</double>
+            </property>
            </widget>
           </widget>
           <widget class="QGroupBox" name="Configuracao_Auto_2">
@@ -4571,7 +4606,7 @@ Loop:</string>
            </property>
            <property name="geometry">
             <rect>
-             <x>90</x>
+             <x>60</x>
              <y>290</y>
              <width>91</width>
              <height>31</height>
@@ -4597,7 +4632,7 @@ Loop:</string>
            </property>
            <property name="geometry">
             <rect>
-             <x>200</x>
+             <x>170</x>
              <y>290</y>
              <width>91</width>
              <height>31</height>
@@ -5037,6 +5072,32 @@ Loop:</string>
            </property>
            <property name="scaledContents">
             <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="pb_plot_2">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="geometry">
+            <rect>
+             <x>280</x>
+             <y>290</y>
+             <width>91</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Plot</string>
+           </property>
+           <property name="icon">
+            <iconset resource="resource_file.qrc">
+             <normaloff>:/Images/imagens/chart_xy_graph_statistics-512.png</normaloff>:/Images/imagens/chart_xy_graph_statistics-512.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
            </property>
           </widget>
          </widget>

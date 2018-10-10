@@ -20,6 +20,38 @@ from Pop_up import Ui_Pop_Up
 import Rotating_Coil_Library as Library
 from Rotating_Coil_Interface_v3 import Ui_RotatingCoil_Interface
 
+from matplotlib.figure import Figure as _Figure
+from matplotlib.backends.backend_qt5agg import (
+    FigureCanvasQTAgg as _FigureCanvas,
+    NavigationToolbar2QT as _Toolbar)
+
+
+class PlotDialog(QtWidgets.QDialog):
+    """Matplotlib plot dialog."""
+
+    def __init__(self, parent=None):
+        """Add figure canvas to layout."""
+        super().__init__(parent)
+
+        self.figure = _Figure()
+        self.canvas = _FigureCanvas(self.figure)
+        self.ax = self.figure.add_subplot(111)
+
+        _layout = QtWidgets.QVBoxLayout()
+        _layout.addWidget(self.canvas)
+        self.toolbar = _Toolbar(self.canvas, self)
+        _layout.addWidget(self.toolbar)
+        self.setLayout(_layout)
+
+    def updatePlot(self):
+        """Update plot."""
+        self.canvas.draw()
+
+    def show(self):
+        """Show dialog."""
+        self.updatePlot()
+        super().show()
+        
 
 class ApplicationWindow(QtWidgets.QMainWindow):
     """Rotating Coil Software user interface."""
@@ -33,6 +65,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.signals()
 
         self.refresh_interface()
+
+        self.plot_dialog = PlotDialog()
 
         self.sync = threading.Event()
 
@@ -88,6 +122,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui.pb_cycle.clicked.connect(lambda: self.cycling_ps(False))
         self.ui.pb_config_ps.clicked.connect(lambda: self.configure_ps(False))
         self.ui.pb_clear_table.clicked.connect(lambda: self.clear_table(False))
+        self.ui.pb_plot.clicked.connect(lambda: self.plot(False))
         #Secondary Power Supply
         self.ui.pb_ps_button_2.clicked.connect(
             lambda: self.start_powersupply(True))
@@ -107,6 +142,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui.pb_clear_table_2.clicked.connect(
             lambda: self.clear_table(True))
         self.ui.pb_config_ps_2.clicked.connect(lambda: self.configure_ps(True))
+        self.ui.pb_plot_2.clicked.connect(lambda: self.plot(True))
         self.ui.pb_emergency4.clicked.connect(lambda: self.stop(True))
 
         # Measurements Tab
@@ -156,15 +192,15 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                                          _QMessageBox.Ok)
                     raise Exception
 
-                # Turns off any power supply which might be enabled
-                for i in range(1, 7):
-                    Lib.comm.drs.SetSlaveAdd(i)
-                    try:
-                        if Lib.comm.drs.Read_ps_OnOff() == 1:
-                            Lib.comm.drs.TurnOff()
-                    except Exception:
-                        continue
-                    QtWidgets.QApplication.processEvents()
+##                # Turns off any power supply which might be enabled
+##                for i in range(1, 7):
+##                    Lib.comm.drs.SetSlaveAdd(i)
+##                    try:
+##                        if Lib.comm.drs.Read_ps_OnOff() == 1:
+##                            Lib.comm.drs.TurnOff()
+##                    except Exception:
+##                        continue
+##                    QtWidgets.QApplication.processEvents()
 
                 # connect integrator
                 Lib.comm.fdi = FDI2056.EthernetCom()
@@ -1191,6 +1227,55 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                                  'Cycling process was not performed.',
                                  _QMessageBox.Ok)
             return
+
+    def plot(self, secondary=False):
+        try:
+            if not secondary:
+                _tab_idx = self.ui.tabWidget_3.currentIndex()
+            else:
+                _tab_idx = 1
+            # plot sinusoidal
+            if _tab_idx == 0:
+                a = float(self.ui.le_Sinusoidal_Amplitude.text())
+                offset = float(self.ui.le_Sinusoidal_Offset.text())
+                f = float(self.ui.le_Sinusoidal_Frequency.text())
+                ncycles = int(self.ui.le_Sinusoidal_n_cycles.text())
+                theta = float(self.ui.le_Initial_Phase.text())
+                sen = lambda t: (a*np.sin(2*np.pi*f*t + theta/360*2*np.pi) +
+                                 offset)
+
+            # plot damped sinusoidal
+            elif _tab_idx == 1:
+                if not secondary:
+                    a = float(self.ui.le_damp_sin_Ampl.text())
+                    offset = float(self.ui.le_damp_sin_Offset.text())
+                    f = float(self.ui.le_damp_sin_Freq.text())
+                    ncycles = int(self.ui.le_damp_sin_nCycles.text())
+                    theta = float(self.ui.le_damp_sin_phaseShift.text())
+                    tau = float(self.ui.le_damp_sin_Damping.text())
+                if secondary:
+                    a = float(self.ui.le_damp_sin_Ampl_2.text())
+                    offset = float(self.ui.le_damp_sin_Offset_2.text())
+                    f = float(self.ui.le_damp_sin_Freq_2.text())
+                    ncycles = int(self.ui.le_damp_sin_nCycles_2.text())
+                    theta = float(self.ui.le_damp_sin_phaseShift_2.text())
+                    tau = float(self.ui.le_damp_sin_Damping_2.text())
+                sen = lambda t: (a*np.sin(2*np.pi*f*t + theta/360*2*np.pi) *
+                                 np.exp(-t/tau) + offset)
+
+            x = np.linspace(0, ncycles/f, ncycles*20)
+            y = sen(x)
+            fig = self.plot_dialog.figure
+            ax = self.plot_dialog.ax
+            ax.clear()
+            ax.plot(x, y)
+            ax.set_xlabel('Time (s)', size=20)
+            ax.set_ylabel('Current (I)', size=20)
+            ax.grid('on', alpha=0.3)
+            fig.tight_layout()
+            self.plot_dialog.show()
+        except Exception:
+            _traceback.print_exc(file=_sys.stdout)
 
     def move_motor_until_stops(self, address):
         """Moves motor until it stops."""
@@ -3044,7 +3129,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
     def dcct_convert(self):
         """Converts dcct voltage to current."""
         _agilent_reading = Lib.comm.agilent34970a.read_temp_volt()
-        if isinstance(Lib.measurement_settings, pd.DataFrame):
+        if Lib.measurement_settings is not None:
             Lib.write_value(Lib.measurement_settings, 'temperature',
                             _agilent_reading[0])
             setattr(self, 'temperature_magnet', _agilent_reading[1])
