@@ -1241,8 +1241,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 f = float(self.ui.le_Sinusoidal_Frequency.text())
                 ncycles = int(self.ui.le_Sinusoidal_n_cycles.text())
                 theta = float(self.ui.le_Initial_Phase.text())
-                if any(a == 0, f == 0, ncycles == 0):
-                    _QMessageBox.waring(self, 'Warning',
+                if any([a == 0, f == 0, ncycles == 0]):
+                    _QMessageBox.warning(self, 'Warning',
                                         'Please check the parameters.',
                                         _QMessageBox.Ok)
                     return
@@ -1265,8 +1265,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                     ncycles = int(self.ui.le_damp_sin_nCycles_2.text())
                     theta = float(self.ui.le_damp_sin_phaseShift_2.text())
                     tau = float(self.ui.le_damp_sin_Damping_2.text())
-                if any(a == 0, f == 0, ncycles == 0, tau == 0):
-                    _QMessageBox.waring(self, 'Warning',
+                if any([a == 0, f == 0, ncycles == 0, tau == 0]):
+                    _QMessageBox.warning(self, 'Warning',
                                         'Please check the parameters.',
                                         _QMessageBox.Ok)
                     return
