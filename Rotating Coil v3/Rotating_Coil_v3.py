@@ -64,6 +64,12 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.timer = QtCore.QTimer()
         self.signals()
 
+        #power supply current slope, [F1000A, F225A, F10A] [A/s]
+        self.slope = [50, 90, 1000]
+        #disable sen^2 curves, not implemented on power supply yet
+        self.ui.tabWidget_3.setTabEnabled(2, False)
+        self.ui.tabWidget_5.setTabEnabled(3, False)
+
         self.refresh_interface()
 
         self.plot_dialog = PlotDialog()
@@ -113,15 +119,24 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui.pb_save_ps.clicked.connect(
             lambda: self.save_PowerSupply(False))
         self.ui.pb_send.clicked.connect(lambda: self.send_setpoint(False))
-        self.ui.pb_add_row.clicked.connect(lambda: self.add_row(False))
-        self.ui.pb_remove_row.clicked.connect(lambda: self.remove_row(False))
+        self.ui.pb_add_row.clicked.connect(
+            lambda: self.add_row(self.ui.tw_currents))
+        self.ui.pb_remove_row.clicked.connect(
+            lambda: self.remove_row(self.ui.tw_currents))
+        self.ui.pb_clear_table.clicked.connect(
+            lambda: self.clear_table(self.ui.tw_currents))
+        self.ui.pb_add_row_3.clicked.connect(
+            lambda: self.add_row(self.ui.tw_trapezoidal))
+        self.ui.pb_remove_row_3.clicked.connect(
+            lambda: self.remove_row(self.ui.tw_trapezoidal))
+        self.ui.pb_clear_table_3.clicked.connect(
+            lambda: self.clear_table(self.ui.tw_trapezoidal))
         self.ui.pb_send_curve.clicked.connect(lambda: self.send_curve(False))
         self.ui.pb_config_pid.clicked.connect(self.config_pid)
         self.ui.pb_reset_inter.clicked.connect(
             lambda: self.reset_interlocks(False))
         self.ui.pb_cycle.clicked.connect(lambda: self.cycling_ps(False))
         self.ui.pb_config_ps.clicked.connect(lambda: self.configure_ps(False))
-        self.ui.pb_clear_table.clicked.connect(lambda: self.clear_table(False))
         self.ui.pb_plot.clicked.connect(lambda: self.plot(False))
         #Secondary Power Supply
         self.ui.pb_ps_button_2.clicked.connect(
@@ -133,16 +148,30 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui.pb_save_ps_2.clicked.connect(
             lambda: self.save_PowerSupply(True))
         self.ui.pb_send_2.clicked.connect(lambda: self.send_setpoint(True))
-        self.ui.pb_add_row_2.clicked.connect(lambda: self.add_row(True))
-        self.ui.pb_remove_row_2.clicked.connect(lambda: self.remove_row(True))
-        self.ui.pb_send_curve_2.clicked.connect(lambda: self.send_curve(True))
+        self.ui.pb_add_row_2.clicked.connect(
+            lambda: self.add_row(self.ui.tw_currents_2))
+        self.ui.pb_remove_row_2.clicked.connect(
+            lambda: self.remove_row(self.ui.tw_currents_2))
+        self.ui.pb_clear_table_2.clicked.connect(
+            lambda: self.clear_table(self.ui.tw_currents_2))
+        self.ui.pb_add_row_4.clicked.connect(
+            lambda: self.add_row(self.ui.tw_trapezoidal_2))
+        self.ui.pb_remove_row_4.clicked.connect(
+            lambda: self.remove_row(self.ui.tw_trapezoidal_2))
+        self.ui.pb_clear_table_4.clicked.connect(
+            lambda: self.clear_table(self.ui.tw_trapezoidal_2))
         self.ui.pb_reset_inter_2.clicked.connect(
             lambda: self.reset_interlocks(True))
+        self.ui.pb_send_curve_2.clicked.connect(lambda: self.send_curve(True))
         self.ui.pb_cycle_2.clicked.connect(lambda: self.cycling_ps(True))
-        self.ui.pb_clear_table_2.clicked.connect(
-            lambda: self.clear_table(True))
-        self.ui.pb_config_ps_2.clicked.connect(lambda: self.configure_ps(True))
         self.ui.pb_plot_2.clicked.connect(lambda: self.plot(True))
+        self.ui.pb_send_curve_3.clicked.connect(lambda: self.send_curve(True))
+        self.ui.pb_cycle_3.clicked.connect(lambda: self.cycling_ps(True))
+        self.ui.pb_plot_3.clicked.connect(lambda: self.plot(True))
+        self.ui.pb_send_curve_4.clicked.connect(lambda: self.send_curve(True))
+        self.ui.pb_cycle_4.clicked.connect(lambda: self.cycling_ps(True))
+        self.ui.pb_plot_4.clicked.connect(lambda: self.plot(True))
+        self.ui.pb_config_ps_2.clicked.connect(lambda: self.configure_ps(True))
         self.ui.pb_emergency4.clicked.connect(lambda: self.stop(True))
 
         # Measurements Tab
@@ -179,6 +208,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
     def connect_devices(self):
         """Connect devices and check status."""
         self.ui.pb_connect_devices.setText('Processing...')
+        QtWidgets.QApplication.processEvents()
         if not Lib.flags.devices_connected:
             try:
                 self.config_variables()
@@ -555,6 +585,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                     self.ui.le_status_loop_2.setText('Closed')
                     self.ui.pb_send_2.setEnabled(True)
                     self.ui.pb_send_curve_2.setEnabled(True)
+                    self.ui.pb_send_curve_3.setEnabled(True)
+                    self.ui.pb_send_curve_4.setEnabled(True)
                     self.ui.pb_refresh_2.setEnabled(True)
                 self.display_current(secondary)
                 _QMessageBox.information(self, 'Information', 'The Power '
@@ -852,45 +884,49 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
     def send_curve(self, secondary=False):
         """Configures power supply curve generator from UI."""
-        if not secondary:
-            self.ui.tabWidget_2.setEnabled(False)
+        self.ui.tabWidget_2.setEnabled(False)
         if self.curve_gen(secondary) is True:
+            self.ui.tabWidget_2.setEnabled(True)
+            if not secondary:
+                self.ui.pb_cycle.setEnabled(True)
+            else:
+                _curve_type = int(self.ui.tabWidget_5.currentIndex())
+                if _curve_type == 2:
+                    self.ui.pb_cycle_2.setEnabled(True)
+                elif _curve_type == 3:
+                    self.ui.pb_cycle_3.setEnabled(True)
+                elif _curve_type == 4:
+                    self.ui.pb_cycle_4.setEnabled(True)
+            QtWidgets.QApplication.processEvents()
             _QMessageBox.information(self, 'Information',
                                      'Curve sent successfully.',
                                      _QMessageBox.Ok)
-            if not secondary:
-                self.ui.tabWidget_2.setEnabled(True)
-                self.ui.pb_cycle.setEnabled(True)
-            else:
-                self.ui.pb_cycle_2.setEnabled(True)
-            QtWidgets.QApplication.processEvents()
         else:
             _QMessageBox.warning(self, 'Warning', 'Failed to send curve.',
                                  _QMessageBox.Ok)
-            if not secondary:
-                self.ui.tabWidget_2.setEnabled(True)
+            self.ui.tabWidget_2.setEnabled(True)
             QtWidgets.QApplication.processEvents()
             return False
 
     def curve_gen(self, secondary=False):
         """Configures power supply curve generator."""
         if not secondary:
-            self.config_ps()
+            if not self.config_ps():
+                return False
             _curve_type = int(self.ui.tabWidget_3.currentIndex())
             _df = Lib.ps_settings
         else:
-            self.config_ps_2()
-            # Only curve available on secondary ps is damped sinusoidal
-            _curve_type = 1
+            if not self.config_ps_2():
+                return False
+            _curve_type = int(self.ui.tabWidget_5.currentIndex()) - 1
             _df = Lib.ps_settings_2
 
         _ps_type = Lib.get_value(_df, 'Power Supply Type', int)
         if not self.set_address(_ps_type):
-            return
+            return False
 
         # Sinusoidal
         if _curve_type == 0:
-            #For Offset
             try:
                 _offset = Lib.get_value(_df, 'Sinusoidal Offset', float)
                 if not self.verify_current_limits(0, _offset):
@@ -898,12 +934,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                     Lib.write_value(_df, 'Sinusoidal Offset', 0)
                     return False
                 self.ui.le_Sinusoidal_Offset.setText(str(_offset))
-                Lib.write_value(_df, 'Sinusoidal Offset', _offset, True)
             except Exception:
                 _QMessageBox.warning(self, 'Warning', 'Please, verify the '
                                      'Offset parameter of the curve.',
                                      _QMessageBox.Ok)
-            #For Amplitude
             try:
                 _amp = Lib.get_value(_df, 'Sinusoidal Amplitude', float)
                 if not self.verify_current_limits(abs(_amp), _offset, True):
@@ -911,26 +945,22 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                     Lib.write_value(_df, 'Sinusoidal Amplitude', 0)
                     return False
                 self.ui.le_Sinusoidal_Amplitude.setText(str(_amp))
-                Lib.write_value(_df, 'Sinusoidal Amplitude', _amp, True)
             except Exception:
                 _QMessageBox.warning(self, 'Warning', 'Please, verify the '
                                      'Amplitude parameter of the curve.',
                                      _QMessageBox.Ok)
-            #For Frequency
             try:
                 _freq = Lib.get_value(_df, 'Sinusoidal Frequency', float)
             except Exception:
                 _QMessageBox.warning(self, 'Warning', 'Please, verify the '
                                      'Frequency parameter of the curve.',
                                      _QMessageBox.Ok)
-            #For N-cycles
             try:
                 _n_cycles = Lib.get_value(_df, 'Sinusoidal N Cycles', int)
             except Exception:
                 _QMessageBox.warning(self, 'Warning', 'Please, verify the '
                                      '#cycles parameter of the curve.',
                                      _QMessageBox.Ok)
-            #For Phase shift
             try:
                 _phase_shift = Lib.get_value(_df, 'Sinusoidal Initial Phase',
                                              float)
@@ -938,7 +968,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 _QMessageBox.warning(self, 'Warning', 'Please, verify the '
                                      'Phase parameter of the curve.',
                                      _QMessageBox.Ok)
-            #For Final phase
             try:
                 _final_phase = Lib.get_value(_df, 'Sinusoidal Final Phase',
                                              float)
@@ -948,19 +977,21 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                                      _QMessageBox.Ok)
 
         # Damped Sinusoidal (can be primary or secondary ps)
-        if _curve_type == 1:
-            #For Offset
+        if _curve_type in [1, 2]:
+            if _curve_type == 1:
+                _sin = 'Sinusoidal'
+            else:
+                _sin = 'Sinusoidal2'
             try:
-                _offset = Lib.get_value(_df, 'Damped Sinusoidal Offset', float)
+                _offset = Lib.get_value(_df, 'Damped '+_sin+' Offset', float)
                 if not self.verify_current_limits(0, _offset, False,
                                                   secondary):
-                    Lib.write_value(_df, 'Damped Sinusoidal Offset', 0)
+                    Lib.write_value(_df, 'Damped '+_sin+' Offset', 0)
                     if not secondary:
                         self.ui.le_damp_sin_Offset.setText('0')
                     else:
                         self.ui.le_damp_sin_Offset_2.setText('0')
                     return False
-                Lib.write_value(_df, 'Damped Sinusoidal Offset', _offset, True)
                 if not secondary:
                     self.ui.le_damp_sin_Offset.setText(str(_offset))
                 else:
@@ -969,18 +1000,16 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 _QMessageBox.warning(self, 'Warning', 'Please, verify the '
                                      'Offset parameter of the curve.',
                                      _QMessageBox.Ok)
-            #For Amplitude
             try:
-                _amp = Lib.get_value(_df, 'Damped Sinusoidal Amplitude', float)
+                _amp = Lib.get_value(_df, 'Damped '+_sin+' Amplitude', float)
                 if not self.verify_current_limits(abs(_amp), _offset, True,
                                                   secondary):
-                    Lib.write_value(_df, 'Damped Sinusoidal Amplitude', 0)
+                    Lib.write_value(_df, 'Damped '+_sin+' Amplitude', 0)
                     if not secondary:
                         self.ui.le_damp_sin_Ampl.setText('0')
                     else:
                         self.ui.le_damp_sin_Ampl_2.setText('0')
                     return False
-                Lib.write_value(_df, 'Damped Sinusoidal Amplitude', _amp, True)
                 if not secondary:
                     self.ui.le_damp_sin_Ampl.setText(str(_amp))
                 else:
@@ -989,41 +1018,36 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 _QMessageBox.warning(self, 'Warning', 'Please, verify the '
                                      'Amplitude parameter of the curve.',
                                      _QMessageBox.Ok)
-            #For Frequency
             try:
-                _freq = Lib.get_value(_df, 'Damped Sinusoidal Frequency',
+                _freq = Lib.get_value(_df, 'Damped '+_sin+' Frequency',
                                       float)
             except Exception:
                 _QMessageBox.warning(self, 'Warning', 'Please, verify the '
                                      'Frequency parameter of the curve.',
                                      _QMessageBox.Ok)
-            #For N-cycles
             try:
-                _n_cycles = Lib.get_value(_df, 'Damped Sinusoidal N Cycles',
+                _n_cycles = Lib.get_value(_df, 'Damped '+_sin+' N Cycles',
                                           int)
             except Exception:
                 _QMessageBox.warning(self, 'Warning', 'Please, verify the '
                                      '#cycles parameter of the curve.',
                                      _QMessageBox.Ok)
-            #For Phase shift
             try:
-                _phase_shift = Lib.get_value(_df, 'Damped Sinusoidal Phase '
+                _phase_shift = Lib.get_value(_df, 'Damped '+_sin+' Phase '
                                              'Shift', float)
             except Exception:
                 _QMessageBox.warning(self, 'Warning', 'Please, verify the '
                                      'Phase parameter of the curve.',
                                      _QMessageBox.Ok)
-            #For Final phase
             try:
-                _final_phase = Lib.get_value(_df, 'Damped Sinusoidal Final '
+                _final_phase = Lib.get_value(_df, 'Damped '+_sin+' Final '
                                              'Phase', float)
             except Exception:
                 _QMessageBox.warning(self, 'Warning', 'Please, verify the '
                                      'Final Phase parameter of the curve.',
                                      _QMessageBox.Ok)
-            #For Damping
             try:
-                _damping = Lib.get_value(_df, 'Damped Sinusoidal Damping',
+                _damping = Lib.get_value(_df, 'Damped '+_sin+' Damping',
                                          float)
             except Exception:
                 _QMessageBox.warning(self, 'Warning', 'Please, verify the '
@@ -1032,18 +1056,22 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
         #Generating curves
         try:
-            # Sinusoidal
-            if _curve_type == 0:
+            if _curve_type < 3:
                 try:
-                    _sigType = 0
-                    # send Frequency
                     Lib.comm.drs.Write_sigGen_Freq(float(_freq))
-                    # send Amplitude
                     Lib.comm.drs.Write_sigGen_Amplitude(float(_amp))
-                    # send Offset
                     Lib.comm.drs.Write_sigGen_Offset(float(_offset))
+                    # Sinusoidal
+                    if _curve_type == 0:
+                        _sigtype = 0
+                    elif _curve_type in [1, 2]:
+                        if _curve_type == 1:
+                            _sigtype = 4
+                        else:
+                            _sigtype = 6
+                        Lib.comm.drs.Write_sigGen_Aux(float(_damping))
                     # Sending curves to PS Controller
-                    Lib.comm.drs.ConfigSigGen(_sigType, _n_cycles,
+                    Lib.comm.drs.ConfigSigGen(_sigtype, _n_cycles,
                                               _phase_shift, _final_phase)
                 except Exception:
                     traceback.print_exc(file=sys.stdout)
@@ -1052,36 +1080,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                                          'Please, verify the parameters of the'
                                          ' Power Supply.',
                                          _QMessageBox.Ok)
-                    return
-
-            # Damped Sinusoidal
-            if _curve_type == 1:
-                try:
-                    _sigType = 4
-                    Lib.comm.drs.Write_sigGen_Freq(float(_freq))
-                    Lib.comm.drs.Write_sigGen_Amplitude(float(_amp))
-                    Lib.comm.drs.Write_sigGen_Offset(float(_offset))
-                except Exception:
-                    _QMessageBox.warning(self, 'Warning', 'Failed to send '
-                                         'configuration to the controller.\n'
-                                         'Please, verify the parameters of the'
-                                         ' Power Supply.',
-                                         _QMessageBox.Ok)
-                    return
-
-                #Sending sigGenDamped
-                try:
-                    Lib.comm.drs.Write_sigGen_Aux(float(
-                        self.ui.le_damp_sin_Damping.text()))
-                    Lib.comm.drs.ConfigSigGen(_sigType, _n_cycles,
-                                              _phase_shift, _final_phase)
-                except Exception:
-                    _QMessageBox.warning(self, 'Warning.',
-                                         'Damped Sinusoidal fault.',
-                                         _QMessageBox.Ok)
-                    traceback.print_exc(file=sys.stdout)
                     return False
-
             return True
         except Exception:
             return False
@@ -1110,7 +1109,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         try:
             Lib.comm.drs.ResetInterlocks()
             time.sleep(0.1)
-            _interlock = _interlock + (Lib.comm.Read_ps_HardInterlocks() +
+            _interlock = _interlock + (Lib.comm.drs.Read_ps_HardInterlocks() +
                          Lib.comm.drs.Read_ps_SoftInterlocks())
             if not secondary:
                 if self.ui.pb_interlock.isChecked() and not _interlock:
@@ -1137,21 +1136,34 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         if not secondary:
             _curve_type = int(self.ui.tabWidget_3.currentIndex())
             _df = Lib.ps_settings
+            _pb = self.ui.pb_cycle
+            self.ui.pb_load_ps.setEnabled(False)
+            self.ui.pb_refresh.setEnabled(False)
         else:
-            # Only curve available on secondary ps is damped sinusoidal
-            _curve_type = 1
+            _curve_type = int(self.ui.tabWidget_5.currentIndex()) - 1
             _df = Lib.ps_settings_2
+            if _curve_type == 1:
+                _pb = self.ui.pb_cycle_2
+            if _curve_type == 2:
+                _pb = self.ui.pb_cycle_3
+            if _curve_type == 3:
+                _pb = self.ui.pb_cycle_4
+        _pb.setText('Wait...')
+        self.ui.tabWidget_2.setEnabled(False)
+        self.ui.pb_start_meas.setEnabled(False)
+        QtWidgets.QApplication.processEvents()
 
         _ps_type = Lib.get_value(_df, 'Power Supply Type', int)
         if not self.set_address(_ps_type):
             return
 
         try:
-            if not self.set_op_mode(3):
-                _QMessageBox.warning(self, 'Warning', 'Could not set '
-                                     'the sigGen operation mode.',
-                                     _QMessageBox.Ok)
-                return
+            if _curve_type < 3:
+                if not self.set_op_mode(3):
+                    _QMessageBox.warning(self, 'Warning', 'Could not set '
+                                         'the sigGen operation mode.',
+                                         _QMessageBox.Ok)
+                    return
         except Exception:
             _QMessageBox.warning(self, 'Warning', 'Power supply is not on '
                                  'signal generator mode.',
@@ -1159,81 +1171,119 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             return
         try:
             if _curve_type == 0:
-                Lib.comm.drs.EnableSigGen()
                 _freq = Lib.get_value(_df, 'Sinusoidal Frequency', float)
                 _n_cycles = Lib.get_value(_df, 'Sinusoidal N Cycles', float)
                 _offset = Lib.get_value(_df, 'Sinusoidal Offset', float)
-            if _curve_type == 1:
-                Lib.comm.drs.EnableSigGen()
+            elif _curve_type == 1:
                 _freq = Lib.get_value(_df, 'Damped Sinusoidal Frequency',
                                       float)
                 _n_cycles = Lib.get_value(_df, 'Damped Sinusoidal N Cycles',
                                           float)
                 _offset = Lib.get_value(_df, 'Damped Sinusoidal Offset', float)
-            _deadline = time.monotonic() + (1/_freq*_n_cycles)
-            while time.monotonic() < _deadline:
-                self.ui.tabWidget_2.setEnabled(False)
-                if not secondary:
-                    self.ui.pb_load_ps.setEnabled(False)
-                    self.ui.pb_refresh.setEnabled(False)
-                    self.ui.pb_cycle.setText('Wait...')
-                else:
-                    self.ui.pb_load_ps_2.setEnabled(False)
-                    self.ui.pb_refresh_2.setEnabled(False)
-                    self.ui.pb_cycle_2.setText('Wait...')
-                self.ui.pb_start_meas.setEnabled(False)
-                QtWidgets.QApplication.processEvents()
-
+            elif _curve_type == 2:
+                _freq = Lib.get_value(_df, 'Damped Sinusoidal2 Frequency',
+                                      float)
+                _n_cycles = Lib.get_value(_df, 'Damped Sinusoidal2 N Cycles',
+                                          float)
+                _offset = Lib.get_value(_df, 'Damped Sinusoidal2 Offset',
+                                        float)
+            if _curve_type == 3:
+                _offset = Lib.get_value(_df, 'Trapezoidal Offset', float)
+                if not self.trapezoidal_cycle():
+                    raise Exception('Failure during trapezoidal cycle.')
+            else:
+                Lib.comm.drs.EnableSigGen()
+                _deadline = time.monotonic() + (1/_freq*_n_cycles)
+                while time.monotonic() < _deadline:
+                    QtWidgets.QApplication.processEvents()
+                    time.sleep(0.01)
+                Lib.comm.drs.DisableSigGen()
+                # returns to mode ISlowRef
+                if not self.set_op_mode(0):
+                    _QMessageBox.warning(self, 'Warning', 'Could not set '
+                                         'the slowRef operation mode.',
+                                         _QMessageBox.Ok)
             Lib.write_value(_df, 'Current Setpoint', _offset, True)
-
             _QMessageBox.information(self, 'Information', 'Cycle process '
                                      'completed successfully.',
                                      _QMessageBox.Ok)
-            Lib.comm.drs.DisableSigGen()
             self.display_current(secondary)
             self.ui.tabWidget_2.setEnabled(True)
+            _pb.setText('Cycle')
+            _pb.setEnabled(False)
             if not secondary:
                 self.ui.pb_load_ps.setEnabled(True)
                 self.ui.pb_refresh.setEnabled(True)
-                self.ui.pb_cycle.setText('Cycle')
-            else:
-                self.ui.pb_load_ps_2.setEnabled(True)
-                self.ui.pb_refresh_2.setEnabled(True)
-                self.ui.pb_cycle_2.setText('Cycle')
             self.ui.pb_start_meas.setEnabled(True)
             QtWidgets.QApplication.processEvents()
-
-            if _curve_type == 2:
-                pass
-            # returns to mode ISlowRef
-            if not self.set_op_mode(0):
-                _QMessageBox.warning(self, 'Warning', 'Could not set '
-                                     'the slowRef operation mode.',
-                                     _QMessageBox.Ok)
-                return
         except Exception:
+            traceback.print_exc(file=sys.stdout)
             self.ui.tabWidget_2.setEnabled(True)
+            _pb.setText('Cycle')
+            _pb.setEnabled(False)
             if not secondary:
                 self.ui.pb_load_ps.setEnabled(True)
                 self.ui.pb_refresh.setEnabled(True)
-                self.ui.pb_cycle.setText('Cycle')
-            else:
-                self.ui.pb_load_ps_2.setEnabled(True)
-                self.ui.pb_refresh_2.setEnabled(True)
-                self.ui.pb_cycle_2.setText('Cycle')
             self.ui.pb_start_meas.setEnabled(True)
             QtWidgets.QApplication.processEvents()
             _QMessageBox.warning(self, 'Warning',
-                                 'Cycling process was not performed.',
+                                 'Cycling process was not performed properly.',
                                  _QMessageBox.Ok)
             return
+
+    def trapezoidal_cycle(self, secondary=False):
+        try:
+            if not secondary:
+                _df = Lib.ps_settings
+            else:
+                _df = Lib.ps_settings_2
+
+            _ps_type = Lib.get_value(_df, 'Power Supply Type', int)
+            _offset = Lib.get_value(_df, 'Trapezoidal Offset', float)
+            _array = Lib.get_value(_df, 'Trapezoidal Array')
+            _array = np.fromstring(_array, sep=',')
+            _array = _array.reshape(int(_array.shape[0]/2), 2)
+
+            if not self.set_address(_ps_type):
+                return False
+
+            if _ps_type in [2, 3]:
+                _slope = self.slope[_ps_type - 2]
+            else:
+                _slope = self.slope[-1]
+            for i in range(len(_array)):
+                if not self.verify_current_limits(_array[i, 0] + _offset):
+                    return False
+
+            Lib.comm.drs.SetISlowRef(_offset)
+            for i in range(len(_array)):
+                _i0 = _offset
+                _i = _array[i, 0] + _offset
+                _t = _array[i, 1]
+                _t_border = abs(_i - _i0) / _slope
+                Lib.comm.drs.SetISlowRef(_i)
+                _deadline = time.monotonic() + _t_border + _t
+                while time.monotonic() < _deadline:
+                    QtWidgets.QApplication.processEvents()
+                    time.sleep(0.01)
+                Lib.comm.drs.SetISlowRef(_offset)
+                _deadline = time.monotonic() + _t_border + _t
+                while time.monotonic() < _deadline:
+                    QtWidgets.QApplication.processEvents()
+                    time.sleep(0.01)
+            return True
+        except Exception:
+            traceback.print_exc(file=sys.stdout)
+            return False
 
     def plot(self, secondary=False):
         try:
             if not secondary:
                 _tab_idx = self.ui.tabWidget_3.currentIndex()
+                _df = Lib.ps_settings
             else:
-                _tab_idx = 1
+                _tab_idx = self.ui.tabWidget_5.currentIndex() - 1
+                _df = Lib.ps_settings_2
             # plot sinusoidal
             if _tab_idx == 0:
                 a = float(self.ui.le_Sinusoidal_Amplitude.text())
@@ -1248,7 +1298,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                     return
                 sen = lambda t: (a*np.sin(2*np.pi*f*t + theta/360*2*np.pi) +
                                  offset)
-
             # plot damped sinusoidal
             elif _tab_idx == 1:
                 if not secondary:
@@ -1272,20 +1321,75 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                     return
                 sen = lambda t: (a*np.sin(2*np.pi*f*t + theta/360*2*np.pi) *
                                  np.exp(-t/tau) + offset)
-
-            x = np.linspace(0, ncycles/f, ncycles*20)
-            y = sen(x)
+            # plot damped sinusoidal^2
+            elif _tab_idx == 2:
+                if not secondary:
+                    a = float(self.ui.le_damp_sin2_Ampl.text())
+                    offset = float(self.ui.le_damp_sin2_Offset.text())
+                    f = float(self.ui.le_damp_sin2_Freq.text())
+                    ncycles = int(self.ui.le_damp_sin2_nCycles.text())
+                    theta = float(self.ui.le_damp_sin2_phaseShift.text())
+                    tau = float(self.ui.le_damp_sin2_Damping.text())
+                if secondary:
+                    a = float(self.ui.le_damp_sin2_Ampl_2.text())
+                    offset = float(self.ui.le_damp_sin2_Offset_2.text())
+                    f = float(self.ui.le_damp_sin2_Freq_2.text())
+                    ncycles = int(self.ui.le_damp_sin2_nCycles_2.text())
+                    theta = float(self.ui.le_damp_sin2_phaseShift_2.text())
+                    tau = float(self.ui.le_damp_sin2_Damping_2.text())
+                if any([a == 0, f == 0, ncycles == 0, tau == 0]):
+                    _QMessageBox.warning(self, 'Warning',
+                                        'Please check the parameters.',
+                                        _QMessageBox.Ok)
+                    return
+                sen = lambda t: (a*np.sin(2*np.pi*f*t + theta/360*2*np.pi)*
+                                 np.sin(2*np.pi*f*t + theta/360*2*np.pi)*
+                                 np.exp(-t/tau) + offset)
             fig = self.plot_dialog.figure
             ax = self.plot_dialog.ax
             ax.clear()
-            ax.plot(x, y)
+            # plot trapezoidal
+            if _tab_idx == 3:
+                if _df is None:
+                    _QMessageBox.warning(self, 'Warning',
+                                         'Please configure the power supply.',
+                                         _QMessageBox.Ok)
+                    return
+                _ps_type = Lib.get_value(_df, 'Power Supply Type', int)
+                if _ps_type in [2, 3]:
+                    _slope = self.slope[_ps_type - 2]
+                else:
+                    _slope = self.slope[2]
+                if not secondary:
+                    _offset = float(self.ui.le_trapezoidal_offset.text())
+                    _array = self.table_to_array(self.ui.tw_trapezoidal)
+                else:
+                    _offset = float(self.ui.le_trapezoidal_offset_2.text())
+                    _array = self.table_to_array(self.ui.tw_trapezoidal_2)
+                _t0 = 0
+                for i in range(len(_array)):
+                    _i0 = _offset
+                    _i = _array[i, 0] + _offset
+                    _t = _array[i, 1]
+                    _t_border = abs(_i - _i0) / _slope
+                    ax.plot([_t0, _t0+_t_border], [_offset, _i], 'b-')
+                    ax.plot([_t0+_t_border, _t0+_t_border+_t], [_i, _i], 'b-')
+                    ax.plot([_t0+_t_border+_t, _t0+2*_t_border+_t],
+                            [_i, _offset], 'b-')
+                    ax.plot([_t0+2*_t_border+_t, _t0+2*(_t_border+_t)],
+                            [_offset, _offset], 'b-')
+                    _t0 = _t0+2*(_t_border+_t)
+            else:
+                x = np.linspace(0, ncycles/f, ncycles*20)
+                y = sen(x)
+                ax.plot(x, y)
             ax.set_xlabel('Time (s)', size=20)
             ax.set_ylabel('Current (I)', size=20)
             ax.grid('on', alpha=0.3)
             fig.tight_layout()
             self.plot_dialog.show()
         except Exception:
-            _traceback.print_exc(file=_sys.stdout)
+            traceback.print_exc(file=sys.stdout)
 
     def move_motor_until_stops(self, address):
         """Moves motor until it stops."""
@@ -2699,7 +2803,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         #Current Adjustment
         self.ui.dsb_current_setpoint.setValue(
             Lib.get_value(Lib.ps_settings, 'Current Setpoint', float))
-        self.keep_auto_values()
+        _array = Lib.get_value(Lib.ps_settings, 'Automatic Setpoints')
+        _array = np.fromstring(_array, sep=',')
+        self.array_to_table(_array, self.ui.tw_currents)
         #Demagnetization Curves
         #Sinusoidal
         self.ui.le_Sinusoidal_Amplitude.setText(
@@ -2738,6 +2844,36 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui.le_damp_sin_Damping.setText(
             str(Lib.get_value(Lib.ps_settings, 'Damped Sinusoidal Damping',
                               float)))
+        #Damped Sinusoidal^2
+        self.ui.le_damp_sin2_Ampl.setText(
+            str(Lib.get_value(Lib.ps_settings, 'Damped Sinusoidal2 Amplitude',
+                              float)))
+        self.ui.le_damp_sin2_Offset.setText(
+            str(Lib.get_value(Lib.ps_settings, 'Damped Sinusoidal2 Offset',
+                              float)))
+        self.ui.le_damp_sin2_Freq.setText(
+            str(Lib.get_value(Lib.ps_settings, 'Damped Sinusoidal2 Frequency',
+                              float)))
+        self.ui.le_damp_sin2_nCycles.setText(
+            str(Lib.get_value(Lib.ps_settings, 'Damped Sinusoidal2 N Cycles',
+                              int)))
+        self.ui.le_damp_sin2_phaseShift.setText(
+            str(Lib.get_value(Lib.ps_settings,
+                              'Damped Sinusoidal2 Phase Shift', float)))
+        self.ui.le_damp_sin2_finalPhase.setText(
+            str(Lib.get_value(Lib.ps_settings,
+                              'Damped Sinusoidal2 Final Phase', float)))
+        self.ui.le_damp_sin2_Damping.setText(
+            str(Lib.get_value(Lib.ps_settings, 'Damped Sinusoidal2 Damping',
+                              float)))
+        #Trapezoidal
+        self.ui.le_trapezoidal_offset.setText(
+            str(Lib.get_value(Lib.ps_settings, 'Trapezoidal Offset', float)))
+        _array = Lib.get_value(Lib.ps_settings, 'Trapezoidal Array')
+        if _array is not np.nan:
+            _array = np.fromstring(_array, sep=',')
+            _array = _array.reshape(int(_array.shape[0]/2), 2)
+            self.array_to_table(_array, self.ui.tw_trapezoidal)
         #Settings
         self.ui.le_maximum_current.setText(
             str(Lib.get_value(Lib.ps_settings, 'Maximum Current', float)))
@@ -2823,8 +2959,32 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                             self.ui.le_damp_sin_finalPhase.text(), True)
             Lib.write_value(Lib.ps_settings, 'Damped Sinusoidal Damping',
                             self.ui.le_damp_sin_Damping.text(), True)
+            #Damped Sinusoidal^2
+            Lib.write_value(Lib.ps_settings, 'Damped Sinusoidal2 Amplitude',
+                            self.ui.le_damp_sin2_Ampl.text(), True)
+            Lib.write_value(Lib.ps_settings, 'Damped Sinusoidal2 Offset',
+                            self.ui.le_damp_sin2_Offset.text(), True)
+            Lib.write_value(Lib.ps_settings, 'Damped Sinusoidal2 Frequency',
+                            self.ui.le_damp_sin2_Freq.text(), True)
+            Lib.write_value(Lib.ps_settings, 'Damped Sinusoidal2 N Cycles',
+                            self.ui.le_damp_sin2_nCycles.text(), True)
+            Lib.write_value(Lib.ps_settings, 'Damped Sinusoidal2 Phase Shift',
+                            self.ui.le_damp_sin2_phaseShift.text(), True)
+            Lib.write_value(Lib.ps_settings, 'Damped Sinusoidal2 Final Phase',
+                            self.ui.le_damp_sin2_finalPhase.text(), True)
+            Lib.write_value(Lib.ps_settings, 'Damped Sinusoidal2 Damping',
+                            self.ui.le_damp_sin2_Damping.text(), True)
+            #Trapezoidal
+            Lib.write_value(Lib.ps_settings, 'Trapezoidal Offset',
+                            self.ui.le_trapezoidal_offset.text(), True)
+            _values = str(self.table_to_array(self.ui.tw_trapezoidal))
+            _values = _values.replace('  ', ' ')
+            _values = _values.replace('\n', '').replace('[', '')
+            _values = _values.replace(']', '').replace(' ', ', ')
+            Lib.write_value(Lib.ps_settings, 'Trapezoidal Array',
+                            str(_values), False)
             #Automatic setpoints
-            _values = self.keep_auto_values(1)
+            _values = self.table_to_array(self.ui.tw_currents)
             _values = ", ".join(str(x) for x in _values)
             Lib.write_value(Lib.ps_settings, 'Automatic Setpoints',
                             str(_values), False)
@@ -2839,6 +2999,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                             self.ui.dcct_select.currentIndex(), True)
             return True
         except Exception:
+            traceback.print_exc(file=sys.stdout)
             _QMessageBox.warning(self, 'Warning', 'Could not configure the '
                                  'power supply settings.\nCheck if all the '
                                  'inputs are correct.',
@@ -2856,7 +3017,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         #Current Adjustment
         self.ui.dsb_current_setpoint_2.setValue(
             Lib.get_value(Lib.ps_settings_2, 'Current Setpoint', float))
-        self.keep_auto_values(secondary=True)
+        _array = Lib.get_value(Lib.ps_settings_2, 'Automatic Setpoints')
+        _array = np.fromstring(_array, sep=',')
+        self.array_to_table(_array, self.ui.tw_currents_2)
         #Demagnetization Curves
         #Damped Sinusoidal
         self.ui.le_damp_sin_Ampl_2.setText(
@@ -2880,6 +3043,35 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui.le_damp_sin_Damping_2.setText(
             str(Lib.get_value(Lib.ps_settings_2, 'Damped Sinusoidal Damping',
                               float)))
+        #Damped Sinusoidal^2
+        self.ui.le_damp_sin2_Ampl.setText(
+            str(Lib.get_value(Lib.ps_settings_2, 'Damped Sinusoidal2 Amplitude',
+                              float)))
+        self.ui.le_damp_sin2_Offset.setText(
+            str(Lib.get_value(Lib.ps_settings_2, 'Damped Sinusoidal2 Offset',
+                              float)))
+        self.ui.le_damp_sin2_Freq.setText(
+            str(Lib.get_value(Lib.ps_settings_2, 'Damped Sinusoidal2 Frequency',
+                              float)))
+        self.ui.le_damp_sin2_nCycles.setText(
+            str(Lib.get_value(Lib.ps_settings_2, 'Damped Sinusoidal2 N Cycles',
+                              int)))
+        self.ui.le_damp_sin2_phaseShift.setText(
+            str(Lib.get_value(Lib.ps_settings_2,
+                              'Damped Sinusoidal2 Phase Shift', float)))
+        self.ui.le_damp_sin2_finalPhase.setText(
+            str(Lib.get_value(Lib.ps_settings_2,
+                              'Damped Sinusoidal2 Final Phase', float)))
+        self.ui.le_damp_sin2_Damping.setText(
+            str(Lib.get_value(Lib.ps_settings_2, 'Damped Sinusoidal2 Damping',
+                              float)))
+        #Trapezoidal
+        self.ui.le_trapezoidal_offset.setText(
+            str(Lib.get_value(Lib.ps_settings_2, 'Trapezoidal Offset', float)))
+        _array = Lib.get_value(Lib.ps_settings_2, 'Trapezoidal Array')
+        _array = np.fromstring(_array, sep=',')
+        _array = _array.reshape(int(_array.shape[0]/2), 2)
+        self.array_to_table(_array, self.ui.tw_trapezoidal_2)
         #Settings
         self.ui.le_maximum_current_2.setText(
             str(Lib.get_value(Lib.ps_settings_2, 'Maximum Current', float)))
@@ -2911,8 +3103,33 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                             self.ui.le_damp_sin_finalPhase_2.text(), True)
             Lib.write_value(Lib.ps_settings_2, 'Damped Sinusoidal Damping',
                             self.ui.le_damp_sin_Damping_2.text(), True)
+            #Damped Sinusoidal^2
+            Lib.write_value(Lib.ps_settings_2, 'Damped Sinusoidal2 Amplitude',
+                            self.ui.le_damp_sin2_Ampl_2.text(), True)
+            Lib.write_value(Lib.ps_settings_2, 'Damped Sinusoidal2 Offset',
+                            self.ui.le_damp_sin2_Offset_2.text(), True)
+            Lib.write_value(Lib.ps_settings_2, 'Damped Sinusoidal2 Frequency',
+                            self.ui.le_damp_sin2_Freq_2.text(), True)
+            Lib.write_value(Lib.ps_settings_2, 'Damped Sinusoidal2 N Cycles',
+                            self.ui.le_damp_sin2_nCycles_2.text(), True)
+            Lib.write_value(Lib.ps_settings_2,
+                            'Damped Sinusoidal2 Phase Shift',
+                            self.ui.le_damp_sin2_phaseShift_2.text(), True)
+            Lib.write_value(Lib.ps_settings_2,
+                            'Damped Sinusoidal2 Final Phase',
+                            self.ui.le_damp_sin2_finalPhase_2.text(), True)
+            Lib.write_value(Lib.ps_settings_2, 'Damped Sinusoidal2 Damping',
+                            self.ui.le_damp_sin2_Damping_2.text(), True)
+            #Trapezoidal
+            Lib.write_value(Lib.ps_settings_2, 'Trapezoidal Offset', True)
+            _values = str(self.table_to_array(self.ui.tw_trapezoidal_2))
+            _values = _values.replace('  ', ' ')
+            _values = _values.replace('\n', '').replace('[', '')
+            _values = _values.replace(']', '').replace(' ', ', ')
+            Lib.write_value(Lib.ps_settings_2, 'Trapezoidal Array',
+                            str(_values), False)
             #Automatic setpoints
-            _values = self.keep_auto_values(1, True)
+            _values = self.table_to_array(self.ui.tw_currents_2)
             _values = ", ".join(str(x) for x in _values)
             Lib.write_value(Lib.ps_settings_2, 'Automatic Setpoints',
                             str(_values), False)
@@ -2929,76 +3146,87 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                                  _QMessageBox.Ok)
             return False
 
-    def keep_auto_values(self, mode=0, secondary=False):
-        """Configures automatic current to/from UI current table widget."""
-        if mode == 0:
-            try:
-                if not secondary:
-                    _auto = Lib.get_value(Lib.ps_settings,
-                                          'Automatic Setpoints')
-                    _tw = self.ui.tw_auto_set
-                else:
-                    _auto = Lib.get_value(Lib.ps_settings_2,
-                                          'Automatic Setpoints')
-                    _tw = self.ui.tw_auto_set_2
-                _auto_values = np.asarray(_auto.split(', '), dtype=float)
-            except Exception:
-                _QMessageBox.warning(self, 'Warning',
-                                     'Could not get the automatic current '
-                                     'values from interface.',
-                                     _QMessageBox.Ok)
-                return
-            try:
-                self.clear_table(secondary)
-                for i in range(len(_auto_values)):
-                    _tw.insertRow(i)
-                    self.set_table_item(_tw, i, 0, _auto_values[i])
-                QtWidgets.QApplication.processEvents()
-            except Exception:
-                _QMessageBox.warning(self, 'Warning', 'Could not write the '
-                                     'automatic current values on interface.',
-                                     _QMessageBox.Ok)
-                return
-            QtWidgets.QApplication.processEvents()
-        else:               # Return table values in array
-            if not secondary:
-                _tw = self.ui.tw_auto_set
+    def table_to_array(self, tw):
+        """Returns tw_currents tableWidget values in a numpy array."""
+        _tw = tw
+        _ncells = _tw.rowCount()
+        _current_array = []
+        _time_flag = False
+        if _tw in [self.ui.tw_trapezoidal, self.ui.tw_trapezoidal_2]:
+            _time_flag = True
+            _time_array = []
+        try:
+            if _ncells > 0:
+                for i in range(_ncells):
+                    _tw.setCurrentCell(i, 0)
+                    if _tw.currentItem() is not None:
+                        _current_array.append(float(_tw.currentItem().text()))
+                    if _time_flag:
+                        _tw.setCurrentCell(i, 1)
+                        if _tw.currentItem() is not None:
+                            _time_array.append(float(
+                                _tw.currentItem().text()))
+            if not _time_flag:
+                return np.array(_current_array)
             else:
-                _tw = self.ui.tw_auto_set_2
-            _ncells = _tw.rowCount()
-            _auto_array = []
-            for i in range(_ncells):
-                _tw.setCurrentCell(i, 0)
-                if _tw.currentItem() is not None:
-                    _auto_array.append(float(_tw.currentItem().text()))
-                else:
-                    pass
-            return _auto_array
+                return np.array([_current_array, _time_array]).transpose()
+        except Exception:
+            traceback.print_exc(file=sys.stdout)
+            raise Exception('table_to_array() error.')
+#             _QMessageBox.warning(self, 'Warning',
+#                                  'Could not convert table to array.\n'
+#                                  'Check if all inputs are numbers.',
+#                                  _QMessageBox.Ok)
+            return np.array([])
 
-    def add_row(self, secondary=False):
-        """Adds a row into tableWidget."""
-        if not secondary:
-            _tw = self.ui.tw_auto_set
-        else:
-            _tw = self.ui.tw_auto_set_2
+    def array_to_table(self, array, tw):
+        """Inserts array values into tw_currents tableWidget."""
+        _tw = tw
+        _ncells = _tw.rowCount()
+        _array = array
+        _time_flag = False
+        if _tw in [self.ui.tw_trapezoidal, self.ui.tw_trapezoidal_2]:
+            _time_flag = True
+        if _ncells > 0:
+            self.clear_table(_tw)
+        try:
+            for i in range(len(_array)):
+                _tw.insertRow(i)
+                _item = QtWidgets.QTableWidgetItem()
+                if not _time_flag:
+                    _tw.setItem(i, 0, _item)
+                    _item.setText(str(_array[i]))
+                else:
+                    _item2 = QtWidgets.QTableWidgetItem()
+                    _tw.setItem(i, 0, _item)
+                    _item.setText(str(_array[i, 0]))
+                    time.sleep(0.1)
+                    _tw.setItem(i, 1, _item2)
+                    _item2.setText(str(_array[i, 1]))
+                QtWidgets.QApplication.processEvents()
+                time.sleep(0.01)
+            return True
+        except Exception:
+            traceback.print_exc(file=sys.stdout)
+            _QMessageBox.warning(self, 'Warning',
+                                 'Could not insert array values into table.',
+                                 _QMessageBox.Ok)
+            return False
+
+    def add_row(self, tw):
+        _tw = tw
         _idx = _tw.rowCount()
         _tw.insertRow(_idx)
 
-    def remove_row(self, secondary=False):
+    def remove_row(self, tw):
         """Removes selected row from tw_currents tableWidget."""
-        if not secondary:
-            _tw = self.ui.tw_auto_set
-        else:
-            _tw = self.ui.tw_auto_set_2
+        _tw = tw
         _idx = _tw.currentRow()
         _tw.removeRow(_idx)
 
-    def clear_table(self, secondary=False):
+    def clear_table(self, tw):
         """Clears currents from tableWidget."""
-        if not secondary:
-            _tw = self.ui.tw_auto_set
-        else:
-            _tw = self.ui.tw_auto_set_2
+        _tw = tw
         _tw.clearContents()
         _ncells = _tw.rowCount()
         while _ncells >= 0:

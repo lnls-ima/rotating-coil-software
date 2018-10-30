@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="Images">
+    <file>imagens/dsinusoidal2.png</file>
+    <file>imagens/trapezoidal.png</file>
     <file>imagens/minus.png</file>
     <file>imagens/OpAmp.jpg</file>
     <file>imagens/LEDverde.png</file>
@@ -78,8 +80,8 @@
     <file>imagens/Power_Off.png</file>
     <file>imagens/Power_On.png</file>
     <file>imagens/quad.jpg</file>
-    <file>imagens/Quadrada.gif</file>
     <file>imagens/quadrupolo.ico</file>
+    <file>imagens/trapezoidal.png</file>
     <file>imagens/quadrupolo.png</file>
     <file>imagens/Referenciar.jpg</file>
     <file>imagens/Referenciar.png</file>
@@ -92,7 +94,6 @@
     <file>imagens/stepper motor.jpg</file>
     <file>imagens/Stepper_motor_4.png</file>
     <file>imagens/stop.png</file>
-    <file>imagens/Tau.jpg</file>
     <file>imagens/triângulo suavizado.jpg</file>
   </qresource>
 </RCC>

@@ -2326,8 +2326,8 @@
          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2';&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </widget>
@@ -2547,8 +2547,8 @@ p, li { white-space: pre-wrap; }
           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:10pt; color:#505050;&quot;&gt;Warning: each power supply has an unique fixed address, one must always remember to configure them after replacing or resetting an power supply in order for this software to work. The addresses are the following:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#505050;&quot;&gt;Warning: each power supply has an unique fixed address, one must always remember to configure them after replacing or resetting an power supply in order for this software to work. The addresses are the following:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
         </widget>
         <widget class="QGroupBox" name="groupBox_24">
@@ -3081,7 +3081,7 @@ p, li { white-space: pre-wrap; }
          <property name="title">
           <string>Automatic Settings</string>
          </property>
-         <widget class="QTableWidget" name="tw_auto_set">
+         <widget class="QTableWidget" name="tw_currents">
           <property name="geometry">
            <rect>
             <x>100</x>
@@ -3206,7 +3206,7 @@ p, li { white-space: pre-wrap; }
          <property name="geometry">
           <rect>
            <x>330</x>
-           <y>380</y>
+           <y>390</y>
            <width>91</width>
            <height>31</height>
           </rect>
@@ -3232,7 +3232,7 @@ p, li { white-space: pre-wrap; }
          <property name="geometry">
           <rect>
            <x>220</x>
-           <y>380</y>
+           <y>390</y>
            <width>91</width>
            <height>31</height>
           </rect>
@@ -3750,6 +3750,499 @@ p, li { white-space: pre-wrap; }
            </widget>
           </widget>
          </widget>
+         <widget class="QWidget" name="tab_3">
+          <attribute name="title">
+           <string>Damped Sinusoidal^2</string>
+          </attribute>
+          <widget class="QLabel" name="label_64">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>10</y>
+             <width>461</width>
+             <height>311</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="resource_file.qrc">:/Images/imagens/dsinusoidal2.png</pixmap>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_36">
+           <property name="geometry">
+            <rect>
+             <x>480</x>
+             <y>10</y>
+             <width>231</width>
+             <height>301</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>Settings</string>
+           </property>
+           <widget class="QWidget" name="layoutWidget_2">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>20</y>
+              <width>231</width>
+              <height>281</height>
+             </rect>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_18">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_96">
+               <property name="text">
+                <string>Amplitude (A)</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="le_damp_sin2_Ampl">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0.0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QLabel" name="label_101">
+               <property name="text">
+                <string>I</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_124">
+               <property name="text">
+                <string>Offset (B)</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="le_damp_sin2_Offset">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0.0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QLabel" name="label_135">
+               <property name="text">
+                <string>I</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_151">
+               <property name="text">
+                <string>Frequency (F)</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLineEdit" name="le_damp_sin2_Freq">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0.0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="2">
+              <widget class="QLabel" name="label_152">
+               <property name="text">
+                <string>Hz</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_153">
+               <property name="text">
+                <string># of Cycles</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLineEdit" name="le_damp_sin2_nCycles">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="2">
+              <widget class="QLabel" name="label_154">
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="label_98">
+               <property name="text">
+                <string>Phase  (ϴ)</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QLineEdit" name="le_damp_sin2_phaseShift">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0.0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="2">
+              <widget class="QLabel" name="label_155">
+               <property name="text">
+                <string>º</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="0">
+              <widget class="QLabel" name="label_156">
+               <property name="text">
+                <string>Final Phase</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="1">
+              <widget class="QLineEdit" name="le_damp_sin2_finalPhase">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0.0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="2">
+              <widget class="QLabel" name="label_157">
+               <property name="text">
+                <string>º</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="0">
+              <widget class="QLabel" name="label_107">
+               <property name="text">
+                <string>Damping (τ)</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="1">
+              <widget class="QLineEdit" name="le_damp_sin2_Damping">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0.0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="2">
+              <widget class="QLabel" name="label_158">
+               <property name="text">
+                <string>s</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+         </widget>
+         <widget class="QWidget" name="tab_15">
+          <attribute name="title">
+           <string>Trapezoidal</string>
+          </attribute>
+          <widget class="QLabel" name="label_82">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>10</y>
+             <width>401</width>
+             <height>311</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="resource_file.qrc">:/Images/imagens/trapezoidal.png</pixmap>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_44">
+           <property name="geometry">
+            <rect>
+             <x>420</x>
+             <y>0</y>
+             <width>301</width>
+             <height>321</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>Settings</string>
+           </property>
+           <widget class="QTableWidget" name="tw_trapezoidal">
+            <property name="geometry">
+             <rect>
+              <x>24</x>
+              <y>63</y>
+              <width>251</width>
+              <height>211</height>
+             </rect>
+            </property>
+            <attribute name="horizontalHeaderDefaultSectionSize">
+             <number>120</number>
+            </attribute>
+            <column>
+             <property name="text">
+              <string>Amplitude [A]</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>t [s]</string>
+             </property>
+            </column>
+           </widget>
+           <widget class="QWidget" name="layoutWidget_3">
+            <property name="geometry">
+             <rect>
+              <x>4</x>
+              <y>280</y>
+              <width>292</width>
+              <height>33</height>
+             </rect>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <item>
+              <widget class="QPushButton" name="pb_add_row_3">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>31</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Add Row</string>
+               </property>
+               <property name="icon">
+                <iconset resource="resource_file.qrc">
+                 <normaloff>:/Images/imagens/1351619277_plus_64.png</normaloff>:/Images/imagens/1351619277_plus_64.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>14</width>
+                 <height>14</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pb_remove_row_3">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>31</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Remove Row</string>
+               </property>
+               <property name="icon">
+                <iconset resource="resource_file.qrc">
+                 <normaloff>:/Images/imagens/minus.png</normaloff>:/Images/imagens/minus.png</iconset>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pb_clear_table_3">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>31</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Clear</string>
+               </property>
+               <property name="icon">
+                <iconset resource="resource_file.qrc">
+                 <normaloff>:/Images/imagens/botao_limpar.png</normaloff>:/Images/imagens/botao_limpar.png</iconset>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="layoutWidget">
+            <property name="geometry">
+             <rect>
+              <x>60</x>
+              <y>30</y>
+              <width>167</width>
+              <height>29</height>
+             </rect>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <item>
+              <widget class="QLabel" name="label_257">
+               <property name="text">
+                <string>Offset (B)</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="le_trapezoidal_offset">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0.0</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_258">
+               <property name="text">
+                <string>I</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+         </widget>
         </widget>
         <widget class="QPushButton" name="pb_plot">
          <property name="enabled">
@@ -3758,7 +4251,7 @@ p, li { white-space: pre-wrap; }
          <property name="geometry">
           <rect>
            <x>440</x>
-           <y>380</y>
+           <y>390</y>
            <width>91</width>
            <height>31</height>
           </rect>
@@ -3854,11 +4347,11 @@ p, li { white-space: pre-wrap; }
            <x>10</x>
            <y>50</y>
            <width>751</width>
-           <height>361</height>
+           <height>381</height>
           </rect>
          </property>
          <property name="currentIndex">
-          <number>2</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="tab_17">
           <attribute name="title">
@@ -4485,7 +4978,7 @@ Loop:</string>
            <property name="title">
             <string>Automatic Settings</string>
            </property>
-           <widget class="QTableWidget" name="tw_auto_set_2">
+           <widget class="QTableWidget" name="tw_currents_2">
             <property name="geometry">
              <rect>
               <x>100</x>
@@ -4607,7 +5100,7 @@ Loop:</string>
            <property name="geometry">
             <rect>
              <x>60</x>
-             <y>290</y>
+             <y>305</y>
              <width>91</width>
              <height>31</height>
             </rect>
@@ -4633,7 +5126,7 @@ Loop:</string>
            <property name="geometry">
             <rect>
              <x>170</x>
-             <y>290</y>
+             <y>305</y>
              <width>91</width>
              <height>31</height>
             </rect>
@@ -5058,10 +5551,10 @@ Loop:</string>
           <widget class="QLabel" name="label_13">
            <property name="geometry">
             <rect>
-             <x>0</x>
+             <x>8</x>
              <y>10</y>
-             <width>431</width>
-             <height>271</height>
+             <width>451</width>
+             <height>281</height>
             </rect>
            </property>
            <property name="text">
@@ -5081,7 +5574,7 @@ Loop:</string>
            <property name="geometry">
             <rect>
              <x>280</x>
-             <y>290</y>
+             <y>305</y>
              <width>91</width>
              <height>31</height>
             </rect>
@@ -5092,6 +5585,655 @@ Loop:</string>
            <property name="icon">
             <iconset resource="resource_file.qrc">
              <normaloff>:/Images/imagens/chart_xy_graph_statistics-512.png</normaloff>:/Images/imagens/chart_xy_graph_statistics-512.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </widget>
+         </widget>
+         <widget class="QWidget" name="tab_16">
+          <attribute name="title">
+           <string>Damped Sinusoidal^2</string>
+          </attribute>
+          <widget class="QGroupBox" name="groupBox_37">
+           <property name="geometry">
+            <rect>
+             <x>490</x>
+             <y>9</y>
+             <width>231</width>
+             <height>301</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>Settings</string>
+           </property>
+           <widget class="QWidget" name="layoutWidget_8">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>20</y>
+              <width>231</width>
+              <height>281</height>
+             </rect>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_19">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_99">
+               <property name="text">
+                <string>Amplitude (A)</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="le_damp_sin2_Ampl_2">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0.0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QLabel" name="label_102">
+               <property name="text">
+                <string>I</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_136">
+               <property name="text">
+                <string>Offset (B)</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="le_damp_sin2_Offset_2">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0.0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QLabel" name="label_138">
+               <property name="text">
+                <string>I</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_159">
+               <property name="text">
+                <string>Frequency (F)</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLineEdit" name="le_damp_sin2_Freq_2">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0.0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="2">
+              <widget class="QLabel" name="label_160">
+               <property name="text">
+                <string>Hz</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_162">
+               <property name="text">
+                <string># of Cycles</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLineEdit" name="le_damp_sin2_nCycles_2">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="2">
+              <widget class="QLabel" name="label_166">
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="label_103">
+               <property name="text">
+                <string>Phase  (ϴ)</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QLineEdit" name="le_damp_sin2_phaseShift_2">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0.0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="2">
+              <widget class="QLabel" name="label_167">
+               <property name="text">
+                <string>º</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="0">
+              <widget class="QLabel" name="label_171">
+               <property name="text">
+                <string>Final Phase</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="1">
+              <widget class="QLineEdit" name="le_damp_sin2_finalPhase_2">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0.0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="2">
+              <widget class="QLabel" name="label_173">
+               <property name="text">
+                <string>º</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="0">
+              <widget class="QLabel" name="label_108">
+               <property name="text">
+                <string>Damping (τ)</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="1">
+              <widget class="QLineEdit" name="le_damp_sin2_Damping_2">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0.0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="2">
+              <widget class="QLabel" name="label_174">
+               <property name="text">
+                <string>s</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+          <widget class="QLabel" name="label_65">
+           <property name="geometry">
+            <rect>
+             <x>8</x>
+             <y>10</y>
+             <width>461</width>
+             <height>281</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="resource_file.qrc">:/Images/imagens/dsinusoidal2.png</pixmap>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="pb_send_curve_3">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="geometry">
+            <rect>
+             <x>60</x>
+             <y>305</y>
+             <width>91</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Send</string>
+           </property>
+           <property name="icon">
+            <iconset resource="resource_file.qrc">
+             <normaloff>:/Images/imagens/Send.png</normaloff>:/Images/imagens/Send.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="pb_plot_3">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="geometry">
+            <rect>
+             <x>280</x>
+             <y>305</y>
+             <width>91</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Plot</string>
+           </property>
+           <property name="icon">
+            <iconset resource="resource_file.qrc">
+             <normaloff>:/Images/imagens/chart_xy_graph_statistics-512.png</normaloff>:/Images/imagens/chart_xy_graph_statistics-512.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="pb_cycle_3">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="geometry">
+            <rect>
+             <x>170</x>
+             <y>305</y>
+             <width>91</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Cycle</string>
+           </property>
+           <property name="icon">
+            <iconset resource="resource_file.qrc">
+             <normaloff>:/Images/imagens/onda.jpg</normaloff>:/Images/imagens/onda.jpg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </widget>
+         </widget>
+         <widget class="QWidget" name="tab_18">
+          <attribute name="title">
+           <string>Trapezoidal</string>
+          </attribute>
+          <widget class="QLabel" name="label_88">
+           <property name="geometry">
+            <rect>
+             <x>6</x>
+             <y>10</y>
+             <width>411</width>
+             <height>281</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="resource_file.qrc">:/Images/imagens/trapezoidal.png</pixmap>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_45">
+           <property name="geometry">
+            <rect>
+             <x>426</x>
+             <y>0</y>
+             <width>301</width>
+             <height>321</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>Settings</string>
+           </property>
+           <widget class="QTableWidget" name="tw_trapezoidal_2">
+            <property name="geometry">
+             <rect>
+              <x>24</x>
+              <y>63</y>
+              <width>251</width>
+              <height>211</height>
+             </rect>
+            </property>
+            <attribute name="horizontalHeaderDefaultSectionSize">
+             <number>120</number>
+            </attribute>
+            <column>
+             <property name="text">
+              <string>Amplitude [A]</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>t [s]</string>
+             </property>
+            </column>
+           </widget>
+           <widget class="QWidget" name="layoutWidget_4">
+            <property name="geometry">
+             <rect>
+              <x>4</x>
+              <y>280</y>
+              <width>292</width>
+              <height>33</height>
+             </rect>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_5">
+             <item>
+              <widget class="QPushButton" name="pb_add_row_4">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>31</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Add Row</string>
+               </property>
+               <property name="icon">
+                <iconset resource="resource_file.qrc">
+                 <normaloff>:/Images/imagens/1351619277_plus_64.png</normaloff>:/Images/imagens/1351619277_plus_64.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>14</width>
+                 <height>14</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pb_remove_row_4">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>31</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Remove Row</string>
+               </property>
+               <property name="icon">
+                <iconset resource="resource_file.qrc">
+                 <normaloff>:/Images/imagens/minus.png</normaloff>:/Images/imagens/minus.png</iconset>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pb_clear_table_4">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>31</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Clear</string>
+               </property>
+               <property name="icon">
+                <iconset resource="resource_file.qrc">
+                 <normaloff>:/Images/imagens/botao_limpar.png</normaloff>:/Images/imagens/botao_limpar.png</iconset>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="layoutWidget_5">
+            <property name="geometry">
+             <rect>
+              <x>60</x>
+              <y>30</y>
+              <width>167</width>
+              <height>29</height>
+             </rect>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_6">
+             <item>
+              <widget class="QLabel" name="label_259">
+               <property name="text">
+                <string>Offset (B)</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="le_trapezoidal_offset_2">
+               <property name="minimumSize">
+                <size>
+                 <width>71</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>71</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0.0</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_260">
+               <property name="text">
+                <string>I</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+          <widget class="QPushButton" name="pb_send_curve_4">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="geometry">
+            <rect>
+             <x>60</x>
+             <y>305</y>
+             <width>91</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Send</string>
+           </property>
+           <property name="icon">
+            <iconset resource="resource_file.qrc">
+             <normaloff>:/Images/imagens/Send.png</normaloff>:/Images/imagens/Send.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="pb_plot_4">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="geometry">
+            <rect>
+             <x>280</x>
+             <y>305</y>
+             <width>91</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Plot</string>
+           </property>
+           <property name="icon">
+            <iconset resource="resource_file.qrc">
+             <normaloff>:/Images/imagens/chart_xy_graph_statistics-512.png</normaloff>:/Images/imagens/chart_xy_graph_statistics-512.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="pb_cycle_4">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="geometry">
+            <rect>
+             <x>170</x>
+             <y>305</y>
+             <width>91</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Cycle</string>
+           </property>
+           <property name="icon">
+            <iconset resource="resource_file.qrc">
+             <normaloff>:/Images/imagens/onda.jpg</normaloff>:/Images/imagens/onda.jpg</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -6974,7 +8116,7 @@ DCCT Voltage [V]</string>
      <x>0</x>
      <y>0</y>
      <width>1235</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
@@ -7066,7 +8208,7 @@ DCCT Voltage [V]</string>
   <tabstop>pb_emergency4</tabstop>
   <tabstop>dsb_current_setpoint</tabstop>
   <tabstop>pb_send</tabstop>
-  <tabstop>tw_auto_set</tabstop>
+  <tabstop>tw_currents</tabstop>
   <tabstop>pb_add_row</tabstop>
   <tabstop>pb_clear_table</tabstop>
   <tabstop>tabWidget_3</tabstop>
@@ -7100,7 +8242,7 @@ DCCT Voltage [V]</string>
   <tabstop>le_status_loop_2</tabstop>
   <tabstop>dsb_current_setpoint_2</tabstop>
   <tabstop>pb_send_2</tabstop>
-  <tabstop>tw_auto_set_2</tabstop>
+  <tabstop>tw_currents_2</tabstop>
   <tabstop>pb_add_row_2</tabstop>
   <tabstop>pb_clear_table_2</tabstop>
   <tabstop>le_damp_sin_Ampl_2</tabstop>
