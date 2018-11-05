@@ -12,7 +12,7 @@ from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QMessageBox as _QMessageBox
 
 import FDI2056
-import SerialDRS
+from pydrs import SerialDRS
 import Agilent_34970A
 import Parker_Drivers
 import Display_Heidenhain
@@ -51,7 +51,7 @@ class PlotDialog(QtWidgets.QDialog):
         """Show dialog."""
         self.updatePlot()
         super().show()
-        
+
 
 class ApplicationWindow(QtWidgets.QMainWindow):
     """Rotating Coil Software user interface."""
@@ -66,9 +66,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
         #power supply current slope, [F1000A, F225A, F10A] [A/s]
         self.slope = [50, 90, 1000]
-        #disable sen^2 curves, not implemented on power supply yet
-        self.ui.tabWidget_3.setTabEnabled(2, False)
-        self.ui.tabWidget_5.setTabEnabled(3, False)
+#         #disable sen^2 curves, not implemented on power supply yet
+#         self.ui.tabWidget_3.setTabEnabled(2, False)
+#         self.ui.tabWidget_5.setTabEnabled(3, False)
 
         self.refresh_interface()
 
@@ -213,7 +213,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             try:
                 self.config_variables()
                 # connect digital power supply
-                Lib.comm.drs = SerialDRS.SerialDRS_FBP()
+                Lib.comm.drs = SerialDRS()
                 Lib.comm.drs.Connect(Lib.get_value(Lib.data_settings,
                                                    'ps_port', str))
                 if not Lib.comm.drs.ser.is_open:
@@ -221,16 +221,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                                          'connect to Power Supply.',
                                          _QMessageBox.Ok)
                     raise Exception
-
-##                # Turns off any power supply which might be enabled
-##                for i in range(1, 7):
-##                    Lib.comm.drs.SetSlaveAdd(i)
-##                    try:
-##                        if Lib.comm.drs.Read_ps_OnOff() == 1:
-##                            Lib.comm.drs.TurnOff()
-##                    except Exception:
-##                        continue
-##                    QtWidgets.QApplication.processEvents()
 
                 # connect integrator
                 Lib.comm.fdi = FDI2056.EthernetCom()
@@ -372,6 +362,13 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                                  _QMessageBox.Ok)
 
     def set_address(self, address):
+        """Sets power supply address.
+
+        Args:
+            address (int): power supply new address.
+        Returns:
+            True in case of success.
+            False otherwise."""
         if Lib.comm.drs.ser.is_open:
             Lib.comm.drs.SetSlaveAdd(address)
             return True
@@ -382,9 +379,20 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             return False
 
     def set_op_mode(self, mode=0):
-        Lib.comm.drs.OpMode(mode)
+        """Sets power supply operation mode.
+
+        Args:
+            mode (int): 0 for SlowRef, 1 for SigGen.
+        Returns:
+            True in case of success.
+            False otherwise."""
+        if mode:
+            _mode = 'Cycle'
+        else:
+            _mode = 'SlowRef'
+        Lib.comm.drs.select_op_mode(_mode)
         time.sleep(0.1)
-        if Lib.comm.drs.Read_ps_OpMode() == mode:
+        if Lib.comm.drs.read_ps_opmode() == _mode:
             return True
         return False
 
@@ -434,7 +442,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             # Status PS is OFF
             if not _status_ps:
                 try:
-                    Lib.comm.drs.Read_iLoad1()
+                    Lib.comm.drs.read_iload1()
                 except Exception:
                     traceback.print_exc(file=sys.stdout)
                     _QMessageBox.warning(self, 'Warning',
@@ -444,7 +452,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                     return
 
                 if _safety_enabled == 1:
-                    _status_interlocks = Lib.comm.drs.Read_ps_SoftInterlocks()
+                    _status_interlocks = Lib.comm.drs.read_ps_softinterlocks()
                     if _status_interlocks != 0:
                         self.ui.pb_interlock.setChecked(True)
                         _QMessageBox.warning(self, 'Warning',
@@ -452,7 +460,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                                              _QMessageBox.Ok)
                         self.change_ps_button(secondary, True)
                         return
-                    _status_interlocks = Lib.comm.drs.Read_ps_HardInterlocks()
+                    _status_interlocks = Lib.comm.drs.read_ps_hardinterlocks()
                     if _status_interlocks != 0:
                         self.ui.pb_interlock.setChecked(True)
                         _QMessageBox.warning(self, 'Warning',
@@ -463,13 +471,19 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
                 # PS 1000 A needs to turn dc link on
                 if _ps_type == 2:
+                    _QMessageBox.warning(self, 'Warning',
+                                         'F1000 is using an outdated firmware.'
+                                         ' Please connect another power '
+                                         'supply.',
+                                         _QMessageBox.Ok)
+                    return
                     Lib.comm.drs.SetSlaveAdd(_ps_type - 1)
                     # Turn ON PS DClink
                     try:
                         # Turn ON the DC Link of the PS
-                        Lib.comm.drs.TurnOn()
+                        Lib.comm.drs.turn_on()
                         time.sleep(1)
-                        if Lib.comm.drs.Read_ps_OnOff() != 1:
+                        if Lib.comm.drs.read_ps_onoff() != 1:
                             _QMessageBox.warning(self, 'Warning',
                                                  'Power Supply Capacitor Bank '
                                                  'did not initialize.',
@@ -485,9 +499,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                         return
                     # Closing DC link Loop
                     try:
-                        Lib.comm.drs.ClosedLoop()        # Closed Loop
+                        Lib.comm.drs.closed_loop()        # Closed Loop
                         time.sleep(1)
-                        if Lib.comm.drs.Read_ps_OpenLoop() == 1:
+                        if Lib.comm.drs.read_ps_openloop() == 1:
                             _QMessageBox.warning(self, 'Warning',
                                                  'Power Supply circuit loop is'
                                                  ' not closed.',
@@ -513,17 +527,14 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                                                   'dclink_value', float)
                     # Set 90 V for Capacitor Bank (default value according to
                     # the ELP Group)
-                    Lib.comm.drs.SetISlowRef(_dclink_value)
+                    Lib.comm.drs.set_slowref(_dclink_value)
                     time.sleep(1)
-                    _feedback_DCLink = round(Lib.comm.drs.Read_vOutMod1()/2 +
-                                             Lib.comm.drs.Read_vOutMod2()/2, 3)
+                    _feedback_DCLink = self.drs.read_vdclink()
                     # Waiting few seconds until voltage stabilization before
                     # starting PS Current
                     _i = 100
                     while _feedback_DCLink < _dclink_value and _i > 0:
-                        _feedback_DCLink = round(
-                            Lib.comm.drs.Read_vOutMod1()/2 +
-                            Lib.comm.drs.Read_vOutMod2()/2, 3)
+                        _feedback_DCLink = self.drs.read_vdclink()
                         QtWidgets.QApplication.processEvents()
                         time.sleep(0.5)
                         _i = _i - 1
@@ -532,35 +543,33 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                                              'setpoint is not set.\nCheck '
                                              'configurations.',
                                              _QMessageBox.Ok)
-                        Lib.comm.drs.TurnOff()
+                        Lib.comm.drs.turn_off()
                         self.change_ps_button(secondary, True)
                         return
                 #Turn on Power Supply
                 Lib.comm.drs.SetSlaveAdd(_ps_type)  # Set power supply address
-                if _ps_type < 4:
-                    self.pid_setting()
-                Lib.comm.drs.TurnOn()
-                time.sleep(0.1)
-                if _ps_type == 2:
-                    time.sleep(0.9)
-                if not Lib.comm.drs.Read_ps_OnOff():
-                    Lib.comm.drs.SetSlaveAdd(_ps_type-1)
-                    # TurnOff PS DC Link
-                    Lib.comm.drs.TurnOff()
+                self.pid_setting()
+                Lib.comm.drs.turn_on()
+                time.sleep(1)
+                if not Lib.comm.drs.read_ps_onoff():
+                    if _ps_type == 2:
+                        Lib.comm.drs.SetSlaveAdd(_ps_type - 1)
+                    # turn_off PS DC Link
+                    Lib.comm.drs.turn_off()
                     self.change_ps_button(secondary, True)
                     _QMessageBox.warning(self, 'Warning',
                                          'The Power Supply did not start.',
                                          _QMessageBox.Ok)
                     return
                 # Closed Loop
-                Lib.comm.drs.ClosedLoop()
+                Lib.comm.drs.closed_loop()
                 time.sleep(0.1)
                 if _ps_type == 2:
                     time.sleep(0.9)
-                if Lib.comm.drs.Read_ps_OpenLoop() == 1:
-                    Lib.comm.drs.SetSlaveAdd(_ps_type-1)
-                    # TurnOff PS DC Link
-                    Lib.comm.drs.TurnOff()
+                if Lib.comm.drs.read_ps_openloop() == 1:
+                    Lib.comm.drs.SetSlaveAdd(_ps_type - 1)
+                    # turn_off PS DC Link
+                    Lib.comm.drs.turn_off()
                     self.change_ps_button(secondary, True)
                     _QMessageBox.warning(self, 'Warning', 'Power Supply '
                                          'circuit loop is not closed.',
@@ -595,11 +604,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             # Turn off power supply
             else:
                 Lib.comm.drs.SetSlaveAdd(_ps_type)
-                Lib.comm.drs.TurnOff()
-                time.sleep(0.1)
-                if _ps_type == 2:
-                    time.sleep(0.9)
-                _status = Lib.comm.drs.Read_ps_OnOff()
+                Lib.comm.drs.turn_off()
+                time.sleep(1)
+                _status = Lib.comm.drs.read_ps_onoff()
                 if _status:
                     _QMessageBox.warning(self, 'Warning', 'Could not turn the'
                                          ' power supply off.\nPlease, try '
@@ -609,12 +616,12 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                     return
                 # Turn of dc link
                 if _ps_type == 2:
-                    Lib.comm.drs.SetSlaveAdd(_ps_type-1)
-                    Lib.comm.drs.TurnOff()
+                    Lib.comm.drs.SetSlaveAdd(_ps_type - 1)
+                    Lib.comm.drs.turn_off()
                     time.sleep(0.1)
                     if _ps_type == 2:
                         time.sleep(0.9)
-                    _status = Lib.comm.drs.Read_ps_OnOff()
+                    _status = Lib.comm.drs.read_ps_onoff()
                     if _status:
                         _QMessageBox.warning(self, 'Warning', 'Could not turn'
                                              ' the power supply off.\n'
@@ -693,35 +700,24 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
     def pid_setting(self):
         """Configures power supply PID parameters."""
-        Lib.write_value(Lib.ps_settings, 'Kp', self.ui.sb_kp.text(), True)
-        Lib.write_value(Lib.ps_settings, 'Ki', self.ui.sb_ki.text(), True)
-        _ps_type = Lib.get_value(Lib.ps_settings, 'Power Supply Type', int)
-        if not self.set_address(_ps_type):
-            return
-        _id_mode = 0
-        _elp_PI_dawu = 3
         try:
-            # Write ID module from controller
-            Lib.comm.drs.Write_dp_ID(_id_mode)
-            # Write DP Class for setting PI
-            Lib.comm.drs.Write_dp_Class(_elp_PI_dawu)
-        except Exception:
-            traceback.print_exc(file=sys.stdout)
-            return False
-        try:
-            _list_coeffs = np.zeros(16)
-            _kp = Lib.get_value(Lib.ps_settings, 'Kp', float)
-            _ki = Lib.get_value(Lib.ps_settings, 'Ki', float)
-            _list_coeffs[0] = _kp
-            _list_coeffs[1] = _ki
-            # Write kp and ki
-            Lib.comm.drs.Write_dp_Coeffs(_list_coeffs.tolist())
-            # Configure kp and ki
-            Lib.comm.drs.ConfigDPModule()
-        except Exception:
-            traceback.print_exc(file=sys.stdout)
-            return False
+            _kp = float(self.ui.sb_kp.text())
+            _ki = float(self.ui.sb_ki.text())
+            Lib.write_value(Lib.ps_settings, 'Kp', self.ui.sb_kp.text(), True)
+            Lib.write_value(Lib.ps_settings, 'Ki', self.ui.sb_ki.text(), True)
+            _ps_type = Lib.get_value(Lib.ps_settings, 'Power Supply Type', int)
+            if not self.set_address(_ps_type):
+                return
 
+            if _ps_type == 3:
+                _umin = 0
+            else:
+                _umin = -0.90
+
+            Lib.comm.drs.set_dsp_coeffs(3, 0, [_kp, _ki, 0.90, _umin])
+        except Exception:
+            traceback.print_exc(file=sys.stdout)
+            return False
         return True
 
     def display_current(self, secondary=False):
@@ -750,7 +746,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         if not self.set_address(_ps_type):
             return
         try:
-            _refresh_current = round(float(Lib.comm.drs.Read_iLoad1()), 3)
+            _refresh_current = round(float(Lib.comm.drs.read_iload1()), 3)
             _lcd.display(_refresh_current)
             if all([not secondary,
                     self.ui.chb_dcct.isChecked(),
@@ -787,10 +783,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             return False
 
         #send setpoint and wait until current is set
-        Lib.comm.drs.SetISlowRef(_setpoint)
+        Lib.comm.drs.set_slowref(_setpoint)
         time.sleep(0.1)
         for _ in range(30):
-            _compare = round(float(Lib.comm.drs.Read_iLoad1()), 3)
+            _compare = round(float(Lib.comm.drs.read_iload1()), 3)
             self.display_current(secondary)
             if abs(_compare - _setpoint) <= 0.5:
                 Lib.write_value(_df, 'Current Setpoint', _setpoint, True)
@@ -874,7 +870,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 return False
         else:
             if any([(_current + _offset) > _current_max,
-                    (-1*_current + _offset) < _current_min]):
+                    (-1 * _current + _offset) < _current_min]):
                 _QMessageBox.warning(self, 'Warning', 'Peak-to-peak '
                                      'current values out of bounds.',
                                      _QMessageBox.Ok)
@@ -1058,21 +1054,21 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         try:
             if _curve_type < 3:
                 try:
-                    Lib.comm.drs.Write_sigGen_Freq(float(_freq))
-                    Lib.comm.drs.Write_sigGen_Amplitude(float(_amp))
-                    Lib.comm.drs.Write_sigGen_Offset(float(_offset))
                     # Sinusoidal
                     if _curve_type == 0:
                         _sigtype = 0
+                        _damping = 0
                     elif _curve_type in [1, 2]:
+                        # Damped Sinusoidal
                         if _curve_type == 1:
-                            _sigtype = 4
+                            _sigtype = 1
+                        # Damped Sinusoidal^2
                         else:
-                            _sigtype = 6
-                        Lib.comm.drs.Write_sigGen_Aux(float(_damping))
+                            _sigtype = 3
                     # Sending curves to PS Controller
-                    Lib.comm.drs.ConfigSigGen(_sigtype, _n_cycles,
-                                              _phase_shift, _final_phase)
+                    Lib.comm.drs.cfg_siggen(_sigtype, _n_cycles, _freq,
+                                            _amp, _offset, _phase_shift,
+                                            _final_phase, _damping, 0)
                 except Exception:
                     traceback.print_exc(file=sys.stdout)
                     _QMessageBox.warning(self, 'Warning', 'Failed to send '
@@ -1098,19 +1094,19 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
         # 1000A power supply, reset capacitor bank interlock
         if _ps_type == 2:
-            Lib.comm.drs.SetSlaveAdd(_ps_type-1)
-            Lib.comm.drs.ResetInterlocks()
+            Lib.comm.drs.SetSlaveAdd(_ps_type - 1)
+            Lib.comm.drs.reset_interlocks()
             time.sleep(0.1)
-            _interlock = _interlock + (Lib.comm.drs.Read_ps_HardInterlocks() +
-                         Lib.comm.drs.Read_ps_SoftInterlocks())
+            _interlock = _interlock + (Lib.comm.drs.read_ps_hardinterlocks() +
+                                       Lib.comm.drs.read_ps_softinterlocks())
 
         Lib.comm.drs.SetSlaveAdd(_ps_type)
 
         try:
-            Lib.comm.drs.ResetInterlocks()
+            Lib.comm.drs.reset_interlocks()
             time.sleep(0.1)
-            _interlock = _interlock + (Lib.comm.drs.Read_ps_HardInterlocks() +
-                         Lib.comm.drs.Read_ps_SoftInterlocks())
+            _interlock = _interlock + (Lib.comm.drs.read_ps_hardinterlocks() +
+                                       Lib.comm.drs.read_ps_softinterlocks())
             if not secondary:
                 if self.ui.pb_interlock.isChecked() and not _interlock:
                     self.ui.pb_interlock.setChecked(False)
@@ -1159,7 +1155,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
         try:
             if _curve_type < 3:
-                if not self.set_op_mode(3):
+                if not self.set_op_mode(1):
                     _QMessageBox.warning(self, 'Warning', 'Could not set '
                                          'the sigGen operation mode.',
                                          _QMessageBox.Ok)
@@ -1192,17 +1188,18 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 if not self.trapezoidal_cycle():
                     raise Exception('Failure during trapezoidal cycle.')
             else:
-                Lib.comm.drs.EnableSigGen()
+                Lib.comm.drs.enable_siggen()
                 _deadline = time.monotonic() + (1/_freq*_n_cycles)
                 while time.monotonic() < _deadline:
                     QtWidgets.QApplication.processEvents()
                     time.sleep(0.01)
-                Lib.comm.drs.DisableSigGen()
+                Lib.comm.drs.disable_siggen()
                 # returns to mode ISlowRef
                 if not self.set_op_mode(0):
                     _QMessageBox.warning(self, 'Warning', 'Could not set '
                                          'the slowRef operation mode.',
                                          _QMessageBox.Ok)
+                Lib.comm.drs.set_slowref(_offset)
             Lib.write_value(_df, 'Current Setpoint', _offset, True)
             _QMessageBox.information(self, 'Information', 'Cycle process '
                                      'completed successfully.',
@@ -1255,18 +1252,18 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 if not self.verify_current_limits(_array[i, 0] + _offset):
                     return False
 
-            Lib.comm.drs.SetISlowRef(_offset)
+            Lib.comm.drs.set_slowref(_offset)
             for i in range(len(_array)):
                 _i0 = _offset
                 _i = _array[i, 0] + _offset
                 _t = _array[i, 1]
                 _t_border = abs(_i - _i0) / _slope
-                Lib.comm.drs.SetISlowRef(_i)
+                Lib.comm.drs.set_slowref(_i)
                 _deadline = time.monotonic() + _t_border + _t
                 while time.monotonic() < _deadline:
                     QtWidgets.QApplication.processEvents()
                     time.sleep(0.01)
-                Lib.comm.drs.SetISlowRef(_offset)
+                Lib.comm.drs.set_slowref(_offset)
                 _deadline = time.monotonic() + _t_border + _t
                 while time.monotonic() < _deadline:
                     QtWidgets.QApplication.processEvents()
@@ -1316,8 +1313,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                     tau = float(self.ui.le_damp_sin_Damping_2.text())
                 if any([a == 0, f == 0, ncycles == 0, tau == 0]):
                     _QMessageBox.warning(self, 'Warning',
-                                        'Please check the parameters.',
-                                        _QMessageBox.Ok)
+                                         'Please check the parameters.',
+                                         _QMessageBox.Ok)
                     return
                 sen = lambda t: (a*np.sin(2*np.pi*f*t + theta/360*2*np.pi) *
                                  np.exp(-t/tau) + offset)
@@ -1339,8 +1336,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                     tau = float(self.ui.le_damp_sin2_Damping_2.text())
                 if any([a == 0, f == 0, ncycles == 0, tau == 0]):
                     _QMessageBox.warning(self, 'Warning',
-                                        'Please check the parameters.',
-                                        _QMessageBox.Ok)
+                                         'Please check the parameters.',
+                                         _QMessageBox.Ok)
                     return
                 sen = lambda t: (a*np.sin(2*np.pi*f*t + theta/360*2*np.pi)*
                                  np.sin(2*np.pi*f*t + theta/360*2*np.pi)*
@@ -2977,10 +2974,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             #Trapezoidal
             Lib.write_value(Lib.ps_settings, 'Trapezoidal Offset',
                             self.ui.le_trapezoidal_offset.text(), True)
-            _values = str(self.table_to_array(self.ui.tw_trapezoidal))
-            _values = _values.replace('  ', ' ')
-            _values = _values.replace('\n', '').replace('[', '')
-            _values = _values.replace(']', '').replace(' ', ', ')
+            _values = str(self.table_to_array(self.ui.tw_trapezoidal).tolist())
+            _values = _values.replace('[', '').replace(']', '')
             Lib.write_value(Lib.ps_settings, 'Trapezoidal Array',
                             str(_values), False)
             #Automatic setpoints
@@ -3045,17 +3040,17 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                               float)))
         #Damped Sinusoidal^2
         self.ui.le_damp_sin2_Ampl.setText(
-            str(Lib.get_value(Lib.ps_settings_2, 'Damped Sinusoidal2 Amplitude',
-                              float)))
+            str(Lib.get_value(Lib.ps_settings_2,
+                              'Damped Sinusoidal2 Amplitude', float)))
         self.ui.le_damp_sin2_Offset.setText(
             str(Lib.get_value(Lib.ps_settings_2, 'Damped Sinusoidal2 Offset',
                               float)))
         self.ui.le_damp_sin2_Freq.setText(
-            str(Lib.get_value(Lib.ps_settings_2, 'Damped Sinusoidal2 Frequency',
-                              float)))
+            str(Lib.get_value(Lib.ps_settings_2,
+                              'Damped Sinusoidal2 Frequency', float)))
         self.ui.le_damp_sin2_nCycles.setText(
-            str(Lib.get_value(Lib.ps_settings_2, 'Damped Sinusoidal2 N Cycles',
-                              int)))
+            str(Lib.get_value(Lib.ps_settings_2,
+                              'Damped Sinusoidal2 N Cycles', int)))
         self.ui.le_damp_sin2_phaseShift.setText(
             str(Lib.get_value(Lib.ps_settings_2,
                               'Damped Sinusoidal2 Phase Shift', float)))
@@ -3122,10 +3117,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                             self.ui.le_damp_sin2_Damping_2.text(), True)
             #Trapezoidal
             Lib.write_value(Lib.ps_settings_2, 'Trapezoidal Offset', True)
-            _values = str(self.table_to_array(self.ui.tw_trapezoidal_2))
-            _values = _values.replace('  ', ' ')
-            _values = _values.replace('\n', '').replace('[', '')
-            _values = _values.replace(']', '').replace(' ', ', ')
+            _values = str(
+                self.table_to_array(self.ui.tw_trapezoidal_2).tolist())
+            _values = _values.replace('[', '').replace(']', '')
             Lib.write_value(Lib.ps_settings_2, 'Trapezoidal Array',
                             str(_values), False)
             #Automatic setpoints
@@ -3318,13 +3312,13 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                                      'the slowRef operation mode.',
                                      _QMessageBox.Ok)
                 return
-            Lib.comm.drs.SetISlowRef(0)
+            Lib.comm.drs.set_slowref(0)
             time.sleep(0.1)
-            Lib.comm.drs.TurnOff()
+            Lib.comm.drs.turn_off()
             time.sleep(0.1)
             if _ps_type == 2:
                 time.sleep(0.9)
-            if Lib.comm.drs.Read_ps_OnOff() == 0:
+            if Lib.comm.drs.read_ps_onoff() == 0:
                 Lib.write_value(Lib.aux_settings, 'status_ps', 0)
                 Lib.write_value(Lib.aux_settings, 'actual_current', 0)
                 self.ui.pb_ps_button.setChecked(False)
@@ -3342,13 +3336,13 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                                          'the slowRef operation mode.',
                                          _QMessageBox.Ok)
                     return
-                Lib.comm.drs.SetISlowRef(0)
+                Lib.comm.drs.set_slowref(0)
                 time.sleep(0.1)
-                Lib.comm.drs.TurnOff()
+                Lib.comm.drs.turn_off()
                 time.sleep(0.1)
                 if _ps_type == 2:
                     time.sleep(0.9)
-                if Lib.comm.drs.Read_ps_OnOff() == 0:
+                if Lib.comm.drs.read_ps_onoff() == 0:
                     Lib.write_value(Lib.aux_settings, 'status_ps_2', 0)
                     Lib.write_value(Lib.aux_settings, 'actual_current_2', 0)
                     self.ui.pb_ps_button_2.setChecked(False)
@@ -3426,15 +3420,15 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             if not self.set_address(_ps_type):
                 return
             if not _disable_interlock:
-                _soft_interlock = Lib.comm.drs.Read_ps_SoftInterlocks()
-                _hard_interlock = Lib.comm.drs.Read_ps_HardInterlocks()
-#             _current = round(float(Lib.comm.drs.Read_iLoad1()),3)
+                _soft_interlock = Lib.comm.drs.read_ps_softinterlocks()
+                _hard_interlock = Lib.comm.drs.read_ps_hardinterlocks()
+#             _current = round(float(Lib.comm.drs.read_iload1()),3)
             if all([Lib.get_value(Lib.data_settings, 'enable_Agilent34970A',
                                   int),
                     self.ui.chb_dcct.isChecked()]):
                 _current = round(self.dcct_convert(), 3)
             else:
-                _current = round(float(Lib.comm.drs.Read_iLoad1()), 3)
+                _current = round(float(Lib.comm.drs.read_iload1()), 3)
             _i = Lib.get_value(Lib.aux_settings, 'main_current_array')
             _i = _i.append([_current], ignore_index=True)
             Lib.write_value(Lib.aux_settings, 'main_current_array', _i)
@@ -3443,9 +3437,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             if _secondary_flag:
                 Lib.comm.drs.SetSlaveAdd(_ps_type_2)
                 if not _disable_interlock:
-                    _soft_interlock_2 = Lib.comm.drs.Read_ps_SoftInterlocks()
-                    _hard_interlock_2 = Lib.comm.drs.Read_ps_HardInterlocks()
-                _current_2 = round(float(Lib.comm.drs.Read_iLoad1()), 3)
+                    _soft_interlock_2 = Lib.comm.drs.read_ps_softinterlocks()
+                    _hard_interlock_2 = Lib.comm.drs.read_ps_hardinterlocks()
+                _current_2 = round(float(Lib.comm.drs.read_iload1()), 3)
                 _i_2 = Lib.get_value(Lib.aux_settings,
                                      'secondary_current_array')
                 _i_2 = _i_2.append([_current_2], ignore_index=True)
