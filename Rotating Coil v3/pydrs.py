@@ -2526,7 +2526,7 @@ class SerialDRS(object):
                 print('\t' + list_interlocks[i])
         return active_interlocks
 
-    def read_vars_fbp(self, n=1):
+    def read_vars_fbp(self, n=1, dt=0.5):
         try:
             for i in range(n):
                 print('\n--- Measurement #' + str(i+1) +
@@ -2561,10 +2561,12 @@ class SerialDRS(object):
                 print("Duty-Cycle: " +
                       str(self.read_bsmp_variable(31, 'float')) + " %")
 
+                time.sleep(dt)
+
         except Exception:
             pass
 
-    def read_vars_fbp_dclink(self, n=1):
+    def read_vars_fbp_dclink(self, n=1, dt=0.5):
         try:
             for i in range(n):
                 print('\n--- Measurement #' + str(i+1) +
@@ -2590,10 +2592,12 @@ class SerialDRS(object):
                 print("Dig Pot Tap: " +
                       str(self.read_bsmp_variable(32, 'uint8_t')))
 
+                time.sleep(dt)
+
         except Exception:
             pass
 
-    def read_vars_fac_acdc(self, n=1):
+    def read_vars_fac_acdc(self, n=1, dt=0.5):
         try:
             for i in range(n):
                 print('\n--- Measurement #' + str(i+1) +
@@ -2626,10 +2630,12 @@ class SerialDRS(object):
                 print("Duty-Cycle: " +
                       str(self.read_bsmp_variable(32, 'float')) + " %")
 
+                time.sleep(dt)
+
         except Exception:
             pass
 
-    def read_vars_fac_dcdc(self, n=1):
+    def read_vars_fac_dcdc(self, n=1, dt=0.5):
         try:
             for i in range(n):
                 print('\n--- Measurement #' + str(i+1) +
@@ -2674,6 +2680,8 @@ class SerialDRS(object):
                       str(self.read_bsmp_variable(32, 'float')))
                 print("Duty-Cycle: " +
                       str(self.read_bsmp_variable(33, 'float')))
+
+                time.sleep(dt)
 
         except Exception:
             pass
