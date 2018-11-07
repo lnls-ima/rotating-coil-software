@@ -1141,7 +1141,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             _msg = 'Power Supply active interlocks:\n\n'
             _lsoft = []
             _lhard = []
-    
+
             if _ps_type == 2:
                 # F1000, reads dclink and ps
                 _msg = _msg + 'DCLink:\n'
@@ -1168,7 +1168,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 _msg = _msg + '\nPower Supply:\n'
                 _lsoft = []
                 _lhard = []
-    
+
             else:
                 if not self.set_address(_ps_type):
                     return
@@ -1190,7 +1190,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             else:
                 for _i in _lhard:
                     _msg = _msg + '    - ' + _i + '\n'
-    
+
             _QMessageBox.warning(self, 'Active Interlocks', _msg,
                                  _QMessageBox.Ok)
             QtWidgets.QApplication.processEvents()
