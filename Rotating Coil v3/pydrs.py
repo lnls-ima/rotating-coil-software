@@ -2526,6 +2526,48 @@ class SerialDRS(object):
                 print('\t' + list_interlocks[i])
         return active_interlocks
 
+    def interlock_decoder(self, reg_interlocks, ps_type, hard_interlock):
+        """Decodes interlocks.
+
+        Args:
+            reg_interlocks(int): interlock reading value.
+            ps_type(int): power supply type: 1 = fac_2p_acdc; 2 = fac_2p_dcdc;
+                3 = fap 225A; 4 to 7 = fbp.
+            hard_interlock(bool): True if reading from hardware interlock;
+                False if reading from software interlock.
+        Returns:
+            active_interlocks(list): list of active interlocks description."""
+
+#         if ps_type == 1:
+#             if hard_interlock:
+#                 _l = list_fac_2p_acdc_hard_interlocks
+#             else:
+#                 _l = list_fac_2p_acdc_soft_interlocks
+#         elif ps_type == 2:
+#             if hard_interlock:
+#                 _l = list_fac_2p_dcdc_hard_interlocks
+#             else:
+#                 _l = list_fac_2p_dcdc_soft_interlocks
+        if ps_type in [1, 2]:
+            return []
+        elif ps_type == 3:
+            if hard_interlock:
+                _l = list_fap_225A_hard_interlocks
+            else:
+                _l = list_fap_225A_soft_interlocks
+        elif 3 < ps_type < 8:
+            if hard_interlock:
+                _l = list_fbp_hard_interlocks
+            else:
+                _l = list_fbp_soft_interlocks
+
+        active_interlocks = []
+
+        for i in range(32):
+            if(reg_interlocks & (1 << i)):
+                active_interlocks.append(_l[i])
+        return active_interlocks
+
     def read_vars_fbp(self, n=1, dt=0.5):
         try:
             for i in range(n):

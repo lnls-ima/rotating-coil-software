@@ -135,6 +135,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui.pb_config_pid.clicked.connect(self.config_pid)
         self.ui.pb_reset_inter.clicked.connect(
             lambda: self.reset_interlocks(False))
+        self.ui.pb_list_interlocks.clicked.connect(
+            lambda: self.list_interlocks(False))
         self.ui.pb_cycle.clicked.connect(lambda: self.cycling_ps(False))
         self.ui.pb_config_ps.clicked.connect(lambda: self.configure_ps(False))
         self.ui.pb_plot.clicked.connect(lambda: self.plot(False))
@@ -162,6 +164,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             lambda: self.clear_table(self.ui.tw_trapezoidal_2))
         self.ui.pb_reset_inter_2.clicked.connect(
             lambda: self.reset_interlocks(True))
+        self.ui.pb_list_interlocks_2.clicked.connect(
+            lambda: self.list_interlocks(True))
         self.ui.pb_send_curve_2.clicked.connect(lambda: self.send_curve(True))
         self.ui.pb_cycle_2.clicked.connect(lambda: self.cycling_ps(True))
         self.ui.pb_plot_2.clicked.connect(lambda: self.plot(True))
@@ -1126,6 +1130,72 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                                  'Interlocks could not be reseted.',
                                  _QMessageBox.Ok)
             return
+
+    def list_interlocks(self, secondary=False):
+        try:
+            if not secondary:
+                _df = Lib.ps_settings
+            else:
+                _df = Lib.ps_settings_2
+            _ps_type = Lib.get_value(_df, 'Power Supply Type', int)
+            _msg = 'Power Supply active interlocks:\n\n'
+            _lsoft = []
+            _lhard = []
+    
+            if _ps_type == 2:
+                # F1000, reads dclink and ps
+                _msg = _msg + 'DCLink:\n'
+                if not self.set_address(_ps_type - 1):
+                    return
+                _interlock = Lib.comm.drs.read_ps_softinterlocks()
+                _lsoft = Lib.comm.drs.interlock_decoder(_interlock, _ps_type,
+                                                        False)
+                _interlock = Lib.comm.drs.read_ps_hardinterlocks()
+                _lhard = Lib.comm.drs.interlock_decoder(_interlock, _ps_type,
+                                                        True)
+                _msg = _msg + 'Software Interlocks:\n'
+                if not len(_lsoft):
+                    _msg = _msg + '    None\n'
+                else:
+                    for _i in _lsoft:
+                        _msg = _msg + '    - ' + _i + '\n'
+                _msg = _msg + 'Hardware Interlocks:\n'
+                if not len(_lhard):
+                    _msg = _msg + '    None\n'
+                else:
+                    for _i in _lhard:
+                        _msg = _msg + '    - ' + _i + '\n'
+                _msg = _msg + '\nPower Supply:\n'
+                _lsoft = []
+                _lhard = []
+    
+            else:
+                if not self.set_address(_ps_type):
+                    return
+                _interlock = Lib.comm.drs.read_ps_softinterlocks()
+                _lsoft = Lib.comm.drs.interlock_decoder(_interlock, _ps_type,
+                                                        False)
+                _interlock = Lib.comm.drs.read_ps_hardinterlocks()
+                _lhard = Lib.comm.drs.interlock_decoder(_interlock, _ps_type,
+                                                        True)
+            _msg = _msg + 'Software Interlocks:\n'
+            if not len(_lsoft):
+                _msg = _msg + '    None\n'
+            else:
+                for _i in _lsoft:
+                    _msg = _msg + '    - ' + _i + '\n'
+            _msg = _msg + 'Hardware Interlocks:\n'
+            if not len(_lhard):
+                _msg = _msg + '    None\n'
+            else:
+                for _i in _lhard:
+                    _msg = _msg + '    - ' + _i + '\n'
+    
+            _QMessageBox.warning(self, 'Active Interlocks', _msg,
+                                 _QMessageBox.Ok)
+            QtWidgets.QApplication.processEvents()
+        except Exception:
+            traceback.print_exc(file=sys.stdout)
 
     def cycling_ps(self, secondary=False):
         """Cycles power supply curve generator."""
