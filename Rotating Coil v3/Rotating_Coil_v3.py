@@ -217,15 +217,31 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             try:
                 self.config_variables()
                 # connect digital power supply
-                Lib.comm.drs = SerialDRS()
-                Lib.comm.drs.Connect(Lib.get_value(Lib.data_settings,
-                                                   'ps_port', str))
-                if not Lib.comm.drs.ser.is_open:
+#                 Lib.comm.drs = SerialDRS()
+#                 Lib.comm.drs.Connect(Lib.get_value(Lib.data_settings,
+#                                                    'ps_port', str))
+                self.drs1 = SerialDRS()
+                _ps_port = Lib.get_value(Lib.data_settings, 'ps_port', str)
+                self.drs1.Connect(_ps_port)
+                if not self.drs1.ser.is_open:
                     _QMessageBox.warning(self, 'Warning', 'Failed to '
                                          'connect to Power Supply.',
                                          _QMessageBox.Ok)
                     raise Exception
 
+                _ps_port_2 = Lib.get_value(Lib.data_settings, 'ps_port_2', str)
+                if _ps_port_2 != 'None':
+                    if _ps_port_2 == _ps_port:
+                        self.drs2 = self.drs1
+                    else:
+                        self.drs2 = SerialDRS()
+                        self.drs2.Connect(Lib.get_value(Lib.data_settings,
+                                                        'ps_port_2', str))
+                        if not self.drs2.ser.is_open:
+                            _QMessageBox.warning(self, 'Warning', 'Failed to '
+                                                 'connect to Power Supply.',
+                                                 _QMessageBox.Ok)
+                            raise Exception
                 # connect integrator
                 Lib.comm.fdi = FDI2056.EthernetCom()
                 _bench = Lib.get_value(Lib.data_settings, 'bench', int)
@@ -365,7 +381,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                                  'Configuration completed successfully.',
                                  _QMessageBox.Ok)
 
-    def set_address(self, address):
+    def set_address(self, address, secondary):
         """Sets power supply address.
 
         Args:
@@ -373,6 +389,12 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         Returns:
             True in case of success.
             False otherwise."""
+
+        if not secondary:
+            Lib.comm.drs = self.drs1
+        else:
+            Lib.comm.drs = self.drs2
+
         if Lib.comm.drs.ser.is_open:
             Lib.comm.drs.SetSlaveAdd(address)
             return True
@@ -418,7 +440,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             QtWidgets.QApplication.processEvents()
 
             _ps_type = Lib.get_value(_df, 'Power Supply Type', int)
-            if not self.set_address(_ps_type):
+            if not self.set_address(_ps_type, secondary):
                 if _status_ps:
                     self.change_ps_button(secondary, False)
                 else:
@@ -552,7 +574,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                         return
                 #Turn on Power Supply
                 Lib.comm.drs.SetSlaveAdd(_ps_type)  # Set power supply address
-                self.pid_setting()
+                self.pid_setting(secondary)
                 Lib.comm.drs.turn_on()
                 time.sleep(1)
                 if not Lib.comm.drs.read_ps_onoff():
@@ -692,7 +714,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                                      _QMessageBox.Yes |
                                      _QMessageBox.No)
         if _ans == _QMessageBox.Yes:
-            _ans = self.pid_setting()
+            _ans = self.pid_setting(False)
             if _ans:
                 _QMessageBox.information(self, 'Information',
                                          'PID configured.',
@@ -702,15 +724,24 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                                      'Power Supply PID configuration fault.',
                                      _QMessageBox.Ok)
 
-    def pid_setting(self):
+    def pid_setting(self, secondary=False):
         """Configures power supply PID parameters."""
         try:
-            _kp = float(self.ui.sb_kp.text())
-            _ki = float(self.ui.sb_ki.text())
-            Lib.write_value(Lib.ps_settings, 'Kp', self.ui.sb_kp.text(), True)
-            Lib.write_value(Lib.ps_settings, 'Ki', self.ui.sb_ki.text(), True)
-            _ps_type = Lib.get_value(Lib.ps_settings, 'Power Supply Type', int)
-            if not self.set_address(_ps_type):
+            if not secondary:
+                _kp = float(self.ui.sb_kp.text())
+                _ki = float(self.ui.sb_ki.text())
+                Lib.write_value(Lib.ps_settings, 'Kp', self.ui.sb_kp.text(),
+                                True)
+                Lib.write_value(Lib.ps_settings, 'Ki', self.ui.sb_ki.text(),
+                                True)
+                _df = Lib.ps_settings
+            else:
+                _df = Lib.ps_settings_2
+
+            _kp = Lib.get_value(_df, 'Kp', float)
+            _ki = Lib.get_value(_df, 'Ki', float)
+            _ps_type = Lib.get_value(_df, 'Power Supply Type', int)
+            if not self.set_address(_ps_type, secondary):
                 return
 
             if _ps_type == 3:
@@ -718,7 +749,16 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             else:
                 _umin = -0.90
 
-            Lib.comm.drs.set_dsp_coeffs(3, 0, [_kp, _ki, 0.90, _umin])
+            if _ps_type in [2, 3, 4]:
+                _dsp_id = 0
+            elif _ps_type == 5:
+                _dsp_id = 1
+            elif _ps_type == 6:
+                _dsp_id = 2
+            elif _ps_type == 7:
+                _dsp_id = 3
+
+            Lib.comm.drs.set_dsp_coeffs(3, _dsp_id, [_kp, _ki, 0.90, _umin])
         except Exception:
             traceback.print_exc(file=sys.stdout)
             return False
@@ -747,7 +787,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         _ps_type_cfg = _cb.itemText(_ps_type - _idx)
         _le_ps_type_cfg.setText(_ps_type_cfg)
         QtWidgets.QApplication.processEvents()
-        if not self.set_address(_ps_type):
+        if not self.set_address(_ps_type, secondary):
             return
         try:
             _refresh_current = round(float(Lib.comm.drs.read_iload1()), 3)
@@ -777,7 +817,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             _df = Lib.ps_settings_2
 
         _ps_type = Lib.get_value(_df, 'Power Supply Type', int)
-        if not self.set_address(_ps_type):
+        if not self.set_address(_ps_type, secondary):
             return
 
         #verify current limits
@@ -922,7 +962,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             _df = Lib.ps_settings_2
 
         _ps_type = Lib.get_value(_df, 'Power Supply Type', int)
-        if not self.set_address(_ps_type):
+        if not self.set_address(_ps_type, secondary):
             return False
 
         # Sinusoidal
@@ -1092,7 +1132,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         else:
             _df = Lib.ps_settings_2
         _ps_type = Lib.get_value(_df, 'Power Supply Type', int)
-        if not self.set_address(_ps_type):
+        if not self.set_address(_ps_type, secondary):
             return
         _interlock = 0
 
@@ -1145,7 +1185,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             if _ps_type == 2:
                 # F1000, reads dclink and ps
                 _msg = _msg + 'DCLink:\n'
-                if not self.set_address(_ps_type - 1):
+                if not self.set_address(_ps_type - 1, secondary):
                     return
                 _interlock = Lib.comm.drs.read_ps_softinterlocks()
                 _lsoft = Lib.comm.drs.interlock_decoder(_interlock, _ps_type,
@@ -1170,7 +1210,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 _lhard = []
 
             else:
-                if not self.set_address(_ps_type):
+                if not self.set_address(_ps_type, secondary):
                     return
                 _interlock = Lib.comm.drs.read_ps_softinterlocks()
                 _lsoft = Lib.comm.drs.interlock_decoder(_interlock, _ps_type,
@@ -1178,13 +1218,13 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 _interlock = Lib.comm.drs.read_ps_hardinterlocks()
                 _lhard = Lib.comm.drs.interlock_decoder(_interlock, _ps_type,
                                                         True)
-            _msg = _msg + 'Software Interlocks:\n'
+            _msg = _msg + 'Soft Interlocks:\n'
             if not len(_lsoft):
                 _msg = _msg + '    None\n'
             else:
                 for _i in _lsoft:
                     _msg = _msg + '    - ' + _i + '\n'
-            _msg = _msg + 'Hardware Interlocks:\n'
+            _msg = _msg + 'Hard Interlocks:\n'
             if not len(_lhard):
                 _msg = _msg + '    None\n'
             else:
@@ -1220,22 +1260,17 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         QtWidgets.QApplication.processEvents()
 
         _ps_type = Lib.get_value(_df, 'Power Supply Type', int)
-        if not self.set_address(_ps_type):
+        if not self.set_address(_ps_type, secondary):
             return
 
         try:
             if _curve_type < 3:
                 if not self.set_op_mode(1):
                     _QMessageBox.warning(self, 'Warning', 'Could not set '
-                                         'the sigGen operation mode.',
+                                         'the sigGen operation mode.\n'
+                                         'Please check if it is turned on.',
                                          _QMessageBox.Ok)
-                    return
-        except Exception:
-            _QMessageBox.warning(self, 'Warning', 'Power supply is not on '
-                                 'signal generator mode.',
-                                 _QMessageBox.Ok)
-            return
-        try:
+                    raise Exception('Power supply is not in sigGen mode.')
             if _curve_type == 0:
                 _freq = Lib.get_value(_df, 'Sinusoidal Frequency', float)
                 _n_cycles = Lib.get_value(_df, 'Sinusoidal N Cycles', float)
@@ -1311,7 +1346,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             _array = np.fromstring(_array, sep=',')
             _array = _array.reshape(int(_array.shape[0]/2), 2)
 
-            if not self.set_address(_ps_type):
+            if not self.set_address(_ps_type, secondary):
                 return False
 
             if _ps_type in [2, 3]:
@@ -2654,9 +2689,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.ui.cb_disp_port.removeItem(0)
             self.ui.cb_driver_port.removeItem(0)
             self.ui.cb_ps_port.removeItem(0)
+            self.ui.cb_ps_port_2.removeItem(0)
         self.ui.cb_disp_port.addItems(self.ports)
         self.ui.cb_driver_port.addItems(self.ports)
         self.ui.cb_ps_port.addItems(self.ports)
+        self.ui.cb_ps_port_2.addItems(['None'] + self.ports)
 
         # Connection Tab
         self.ui.cb_disp_port.setCurrentText(Lib.get_value(Lib.data_settings,
@@ -2726,6 +2763,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                             self.ui.cb_driver_port.currentText())
             Lib.write_value(Lib.data_settings, 'ps_port',
                             self.ui.cb_ps_port.currentText())
+            Lib.write_value(Lib.data_settings, 'ps_port_2',
+                            self.ui.cb_ps_port_2.currentText())
 
             Lib.write_value(Lib.data_settings, 'enable_Agilent34970A',
                             int(self.ui.chb_enable_Agilent34970A.isChecked()))
@@ -3134,9 +3173,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui.le_trapezoidal_offset.setText(
             str(Lib.get_value(Lib.ps_settings_2, 'Trapezoidal Offset', float)))
         _array = Lib.get_value(Lib.ps_settings_2, 'Trapezoidal Array')
-        _array = np.fromstring(_array, sep=',')
-        _array = _array.reshape(int(_array.shape[0]/2), 2)
-        self.array_to_table(_array, self.ui.tw_trapezoidal_2)
+        if _array is not np.nan:
+            _array = np.fromstring(_array, sep=',')
+            _array = _array.reshape(int(_array.shape[0]/2), 2)
+            self.array_to_table(_array, self.ui.tw_trapezoidal_2)
         #Settings
         self.ui.le_maximum_current_2.setText(
             str(Lib.get_value(Lib.ps_settings_2, 'Maximum Current', float)))
@@ -3375,7 +3415,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 _ps_type_2 = Lib.get_value(Lib.ps_settings_2,
                                            'Power Supply Type', int)
             #Turn off main power supply
-            if not self.set_address(_ps_type):
+            if not self.set_address(_ps_type, False):
                 return
             if not self.set_op_mode(0):
                 _QMessageBox.warning(self, 'Warning', 'Could not set '
@@ -3398,8 +3438,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             time.sleep(.1)
             #Turn off secondary power supply
             if _secondary_flag:
-                Lib.comm.drs.SetSlaveAdd(_ps_type_2)
-                if not self.set_address(_ps_type_2):
+                if not self.set_address(_ps_type_2, True):
                     return
                 if not self.set_op_mode(0):
                     _QMessageBox.warning(self, 'Warning', 'Could not set '
@@ -3487,7 +3526,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             _t = time.time()
 
             #monitor main coil current and interlocks
-            if not self.set_address(_ps_type):
+            if not self.set_address(_ps_type, False):
                 return
             if not _disable_interlock:
                 _soft_interlock = Lib.comm.drs.read_ps_softinterlocks()
@@ -3505,7 +3544,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
             #monitor secondary coil current  and interlocks if exists
             if _secondary_flag:
-                Lib.comm.drs.SetSlaveAdd(_ps_type_2)
+                if not self.set_address(_ps_type_2, True):
+                    return
                 if not _disable_interlock:
                     _soft_interlock_2 = Lib.comm.drs.read_ps_softinterlocks()
                     _hard_interlock_2 = Lib.comm.drs.read_ps_hardinterlocks()

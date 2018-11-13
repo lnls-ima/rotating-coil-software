@@ -288,11 +288,9 @@ list_fap_225A_hard_interlocks = ['Load Overcurrent',
                                  'IGBT 2 Overcurrent']
 
 
-class SerialDRS(object):
-    ser = serial.Serial()
-
+class SerialDRS():
     def __init__(self):
-        #self.ser=serial.Serial()
+        self.ser=serial.Serial()
         self.MasterAdd = '\x00'
         self.SlaveAdd = '\x01'
         self.BCastAdd = '\xFF'
@@ -2469,7 +2467,7 @@ class SerialDRS(object):
 
     def Connect(self, port, baud=115200):
         try:
-            SerialDRS.ser = serial.Serial(port, baud, timeout=1)
+            self.ser = serial.Serial(port, baud, timeout=1)
             return True
         except Exception:
             return False

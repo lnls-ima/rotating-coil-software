@@ -6,7 +6,8 @@ disp_port	COM12
 driver_port	COM11
 integrator_port	COM6
 ps_type	1.0
-ps_port	COM9
+ps_port	COM10
+ps_port_2	None
 enable_Agilent34970A	1
 agilent34970A_address	18
 total_number_of_turns	20

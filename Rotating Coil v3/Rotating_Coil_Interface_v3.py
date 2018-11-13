@@ -90,7 +90,7 @@ class Ui_RotatingCoil_Interface(object):
         self.pb_connect_devices.setIconSize(QtCore.QSize(25, 25))
         self.pb_connect_devices.setObjectName("pb_connect_devices")
         self.groupBox_26 = QtWidgets.QGroupBox(self.tab_1)
-        self.groupBox_26.setGeometry(QtCore.QRect(200, 490, 390, 121))
+        self.groupBox_26.setGeometry(QtCore.QRect(200, 530, 390, 121))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.groupBox_26.setFont(font)
@@ -114,7 +114,7 @@ class Ui_RotatingCoil_Interface(object):
         self.lb_status_34970A.setObjectName("lb_status_34970A")
         self.gridLayout.addWidget(self.lb_status_34970A, 0, 2, 1, 1)
         self.groupBox_48 = QtWidgets.QGroupBox(self.tab_1)
-        self.groupBox_48.setGeometry(QtCore.QRect(199, 371, 391, 111))
+        self.groupBox_48.setGeometry(QtCore.QRect(199, 371, 391, 151))
         self.groupBox_48.setObjectName("groupBox_48")
         self.cb_ps_port = QtWidgets.QComboBox(self.groupBox_48)
         self.cb_ps_port.setGeometry(QtCore.QRect(200, 56, 91, 22))
@@ -130,6 +130,20 @@ class Ui_RotatingCoil_Interface(object):
         self.label_168.setFont(font)
         self.label_168.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_168.setObjectName("label_168")
+        self.label_179 = QtWidgets.QLabel(self.groupBox_48)
+        self.label_179.setGeometry(QtCore.QRect(10, 94, 181, 31))
+        font = QtGui.QFont()
+        font.setItalic(False)
+        font.setStrikeOut(False)
+        self.label_179.setFont(font)
+        self.label_179.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_179.setObjectName("label_179")
+        self.cb_ps_port_2 = QtWidgets.QComboBox(self.groupBox_48)
+        self.cb_ps_port_2.setGeometry(QtCore.QRect(200, 100, 91, 22))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.cb_ps_port_2.setFont(font)
+        self.cb_ps_port_2.setObjectName("cb_ps_port_2")
         self.groupBox_18 = QtWidgets.QGroupBox(self.tab_1)
         self.groupBox_18.setGeometry(QtCore.QRect(200, 151, 391, 81))
         self.groupBox_18.setObjectName("groupBox_18")
@@ -1645,7 +1659,7 @@ class Ui_RotatingCoil_Interface(object):
         self.pb_interlock_2.setCheckable(True)
         self.pb_interlock_2.setObjectName("pb_interlock_2")
         self.pb_reset_inter_2 = QtWidgets.QPushButton(self.groupBox_9)
-        self.pb_reset_inter_2.setGeometry(QtCore.QRect(60, 200, 101, 31))
+        self.pb_reset_inter_2.setGeometry(QtCore.QRect(63, 200, 101, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.pb_reset_inter_2.setFont(font)
@@ -3035,7 +3049,7 @@ class Ui_RotatingCoil_Interface(object):
         self.tabWidget.addTab(self.tab_4, icon28, "")
         RotatingCoil_Interface.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(RotatingCoil_Interface)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1235, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1235, 20))
         self.menubar.setObjectName("menubar")
         RotatingCoil_Interface.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(RotatingCoil_Interface)
@@ -3212,6 +3226,7 @@ class Ui_RotatingCoil_Interface(object):
         self.lb_status_34970A.setText(_translate("RotatingCoil_Interface", "Disconnected"))
         self.groupBox_48.setTitle(_translate("RotatingCoil_Interface", "Digital Power Supply"))
         self.label_168.setText(_translate("RotatingCoil_Interface", "Power Supply Port"))
+        self.label_179.setText(_translate("RotatingCoil_Interface", "2nd Power Supply Port"))
         self.groupBox_18.setTitle(_translate("RotatingCoil_Interface", "Bench"))
         self.cb_bench.setItemText(0, _translate("RotatingCoil_Interface", "RC Bench 1"))
         self.cb_bench.setItemText(1, _translate("RotatingCoil_Interface", "RC Bench 2"))
@@ -3339,8 +3354,8 @@ class Ui_RotatingCoil_Interface(object):
         self.te_comments.setHtml(_translate("RotatingCoil_Interface", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:12pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
+"</style></head><body style=\" font-family:\'Sans Serif\'; font-size:12pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\';\"><br /></p></body></html>"))
         self.label_631.setText(_translate("RotatingCoil_Interface", "Trigger Ref"))
         self.pb_config_coil.setText(_translate("RotatingCoil_Interface", "Configure Coil"))
         self.pb_emergency3.setText(_translate("RotatingCoil_Interface", "Emergency"))
@@ -3350,8 +3365,8 @@ class Ui_RotatingCoil_Interface(object):
         self.textBrowser.setHtml(_translate("RotatingCoil_Interface", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:12pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt; color:#505050;\">Warning: each power supply has an unique fixed address, one must always remember to configure them after replacing or resetting an power supply in order for this software to work. The addresses are the following:</span></p></body></html>"))
+"</style></head><body style=\" font-family:\'Sans Serif\'; font-size:12pt; font-weight:400; font-style:normal;\">\n"
+"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:10pt; color:#505050;\">Warning: each power supply has an unique fixed address, one must always remember to configure them after replacing or resetting an power supply in order for this software to work. The addresses are the following:</span></p></body></html>"))
         self.groupBox_24.setTitle(_translate("RotatingCoil_Interface", "General Settings"))
         self.pb_reset_inter.setText(_translate("RotatingCoil_Interface", "Reset Interlock"))
         self.label_35.setText(_translate("RotatingCoil_Interface", "Power Supply Type:"))

@@ -1076,6 +1076,7 @@ class RotatingCoil_Library(object):
         try:
             self.data_settings = None
             _file = self.dir_path + self.settings_file
+            print(_file)
             self.data_settings = pd.read_csv(_file, comment='#',
                                              delimiter='\t',
                                              names=['datavars', 'datavalues'],
@@ -1083,6 +1084,7 @@ class RotatingCoil_Library(object):
                                              index_col='datavars')
             return True
         except Exception:
+            traceback.print_exc(file=sys.stdout)
             return False
 
     def save_settings(self):
