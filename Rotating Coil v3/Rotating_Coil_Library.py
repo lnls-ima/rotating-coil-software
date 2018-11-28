@@ -18,7 +18,6 @@ class RotatingCoil_Library(object):
     def __init__(self):
         self.dir_path = os.path.dirname(os.path.abspath(__file__)) + '\\'
         self.settings_file = 'rc_settings.dat'
-        self.load_settings()
 
         self.App = None
         self.flags = flags()
@@ -30,6 +29,7 @@ class RotatingCoil_Library(object):
         self.measurement_settings = None
 
         self.db_create_table()
+        self.load_settings()
 
     def db_create_table(self):
         """
@@ -123,10 +123,41 @@ class RotatingCoil_Library(object):
              `description`    INTEGER NOT NULL,
              PRIMARY KEY(`id`) )"""
 
+            _create_main_table = """CREATE TABLE `main` (
+             `disp_port`    TEXT,
+             `driver_port`    TEXT,
+             `ps_port`    TEXT,
+             `ps_port_2`    TEXT,
+             `enable_Agilent34970A`    INTEGER,
+             `agilent34970A_address`    INTEGER,
+             `total_number_of_turns`    INTEGER,
+             `remove_initial_turns`    INTEGER,
+             `remove_final_turns`    INTEGER,
+             `rotation_motor_address`    INTEGER,
+             `rotation_motor_resolution`    REAL,
+             `rotation_motor_speed`    REAL,
+             `rotation_motor_acceleration`    REAL,
+             `rotation_motor_ratio`    REAL,
+             `n_encoder_pulses`    INTEGER,
+             `integrator_gain`    INTEGER,
+             `n_integration_points`    INTEGER,
+             `disable_alignment_interlock`    INTEGER,
+             `disable_ps_interlock`    INTEGER,
+             `bench`    INTEGER )"""
+
             _cur.execute(_create_table)
             _cur.execute(_create_sets_table)
             _cur.execute(_create_failures_table)
+            _cur.execute(_create_main_table)
 
+            _values = ['COM12', 'COM11', 'COM10', 'None', 1, 18, 20, 5, 5,
+                       1, 50000.0, 1.0, 4.0, 1.0, 360000, 100, 120, 0, 0, 1]
+            _l = []
+            [_l.append('?') for _ in range(len(_values))]
+            _l = '(' + ','.join(_l) + ')'
+            _cur.execute(('INSERT INTO main VALUES ' + _l), _values)
+
+        _con.commit()
         _con.close()
 
     def db_save_measurement(self):
@@ -1074,14 +1105,16 @@ class RotatingCoil_Library(object):
 
     def load_settings(self):
         try:
-            self.data_settings = None
-            _file = self.dir_path + self.settings_file
-            print(_file)
-            self.data_settings = pd.read_csv(_file, comment='#',
-                                             delimiter='\t',
-                                             names=['datavars', 'datavalues'],
-                                             dtype={'datavars': str},
-                                             index_col='datavars')
+            print(self.dir_path + 'measurements_data.db')
+            _con = sqlite3.connect(self.dir_path + 'measurements_data.db')
+            _cur = _con.cursor()
+            _cur.execute('SELECT * FROM main')
+            _datavalues = list(_cur.fetchall()[0])
+            _desc = _cur.description
+            _datavars = [i[0] for i in _desc]
+            _df = pd.DataFrame({'datavars': _datavars,
+                                'datavalues': _datavalues})
+            self.data_settings = _df.set_index('datavars')
             return True
         except Exception:
             traceback.print_exc(file=sys.stdout)
@@ -1089,19 +1122,18 @@ class RotatingCoil_Library(object):
 
     def save_settings(self):
         try:
-            _file = self.dir_path + self.settings_file
-            fname = open(_file, 'w')
-            fname.write('# Rotating Coil Main Parameters\n')
-            fname.write('# Insert the variable name and value separated by '
-                        'tab.\n')
-            fname.write('# Commented lines are ignored.\n\n')
-
-            for i in range(len(self.data_settings)):
-                fname.write(self.data_settings.index[i] + '\t' +
-                            str(self.data_settings.iloc[i].get_values()[0]) +
-                            '\n')
-            fname.close()
-
+            _con = sqlite3.connect(self.dir_path + 'measurements_data.db')
+            _cur = _con.cursor()
+            _col_names = self.data_settings.index
+            _values = [val[0] for val in self.data_settings.values]
+            _updates = ''
+            for i in range(len(_col_names)):
+                _updates = _updates + '`' + _col_names[i] + '`' + '=?, '
+            _updates = _updates[:-2]
+            _cur.execute("""UPDATE main SET {0} WHERE rowid = 1""".format(
+                _updates), _values)
+            _con.commit()
+            _con.close()
             return True
         except Exception:
             return False

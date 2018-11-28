@@ -66,9 +66,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
         #power supply current slope, [F1000A, F225A, F10A] [A/s]
         self.slope = [50, 90, 1000]
-#         #disable sen^2 curves, not implemented on power supply yet
-#         self.ui.tabWidget_3.setTabEnabled(2, False)
-#         self.ui.tabWidget_5.setTabEnabled(3, False)
 
         self.refresh_interface()
 
@@ -217,9 +214,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             try:
                 self.config_variables()
                 # connect digital power supply
-#                 Lib.comm.drs = SerialDRS()
-#                 Lib.comm.drs.Connect(Lib.get_value(Lib.data_settings,
-#                                                    'ps_port', str))
                 self.drs1 = SerialDRS()
                 _ps_port = Lib.get_value(Lib.data_settings, 'ps_port', str)
                 self.drs1.Connect(_ps_port)
@@ -1395,8 +1389,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 theta = float(self.ui.le_Initial_Phase.text())
                 if any([a == 0, f == 0, ncycles == 0]):
                     _QMessageBox.warning(self, 'Warning',
-                                        'Please check the parameters.',
-                                        _QMessageBox.Ok)
+                                         'Please check the parameters.',
+                                         _QMessageBox.Ok)
                     return
                 sen = lambda t: (a*np.sin(2*np.pi*f*t + theta/360*2*np.pi) +
                                  offset)
@@ -1620,9 +1614,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.ui.label_status_2.setText(Lib.comm.fdi.status(1))
             self.ui.label_status_3.setText(Lib.comm.fdi.status(2))
             self.ui.label_status_4.setText(Lib.comm.fdi.status(3))
-#             self.ui.label_status_5.setText(Lib.comm.fdi.status('5'))
-#             self.ui.label_status_6.setText(Lib.comm.fdi.status('6'))
-#             self.ui.label_status_7.setText(Lib.comm.fdi.status('7'))
         except Exception:
             pass
 
@@ -2242,8 +2233,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 else:
                     self.dialog.ui.cb_magnet_family.setCurrentText(
                         _magnet_family)
-                _trim_type= Lib.get_value(Lib.measurement_settings,
-                                          'trim_coil_type', int)
+                _trim_type = Lib.get_value(Lib.measurement_settings,
+                                           'trim_coil_type', int)
                 if _trim_type >= 0:
                     self.dialog.ui.cb_trim_coil_type.setCurrentIndex(
                         _trim_type)
