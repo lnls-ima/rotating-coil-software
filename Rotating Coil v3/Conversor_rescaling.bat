@@ -1,1 +1,0 @@
-pyuic5 -o Rotating_Coil_Interface_v3.py Rotating_Coil_Interface_v3-rescaling_raw_data.ui

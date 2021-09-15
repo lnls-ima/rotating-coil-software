@@ -1,0 +1,1 @@
+pyuic5 -o Rotating_Coil_Interface.py Rotating_Coil_Interface.ui
