@@ -1,0 +1,28 @@
+# Rotating Coil Main Parameters
+# Insert the variable name and value separated by tab.
+# Commented lines are ignored.
+
+disp_port	COM12
+driver_port	COM11
+integrator_port	COM6
+ps_type	1.0
+ps_port	COM10
+ps_port_2	None
+enable_Agilent34970A	1
+agilent34970A_address	18
+enable_Agilent34401A	1
+agilent34401A_address	15
+total_number_of_turns	20
+remove_initial_turns	5
+remove_final_turns	5
+rotation_motor_address	1.0
+rotation_motor_resolution	50000.0
+rotation_motor_speed	1.0
+rotation_motor_acceleration	4.0
+rotation_motor_ratio	1.0
+n_encoder_pulses	360000
+integrator_gain	100
+n_integration_points	120
+disable_alignment_interlock	0
+disable_ps_interlock	0
+bench	1

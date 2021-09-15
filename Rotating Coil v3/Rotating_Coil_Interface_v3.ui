@@ -2039,6 +2039,11 @@
        </property>
        <item>
         <property name="text">
+         <string>64</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>90</string>
         </property>
        </item>
@@ -2363,8 +2368,8 @@
          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2';&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </widget>
@@ -2584,8 +2589,8 @@ p, li { white-space: pre-wrap; }
           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:10pt; color:#505050;&quot;&gt;Warning: each power supply has an unique fixed address, one must always remember to configure them after replacing or resetting an power supply in order for this software to work. The addresses are the following:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#505050;&quot;&gt;Warning: each power supply has an unique fixed address, one must always remember to configure them after replacing or resetting an power supply in order for this software to work. The addresses are the following:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
         </widget>
         <widget class="QGroupBox" name="groupBox_24">
@@ -3071,7 +3076,7 @@ p, li { white-space: pre-wrap; }
            </rect>
           </property>
           <property name="text">
-           <string>Current Setpoint [A]: </string>
+           <string>Current setpoint [A]: </string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -3105,7 +3110,7 @@ p, li { white-space: pre-wrap; }
          <widget class="QDoubleSpinBox" name="dsb_current_setpoint">
           <property name="geometry">
            <rect>
-            <x>190</x>
+            <x>230</x>
             <y>120</y>
             <width>91</width>
             <height>31</height>
@@ -3116,6 +3121,41 @@ p, li { white-space: pre-wrap; }
           </property>
           <property name="maximum">
            <double>1100.000000000000000</double>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_89">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>170</y>
+            <width>181</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Current slew rate [A/s]: </string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+         <widget class="QDoubleSpinBox" name="dsb_current_slewrate">
+          <property name="geometry">
+           <rect>
+            <x>230</x>
+            <y>170</y>
+            <width>91</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="minimum">
+           <double>-1100.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1100.000000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.000000000000000</double>
           </property>
          </widget>
         </widget>
@@ -4961,30 +5001,17 @@ Loop:</string>
            <widget class="QLabel" name="label_106">
             <property name="geometry">
              <rect>
-              <x>20</x>
+              <x>40</x>
               <y>100</y>
-              <width>141</width>
+              <width>161</width>
               <height>31</height>
              </rect>
             </property>
             <property name="text">
-             <string>Current Setpoint</string>
+             <string>Current Setpoint [A]:</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_190">
-            <property name="geometry">
-             <rect>
-              <x>270</x>
-              <y>100</y>
-              <width>21</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>A</string>
             </property>
            </widget>
            <widget class="QPushButton" name="pb_send_2">
@@ -5015,9 +5042,9 @@ Loop:</string>
            <widget class="QDoubleSpinBox" name="dsb_current_setpoint_2">
             <property name="geometry">
              <rect>
-              <x>190</x>
+              <x>220</x>
               <y>100</y>
-              <width>71</width>
+              <width>81</width>
               <height>31</height>
              </rect>
             </property>
@@ -5026,6 +5053,41 @@ Loop:</string>
             </property>
             <property name="maximum">
              <double>200.000000000000000</double>
+            </property>
+           </widget>
+           <widget class="QDoubleSpinBox" name="dsb_current_slewrate_2">
+            <property name="geometry">
+             <rect>
+              <x>220</x>
+              <y>160</y>
+              <width>81</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="minimum">
+             <double>-1100.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>1100.000000000000000</double>
+            </property>
+            <property name="value">
+             <double>0.000000000000000</double>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_109">
+            <property name="geometry">
+             <rect>
+              <x>30</x>
+              <y>160</y>
+              <width>171</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Current slew rate [A/s]:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
           </widget>
@@ -7406,15 +7468,18 @@ DCCT Voltage [V]</string>
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
        <layout class="QGridLayout" name="gridLayout_11">
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_175">
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_34">
           <property name="font">
            <font>
             <pointsize>12</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>Normalization Radius:</string>
+           <string>Rotation Direction:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
          </widget>
         </item>
@@ -7430,6 +7495,18 @@ DCCT Voltage [V]</string>
           </property>
          </widget>
         </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_175">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Normalization Radius:</string>
+          </property>
+         </widget>
+        </item>
         <item row="2" column="0">
          <widget class="QLabel" name="label_36">
           <property name="font">
@@ -7439,21 +7516,6 @@ DCCT Voltage [V]</string>
           </property>
           <property name="text">
            <string>Accelarator Type:</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_34">
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Rotation Direction:</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -7490,6 +7552,34 @@ DCCT Voltage [V]</string>
            </property>
           </item>
          </widget>
+        </item>
+        <item row="4" column="0" colspan="2">
+         <layout class="QHBoxLayout" name="horizontalLayout_7">
+          <item>
+           <widget class="QLabel" name="label_24">
+            <property name="text">
+             <string>Longitudinal Position:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="le_longitudinal_pos"/>
+          </item>
+         </layout>
+        </item>
+        <item row="3" column="0" colspan="2">
+         <layout class="QHBoxLayout" name="horizontalLayout_8">
+          <item>
+           <widget class="QLabel" name="label_29">
+            <property name="text">
+             <string>Horizontal Shift [mm]:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="le_shift_x"/>
+          </item>
+         </layout>
         </item>
        </layout>
       </widget>
@@ -8179,7 +8269,7 @@ DCCT Voltage [V]</string>
      <x>0</x>
      <y>0</y>
      <width>1235</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

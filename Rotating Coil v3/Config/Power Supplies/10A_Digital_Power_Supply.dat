@@ -5,6 +5,7 @@
 Power Supply Name	10A_Monopolar_Digital_Power_Supply
 Power Supply Type	4
 Current Setpoint	0.0
+Current Slew Rate	2.0
 Sinusoidal Amplitude	10.0
 Sinusoidal Offset	0.0
 Sinusoidal Frequency	1.0
@@ -30,6 +31,6 @@ Trapezoidal Array
 Maximum Current	10.0
 Minimum Current	-10.0
 Automatic Setpoints	0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 8.0, 6.0, 4.0, 2.0, 0.0, -2.0, -4.0, -6.0, -8.0, -10.0, -8.0, -6.0, -4.0, -2.0, 0.0
-Kp	1
-Ki	400
+Kp	0.038
+Ki	3.2191
 DCCT Head	2

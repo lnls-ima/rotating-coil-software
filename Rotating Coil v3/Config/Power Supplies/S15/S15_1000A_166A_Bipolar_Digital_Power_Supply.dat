@@ -1,0 +1,36 @@
+# Power Supply Parameters
+# Insert the variable name and value separated by tab.
+# Commented lines are ignored.
+
+Power Supply Name	S15_1000A_166A_Bipolar_Digital_Power_Supply
+Power Supply Type	2
+Current Setpoint	0.0
+Current Slew Rate	50.0
+Sinusoidal Amplitude	80.0
+Sinusoidal Offset	80.0
+Sinusoidal Frequency	0.1
+Sinusoidal N Cycles	3
+Sinusoidal Initial Phase	270.0
+Sinusoidal Final Phase	270.0
+Damped Sinusoidal Amplitude	160.0
+Damped Sinusoidal Offset	0.0
+Damped Sinusoidal Frequency	0.1
+Damped Sinusoidal N Cycles	15
+Damped Sinusoidal Phase Shift	0.0
+Damped Sinusoidal Final Phase	0.0
+Damped Sinusoidal Damping	30.0
+Damped Sinusoidal2 Amplitude	166.0
+Damped Sinusoidal2 Offset	0.0
+Damped Sinusoidal2 Frequency	2.0
+Damped Sinusoidal2 N Cycles	100
+Damped Sinusoidal2 Phase Shift	0.0
+Damped Sinusoidal2 Final Phase	0.0
+Damped Sinusoidal2 Damping	2.0
+Trapezoidal Offset	0.0
+Trapezoidal Array	
+Maximum Current	166.0
+Minimum Current	-166.0
+Automatic Setpoints	0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 30.0, 50.0, 70.0, 90.0, 110.0, 130.0, 160.0, 130.0, 110.0, 90.0, 70.0, 50.0, 30.0, 10.0, 8.0, 6.0, 4.0, 2.0, 0.0
+Kp	0.026
+Ki	0.2441
+DCCT Head	3

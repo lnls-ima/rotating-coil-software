@@ -1,0 +1,1 @@
+pyuic5 -o Progress_bar.py Progress_bar.ui

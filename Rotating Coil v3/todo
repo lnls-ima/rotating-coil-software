@@ -1,0 +1,62 @@
+################ HALL ##################
+-> cycle durante ciclagem com cycling...
+
+### testar:
+-> ao mandar setpoint ele espera infinitamente, averiguar porque não da timeout
+
+############### ROTATING COIL ###############
+
+-> checar parametros antes de plotar curvas
+-> Usar fontes caen ou versão nova do ELP?
+
+-> melhorar config (configurar ao mandar plotar/ciclar?)
+-> configura fonte ao clicar em send
+
+##### Fontes #####
+- bloquear F1000
+- configurar PI p/ corretoras
+
+- importar pydrs
+- set_op_mode
+#-. Lib.comm.drs.OpMode()
+	arrumar valores no software 3-slowRef; 5-cycle.
+#-. Lib.comm.drs.Read_ps_OpMode() 
+	arrumar saida no software 1-cycle; 0-n�o cycle
+
+-. drs.read_vdclink()
+
+- drs.enable_siggen()
+- drs.disable_siggen()
+- drs.cfg_siggen(sig_type, num_cycles, freq, amplitude, offset, aux0, aux1, aux2, aux3)
+
+- drs.reset_interlocks()
+- drs.read_ps_softinterlocks()
+- drs.read_ps_hardinterlocks()
+
+- drs.Connect()
+- drs.Disconnect()
+- drs.ser.is_open:
+- drs.SetSlaveAdd(i)
+- drs.turn_on()
+- drs.turn_off()
+- drs.closed_loop()
+- drs.set_slowref()
+
+- drs.read_iload1()
+- drs.read_ps_onoff()
+- read_ps_openloop()
+#-. round(Lib.comm.drs.Read_vOutMod1()/2 + Lib.comm.drs.Read_vOutMod2()/2, 3)
+
+#-. Lib.comm.drs.ConfigDPModule()
+#-. Lib.comm.drs.Write_dp_ID(_id_mode)
+#-. Lib.comm.drs.Write_dp_Class(_elp_PI_dawu)
+#-. Lib.comm.drs.Write_dp_Coeffs(_list_coeffs.tolist())
+	subst drs.set_dsp_coeffs(3, 0, [ki, kp, 0.95, -0.95]) bipolar
+		  drs.set_dsp_coeffs(3, 0, [ki, kp, 0.95, 0]) monopolar
+
+#-. Lib.comm.drs.Write_sigGen_Freq(float(_freq))
+#-. Lib.comm.drs.Write_sigGen_Amplitude(float(_amp))
+#-. Lib.comm.drs.Write_sigGen_Offset(float(_offset))
+#-. Lib.comm.drs.Write_sigGen_Aux(float(
+#-. Lib.comm.drs.ConfigSigGen()
+	subst drs.cfg_siggen(sig_type, num_cycles, freq, amplitude, offset, aux0, aux1, aux2, aux3)

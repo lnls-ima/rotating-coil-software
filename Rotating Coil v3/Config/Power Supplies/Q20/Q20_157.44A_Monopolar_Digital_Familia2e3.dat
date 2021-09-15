@@ -5,6 +5,7 @@
 Power Supply Name	Q20_157.44A_Monopolar_Digital_Familia2e3
 Power Supply Type	3
 Current Setpoint	157.44
+Current Slew Rate	90.0
 Sinusoidal Amplitude	10.0
 Sinusoidal Offset	0.0
 Sinusoidal Frequency	1.0

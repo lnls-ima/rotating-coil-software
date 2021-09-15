@@ -5,6 +5,7 @@
 Power Supply Name	S15_166A_Monopolar_Digital
 Power Supply Type	3
 Current Setpoint	0.0
+Current Slew Rate	90.0
 Sinusoidal Amplitude	10.0
 Sinusoidal Offset	0.0
 Sinusoidal Frequency	1.0

@@ -1,0 +1,36 @@
+# Power Supply Parameters
+# Insert the variable name and value separated by tab.
+# Commented lines are ignored.
+
+Power Supply Name	BQD_1000A_Bipolar_Digital_Power_Supply
+Power Supply Type	2
+Current Setpoint	32.0
+Current Slew Rate	50.0
+Sinusoidal Amplitude	0.0
+Sinusoidal Offset	0.0
+Sinusoidal Frequency	0.0
+Sinusoidal N Cycles	0
+Sinusoidal Initial Phase	0.0
+Sinusoidal Final Phase	0.0
+Damped Sinusoidal Amplitude	32.0
+Damped Sinusoidal Offset	0.0
+Damped Sinusoidal Frequency	0.1
+Damped Sinusoidal N Cycles	15.0
+Damped Sinusoidal Phase Shift	0.0
+Damped Sinusoidal Final Phase	0.0
+Damped Sinusoidal Damping	30.0
+Damped Sinusoidal2 Amplitude	32.0
+Damped Sinusoidal2 Offset	0.0
+Damped Sinusoidal2 Frequency	0.1
+Damped Sinusoidal2 N Cycles	15.0
+Damped Sinusoidal2 Phase Shift	0.0
+Damped Sinusoidal2 Final Phase	0.0
+Damped Sinusoidal2 Damping	30.0
+Trapezoidal Offset	0.0
+Trapezoidal Array	
+Maximum Current	40.0
+Minimum Current	-40.0
+Automatic Setpoints	0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 20.0, 32.0, 20.0, 10.0, 8.0, 6.0, 4.0, 2.0, 0.0
+Kp	0.0260
+Ki	0.0610
+DCCT Head	3

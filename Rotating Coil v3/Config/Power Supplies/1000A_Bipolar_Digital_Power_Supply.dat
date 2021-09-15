@@ -5,6 +5,7 @@
 Power Supply Name	1000A_Bipolar_Digital_Power_Supply
 Power Supply Type	2
 Current Setpoint	10.0
+Current Slew Rate	50.0
 Sinusoidal Amplitude	0.0
 Sinusoidal Offset	0.0
 Sinusoidal Frequency	0.0

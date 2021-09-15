@@ -1,0 +1,14 @@
+# Coil Parameters
+# Insert the variable name and value separated by tab.
+# Commented lines are ignored.
+
+coil_name	SBG-4_2020-08-06_r=13mm_b1_CALIBRATED
+n_turns_normal	9
+radius1_normal	0
+radius2_normal	0.0129575
+n_turns_bucked	0
+radius1_bucked	0
+radius2_bucked	0
+trigger_ref	232734
+coil_type	Radial
+comments	Rotating coil for storage ring magnets. Tungsten wire and ceramic body. Mean radius adjusted and calibrated by rotating coil displacement technique. Trigger Ref adjusted by Q20-003 rotation with average pulse.

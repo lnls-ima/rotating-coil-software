@@ -197,6 +197,11 @@ p, li { white-space: pre-wrap; }
      <string>Vitor Soares</string>
     </property>
    </item>
+   <item>
+    <property name="text">
+     <string>Fernanda Alves</string>
+    </property>
+   </item>
   </widget>
   <widget class="QLabel" name="label_49">
    <property name="geometry">

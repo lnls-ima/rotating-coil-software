@@ -285,7 +285,7 @@ class EthernetCom():
                 _name = _bench1
             else:
                 _name = _bench2
-            self.inst = self.rm.open_resource(_name.encode('utf-8'))
+            self.inst = self.rm.open_resource(_name)
             self.status_config()
             self.send(self.FDIShortCircuitOff)
             return True

@@ -1,0 +1,55 @@
+*todo 09/10/20
+- Verificar a função configurar PID da secundária
+- Implemetatr atribuição dos parâmetros da secundária
+*- Implementar a leitura do Multimetro da bancada hall
+- Implementar a captura do fator de correção no DB
+- Implementar a captura de qual é a fonte no DB
+- Limitar corrente máxima da F1000A por firmaware
+- Reset interlocks trava o programa
+
+
+###COMANDOS FAC1K1##
+
+Lib.comm.drs1.get_param_bank()
+
+def set_monopolar():
+	drs.set_param('Min_Ref',0,0)
+	drs.set_param('Min_Ref_OpenLoop',0,0)
+	drs.set_param('PWM_Min_Duty',0,0)
+	drs.set_param('PWM_Min_Duty_OpenLoop',0,0)
+
+Lib.comm.drs1.set_dsp_coeffs(3,0,[0.0358, 0.304, 0.9, 0.0]) parametros FC Q14 (MAIN+TRIM)
+
+Lib.comm.drs1.get_dsp_coeff(3,0,1)*20480  == Ki
+
+Lib.comm.drs1.get_dsp_coeff(3,0,0) == Kp
+
+Lib.comm.drs2.set_dsp_coeffs(3,0,[0.249,22.7,0.9,-0.9]) == Parâmetros FBP Q14 (TRIM + MAIN)
+
+Lib.App.myapp.ui.tabWidget_2.setEnabled(True)
+
+------------------------------------------------------
+Lib.comm.drs2.select_op_mode('Cycle')
+
+Lib.comm.drs2.cfg_siggen(0, 60, 0.2, -5, -5, 270, 270, 0, 0)
+
+Lib.comm.drs2.enable_siggen()
+
+-------------------------------------------------------
+### SEQUENCIA PARA GRAVAR CURVA Waveform Ref ####
+
+curve = np.genfromtxt('f1000_sine_0A_160A.csv')
+
+drs.select_op_mode('SlowRef')
+
+write_wfmref(drs,curve)
+
+drs.scale_wfmref(1, 0)
+
+drs.select_op_mode('RmpWfm')
+
+drs.sync_pulse()
+
+for i in range(4000):
+	drs.sync_pulse()
+	time.sleep(10)

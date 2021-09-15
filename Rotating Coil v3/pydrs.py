@@ -8,10 +8,10 @@ Python 3.4.4
 """
 
 import struct
-import serial
 import time
 import csv
 import math
+import serial
 import numpy as np
 
 # from siriuspy.magnet.util import get_default_ramp_waveform
@@ -66,10 +66,16 @@ ListPSModels = ['FBP_100kHz', 'FBP_Parallel_100kHz', 'FAC_ACDC_10kHz',
                 'JIGA_HRADC', 'FAP_DCDC_15kHz_225A', 'FBPx4_100kHz',
                 'FAP_6U_DCDC_20kHz', 'JIGA_BASTIDOR']
 
+# ListPSModels_v2_1 = ['Empty', 'FBP', 'FBP_DCLink', 'FAC_ACDC', 'FAC_DCDC',
+#                      'FAC_2S_ACDC', 'FAC_2S_DCDC', 'FAC_2P4S_ACDC',
+#                      'FAC_2P4S_DCDC', 'FAP', 'FAP_4P_Master', 'FAP_4P_Slave',
+#                      'FAP_2P2S_Master', 'FAP_2P2S_Slave', 'FAP_225A']
+
 ListPSModels_v2_1 = ['Empty', 'FBP', 'FBP_DCLink', 'FAC_ACDC', 'FAC_DCDC',
                      'FAC_2S_ACDC', 'FAC_2S_DCDC', 'FAC_2P4S_ACDC',
-                     'FAC_2P4S_DCDC', 'FAP', 'FAP_4P_Master', 'FAP_4P_Slave',
-                     'FAP_2P2S_Master', 'FAP_2P2S_Slave', 'FAP_225A']
+                     'FAC_2P4S_DCDC', 'FAP', 'FAP_4P', 'FAC_DCDC_EMA',
+                     'FAP_2P2S', 'FAP_IMAS', 'FAC_2P_ACDC_IMAS',
+                     'FAC_2P_DCDC_IMAS']
 
 ListVar_v2_1 = ['ps_status', 'ps_setpoint', 'ps_reference', 'firmware_version',
                 'counter_set_slowref', 'counter_sync_pulse', 'siggen_enable',
@@ -1809,6 +1815,9 @@ class SerialDRS():
     def read_iload1(self):
         return self.read_bsmp_variable(27, 'float')
 
+    def read_ierror(self):
+        return self.read_bsmp_variable(28, 'float')
+
     def Read_iLoad2(self):
         self.read_var(self.index_to_hex(ListVar.index('iLoad2')))
         reply_msg = self.ser.read(9)
@@ -1877,7 +1886,7 @@ class SerialDRS():
         return val[3]
 
     def read_vdclink(self):
-        return self.drs.read_bsmp_variable(30, 'float')
+        return self.read_bsmp_variable(27, 'float')
 
     def Read_vOutMod1(self):
         self.read_var(self.index_to_hex(ListVar.index('vOutMod1')))
@@ -2536,18 +2545,18 @@ class SerialDRS():
         Returns:
             active_interlocks(list): list of active interlocks description."""
 
-#         if ps_type == 1:
-#             if hard_interlock:
-#                 _l = list_fac_2p_acdc_hard_interlocks
-#             else:
-#                 _l = list_fac_2p_acdc_soft_interlocks
-#         elif ps_type == 2:
-#             if hard_interlock:
-#                 _l = list_fac_2p_dcdc_hard_interlocks
-#             else:
-#                 _l = list_fac_2p_dcdc_soft_interlocks
-        if ps_type in [1, 2]:
-            return []
+        if ps_type == 1:
+            if hard_interlock:
+                _l = list_fac_2p_acdc_hard_interlocks
+            else:
+                _l = list_fac_2p_acdc_soft_interlocks
+        elif ps_type == 2:
+            if hard_interlock:
+                _l = list_fac_2p_dcdc_hard_interlocks
+            else:
+                _l = list_fac_2p_dcdc_soft_interlocks
+#         if ps_type in [1, 2]:
+#             return []
         elif ps_type == 3:
             if hard_interlock:
                 _l = list_fap_225A_hard_interlocks

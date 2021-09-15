@@ -130,6 +130,8 @@ class RotatingCoil_Library(object):
              `ps_port_2`    TEXT,
              `enable_Agilent34970A`    INTEGER,
              `agilent34970A_address`    INTEGER,
+             `enable_Agilent34401A`    INTEGER,
+             `agilent34401A_address`    INTEGER,
              `total_number_of_turns`    INTEGER,
              `remove_initial_turns`    INTEGER,
              `remove_final_turns`    INTEGER,
@@ -145,17 +147,21 @@ class RotatingCoil_Library(object):
              `disable_ps_interlock`    INTEGER,
              `bench`    INTEGER )"""
 
+            print('Passei por aqui 0')
             _cur.execute(_create_table)
             _cur.execute(_create_sets_table)
             _cur.execute(_create_failures_table)
             _cur.execute(_create_main_table)
+            print('Passei por aqui 1')
 
-            _values = ['COM12', 'COM11', 'COM10', 'None', 1, 18, 20, 5, 5,
-                       1, 50000.0, 1.0, 4.0, 1.0, 360000, 100, 120, 0, 0, 1]
+            _values = ['COM12', 'COM11', 'COM10', 'None', 1, 18, 1, 15, 20, 5,
+                       5, 1, 50000.0, 1.0, 4.0, 1.0, 360000, 100, 120, 0, 0, 1]
             _l = []
             [_l.append('?') for _ in range(len(_values))]
             _l = '(' + ','.join(_l) + ')'
             _cur.execute(('INSERT INTO main VALUES ' + _l), _values)
+
+            print('Passei por aqui 2')
 
         _con.commit()
         _con.close()
@@ -1240,7 +1246,7 @@ class RotatingCoil_Library(object):
         if self.get_value(self.data_settings, 'disable_alignment_interlock',
                           int):
             _comments = (_comments +
-                         'Warning: Alignment interlock is disabled; '
+                         ' Warning: Alignment interlock is disabled; '
                          'Ref_encoder_A = {0:0.6f}, Ref_encoder_B = {1:0.6f} .'
                          '\n'.format(self.get_value(self.aux_settings,
                                                     'ref_encoder_A', float),
@@ -1248,7 +1254,7 @@ class RotatingCoil_Library(object):
                                                     'ref_encoder_B', float)))
         if self.get_value(self.data_settings, 'disable_ps_interlock', int):
             _comments = (_comments +
-                         'Warning: Power supply interlock is disabled.\n')
+                         ' Warning: Power supply interlock is disabled.\n')
 
         _magnet_family = (
             self.App.myapp.dialog.ui.cb_magnet_family.currentText())
@@ -1351,6 +1357,7 @@ class RotatingCoil_Library(object):
         _datavars = ['Power Supply Name',
                      'Power Supply Type',
                      'Current Setpoint',
+                     'Current Slew Rate',
                      'Amplitude Step',
                      'Delay/Step',
                      'Sinusoidal Amplitude',
@@ -1383,6 +1390,7 @@ class RotatingCoil_Library(object):
                      'DCCT Head']
         _datavalues = ['',
                        3,
+                       0.0,
                        0.0,
                        0.0,
                        0.0,
