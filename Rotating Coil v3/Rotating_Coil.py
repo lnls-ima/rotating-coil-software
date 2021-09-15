@@ -22,7 +22,7 @@ import Parker_Drivers
 import Display_Heidenhain
 from Pop_up import Ui_Pop_Up
 import Rotating_Coil_Library as Library
-from Rotating_Coil_Interface_v3 import Ui_RotatingCoil_Interface
+from Rotating_Coil_Interface import Ui_RotatingCoil_Interface
 
 from imautils.devices import Agilent34401ALib as multimeter
 from matplotlib.figure import Figure as _Figure
@@ -2248,16 +2248,17 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                                      _QMessageBox.Ok)
                 raise Exception
         else:
-            _ans = _QMessageBox.question(self, 'Attention', 'Do you want start'
-                                         ' measurement with power supply '
-                                         'interlock disabled?',
-                                         _QMessageBox.Yes |
-                                         _QMessageBox.No,
-                                         _QMessageBox.No)
-            if _ans == _QMessageBox.No:
-                self.ui.chb_disable_ps_interlock.setChecked(False)
-                self.config_variables()
-                raise Exception
+            pass  # AQUI
+            # _ans = _QMessageBox.question(self, 'Attention', 'Do you want start'
+            #                              ' measurement with power supply '
+            #                              'interlock disabled?',
+            #                              _QMessageBox.Yes |
+            #                              _QMessageBox.No,
+            #                              _QMessageBox.No)
+            # if _ans == _QMessageBox.No:
+            #     self.ui.chb_disable_ps_interlock.setChecked(False)
+            #     self.config_variables()
+            #     raise Exception
         if self.ui.lb_status_coil.text() == 'NOK':
             _QMessageBox.warning(self, 'Warning',
                                  'Please, load the coil data.',
